@@ -1,0 +1,8 @@
+# requirements.txt
+yfinance>=0.2.38
+pandas
+numpy
+scikit-learn
+statsmodels
+joblib
+tqdm

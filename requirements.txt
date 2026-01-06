@@ -1,0 +1,16 @@
+streamlit
+numpy
+pandas
+matplotlib
+scikit-learn
+seaborn
+plotly
+requests
+flask
+sqlalchemy
+pytest
+beautifulsoup4
+xgboost
+statsmodels
+tensorflow
+yfinance

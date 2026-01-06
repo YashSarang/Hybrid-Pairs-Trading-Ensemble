@@ -36,7 +36,6 @@ except Exception:  # pragma: no cover
 FREQ_TO_YF_INTERVAL = {
     "1D": "1d",
     "1H": "60m",
-    "1min": "1m",
 }
 
 
@@ -87,15 +86,17 @@ class YFinanceNSESource(DataSource):
     """Fetch NSE prices from Yahoo Finance via yfinance.
 
     * Automatically appends ".NS" if not provided.
-    * Supports daily, hourly, and minute intervals (subject to Yahoo limits).
+    * Supports daily and hourly intervals (subject to Yahoo limits).
     * Returns a wide DataFrame with columns named **without** the .NS suffix.
     """
 
     def get_prices(self, universe: List[str], cfg: DataConfig) -> pd.DataFrame:
         if yf is None:
-            raise RuntimeError("yfinance is not installed in this environment.")
+            raise RuntimeError(
+                "yfinance is not installed in this environment.")
         if cfg.freq not in FREQ_TO_YF_INTERVAL:
-            raise ValueError(f"Unsupported freq: {cfg.freq}. Use one of {list(FREQ_TO_YF_INTERVAL)}")
+            raise ValueError(
+                f"Unsupported freq: {cfg.freq}. Use one of {list(FREQ_TO_YF_INTERVAL)}")
 
         # Normalize tickers to Yahoo format, but we'll return plain codes.
         tickers = [t if t.endswith(".NS") else f"{t}.NS" for t in universe]
@@ -128,7 +129,8 @@ class YFinanceNSESource(DataSource):
                     s = data[col].rename(_strip_ns(t))
                     frames.append(s)
             if not frames:
-                raise RuntimeError("No matching price field found in Yahoo data.")
+                raise RuntimeError(
+                    "No matching price field found in Yahoo data.")
             wide = pd.concat(frames, axis=1)
         else:
             # Single ticker shape
@@ -138,13 +140,12 @@ class YFinanceNSESource(DataSource):
 
         wide = _to_datetime_index(wide)
         # Clip and resample to exact requested frequency (safety)
-        wide = wide.loc[(wide.index >= pd.Timestamp(cfg.start)) & (wide.index <= pd.Timestamp(cfg.end))]
+        wide = wide.loc[(wide.index >= pd.Timestamp(cfg.start))
+                        & (wide.index <= pd.Timestamp(cfg.end))]
         if cfg.freq == "1D":
             wide = wide.resample("1D").last()
         elif cfg.freq == "1H":
             wide = wide.resample("1H").last()
-        elif cfg.freq == "1min":
-            wide = wide.resample("1min").last()
 
         return wide.ffill().dropna(axis=1, how="any")
 
@@ -154,7 +155,8 @@ class YFinanceNSESource(DataSource):
         Returns a DataFrame with index=tickers (no .NS), column 'ADV'.
         """
         if yf is None:
-            raise RuntimeError("yfinance is not installed in this environment.")
+            raise RuntimeError(
+                "yfinance is not installed in this environment.")
         tickers = [t if t.endswith(".NS") else f"{t}.NS" for t in universe]
         interval = FREQ_TO_YF_INTERVAL.get(cfg.freq, "1d")
         start = pd.Timestamp(cfg.end) - pd.Timedelta(days=lookback * 2)
@@ -185,7 +187,7 @@ class YFinanceNSESource(DataSource):
             val = (close * vol).tail(lookback)
             if len(val) > 0:
                 adv[name] = float(val.mean())
-        return pd.DataFrame.from_dict(adv, orient="index", columns=["ADV"]) 
+        return pd.DataFrame.from_dict(adv, orient="index", columns=["ADV"])
 
 
 class CSVUploadSource(DataSource):
@@ -230,7 +232,8 @@ class CSVUploadSource(DataSource):
             raise ValueError("No valid data found in uploaded files.")
 
         wide = pd.concat(dfs, axis=1).sort_index()
-        wide = wide.loc[(wide.index >= pd.Timestamp(cfg.start)) & (wide.index <= pd.Timestamp(cfg.end))]
+        wide = wide.loc[(wide.index >= pd.Timestamp(cfg.start))
+                        & (wide.index <= pd.Timestamp(cfg.end))]
         if cfg.freq != "1D":
             wide = wide.resample(cfg.freq).last().dropna(how="all")
         return wide.ffill().dropna(axis=1, how="any")

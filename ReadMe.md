@@ -17,6 +17,14 @@ cd .\.venv\Scripts
 cd ..\..
 pip install -r requirements.txt
 streamlit run .\app.py
+
+
+Rerun:
+
+cd .\.venv\Scripts
+.\activate
+cd ..\..
+streamlit run .\app.py
 ```
 
 ## TL;DR (what this repo does)
@@ -106,3 +114,32 @@ Each run saves to `reports/<YYYYMMDD_HHMMSS>/`:
 - Design data/loader & features to accept freq param (day/1min/1s). MVP: day only.
 - Backtest runner should be time-step agnostic — iterate over ordered timestamps. For intraday, ensure event ordering and partial fills/slippage model improvements.
 - For GPU: keep RAPIDS wrappers behind gpu/ so code falls back to Pandas/Numpy when unavailable.
+
+# Feature Summary: Report Management & Benchmark Comparison
+
+### Comprehensive Report Saving ✅
+
+**Status:** Fully Implemented
+
+Every simulation run now automatically saves:
+
+- ✅ Complete parameter configuration (universe, weights, backtest settings)
+- ✅ All selected data (tickers, date ranges, frequency)
+- ✅ Complete trade log with timestamps and signals
+- ✅ Performance metrics (Gross & Net)
+- ✅ Time series data (equity curves, P&L, turnover)
+- ✅ Selected pairs information
+
+**Location:** `reports/<YYYYMMDD_HHMMSS>/`
+
+**Files Saved:**
+
+- `metadata.json` - All parameters and configuration
+- `metrics.json` - Performance metrics
+- `params.json` - Detailed backtest parameters
+- `equity_gross.csv` - Gross equity curve
+- `equity_net.csv` - Net equity curve
+- `pnl_gross.csv` - Gross P&L time series
+- `pnl_net.csv` - Net P&L time series
+- `turnover.csv` - Position changes
+- `trades.csv` - Complete trade log

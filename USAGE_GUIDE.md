@@ -157,13 +157,6 @@ reports/
 3. Download equity curves CSV
 4. Import into your analysis tool (Excel, Python, R, etc.)
 
-### Reproducing Results
-
-1. Open a saved report
-2. View "Run Parameters"
-3. Configure simulator with same parameters
-4. Run simulation to reproduce results
-
 ## Best Practices
 
 1. **Descriptive universes**: Use meaningful ticker lists for easy identification

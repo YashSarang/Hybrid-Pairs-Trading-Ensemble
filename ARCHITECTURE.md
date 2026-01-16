@@ -1,207 +1,8 @@
 # Architecture: Report Management System
 
-## System Overview
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                     Streamlit UI (app.py)                   │
-├─────────────────────────────────────────────────────────────┤
-│                                                             │
-│  ┌──────────────┐              ┌──────────────┐           │
-│  │  Simulator   │              │   Reports    │           │
-│  │     Page     │              │     Page     │           │
-│  └──────┬───────┘              └──────┬───────┘           │
-│         │                              │                   │
-│         │ Run Simulation               │ View/Compare      │
-│         │                              │                   │
-└─────────┼──────────────────────────────┼───────────────────┘
-          │                              │
-          ▼                              ▼
-┌─────────────────────────────────────────────────────────────┐
-│              core/reports.py (Report Management)            │
-├─────────────────────────────────────────────────────────────┤
-│                                                             │
-│  ┌──────────────────┐         ┌──────────────────┐        │
-│  │  ReportManager   │         │ BenchmarkComparison│       │
-│  ├──────────────────┤         ├──────────────────┤        │
-│  │ • save_report()  │         │ • fetch_index()  │        │
-│  │ • load_report()  │         │ • compare()      │        │
-│  │ • list_reports() │         │                  │        │
-│  │ • delete_report()│         │                  │        │
-│  └────────┬─────────┘         └────────┬─────────┘        │
-│           │                            │                   │
-└───────────┼────────────────────────────┼───────────────────┘
-            │                            │
-            ▼                            ▼
-┌───────────────────────┐    ┌──────────────────────┐
-│   File System         │    │   Yahoo Finance      │
-│   (reports/)          │    │   (yfinance)         │
-├───────────────────────┤    ├──────────────────────┤
-│ • metadata.json       │    │ • NIFTY 50           │
-│ • metrics.json        │    │ • SENSEX             │
-│ • params.json         │    │ • NIFTY BANK         │
-│ • equity_gross.csv    │    │ • etc.               │
-│ • equity_net.csv      │    │                      │
-│ • pnl_gross.csv       │    │                      │
-│ • pnl_net.csv         │    │                      │
-│ • turnover.csv        │    │                      │
-│ • trades.csv          │    │                      │
-└───────────────────────┘    └──────────────────────┘
-```
-
 ## Data Flow
 
-### 1. Simulation Run Flow
-
-```
-User Configures Parameters
-         │
-         ▼
-User Clicks "Run Simulation"
-         │
-         ▼
-Backtest Engine Executes
-         │
-         ▼
-BacktestResult Generated
-         │
-         ▼
-ReportManager.save_report()
-         │
-         ├─► Create unique Run ID (timestamp)
-         ├─► Create directory: reports/<run_id>/
-         ├─► Save metadata.json
-         ├─► Save metrics.json
-         ├─► Save params.json
-         ├─► Save equity_gross.csv
-         ├─► Save equity_net.csv
-         ├─► Save pnl_gross.csv
-         ├─► Save pnl_net.csv
-         ├─► Save turnover.csv
-         └─► Save trades.csv
-         │
-         ▼
-Success Message Displayed
-```
-
-### 2. Report Viewing Flow
-
-```
-User Opens Reports Page
-         │
-         ▼
-ReportManager.list_reports()
-         │
-         ├─► Scan reports/ directory
-         ├─► Read metadata.json from each
-         └─► Return sorted list
-         │
-         ▼
-User Selects Report
-         │
-         ▼
-ReportManager.load_report(run_id)
-         │
-         ├─► Load metadata.json
-         ├─► Load metrics.json
-         ├─► Load params.json
-         ├─► Load equity_gross.csv
-         ├─► Load equity_net.csv
-         ├─► Load pnl_gross.csv
-         ├─► Load pnl_net.csv
-         ├─► Load turnover.csv
-         └─► Load trades.csv
-         │
-         ▼
-Display Report in UI
-```
-
-### 3. Benchmark Comparison Flow
-
-```
-User Enables "Compare with Index"
-         │
-         ▼
-User Selects Index (e.g., NIFTY 50)
-         │
-         ▼
-BenchmarkComparison.fetch_index_returns()
-         │
-         ├─► Get date range from strategy
-         ├─► Fetch index data from Yahoo Finance
-         └─► Calculate cumulative returns
-         │
-         ▼
-BenchmarkComparison.compare_with_benchmark()
-         │
-         ├─► Align dates
-         ├─► Calculate excess returns
-         ├─► Calculate information ratio
-         ├─► Calculate tracking error
-         └─► Prepare comparison data
-         │
-         ▼
-Display Comparison Metrics & Chart
-```
-
 ## Component Responsibilities
-
-### app.py (UI Layer)
-
-**Responsibilities:**
-
-- User interface rendering
-- User input collection
-- Orchestrating workflow
-- Displaying results
-
-**Key Functions:**
-
-- `simulator_page()`: Main simulation interface
-- `render_reports_page()`: Report viewing interface
-- `get_report_manager()`: Singleton access to ReportManager
-
-### core/reports.py (Business Logic)
-
-**Responsibilities:**
-
-- Report persistence
-- Report retrieval
-- Benchmark data fetching
-- Performance comparison
-
-**Key Classes:**
-
-- `ReportManager`: CRUD operations for reports
-- `BenchmarkComparison`: Index comparison logic
-- `ReportMetadata`: Data structure for metadata
-
-### File System (Storage Layer)
-
-**Responsibilities:**
-
-- Persistent storage
-- Data organization
-- File management
-
-**Structure:**
-
-```
-reports/
-├── 20250131_143022/
-│   ├── metadata.json
-│   ├── metrics.json
-│   ├── params.json
-│   ├── equity_gross.csv
-│   ├── equity_net.csv
-│   ├── pnl_gross.csv
-│   ├── pnl_net.csv
-│   ├── turnover.csv
-│   └── trades.csv
-├── 20250131_145633/
-│   └── ...
-└── README.md
-```
 
 ## Design Patterns Used
 
@@ -274,24 +75,10 @@ if not run_dir.exists():
 
 ### User Feedback
 
-```python
+````python
 st.success(f"✅ Report saved successfully! Run ID: {run_id}")
 st.info("View this report in the 'Reports' page.")
-```
-
-## Performance Considerations
-
-### Lazy Loading
-
-- Reports loaded only when selected
-- Benchmark data fetched only when enabled
-- Trade logs displayed with pagination
-
-### Efficient Storage
-
-- JSON for metadata (human-readable, small)
-- CSV for time series (efficient, portable)
-- Separate files for different data types
+```;
 
 ### Caching
 
@@ -356,7 +143,7 @@ def test_benchmark_comparison():
     comparison = BenchmarkComparison.compare_with_benchmark(...)
     assert "excess_return" in comparison
     assert "information_ratio" in comparison
-```
+````
 
 ### Integration Tests (Recommended)
 
@@ -399,16 +186,3 @@ def test_benchmark_comparison():
 - Version control for code
 - Documentation updates
 - Configuration backups
-
-## Conclusion
-
-The report management system follows clean architecture principles with:
-
-- ✅ Clear separation of concerns
-- ✅ Modular design
-- ✅ Extensible structure
-- ✅ Robust error handling
-- ✅ Efficient storage
-- ✅ User-friendly interface
-
-Ready for production use with room for future enhancements.

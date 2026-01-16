@@ -1,20 +1,36 @@
 """Stage 1 (Pair Selection) models for the Pairs Trading app.
 
+This module implements multiple pair selection methodologies based on academic research
+and industry best practices. Each selector evaluates potential stock pairs for their
+suitability in pairs trading strategies.
+
+Key Features:
+- Multiple selection criteria (correlation, distance, cointegration, ML)
+- Ensemble-ready scoring system with detailed metadata
+- Graceful degradation when optional dependencies are unavailable
+- Literature-backed parameter defaults with customization options
+
+Academic Sources:
+- Gatev et al. (2006): Distance-based pair selection methodology
+- Engle & Granger (1987): Cointegration testing framework  
+- Sarmento & Horta (2021): Multi-criteria decision making approach
+- Various ML approaches: Feature engineering for pair selection
+
 Includes:
 - Data classes: Pair, PairScore
 - Abstract base: PairSelector
 - Implementations:
-  * CorrelationSelector
-  * DistanceSelector (Gatev et al., 2006; default z-score L2 distance)
-  * CointegrationSelector (Engle–Granger)
-  * CombinedCriteriaSelector (Sarmento & Horta, 2021): cointegration + Hurst + half-life + hits
-  * MLSelector (optional): simple supervised model with year-based Train/Val/Test split
+  * CorrelationSelector: Pearson correlation-based selection
+  * DistanceSelector: Gatev et al. (2006) normalized distance method
+  * CointegrationSelector: Engle-Granger cointegration testing
+  * CombinedCriteriaSelector: Sarmento & Horta (2021) multi-criteria approach
+  * MLSelector: Supervised learning with engineered features
 
-Notes
------
-* Keep this module free of Streamlit/UI code.
-* Statsmodels/scikit-learn are optional; classes degrade gracefully if unavailable.
-* See docstrings & __init__ defaults for literature-backed specs and alternatives.
+Notes:
+- Keep this module free of Streamlit/UI code for modularity
+- Statsmodels/scikit-learn are optional; classes degrade gracefully if unavailable
+- See docstrings & __init__ defaults for literature-backed specifications
+- All selectors return PairScore objects for consistent ensemble integration
 """
 from __future__ import annotations
 
@@ -50,6 +66,7 @@ except Exception:  # pragma: no cover
 class Pair:
     a: str
     b: str
+
     def key(self) -> tuple[str, str]:
         return tuple(sorted((self.a, self.b)))
 
@@ -69,7 +86,8 @@ def _annualize_days(index: pd.DatetimeIndex) -> int:
     # Rough mapper for periods per year based on spacing
     if len(index) < 2:
         return 252
-    dt = np.median(np.diff(index.values).astype("timedelta64[s]").astype(float))
+    dt = np.median(np.diff(index.values).astype(
+        "timedelta64[s]").astype(float))
     if dt <= 120:  # roughly minute-level
         return 252 * 6 * 60
     if dt <= 4000:  # hourly-ish
@@ -99,7 +117,8 @@ def _halflife(spread: pd.Series) -> float:
     x = spread.dropna()
     if len(x) < 20:
         return np.inf
-    x_lag = x.shift(1).dropna(); y = x.loc[x_lag.index]
+    x_lag = x.shift(1).dropna()
+    y = x.loc[x_lag.index]
     var = x_lag.var()
     beta = (x_lag.cov(y) / (var + 1e-12)) if var != 0 else 0.0
     if abs(beta) >= 1 or abs(beta) <= 1e-6:
@@ -113,8 +132,10 @@ def _halflife(spread: pd.Series) -> float:
 
 class PairSelector:
     name: str = "base"
+
     def fit(self, prices: pd.DataFrame) -> "PairSelector":
         return self
+
     def score_pairs(self, prices: pd.DataFrame, candidates: List[Pair]) -> List[PairScore]:
         raise NotImplementedError
 
@@ -124,22 +145,31 @@ class PairSelector:
 # ---------------------------------------------
 
 class CorrelationSelector(PairSelector):
-    """Select pairs by **historical return correlation**.
-
-    Defaults
-    --------
-    lookback: 252 trading days (≈ 1Y). Literature varies 60–504.
-    """
+    # class RollingCorrelationSelector(PairSelector):
+    """Select pairs by Rolling Pearson Correlation Coefficient (RPCC)."""
     name = "Correlation"
+
     def __init__(self, lookback: int = 252):
         self.lookback = lookback
+
     def score_pairs(self, prices: pd.DataFrame, candidates: List[Pair]) -> List[PairScore]:
-        window = prices.tail(self.lookback)
-        corr = window.pct_change().corr().fillna(0.0)
+        rets = prices.pct_change()
+
         out: List[PairScore] = []
         for p in candidates:
-            s = corr.loc[p.a, p.b] if p.a in corr.index and p.b in corr.columns else 0.0
-            out.append(PairScore(p, float(s), {"corr": float(s), "lookback": self.lookback}))
+            if p.a not in rets.columns or p.b not in rets.columns:
+                s = 0.0
+                meta = {"rpcc_last": 0.0, "lookback": self.lookback}
+            else:
+                # rolling correlation time series
+                rpcc = rets[p.a].rolling(self.lookback).corr(rets[p.b])
+                s = float(rpcc.iloc[-1]) if len(rpcc) else 0.0
+                if pd.isna(s):
+                    s = 0.0
+                meta = {"rpcc_last": s, "lookback": self.lookback}
+
+            out.append(PairScore(p, s, meta))
+
         return out
 
 
@@ -151,9 +181,11 @@ class DistanceSelector(PairSelector):
     Alt mode="cumret": compare cumulative returns similarity: P/P0 - 1
     """
     name = "Distance (Gatev)"
+
     def __init__(self, lookback: int = 252, mode: str = "zscore"):
         self.lookback = lookback
         self.mode = mode
+
     def score_pairs(self, prices: pd.DataFrame, candidates: List[Pair]) -> List[PairScore]:
         window = prices.tail(self.lookback)
         if self.mode == "zscore":
@@ -164,7 +196,8 @@ class DistanceSelector(PairSelector):
         for p in candidates:
             if p.a in z and p.b in z:
                 dist = float(np.linalg.norm(z[p.a].values - z[p.b].values))
-                out.append(PairScore(p, -dist, {"neg_l2": -dist, "mode": self.mode, "lookback": self.lookback}))
+                out.append(PairScore(
+                    p, -dist, {"neg_l2": -dist, "mode": self.mode, "lookback": self.lookback}))
             else:
                 out.append(PairScore(p, -np.inf, {}))
         return out
@@ -179,9 +212,11 @@ class CointegrationSelector(PairSelector):
     pvalue_threshold: 0.05 (alternative: 0.01 for stricter)
     """
     name = "Cointegration (Engle–Granger)"
+
     def __init__(self, lookback: int = 252 * 2, pvalue_threshold: float = 0.05):
         self.lookback = lookback
         self.pvalue_threshold = pvalue_threshold
+
     def score_pairs(self, prices: pd.DataFrame, candidates: List[Pair]) -> List[PairScore]:
         window = prices.tail(self.lookback)
         out: List[PairScore] = []
@@ -193,8 +228,8 @@ class CointegrationSelector(PairSelector):
                     pval, score = np.nan, np.nan
                 s = (1 - pval) if pval == pval else 0.0
                 out.append(PairScore(p, s if (pval == pval and pval < self.pvalue_threshold) else 0.0,
-                                     {"coint_stat": float(score) if score==score else None,
-                                      "pvalue": float(pval) if pval==pval else None,
+                                     {"coint_stat": float(score) if score == score else None,
+                                      "pvalue": float(pval) if pval == pval else None,
                                       "lookback": self.lookback, "p_thr": self.pvalue_threshold}))
             else:
                 out.append(PairScore(p, 0.0, {}))
@@ -213,18 +248,21 @@ class CombinedCriteriaSelector(PairSelector):
     You can tune thresholds per your market/frequency.
     """
     name = "Combined Criteria (Sarmento–Horta)"
+
     def __init__(self, p_thr: float = 0.05, hurst_max: float = 0.5, halflife_max: int = 60, min_hits: int = 3, lookback: int = 252):
         self.p_thr = p_thr
         self.hurst_max = hurst_max
         self.halflife_max = halflife_max
         self.min_hits = min_hits
         self.lookback = lookback
+
     def score_pairs(self, prices: pd.DataFrame, candidates: List[Pair]) -> List[PairScore]:
         window = prices.tail(self.lookback)
         out: List[PairScore] = []
         for p in candidates:
             if p.a not in window or p.b not in window:
-                out.append(PairScore(p, 0.0, {})); continue
+                out.append(PairScore(p, 0.0, {}))
+                continue
             a, b = window[p.a], window[p.b]
             # Cointegration p-value
             if coint is None:
@@ -242,9 +280,10 @@ class CombinedCriteriaSelector(PairSelector):
             s_mean = spread.rolling(60).mean()
             s_std = spread.rolling(60).std(ddof=0)
             hits = int(((spread - s_mean).abs() > 2 * (s_std + 1e-9)).sum())
-            ok = (pval == pval and pval < self.p_thr) and (hurst < self.hurst_max) and (hl < self.halflife_max) and (hits >= self.min_hits)
+            ok = (pval == pval and pval < self.p_thr) and (hurst < self.hurst_max) and (
+                hl < self.halflife_max) and (hits >= self.min_hits)
             out.append(PairScore(p, float(1.0 if ok else 0.0),
-                                 {"pvalue": float(pval) if pval==pval else None,
+                                 {"pvalue": float(pval) if pval == pval else None,
                                   "hurst": float(hurst),
                                   "halflife": float(hl) if np.isfinite(hl) else None,
                                   "hits": hits,
@@ -260,12 +299,15 @@ class CombinedCriteriaSelector(PairSelector):
 class TrivialSelectorModel:
     """Fallback when y has <2 classes. Predicts constant proba = prior."""
     p1: float = 0.5  # prior P(y=1)
+
     def fit(self, X, y):
         return self
+
     def predict_proba(self, X):
         p1 = np.clip(float(self.p1), 0.0, 1.0)
         p0 = 1.0 - p1
         return np.column_stack([np.full(len(X), p0), np.full(len(X), p1)])
+
     def predict(self, X):
         return (self.predict_proba(X)[:, 1] >= 0.5).astype(int)
 
@@ -284,6 +326,7 @@ class MLSelector(PairSelector):
     else 60/20/20 split by index length. This avoids look-ahead where possible.
     """
     name = "Supervised ML"
+
     def __init__(self, horizon: int = 20, rebalance_if_ratio_gt: float = 5.0):
         self.horizon = horizon
         self.model: Optional[object] = None
@@ -291,7 +334,8 @@ class MLSelector(PairSelector):
         self.rebalance_if_ratio_gt = float(rebalance_if_ratio_gt)
 
     def _pair_features(self, a: pd.Series, b: pd.Series) -> Dict[str, float]:
-        r_a = a.pct_change(); r_b = b.pct_change()
+        r_a = a.pct_change()
+        r_b = b.pct_change()
         corr20 = r_a.rolling(20).corr(r_b).iloc[-1]
         corr60 = r_a.rolling(60).corr(r_b).iloc[-1]
         vol_a = r_a.rolling(60).std(ddof=0).iloc[-1]
@@ -315,7 +359,8 @@ class MLSelector(PairSelector):
 
     def _label(self, a: pd.Series, b: pd.Series) -> int:
         # Simple forward profitability proxy over horizon bars
-        r_a = a.pct_change(); r_b = b.pct_change()
+        r_a = a.pct_change()
+        r_b = b.pct_change()
         spread_ret = (r_a - r_b).shift(-1).rolling(self.horizon).sum().iloc[-1]
         return int(1 if spread_ret == spread_ret and spread_ret > 0 else 0)
 
@@ -323,15 +368,20 @@ class MLSelector(PairSelector):
         years = pd.to_datetime(idx).year
         uniq = list(dict.fromkeys(years))  # preserve order
         if len(uniq) >= 4:
-            train_years = uniq[:-2]; val_year = uniq[-2]; test_year = uniq[-1]
+            train_years = uniq[:-2]
+            val_year = uniq[-2]
+            test_year = uniq[-1]
             train_mask = years.isin(train_years)
             val_mask = years == val_year
             test_mask = years == test_year
         else:
             n = len(idx)
-            train_mask = np.zeros(n, dtype=bool); train_mask[: int(0.6 * n)] = True
-            val_mask = np.zeros(n, dtype=bool); val_mask[int(0.6 * n): int(0.8 * n)] = True
-            test_mask = np.zeros(n, dtype=bool); test_mask[int(0.8 * n):] = True
+            train_mask = np.zeros(n, dtype=bool)
+            train_mask[: int(0.6 * n)] = True
+            val_mask = np.zeros(n, dtype=bool)
+            val_mask[int(0.6 * n): int(0.8 * n)] = True
+            test_mask = np.zeros(n, dtype=bool)
+            test_mask[int(0.8 * n):] = True
         return train_mask, val_mask, test_mask
 
     def fit(self, prices: pd.DataFrame) -> "MLSelector":
@@ -375,12 +425,14 @@ class MLSelector(PairSelector):
         if len(uniq) < 2:
             # Fall back to constant-probability model to avoid sklearn error
             p1 = float(y.mean()) if len(y) else 0.5
-            self.model = TrivialSelectorModel(p1=max(1e-6, min(1.0 - 1e-6, p1)))
+            self.model = TrivialSelectorModel(
+                p1=max(1e-6, min(1.0 - 1e-6, p1)))
             self.model.fit(X, y)
             return self
 
         # Optional: very light rebalancing if super-skewed (e.g., > 5:1)
-        c0 = counts_map.get(0, 0); c1 = counts_map.get(1, 0)
+        c0 = counts_map.get(0, 0)
+        c1 = counts_map.get(1, 0)
         maj_label = 0 if c0 >= c1 else 1
         min_label = 1 - maj_label
         maj_count, min_count = (c0, c1) if maj_label == 0 else (c1, c0)
@@ -389,11 +441,13 @@ class MLSelector(PairSelector):
             target_maj = int(2.0 * min_count)
             maj_idx = np.where(y == maj_label)[0]
             min_idx = np.where(y == min_label)[0]
-            keep_maj = np.random.RandomState(42).choice(maj_idx, size=target_maj, replace=False)
+            keep_maj = np.random.RandomState(42).choice(
+                maj_idx, size=target_maj, replace=False)
             keep_idx = np.sort(np.concatenate([keep_maj, min_idx]))
             X = X.iloc[keep_idx].reset_index(drop=True)
             y = y[keep_idx]
-            print(f"[MLSelector.fit] Rebalanced from {maj_count}:{min_count} -> {np.sum(y==maj_label)}:{np.sum(y==min_label)}")
+            print(
+                f"[MLSelector.fit] Rebalanced from {maj_count}:{min_count} -> {np.sum(y==maj_label)}:{np.sum(y==min_label)}")
 
         # ------------------------------------------------------------------------
 
@@ -426,11 +480,13 @@ class MLSelector(PairSelector):
                 out.append(PairScore(p, 0.0, {"ml": False}))
             return out
         for p in candidates:
-            a = prices[p.a].dropna(); b = prices[p.b].dropna()
+            a = prices[p.a].dropna()
+            b = prices[p.b].dropna()
             idx = a.index.intersection(b.index)
             a, b = a.reindex(idx).ffill(), b.reindex(idx).ffill()
             if len(idx) < 260:
-                out.append(PairScore(p, 0.0, {})); continue
+                out.append(PairScore(p, 0.0, {}))
+                continue
             f = self._pair_features(a, b)
             X = pd.DataFrame([f])[self.features_].fillna(0.0)
             if hasattr(self.model, "predict_proba"):

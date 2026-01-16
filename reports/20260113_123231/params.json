@@ -1,0 +1,45 @@
+{
+  "selected_pairs": [
+    "TCS-INFY",
+    "RELIANCE-HDFCBANK",
+    "HDFCBANK-ICICIBANK",
+    "RELIANCE-BHARTIARTL",
+    "RELIANCE-LT",
+    "SBIN-LT",
+    "RELIANCE-TCS",
+    "TCS-LT",
+    "INFY-LT",
+    "INFY-HDFCBANK",
+    "RELIANCE-INFY",
+    "RELIANCE-SBIN",
+    "HDFCBANK-BHARTIARTL",
+    "HDFCBANK-LT",
+    "INFY-ICICIBANK",
+    "TCS-SBIN",
+    "RELIANCE-ASIANPAINT",
+    "TCS-BHARTIARTL",
+    "TCS-HDFCBANK",
+    "HDFCBANK-ITC",
+    "BHARTIARTL-ASIANPAINT",
+    "HDFCBANK-SBIN",
+    "RELIANCE-ITC",
+    "ICICIBANK-ASIANPAINT",
+    "SBIN-BHARTIARTL"
+  ],
+  "entry_weights": {
+    "Mean Reversion (\u00b12\u03c3)": 0.5,
+    "OU Model": 0.5,
+    "Kalman Hedge (placeholder)": 0.0
+  },
+  "notional_each": 20000.0,
+  "costs": {
+    "brokerage_bps": 5.0,
+    "exchange_txn_bps": 0.345,
+    "sebi_bps": 0.01,
+    "stt_bps_sell": 10.0,
+    "gst_rate": 0.18,
+    "stamp_bps_buy": 1.5,
+    "slippage_bps_per_leg": 2.0,
+    "intraday": true
+  }
+}

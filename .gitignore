@@ -27,6 +27,7 @@ ENV/
 env/
 
 # IDE
+# .kiro
 .vscode/
 .idea/
 *.swp
@@ -34,7 +35,7 @@ env/
 *~
 
 # Reports (keep structure but ignore data)
-reports/*/
+# reports/*/
 !reports/README.md
 
 # OS

@@ -2,15 +2,6 @@
 
 ## 🔧 Issues Fixed
 
-### 1. Benchmark Data Fetch Error ✅
-
-**Problem:** `'str' object is not callable` error when fetching benchmark data
-**Solution:**
-
-- Fixed yfinance import in `BenchmarkComparison.fetch_index_returns()`
-- Added proper error handling with `str(e)` for exception messages
-- Added `show_errors=False` parameter to yfinance download
-
 ### 2. App Structure Restructured ✅
 
 **Changes:**

@@ -1,20 +1,44 @@
 """Stage 2 (Entry/Exit) models for the Pairs Trading app.
 
-Includes:
-- Base class: EntryExitModel
-- Implementations:
-  * ZScoreThreshold: classic mean-reversion bands on spread
-  * OUThreshold: AR(1)/OU-inspired trigger using reversion speed
-  * KalmanHedge (placeholder): proxy via rolling OLS beta hedge and z-bands
+This module implements trading signal generation models that determine when to enter
+and exit pairs trading positions. Each model applies different mathematical frameworks
+to identify mean reversion opportunities in price spreads.
 
-Notes
------
-* Pure signal generation here; no portfolio sizing, costs, or stop rules.
-* Return convention: Series in {+1, 0, -1}
-    +1 = long A, short B
-    -1 = short A, long B
-* Spread definition defaults to A - B (unit hedge). For NSE, this keeps things simple
-  and robust; if you prefer dynamic hedging, use KalmanHedge or extend with OLS beta.
+Academic Foundations:
+- Mean Reversion Theory: Statistical tendency of prices to return to historical means
+- Ornstein-Uhlenbeck Process: Mathematical model for mean-reverting stochastic processes
+- Kalman Filtering: Optimal estimation theory for time-varying parameters
+- Z-Score Methodology: Standard statistical approach for outlier detection
+
+Signal Convention:
+All models return discrete signals in {+1, 0, -1} format:
+- +1: Long stock A, Short stock B (spread expected to narrow)
+- -1: Short stock A, Long stock B (spread expected to widen)  
+-  0: No position (neutral/exit signal)
+
+Includes:
+- Base class: EntryExitModel with standardized interface
+- Implementations:
+  * ZScoreThreshold: Classic mean-reversion bands on spread z-scores
+  * OUThreshold: Ornstein-Uhlenbeck inspired thresholding with estimated parameters
+  * KalmanHedge: Dynamic hedge ratio estimation (placeholder implementation)
+
+Key Features:
+- Pure signal generation without portfolio management concerns
+- Configurable parameters with literature-backed defaults
+- Robust error handling and fallback mechanisms
+- Support for both unit and dynamic hedge ratios
+
+Sources:
+- Uhlenbeck & Ornstein (1930): "On the theory of Brownian motion"
+- Kalman (1960): "A new approach to linear filtering and prediction problems"
+- Standard statistical literature for z-score methodology
+
+Notes:
+- Pure signal generation here; no portfolio sizing, costs, or stop rules
+- Spread definition defaults to A - B (unit hedge) for simplicity and robustness
+- For dynamic hedging, use KalmanHedge or extend with OLS beta estimation
+- All models include generate_signals() method for consistency with prediction engine
 """
 from __future__ import annotations
 
@@ -34,6 +58,7 @@ except Exception:  # pragma: no cover
 # Base
 # ---------------------------------------------
 
+
 class EntryExitModel:
     """Abstract entry/exit model producing discrete trading signals."""
     name: str = "base"
@@ -45,6 +70,10 @@ class EntryExitModel:
     def trade_signals(self, a: pd.Series, b: pd.Series) -> pd.Series:
         """Compute a signal time-series in {+1, 0, -1} indexed like inputs."""
         raise NotImplementedError
+
+    def generate_signals(self, a: pd.Series, b: pd.Series) -> pd.Series:
+        """Generate signals (alias for trade_signals for consistency)."""
+        return self.trade_signals(a, b)
 
 
 # ---------------------------------------------
@@ -135,13 +164,15 @@ class OUThreshold(EntryExitModel):
         x = (spread - mu).dropna()
         if len(x) < 10:
             return pd.Series(0, index=spread.index)
-        x_lag = x.shift(1).dropna(); y = x.loc[x_lag.index]
+        x_lag = x.shift(1).dropna()
+        y = x.loc[x_lag.index]
         var = x_lag.var()
         phi = (x_lag.cov(y) / (var + 1e-12)) if var != 0 else 0.0
         halflife = -1 / math.log(abs(phi)) if 1e-6 < abs(phi) < 1 else np.inf
         k = 1 / halflife if halflife != np.inf else 0.0
         metric = (k * (spread - mu)).fillna(0)
-        s = metric.rolling(self.lookback // 2).std(ddof=0).fillna(method="bfill").fillna(0)
+        s = metric.rolling(
+            self.lookback // 2).std(ddof=0).bfill().fillna(0)
         sig = pd.Series(0, index=spread.index)
         sig[metric > self.entry_k * s] = -1
         sig[metric < -self.entry_k * s] = +1

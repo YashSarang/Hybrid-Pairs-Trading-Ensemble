@@ -16,7 +16,7 @@ computed from user-set cost params for comparison.
 """
 from __future__ import annotations
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Dict, List, Tuple
 
 import numpy as np
@@ -38,10 +38,12 @@ from core.entry import ZScoreThreshold, OUThreshold, KalmanHedge
 from core.ensemble import normalize_weights, ensemble_pair_scores, scores_to_frame
 from core.backtest import IndianCosts, BacktestConfig, backtest_pairs
 from core.reports import ReportManager, BenchmarkComparison
+from core.predictions import PredictionEngine
 
 APP_TITLE = "Comparative Analysis for Pairs Trading (NSE)"
-DEFAULT_START = (datetime.utcnow().date() - timedelta(days=365 * 10 + 30))
-DEFAULT_END = datetime.utcnow().date()
+DEFAULT_START = (datetime.now(timezone.utc).date() -
+                 timedelta(days=365 * 10 + 30))
+DEFAULT_END = datetime.now(timezone.utc).date()
 FREQ_LABELS = {"1D": "Daily", "1H": "Hourly"}
 
 
@@ -103,18 +105,18 @@ def _overlay_costs(
 # ---------------------------------------------
 
 def nse_pool_selector() -> List[str]:
-    st.subheader("🏢 Stock Universe Selection")
+    st.subheader("Stock Universe Selection")
 
     mode = st.radio(
         "Choose how to select stocks",
-        ["✏️ Manual Entry", "📁 Upload CSV", "📋 Index Constituents"],
+        ["Manual Entry", "Upload CSV", "Index Constituents"],
         horizontal=True,
         help="Select stocks manually, upload a file, or use index constituents.",
     )
 
     universe: List[str] = []
 
-    if "✏️ Manual Entry" in mode:
+    if "Manual Entry" in mode:
         st.markdown("**Enter NSE stock symbols** (without .NS suffix)")
         txt = st.text_area(
             "Stock symbols (comma-separated)",
@@ -128,7 +130,7 @@ def nse_pool_selector() -> List[str]:
             st.success(
                 f"✅ Selected {len(universe)} stocks: {', '.join(universe[:5])}{' ...' if len(universe) > 5 else ''}")
 
-    elif "📁 Upload CSV" in mode:
+    elif "Upload CSV" in mode:
         st.markdown("**Upload a CSV file** with stock symbols")
         f = st.file_uploader("Choose CSV file with 'Ticker' column", type=[
                              "csv"], key="csv_universe")
@@ -232,10 +234,10 @@ def nse_pool_selector() -> List[str]:
 # ---------------------------------------------
 
 def sidebar_controls():
-    st.sidebar.header("⚙️ Configuration")
+    st.sidebar.header("Configuration")
 
     # Data configuration
-    st.sidebar.subheader("📅 Data Settings")
+    st.sidebar.subheader("Data Settings")
     freq = st.sidebar.selectbox("Data frequency", options=list(
         FREQ_LABELS.keys()), format_func=lambda x: FREQ_LABELS[x])
     start = st.sidebar.date_input("Start date", value=DEFAULT_START)
@@ -244,23 +246,23 @@ def sidebar_controls():
         "Price field", options=["Adj Close", "Close"])
 
     # Stage 1 weights
-    st.sidebar.subheader("🎯 Stage 1: Pair Selection")
+    st.sidebar.subheader("Stage 1: Pair Selection")
     st.sidebar.caption("Adjust weights for different pair selection methods")
     s1_models = {
-        CorrelationSelector.name: st.sidebar.slider("📊 Correlation", 0.0, 1.0, 0.3, 0.05),
-        DistanceSelector.name: st.sidebar.slider("📏 Distance (Gatev)", 0.0, 1.0, 0.2, 0.05),
-        CointegrationSelector.name: st.sidebar.slider("🔗 Cointegration", 0.0, 1.0, 0.3, 0.05),
-        CombinedCriteriaSelector.name: st.sidebar.slider("🎛️ Combined Criteria", 0.0, 1.0, 0.1, 0.05),
-        MLSelector.name: st.sidebar.slider("🤖 Supervised ML", 0.0, 1.0, 0.1, 0.05),
+        CorrelationSelector.name: st.sidebar.slider("Correlation", 0.0, 1.0, 0.3, 0.05),
+        DistanceSelector.name: st.sidebar.slider("Distance (Gatev)", 0.0, 1.0, 0.2, 0.05),
+        CointegrationSelector.name: st.sidebar.slider("Cointegration", 0.0, 1.0, 0.3, 0.05),
+        CombinedCriteriaSelector.name: st.sidebar.slider("Combined Criteria", 0.0, 1.0, 0.1, 0.05),
+        MLSelector.name: st.sidebar.slider("Supervised ML", 0.0, 1.0, 0.1, 0.05),
     }
 
     # Stage 2 weights
-    st.sidebar.subheader("⚡ Stage 2: Entry/Exit")
+    st.sidebar.subheader("Stage 2: Entry/Exit")
     st.sidebar.caption("Adjust weights for different trading signals")
     s2_models = {
-        ZScoreThreshold.name: st.sidebar.slider("📈 Mean Reversion (±2σ)", 0.0, 1.0, 0.5, 0.05),
-        OUThreshold.name: st.sidebar.slider("🌊 OU Model", 0.0, 1.0, 0.5, 0.05),
-        KalmanHedge.name: st.sidebar.slider("🎯 Kalman Hedge", 0.0, 1.0, 0.0, 0.05),
+        ZScoreThreshold.name: st.sidebar.slider("Mean Reversion (±2σ)", 0.0, 1.0, 0.5, 0.05),
+        OUThreshold.name: st.sidebar.slider("OU Model", 0.0, 1.0, 0.5, 0.05),
+        KalmanHedge.name: st.sidebar.slider("Kalman Hedge", 0.0, 1.0, 0.0, 0.05),
     }
 
     s1_weights = normalize_weights(s1_models)
@@ -340,7 +342,7 @@ def sidebar_controls():
         "Exit if breach persists (bars)", value=5, min_value=1, step=1)
 
     run_btn = st.sidebar.button(
-        "🚀 Run Simulation", type="primary", use_container_width=True)
+        "Run Simulation", type="primary", use_container_width=True)
 
     periods = 252 if freq == "1D" else 24 * 252  # Daily or Hourly
 
@@ -377,16 +379,43 @@ def sidebar_controls():
 # ---------------------------------------------
 
 def get_report_manager():
-    """Get or create ReportManager instance."""
+    """Get or create ReportManager instance with caching for performance."""
     if "report_manager" not in st.session_state:
         st.session_state["report_manager"] = ReportManager()
     return st.session_state["report_manager"]
 
 
-def render_reports_page():
-    # Add description and stats
+@st.cache_data(ttl=300)  # Cache for 5 minutes
+def load_cached_report(run_id: str):
+    """Load report with caching to improve performance."""
     report_mgr = get_report_manager()
-    reports = report_mgr.list_reports()
+    return report_mgr.load_report(run_id)
+
+
+def get_cached_reports_list():
+    """Get reports list - simplified without caching to avoid serialization issues."""
+    report_mgr = get_report_manager()
+    return report_mgr.list_reports()
+
+
+def render_reports_page():
+    """Render the reports page with saved backtest analysis and prediction generation.
+
+    This page provides comprehensive analysis of saved backtest runs including:
+    - Performance metrics comparison (gross vs net returns)
+    - Benchmark comparison against Indian market indices
+    - Parameter inspection and trade analysis
+    - Real-time prediction generation using historical settings
+
+    Key Features:
+    - Cached report loading for improved performance
+    - Interactive benchmark comparison with multiple indices
+    - One-click prediction generation from any historical run
+    - Comprehensive trade analysis and export functionality
+    """
+    # Add description and stats with performance optimization
+    report_mgr = get_report_manager()
+    reports = get_cached_reports_list()  # Use cached version
 
     col1, col2, col3 = st.columns([2, 1, 1])
 
@@ -409,7 +438,7 @@ def render_reports_page():
     if not reports:
         st.info("🚀 No saved reports yet. Run your first simulation to get started!")
         st.markdown("**Quick Start:**")
-        st.markdown("1. Go to 🎯 Simulator")
+        st.markdown("1. Go to Simulator")
         st.markdown("2. Select NSE tickers (e.g., RELIANCE, TCS, INFY)")
         st.markdown("3. Click 'Run Simulation'")
         st.markdown("4. Return here to view results")
@@ -424,8 +453,8 @@ def render_reports_page():
         range(len(reports))), format_func=lambda i: options[i])
     selected_report = reports[selected_idx]
 
-    # Load full report data
-    report = report_mgr.load_report(selected_report.run_id)
+    # Load full report data with caching
+    report = load_cached_report(selected_report.run_id)
 
     # Display parameters
     with st.expander("📋 Run Parameters", expanded=False):
@@ -451,8 +480,75 @@ def render_reports_page():
         st.markdown("**Selected Pairs**")
         st.write(", ".join(report["metadata"]["selected_pairs"]))
 
+        # Add prediction generation button
+        st.divider()
+        col1, col2 = st.columns([1, 2])
+        with col1:
+            generate_predictions_btn = st.button(
+                "🔮 Generate Current Predictions",
+                type="secondary",
+                help="Generate real-time predictions using this report's exact settings"
+            )
+        with col2:
+            if generate_predictions_btn:
+                st.info("Generating predictions with this report's settings...")
+
+        if generate_predictions_btn:
+            with st.spinner("Generating predictions using report settings..."):
+                try:
+                    from core.predictions import PredictionEngine
+
+                    # Initialize prediction engine
+                    engine = PredictionEngine(lookback_days=252)
+
+                    # Generate predictions using report settings
+                    prediction_result = engine.get_predictions_from_report(
+                        report_data=report,
+                        top_k=10,
+                        min_data_points=100
+                    )
+
+                    if prediction_result.recommendations:
+                        st.success(
+                            f"✅ Generated {len(prediction_result.recommendations)} predictions!")
+
+                        # Store in session state for display
+                        st.session_state[f"predictions_for_{selected_report.run_id}"] = prediction_result
+
+                        # Display predictions summary
+                        st.markdown("**Current Predictions Summary:**")
+                        pred_col1, pred_col2, pred_col3 = st.columns(3)
+
+                        with pred_col1:
+                            st.metric("Top Pairs", len(
+                                prediction_result.recommendations))
+                        with pred_col2:
+                            st.metric("Data Freshness",
+                                      prediction_result.data_freshness)
+                        with pred_col3:
+                            top_score = prediction_result.recommendations[
+                                0].score if prediction_result.recommendations else 0
+                            st.metric("Top Score", f"{top_score:.3f}")
+
+                        # Show top 3 predictions
+                        st.markdown("**Top 3 Current Recommendations:**")
+                        for i, rec in enumerate(prediction_result.recommendations[:3], 1):
+                            signal_strength = abs(rec.ensemble_signal)
+                            signal_icon = "🟢" if signal_strength > 0.5 else "🟡" if signal_strength > 0.2 else "⚪"
+                            st.write(
+                                f"{i}. {rec.pair.a}/{rec.pair.b} - Score: {rec.score:.3f} {signal_icon}")
+
+                    else:
+                        st.warning(
+                            "⚠️ No predictions generated. Check market data availability.")
+
+                except Exception as e:
+                    st.error(f"❌ Prediction generation failed: {str(e)}")
+                    st.info(
+                        "💡 This might be due to market data availability or network issues.")
+
     # Key Metrics
-    st.subheader("📊 Performance Metrics")
+    st.subheader("Performance Metrics")
 
     col1, col2, col3, col4 = st.columns(4)
     with col1:
@@ -474,7 +570,7 @@ def render_reports_page():
                   f"{report['metrics']['Net.MaxDrawdown']*100:.2f}%")
 
     # Benchmark Comparison
-    st.subheader("📈 Benchmark Comparison")
+    st.subheader("Benchmark Comparison")
 
     compare_benchmark = st.checkbox("Compare with Indices", value=False)
 
@@ -493,7 +589,7 @@ def render_reports_page():
 
         with col2:
             if selected_indices:
-                if st.button("🔄 Fetch Benchmark Data", type="primary"):
+                if st.button("Fetch Benchmark Data", type="primary"):
                     with st.spinner(f"Fetching data for {len(selected_indices)} indices..."):
                         try:
                             equity_series = report["equity_net"] if use_net == "Net Returns" else report["equity_gross"]
@@ -608,6 +704,54 @@ def render_reports_page():
     })
     st.line_chart(equity_df)
 
+    # Ensemble Weights Display
+    st.subheader("⚖️ Ensemble Configuration")
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.markdown("**Stage 1: Pair Selection Weights**")
+        s1_weights_df = pd.DataFrame([
+            {"Model": k, "Weight": f"{v:.3f}", "Percentage": f"{v*100:.1f}%"}
+            for k, v in report["metadata"]["stage1_weights"].items()
+        ])
+        st.dataframe(s1_weights_df, use_container_width=True, hide_index=True)
+
+        # Visual representation
+        import plotly.express as px
+        try:
+            fig1 = px.pie(
+                values=list(report["metadata"]["stage1_weights"].values()),
+                names=list(report["metadata"]["stage1_weights"].keys()),
+                title="Stage 1 Weight Distribution"
+            )
+            fig1.update_traces(textposition='inside', textinfo='percent+label')
+            st.plotly_chart(fig1, use_container_width=True)
+        except:
+            # Fallback if plotly not available
+            pass
+
+    with col2:
+        st.markdown("**Stage 2: Entry/Exit Weights**")
+        s2_weights_df = pd.DataFrame([
+            {"Model": k, "Weight": f"{v:.3f}", "Percentage": f"{v*100:.1f}%"}
+            for k, v in report["metadata"]["stage2_weights"].items()
+        ])
+        st.dataframe(s2_weights_df, use_container_width=True, hide_index=True)
+
+        # Visual representation
+        try:
+            fig2 = px.pie(
+                values=list(report["metadata"]["stage2_weights"].values()),
+                names=list(report["metadata"]["stage2_weights"].keys()),
+                title="Stage 2 Weight Distribution"
+            )
+            fig2.update_traces(textposition='inside', textinfo='percent+label')
+            st.plotly_chart(fig2, use_container_width=True)
+        except:
+            # Fallback if plotly not available
+            pass
+
     # Trades
     st.subheader("📝 Trade Log")
     if not report["trades"].empty:
@@ -632,6 +776,357 @@ def render_reports_page():
             st.rerun()
         else:
             st.error("Failed to delete report.")
+
+
+def render_predictions_page():
+    """Render the predictions page with real-time trading recommendations.
+
+    This page provides real-time pairs trading recommendations using the same ensemble
+    methodology as backtesting but applied to current market data. It offers:
+
+    Key Features:
+    - Real-time pair scoring using 5-model ensemble (Stage 1)
+    - Current entry/exit signals using 3-model ensemble (Stage 2)  
+    - Market regime analysis for trading context
+    - Confidence scoring based on data quality and signal consistency
+    - Multiple universe selection methods (last simulation, manual, CSV)
+    - Customizable strategy weights or inheritance from previous runs
+    - Export functionality for further analysis
+
+    Technical Implementation:
+    - Fetches latest market data via yfinance API
+    - Applies same selectors as backtesting for consistency
+    - Generates actionable recommendations with risk metrics
+    - Provides market context through volatility and correlation analysis
+
+    Performance Optimizations:
+    - Reduced lookback periods for faster computation
+    - Efficient data caching and reuse
+    - Graceful error handling with informative feedback
+    - Progressive loading with status indicators
+    """
+    # Add description and quick stats
+    col1, col2, col3 = st.columns([2, 1, 1])
+
+    with col1:
+        st.markdown("""
+        **Get real-time trading recommendations** based on your current strategy configuration. 
+        Analyze market conditions and identify potential pairs without running full backtests.
+        """)
+
+    with col2:
+        st.metric("Update Frequency", "Real-time")
+
+    with col3:
+        st.metric("Lookback Period", "252 days")
+
+    st.divider()
+
+    # Configuration section
+    st.subheader("Prediction Configuration")
+
+    col1, col2 = st.columns([1, 1])
+
+    with col1:
+        # Universe selection (simplified)
+        st.markdown("**Stock Universe**")
+        universe_mode = st.radio(
+            "Select universe",
+            ["Use Last Simulation", "Select from Report",
+                "Quick Entry", "Upload CSV"],
+            horizontal=True,
+            help="Choose how to define the stock universe for predictions"
+        )
+
+        universe = []
+        if universe_mode == "Use Last Simulation":
+            # Try to get universe from last report
+            report_mgr = get_report_manager()
+            reports = get_cached_reports_list()
+            if reports:
+                latest_report = load_cached_report(reports[0].run_id)
+                universe = latest_report["metadata"]["universe"]
+                st.success(
+                    f"✅ Using {len(universe)} stocks from latest simulation")
+                st.caption(
+                    f"Stocks: {', '.join(universe[:5])}{' ...' if len(universe) > 5 else ''}")
+            else:
+                st.warning(
+                    "No previous simulations found. Please use Quick Entry.")
+                universe_mode = "Quick Entry"
+
+        elif universe_mode == "Select from Report":
+            # Allow selection from any saved report
+            report_mgr = get_report_manager()
+            reports = get_cached_reports_list()
+            if reports:
+                report_options = [
+                    f"{r.run_id[:8]}... • {r.timestamp[:19]} • {len(r.universe)} stocks"
+                    for r in reports
+                ]
+                selected_report_idx = st.selectbox(
+                    "Choose a report to use its settings",
+                    options=list(range(len(reports))),
+                    format_func=lambda i: report_options[i],
+                    help="Select a report to inherit its universe, weights, and parameters"
+                )
+
+                if selected_report_idx is not None:
+                    selected_report = reports[selected_report_idx]
+                    report_data = load_cached_report(selected_report.run_id)
+
+                    # Extract settings from report
+                    universe = report_data["metadata"]["universe"]
+
+                    # Store report settings in session state for weight inheritance
+                    st.session_state["selected_report_settings"] = {
+                        "universe": universe,
+                        "stage1_weights": report_data["metadata"]["stage1_weights"],
+                        "stage2_weights": report_data["metadata"]["stage2_weights"],
+                        "run_id": selected_report.run_id
+                    }
+
+                    st.success(
+                        f"✅ Using settings from report {selected_report.run_id[:8]}...")
+                    st.caption(f"Universe: {len(universe)} stocks")
+                    st.caption(
+                        f"Stocks: {', '.join(universe[:5])}{' ...' if len(universe) > 5 else ''}")
+            else:
+                st.warning(
+                    "No saved reports found. Please run a simulation first.")
+                universe_mode = "Quick Entry"
+
+        if universe_mode == "Quick Entry":
+            txt = st.text_area(
+                "Enter NSE symbols (comma-separated)",
+                value="RELIANCE, TCS, INFY, HDFCBANK, ICICIBANK, SBIN, ITC, LT, BHARTIARTL, ASIANPAINT",
+                height=100,
+                help="Enter NSE symbols without .NS suffix"
+            )
+            universe = [t.strip().upper() for t in txt.split(",") if t.strip()]
+
+        elif universe_mode == "Upload CSV":
+            f = st.file_uploader("Upload CSV with 'Ticker' column", type=[
+                                 "csv"], key="pred_csv")
+            if f is not None:
+                df = pd.read_csv(f)
+                if "Ticker" in df.columns:
+                    universe = [str(x).strip().upper()
+                                for x in df["Ticker"].tolist() if str(x).strip()]
+                    st.success(f"✅ Loaded {len(universe)} tickers from file")
+                else:
+                    st.error("❌ CSV must have a 'Ticker' column")
+
+    with col2:
+        # Strategy weights (simplified)
+        st.markdown("**Strategy Weights**")
+
+        # Get weights from selected report or last simulation or use defaults
+        s1_weights = {
+            "Correlation": 0.3,
+            "Distance (Gatev)": 0.2,
+            "Cointegration": 0.3,
+            "Combined Criteria": 0.1,
+            "Supervised ML": 0.1,
+        }
+        s2_weights = {
+            "Mean Reversion (±2σ)": 0.5,
+            "OU Model": 0.5,
+            "Kalman Hedge": 0.0,
+        }
+
+        # Check if we have selected report settings
+        if "selected_report_settings" in st.session_state:
+            report_settings = st.session_state["selected_report_settings"]
+            s1_weights = report_settings["stage1_weights"]
+            s2_weights = report_settings["stage2_weights"]
+            st.info(
+                f"Using weights from report {report_settings['run_id'][:8]}...")
+        else:
+            # Try to get weights from last report
+            report_mgr = get_report_manager()
+            reports = get_cached_reports_list()
+            if reports:
+                latest_report = load_cached_report(reports[0].run_id)
+                s1_weights = latest_report["metadata"]["stage1_weights"]
+                s2_weights = latest_report["metadata"]["stage2_weights"]
+                st.info("Using weights from latest simulation")
+
+        use_custom_weights = st.checkbox("Customize weights", value=False)
+
+        if use_custom_weights:
+            st.markdown("**Stage 1 Weights (Pair Selection)**")
+            s1_weights = {
+                "Correlation": st.slider("Correlation", 0.0, 1.0, s1_weights.get("Correlation", 0.3), 0.05),
+                "Distance (Gatev)": st.slider("Distance", 0.0, 1.0, s1_weights.get("Distance (Gatev)", 0.2), 0.05),
+                "Cointegration": st.slider("Cointegration", 0.0, 1.0, s1_weights.get("Cointegration", 0.3), 0.05),
+                "Combined Criteria": st.slider("Combined", 0.0, 1.0, s1_weights.get("Combined Criteria", 0.1), 0.05),
+                "Supervised ML": st.slider("ML", 0.0, 1.0, s1_weights.get("Supervised ML", 0.1), 0.05),
+            }
+
+            st.markdown("**Stage 2 Weights (Entry/Exit)**")
+            s2_weights = {
+                "Mean Reversion (±2σ)": st.slider("Z-Score", 0.0, 1.0, s2_weights.get("Mean Reversion (±2σ)", 0.5), 0.05),
+                "OU Model": st.slider("OU Model", 0.0, 1.0, s2_weights.get("OU Model", 0.5), 0.05),
+                "Kalman Hedge": st.slider("Kalman", 0.0, 1.0, s2_weights.get("Kalman Hedge", 0.0), 0.05),
+            }
+        else:
+            # Display current weights
+            st.json({"Stage 1": s1_weights, "Stage 2": s2_weights})
+
+    # Normalize weights
+    s1_weights = normalize_weights(s1_weights)
+    s2_weights = normalize_weights(s2_weights)
+
+    # Prediction controls
+    col1, col2, col3 = st.columns([1, 1, 1])
+    with col1:
+        top_k = st.number_input("Top recommendations",
+                                min_value=5, max_value=20, value=10, step=1)
+    with col2:
+        min_data_points = st.number_input(
+            "Min data points", min_value=50, max_value=500, value=100, step=10)
+    with col3:
+        refresh_btn = st.button("🔄 Get Predictions",
+                                type="primary", use_container_width=True)
+
+    # Generate predictions
+    if refresh_btn and universe:
+        with st.spinner("Fetching market data and generating predictions..."):
+            try:
+                # Initialize prediction engine
+                engine = PredictionEngine(lookback_days=252)
+
+                # Generate predictions (simplified without caching to avoid serialization issues)
+                result = engine.get_predictions(
+                    universe=universe,
+                    stage1_weights=s1_weights,
+                    stage2_weights=s2_weights,
+                    top_k=top_k,
+                    min_data_points=min_data_points,
+                )
+
+                if not result.recommendations:
+                    st.error(
+                        "❌ No recommendations generated. Check your universe and try again.")
+                    st.stop()
+
+                # Store result in session state
+                st.session_state["prediction_result"] = result
+                st.success(
+                    f"✅ Generated {len(result.recommendations)} recommendations!")
+
+            except Exception as e:
+                st.error(f"❌ Prediction failed: {str(e)}")
+                st.info("💡 **Troubleshooting tips:**")
+                st.info("• Check your internet connection")
+                st.info("• Verify stock symbols are correct")
+                st.info("• Try with fewer stocks or longer lookback period")
+                st.stop()
+
+    # Display results if available
+    if "prediction_result" in st.session_state:
+        result = st.session_state["prediction_result"]
+
+        # Market overview
+        st.subheader("📊 Market Overview")
+        col1, col2, col3, col4 = st.columns(4)
+
+        with col1:
+            st.metric("Overall Volatility",
+                      f"{result.market_regime.overall_volatility*100:.1f}%")
+        with col2:
+            st.metric("Correlation Regime",
+                      result.market_regime.correlation_regime)
+        with col3:
+            st.metric("Data Freshness", result.data_freshness)
+        with col4:
+            st.metric("Pairs Analyzed", result.total_pairs_analyzed)
+
+        # Recommendations table
+        st.subheader("Top Pair Recommendations")
+
+        if result.recommendations:
+            # Create recommendations dataframe
+            rec_data = []
+            for rec in result.recommendations:
+                # Signal interpretation
+                signal_strength = abs(rec.ensemble_signal)
+                if signal_strength > 0.7:
+                    signal_desc = "🔴 Strong" if rec.ensemble_signal < 0 else "🟢 Strong"
+                elif signal_strength > 0.3:
+                    signal_desc = "🟡 Moderate" if rec.ensemble_signal < 0 else "🟡 Moderate"
+                else:
+                    signal_desc = "⚪ Weak"
+
+                # Direction
+                if rec.ensemble_signal > 0.1:
+                    direction = f"Long {rec.pair.a} / Short {rec.pair.b}"
+                elif rec.ensemble_signal < -0.1:
+                    direction = f"Short {rec.pair.a} / Long {rec.pair.b}"
+                else:
+                    direction = "Neutral"
+
+                rec_data.append({
+                    "Rank": rec.rank,
+                    "Pair": f"{rec.pair.a} / {rec.pair.b}",
+                    "Score": f"{rec.score:.3f}",
+                    "Signal": signal_desc,
+                    "Direction": direction,
+                    "Z-Score": f"{rec.z_score:.2f}",
+                    "Correlation": f"{rec.correlation:.2f}",
+                    "Confidence": f"{rec.confidence:.2f}",
+                    "Price A": f"₹{rec.last_price_a:.2f}",
+                    "Price B": f"₹{rec.last_price_b:.2f}",
+                })
+
+            rec_df = pd.DataFrame(rec_data)
+            st.dataframe(rec_df, use_container_width=True)
+
+            # Download recommendations
+            st.download_button(
+                label="📥 Download Recommendations CSV",
+                data=rec_df.to_csv(index=False).encode("utf-8"),
+                file_name=f"predictions_{result.timestamp.strftime('%Y%m%d_%H%M%S')}.csv",
+                mime="text/csv",
+            )
+
+            # Detailed analysis for top recommendation
+            if result.recommendations:
+                st.subheader("🔍 Top Recommendation Analysis")
+                top_rec = result.recommendations[0]
+
+                col1, col2 = st.columns([1, 1])
+
+                with col1:
+                    st.markdown(f"**{top_rec.pair.a} / {top_rec.pair.b}**")
+                    st.metric("Pair Score", f"{top_rec.score:.3f}")
+                    st.metric("Ensemble Signal",
+                              f"{top_rec.ensemble_signal:.2f}")
+                    st.metric("Current Z-Score", f"{top_rec.z_score:.2f}")
+                    st.metric("Confidence", f"{top_rec.confidence:.2f}")
+
+                with col2:
+                    st.markdown("**Individual Model Signals**")
+                    for model_name, signal in top_rec.signals.items():
+                        signal_color = "🟢" if signal > 0.1 else "🔴" if signal < -0.1 else "⚪"
+                        st.write(f"{signal_color} {model_name}: {signal:.2f}")
+
+                    st.markdown("**Risk Metrics**")
+                    st.write(f"📊 Volatility: {top_rec.volatility*100:.1f}%")
+                    st.write(f"🔗 Correlation: {top_rec.correlation:.2f}")
+                    st.write(
+                        f"💰 Current Spread: ₹{top_rec.current_spread:.2f}")
+
+        else:
+            st.info(
+                "No recommendations available. Click 'Get Predictions' to generate recommendations.")
+
+    elif not universe:
+        st.info(
+            "👆 Please select a stock universe and click 'Get Predictions' to start.")
+    else:
+        st.info("👆 Click 'Get Predictions' to generate real-time recommendations.")
 
 
 # ---------------------------------------------
@@ -935,16 +1430,23 @@ def main():
     # Main navigation
     page = st.sidebar.radio(
         "Navigation",
-        ["🎯 Simulator", "📊 Reports"],
+        ["Simulator", "Predictions", "Reports"],
+        # ["🎯 Simulator", "🔮 Predictions", "📊 Reports"],
         index=0,
-        help="Navigate between simulation and report analysis"
+        help="Navigate between simulation, predictions, and report analysis"
     )
 
-    if "📊 Reports" in page:
-        st.title("📊 Trading Reports & Analysis")
+    if "Reports" in page:
+        st.title("Trading Reports & Analysis")
+        # st.title("📊 Trading Reports & Analysis")
         render_reports_page()
+    elif "Predictions" in page:
+        st.title("Real-time Predictions & Recommendations")
+        # st.title("🔮 Real-time Predictions & Recommendations")
+        render_predictions_page()
     else:
-        st.title("🎯 NSE Pairs Trading Simulator")
+        st.title("NSE Pairs Trading Simulator")
+        # st.title("🎯 NSE Pairs Trading Simulator")
         simulator_page()
 
 

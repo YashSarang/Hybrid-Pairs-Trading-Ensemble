@@ -28,7 +28,7 @@ Stage 2: Entry/Exit Signal Ensemble
 
 #### 1.1 Correlation Selector (`CorrelationSelector`)
 
-**Method:** Pearson correlation coefficient
+**Method:** Rolling Pearson correlation coefficient
 **Logic:**
 
 - Calculates rolling correlation between all stock pairs
@@ -40,6 +40,7 @@ Stage 2: Entry/Exit Signal Ensemble
 ```python
 correlation = price_a.rolling(lookback).corr(price_b)
 score = correlation.mean()  # Average correlation over period
+# Higher is better
 ```
 
 #### 1.2 Distance Selector (`DistanceSelector`)
@@ -62,7 +63,7 @@ score = 1 / (1 + distance)  # Invert so higher is better
 
 #### 1.3 Cointegration Selector (`CointegrationSelector`)
 
-**Method:** Engle-Granger cointegration test
+**Method:** Engle-Granger (ADF) Cointegration test
 **Logic:**
 
 - Tests for long-term equilibrium relationship

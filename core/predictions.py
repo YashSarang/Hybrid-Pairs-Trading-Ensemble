@@ -24,11 +24,13 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from typing import Dict, List, Optional, Tuple, Any
 
+import logging
 import numpy as np
 import pandas as pd
-import streamlit as st  # For caching functionality
 
 from .data import DataConfig, YFinanceNSESource
+
+_log = logging.getLogger(__name__)
 from .selectors import (
     Pair,
     PairScore,
@@ -37,8 +39,11 @@ from .selectors import (
     CointegrationSelector,
     CombinedCriteriaSelector,
     MLSelector,
+    LSTMSelector,
+    TransformerSelector,
+    GNNSelector,
 )
-from .entry import ZScoreThreshold, OUThreshold, KalmanHedge
+from .entry import ZScoreThreshold, OUThreshold, KalmanHedge, MLSignal
 from .ensemble import ensemble_pair_scores
 
 
@@ -141,6 +146,9 @@ class PredictionEngine:
             CointegrationSelector.name: CointegrationSelector(lookback=min(504, lookback_days*2), pvalue_threshold=0.05),
             CombinedCriteriaSelector.name: CombinedCriteriaSelector(),
             MLSelector.name: MLSelector(),
+            LSTMSelector.name: LSTMSelector(),
+            TransformerSelector.name: TransformerSelector(),
+            GNNSelector.name: GNNSelector(),
         }
 
         # Initialize Stage 2 entry models with conservative parameters
@@ -148,6 +156,7 @@ class PredictionEngine:
             ZScoreThreshold.name: ZScoreThreshold(lookback=60, entry_z=2.0, exit_z=0.5),
             OUThreshold.name: OUThreshold(lookback=min(252, lookback_days)),
             KalmanHedge.name: KalmanHedge(),
+            MLSignal.name: MLSignal(),
         }
 
     def get_predictions(
@@ -218,8 +227,7 @@ class PredictionEngine:
                     )
                     recommendations.append(recommendation)
                 except Exception as e:
-                    # Skip pairs that fail analysis
-                    print(f"Failed to analyze pair {pair}: {e}")
+                    _log.warning("Failed to analyze pair %s: %s", pair, e)
                     continue
 
             # Market regime analysis
@@ -235,7 +243,7 @@ class PredictionEngine:
             )
 
         except Exception as e:
-            # Return empty result on failure
+            _log.error("get_predictions failed: %s", e)
             return PredictionResult(
                 recommendations=[],
                 market_regime=MarketRegime(
@@ -265,31 +273,22 @@ class PredictionEngine:
                 fitted_selector = selector.fit(prices)
                 scores = fitted_selector.score_pairs(prices, candidates)
                 scores_by_model[name] = scores
-                print(f"Selector {name}: {len(scores)} scores")
+                _log.debug("Selector %s: %d scores", name, len(scores))
             except Exception as e:
-                # Use neutral scores on failure
-                print(f"Selector {name} failed: {e}")
-                # Create neutral PairScore objects
-                neutral_scores = [
+                _log.warning("Selector %s failed: %s", name, e)
+                scores_by_model[name] = [
                     PairScore(pair=pair, score=0.5, details={})
                     for pair in candidates
                 ]
-                scores_by_model[name] = neutral_scores
-
-        print(f"Scores by model keys: {list(scores_by_model.keys())}")
-        print(f"Weights keys: {list(weights.keys())}")
 
         # Combine scores using ensemble
         try:
             ensemble_scores = ensemble_pair_scores(
-                scores_by_model, weights, top_k=len(candidates))
-            print(f"Ensemble produced {len(ensemble_scores)} scores")
-            # Convert to the expected format (Pair, float)
+                scores_by_model, weights, top_k=len(candidates)
+            )
             return [(ps.pair, ps.score) for ps in ensemble_scores]
         except Exception as e:
-            print(f"Ensemble scoring failed: {e}")
-            import traceback
-            traceback.print_exc()
+            _log.error("Ensemble scoring failed: %s", e)
 
     def get_predictions_from_report(
         self,
@@ -328,7 +327,7 @@ class PredictionEngine:
             )
 
         except Exception as e:
-            print(f"Failed to generate predictions from report: {e}")
+            _log.error("Failed to generate predictions from report: %s", e)
             # Return empty result on failure
             return PredictionResult(
                 recommendations=[],
@@ -391,7 +390,7 @@ class PredictionEngine:
                     signal_values.append(
                         signal * stage2_weights.get(name, 0.0))
                 except Exception as e:
-                    print(f"Signal generation failed for {name}: {e}")
+                    _log.warning("Signal generation failed for %s: %s", name, e)
                     signals[name] = 0.0
 
             # Ensemble signal
@@ -498,17 +497,16 @@ class PredictionEngine:
             try:
                 momentum_series = returns.rolling(20).mean().tail(1).abs()
                 trend_strength = float(momentum_series.mean().iloc[0] * 100)
-            except:
+            except Exception:
                 trend_strength = 0.0
 
-            # Mean reversion opportunity (based on dispersion) - fix the calculation
+            # Mean reversion opportunity (based on dispersion)
             try:
                 normalized_prices = prices / prices.rolling(252).mean()
-                price_dispersion_series = normalized_prices.std(
-                    axis=1).tail(20)
                 mean_reversion_opportunity = float(
-                    price_dispersion_series.mean())
-            except:
+                    normalized_prices.std(axis=1).tail(20).mean()
+                )
+            except Exception:
                 mean_reversion_opportunity = 0.0
 
             # Regime confidence (based on data consistency)
@@ -523,7 +521,7 @@ class PredictionEngine:
             )
 
         except Exception as e:
-            print(f"Market regime analysis failed: {e}")
+            _log.warning("Market regime analysis failed: %s", e)
             return MarketRegime(
                 overall_volatility=0.0,
                 correlation_regime="Unknown",

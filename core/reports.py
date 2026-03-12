@@ -8,6 +8,7 @@ Handles:
 from __future__ import annotations
 
 import json
+import logging
 import os
 from dataclasses import dataclass, asdict
 from datetime import datetime
@@ -17,6 +18,8 @@ from typing import Dict, List, Optional, Any
 import numpy as np
 import pandas as pd
 import yfinance as yf
+
+_log = logging.getLogger(__name__)
 
 
 # ---------------------------------------------
@@ -221,9 +224,6 @@ class BenchmarkComparison:
         ticker = BenchmarkComparison.INDIAN_INDICES[index_name]
 
         try:
-            # Import yfinance here to avoid issues
-            import yfinance as yf
-
             data = yf.download(
                 ticker,
                 start=start_date,
@@ -279,7 +279,7 @@ class BenchmarkComparison:
                 )
             except Exception as e:
                 # Log error but continue with other indices
-                print(f"Failed to fetch {index_name}: {e}")
+                _log.warning("Failed to fetch %s: %s", index_name, e)
                 continue
         return results
 

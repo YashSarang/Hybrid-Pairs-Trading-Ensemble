@@ -1,0 +1,45 @@
+{
+  "selected_pairs": [
+    "GOLD1-SETFGOLD",
+    "SBIN-GOLD1",
+    "SBIN-SETFGOLD",
+    "RELIANCE-BHEL",
+    "LT-BHARTIARTL",
+    "SBIN-LT",
+    "SBIN-MON100",
+    "RELIANCE-BHARTIARTL",
+    "MON100-GOLD1",
+    "BHARTIARTL-ASIANPAINT",
+    "MON100-SETFGOLD",
+    "LT-MON100",
+    "SBIN-SAIL",
+    "TCS-INFY",
+    "KALYANKJIL-NTPCGREEN",
+    "KALYANKJIL-JIOFIN",
+    "LT-GOLD1",
+    "LT-BHEL",
+    "LT-SETFGOLD",
+    "GOLD1-SAIL",
+    "SETFGOLD-SAIL",
+    "SBIN-BHARTIARTL",
+    "ITC-JIOFIN",
+    "BHARTIARTL-BHEL",
+    "BHARTIARTL-MON100"
+  ],
+  "entry_weights": {
+    "Mean Reversion (\u00b12\u03c3)": 0.4,
+    "OU Model": 0.4,
+    "Kalman Hedge (placeholder)": 0.2
+  },
+  "notional_each": 20000.0,
+  "costs": {
+    "brokerage_bps": 5.0,
+    "exchange_txn_bps": 0.345,
+    "sebi_bps": 0.01,
+    "stt_bps_sell": 10.0,
+    "gst_rate": 0.18,
+    "stamp_bps_buy": 1.5,
+    "slippage_bps_per_leg": 2.0,
+    "intraday": true
+  }
+}

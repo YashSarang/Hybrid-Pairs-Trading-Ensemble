@@ -3,7 +3,7 @@
 This app uses the refactored core modules:
 - core.data: DataConfig, YFinanceNSESource
 - core.selectors: Pair + selection models
-- core.entry: Entry models (ZScore, OU, KalmanHedge)
+- core.entry: Entry models (ZScore, OU, KalmanHedge, MLSignal)
 - core.ensemble: ensembling utilities
 - core.backtest: costs, config, engine (now returns GROSS & NET)
 
@@ -33,8 +33,11 @@ from core.selectors import (
     CointegrationSelector,
     CombinedCriteriaSelector,
     MLSelector,
+    LSTMSelector,
+    TransformerSelector,
+    GNNSelector,
 )
-from core.entry import ZScoreThreshold, OUThreshold, KalmanHedge
+from core.entry import ZScoreThreshold, OUThreshold, KalmanHedge, MLSignal
 from core.ensemble import normalize_weights, ensemble_pair_scores, scores_to_frame
 from core.backtest import IndianCosts, BacktestConfig, backtest_pairs
 from core.reports import ReportManager, BenchmarkComparison
@@ -249,11 +252,14 @@ def sidebar_controls():
     st.sidebar.subheader("Stage 1: Pair Selection")
     st.sidebar.caption("Adjust weights for different pair selection methods")
     s1_models = {
-        CorrelationSelector.name: st.sidebar.slider("Correlation", 0.0, 1.0, 0.3, 0.05),
-        DistanceSelector.name: st.sidebar.slider("Distance (Gatev)", 0.0, 1.0, 0.2, 0.05),
-        CointegrationSelector.name: st.sidebar.slider("Cointegration", 0.0, 1.0, 0.3, 0.05),
+        CorrelationSelector.name: st.sidebar.slider("Correlation", 0.0, 1.0, 0.25, 0.05),
+        DistanceSelector.name: st.sidebar.slider("Distance (Gatev)", 0.0, 1.0, 0.15, 0.05),
+        CointegrationSelector.name: st.sidebar.slider("Cointegration", 0.0, 1.0, 0.25, 0.05),
         CombinedCriteriaSelector.name: st.sidebar.slider("Combined Criteria", 0.0, 1.0, 0.1, 0.05),
-        MLSelector.name: st.sidebar.slider("Supervised ML", 0.0, 1.0, 0.1, 0.05),
+        MLSelector.name: st.sidebar.slider("Supervised ML", 0.0, 1.0, 0.15, 0.05),
+        LSTMSelector.name: st.sidebar.slider("LSTM/BiLSTM", 0.0, 1.0, 0.1, 0.05),
+        TransformerSelector.name: st.sidebar.slider("Transformer", 0.0, 1.0, 0.1, 0.05),
+        GNNSelector.name: st.sidebar.slider("GNN", 0.0, 1.0, 0.1, 0.05),
     }
 
     # Stage 2 weights
@@ -263,6 +269,7 @@ def sidebar_controls():
         ZScoreThreshold.name: st.sidebar.slider("Mean Reversion (±2σ)", 0.0, 1.0, 0.5, 0.05),
         OUThreshold.name: st.sidebar.slider("OU Model", 0.0, 1.0, 0.5, 0.05),
         KalmanHedge.name: st.sidebar.slider("Kalman Hedge", 0.0, 1.0, 0.0, 0.05),
+        MLSignal.name: st.sidebar.slider("ML Signal", 0.0, 1.0, 0.0, 0.05),
     }
 
     s1_weights = normalize_weights(s1_models)
@@ -923,16 +930,20 @@ def render_predictions_page():
 
         # Get weights from selected report or last simulation or use defaults
         s1_weights = {
-            "Correlation": 0.3,
-            "Distance (Gatev)": 0.2,
-            "Cointegration": 0.3,
+            "Correlation": 0.25,
+            "Distance (Gatev)": 0.15,
+            "Cointegration": 0.25,
             "Combined Criteria": 0.1,
-            "Supervised ML": 0.1,
+            "Supervised ML": 0.15,
+            LSTMSelector.name: 0.1,
+            TransformerSelector.name: 0.1,
+            GNNSelector.name: 0.1,
         }
         s2_weights = {
             "Mean Reversion (±2σ)": 0.5,
             "OU Model": 0.5,
             "Kalman Hedge": 0.0,
+            "ML Signal": 0.0,
         }
 
         # Check if we have selected report settings
@@ -957,11 +968,14 @@ def render_predictions_page():
         if use_custom_weights:
             st.markdown("**Stage 1 Weights (Pair Selection)**")
             s1_weights = {
-                "Correlation": st.slider("Correlation", 0.0, 1.0, s1_weights.get("Correlation", 0.3), 0.05),
-                "Distance (Gatev)": st.slider("Distance", 0.0, 1.0, s1_weights.get("Distance (Gatev)", 0.2), 0.05),
-                "Cointegration": st.slider("Cointegration", 0.0, 1.0, s1_weights.get("Cointegration", 0.3), 0.05),
+                "Correlation": st.slider("Correlation", 0.0, 1.0, s1_weights.get("Correlation", 0.25), 0.05),
+                "Distance (Gatev)": st.slider("Distance", 0.0, 1.0, s1_weights.get("Distance (Gatev)", 0.15), 0.05),
+                "Cointegration": st.slider("Cointegration", 0.0, 1.0, s1_weights.get("Cointegration", 0.25), 0.05),
                 "Combined Criteria": st.slider("Combined", 0.0, 1.0, s1_weights.get("Combined Criteria", 0.1), 0.05),
-                "Supervised ML": st.slider("ML", 0.0, 1.0, s1_weights.get("Supervised ML", 0.1), 0.05),
+                "Supervised ML": st.slider("ML", 0.0, 1.0, s1_weights.get("Supervised ML", 0.15), 0.05),
+                LSTMSelector.name: st.slider("LSTM/BiLSTM", 0.0, 1.0, s1_weights.get(LSTMSelector.name, 0.1), 0.05),
+                TransformerSelector.name: st.slider("Transformer", 0.0, 1.0, s1_weights.get(TransformerSelector.name, 0.1), 0.05),
+                GNNSelector.name: st.slider("GNN", 0.0, 1.0, s1_weights.get(GNNSelector.name, 0.1), 0.05),
             }
 
             st.markdown("**Stage 2 Weights (Entry/Exit)**")
@@ -969,6 +983,7 @@ def render_predictions_page():
                 "Mean Reversion (±2σ)": st.slider("Z-Score", 0.0, 1.0, s2_weights.get("Mean Reversion (±2σ)", 0.5), 0.05),
                 "OU Model": st.slider("OU Model", 0.0, 1.0, s2_weights.get("OU Model", 0.5), 0.05),
                 "Kalman Hedge": st.slider("Kalman", 0.0, 1.0, s2_weights.get("Kalman Hedge", 0.0), 0.05),
+                "ML Signal": st.slider("ML Signal", 0.0, 1.0, s2_weights.get("ML Signal", 0.0), 0.05),
             }
         else:
             # Display current weights
@@ -1204,6 +1219,9 @@ def simulator_page():
             CointegrationSelector.name: CointegrationSelector(lookback=504, pvalue_threshold=0.05),
             CombinedCriteriaSelector.name: CombinedCriteriaSelector(),
             MLSelector.name: MLSelector(),
+            LSTMSelector.name: LSTMSelector(),
+            TransformerSelector.name: TransformerSelector(),
+            GNNSelector.name: GNNSelector(),
         }
         scores_by_model: Dict[str, List] = {}
         for name, selector in selectors.items():
@@ -1220,6 +1238,7 @@ def simulator_page():
             ZScoreThreshold.name: ZScoreThreshold(),
             OUThreshold.name: OUThreshold(),
             KalmanHedge.name: KalmanHedge(),
+            MLSignal.name: MLSignal(),
         }
         res = backtest_pairs(
             prices, [ps.pair for ps in top_pairs], entry_models, s2_weights, bt_cfg)

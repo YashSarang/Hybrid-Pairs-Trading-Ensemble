@@ -43,10 +43,26 @@ This document provides comprehensive references for the methodologies, algorithm
 **Kalman, R. E. (1960)**
 
 - _Title_: "A New Approach to Linear Filtering and Prediction Problems"
-- _Journal_: Journal of Basic Engineering, 82(1), 35-45
-- _Implementation_: Dynamic hedge ratio estimation (placeholder)
-- _Key Contribution_: Optimal estimation for time-varying parameters
+- _Journal_: Journal of Basic Engineering, 82(1), 35–45
+- _Implementation_: State-space recursion for dynamic hedge ratio [β, α] estimation
+- _Key Contribution_: Optimal sequential estimation for time-varying linear systems
 - _Used in_: `KalmanHedge` class in `core/entry.py`
+
+**Elliott, R. J., van der Hoek, J., & Malcolm, W. P. (2005)**
+
+- _Title_: "Pairs Trading"
+- _Journal_: Quantitative Finance, 5(3), 271–276
+- _Implementation_: Application of Kalman filter to dynamic hedge ratio in pairs trading; Kalman innovation as the tradable spread
+- _Key Contribution_: First rigorous derivation of the Kalman Filter state-space model for pairs trading
+- _Used in_: `KalmanHedge` class in `core/entry.py`
+
+**Pole, A. (2007)**
+
+- _Title_: Statistical Arbitrage: Algorithmic Trading Insights and Techniques
+- _Publisher_: Wiley Finance
+- _Implementation_: Practical guidance on δ (process noise) and R (observation noise) calibration for daily equity pairs; Chapter 4
+- _Key Contribution_: Translates Kalman filter theory into calibration recipes for equity pairs trading
+- _Used in_: `KalmanHedge` parameter defaults (`delta=1e-4`, `R_noise=1e-2`) in `core/entry.py`
 
 ### Market Microstructure and Regime Analysis
 
@@ -65,6 +81,106 @@ This document provides comprehensive references for the methodologies, algorithm
 - _Implementation_: Volatility clustering analysis
 - _Key Contribution_: Time-varying volatility modeling
 - _Used in_: Market regime analysis in `core/predictions.py`
+
+### Deep Learning Models
+
+**Hochreiter, S. & Schmidhuber, J. (1997)**
+
+- _Title_: "Long Short-Term Memory"
+- _Journal_: Neural Computation, 9(8), 1735–1780
+- _Implementation_: LSTM architecture for sequence-to-label pair selection
+- _Key Contribution_: Solves the vanishing gradient problem enabling learning of long-range temporal dependencies
+- _Used in_: `LSTMSelector` class in `core/selectors.py`
+
+**Schuster, M. & Paliwal, K.K. (1997)**
+
+- _Title_: "Bidirectional recurrent neural networks"
+- _Journal_: IEEE Transactions on Signal Processing, 45(11), 2673–2681
+- _Implementation_: Bidirectional LSTM wrapper enabling both forward and backward temporal context
+- _Key Contribution_: BiRNN processes sequences in both directions, improving pattern recognition at sequence boundaries
+- _Used in_: `LSTMSelector` class in `core/selectors.py` (when `bidirectional=True`)
+
+**Kipf, T.N. & Welling, M. (2017)**
+
+- _Title_: "Semi-Supervised Classification with Graph Convolutional Networks"
+- _Conference_: International Conference on Learning Representations (ICLR 2017)
+- _Implementation_: Two-layer GCN architecture and symmetrically normalised adjacency Â = D^{-½}(A+I)D^{-½}; self-loop convention
+- _Key Contribution_: Established the spectral-to-spatial GCN formulation enabling scalable node classification and, by extension, link prediction on graphs
+- _Used in_: `GNNSelector._gcn_forward()` and `GNNSelector._adjacency()` in `core/selectors.py`
+
+**Zhang, M. & Chen, Y. (2018)**
+
+- _Title_: "Link Prediction Based on Graph Neural Networks"
+- _Conference_: Advances in Neural Information Processing Systems (NeurIPS 2018)
+- _Implementation_: Link-prediction feature construction [hᵢ ‖ hⱼ ‖ hᵢ⊙hⱼ] capturing directionality, magnitude, and pairwise interaction
+- _Key Contribution_: Demonstrates that element-wise product of node embeddings is critical for link-prediction tasks beyond simple inner product or concatenation
+- _Used in_: `GNNSelector._link_logits()` in `core/selectors.py`
+
+**Matsunaga, A., Suzumura, T., & Takahashi, T. (2019)**
+
+- _Title_: "Exploring Graph Neural Networks for Stock Market Predictions with Rolling Window Analysis"
+- _Conference_: NeurIPS 2019 Workshop on Robust AI in Financial Services
+- _Implementation_: Rolling graph-snapshot training for stock-market GNN; informs the multi-snapshot training protocol and the use of correlation-weighted adjacency for financial graphs
+- _Key Contribution_: Validates GNN on stock-return prediction with a rolling-window scheme directly analogous to the approach used in `GNNSelector.fit()`
+- _Used in_: `GNNSelector.fit()` snapshot construction in `core/selectors.py`
+
+**Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., Kaiser, Ł., & Polosukhin, I. (2017)**
+
+- _Title_: "Attention Is All You Need"
+- _Conference_: Advances in Neural Information Processing Systems (NeurIPS), 30
+- _Implementation_: Transformer encoder architecture (multi-head self-attention + feed-forward sublayers + residual connections + layer norm); sinusoidal positional encoding scheme
+- _Key Contribution_: Replaces recurrence entirely with self-attention, enabling parallel computation and direct long-range dependency modelling
+- _Used in_: `TransformerSelector` class in `core/selectors.py`
+
+**Zerveas, G., Jayaraman, S., Patel, D., Bhamidipaty, A., & Eickhoff, C. (2021)**
+
+- _Title_: "A Transformer-based Framework for Multivariate Time Series Representation Learning"
+- _Conference_: Proceedings of the 27th ACM SIGKDD Conference on Knowledge Discovery & Data Mining (KDD 2021), 2114–2124
+- _Implementation_: Transformer encoder + GlobalAveragePooling1D for time-series classification; directly informs the aggregation strategy and model structure used here
+- _Key Contribution_: Establishes the Transformer encoder (without decoder) as state-of-the-art for multivariate financial/sensor time-series classification
+- _Used in_: `TransformerSelector` architecture in `core/selectors.py`
+
+**Wen, Q., Zhou, T., Zhang, C., Chen, W., Ma, Z., Yan, J., & Sun, L. (2023)**
+
+- _Title_: "Transformers in Time Series: A Survey"
+- _Conference_: Proceedings of the 32nd International Joint Conference on Artificial Intelligence (IJCAI 2023)
+- _Implementation_: Design rationale for positional encoding choice, encoder-only architecture, and global pooling head in financial time-series settings
+- _Key Contribution_: Comprehensive survey situating design choices (fixed vs learned positional encoding, pooling strategies) for time-series Transformers
+- _Used in_: `TransformerSelector` design decisions in `core/selectors.py`
+
+**Fischer, T. & Krauss, C. (2018)**
+
+- _Title_: "Deep learning with long short-term memory networks for financial market predictions"
+- _Journal_: European Journal of Operational Research, 270(2), 654–669
+- _Implementation_: Sliding-window feature construction, binary profitability label, and train/test temporal split approach adapted for pair selection
+- _Key Contribution_: Establishes empirical methodology for applying LSTM to equity return prediction
+- _Used in_: `LSTMSelector.fit()` and `LSTMSelector._make_sequences()` in `core/selectors.py`
+
+### ML Signal Models
+
+**Friedman, J. H. (2001)**
+
+- _Title_: "Greedy function approximation: a gradient boosting machine"
+- _Journal_: Annals of Statistics, 29(5), 1189–1232
+- _Implementation_: Gradient Boosted Machine classifier as primary fallback for ML spread-signal prediction
+- _Key Contribution_: Established the gradient boosting framework for function approximation using additive tree ensembles
+- _Used in_: `MLSignal` class in `core/entry.py`
+
+**Chen, T. & Guestrin, C. (2016)**
+
+- _Title_: "XGBoost: A scalable tree boosting system"
+- _Conference_: Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining (KDD 2016), 785–794
+- _Implementation_: XGBoost classifier (primary model) with {-1,0,+1}→{0,1,2} label remapping for triclass spread-signal prediction
+- _Key Contribution_: Regularised gradient boosting with column subsampling and approximate split-finding; state-of-the-art on tabular data
+- _Used in_: `MLSignal` class in `core/entry.py`
+
+**Krauss, C., Do, X. A., & Huck, N. (2017)**
+
+- _Title_: "Deep neural networks, gradient-boosted trees, random forests: Statistical arbitrage on the S&P 500"
+- _Journal_: European Journal of Operational Research, 259(2), 689–702
+- _Implementation_: Supervised classification framework for spread-signal prediction; 11-feature construction (spread z-score, lags, velocity, momentum) and triclass labelling approach
+- _Key Contribution_: Demonstrates that gradient-boosted trees and DNN outperform linear benchmarks on statistical arbitrage classification tasks
+- _Used in_: `MLSignal.fit()` and `MLSignal._build_features()` in `core/entry.py`
 
 ## Technical Implementation Sources
 
@@ -237,4 +353,4 @@ When adding new methodologies or algorithms, please:
 
 ## Last Updated
 
-January 2026 - Initial documentation of all sources and references used in the system.
+March 2026 — Added Elliott et al. (2005) and Pole (2007) for `KalmanHedge`. Added Deep Learning section: Hochreiter & Schmidhuber (1997), Schuster & Paliwal (1997), Fischer & Krauss (2018) for `LSTMSelector`. Added Vaswani et al. (2017), Zerveas et al. (2021), Wen et al. (2023) for `TransformerSelector`. Added Kipf & Welling (2017), Zhang & Chen (2018), Matsunaga et al. (2019) for `GNNSelector`. Added Friedman (2001), Chen & Guestrin (2016), Krauss et al. (2017) for `MLSignal`.

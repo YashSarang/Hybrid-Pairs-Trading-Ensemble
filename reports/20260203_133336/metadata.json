@@ -1,0 +1,71 @@
+{
+  "run_id": "20260203_133336",
+  "timestamp": "2026-02-03T13:33:36.105382",
+  "universe": [
+    "RELIANCE",
+    "TCS",
+    "INFY",
+    "HDFCBANK",
+    "ICICIBANK",
+    "SBIN",
+    "ITC",
+    "LT",
+    "BHARTIARTL",
+    "ASIANPAINT"
+  ],
+  "data_config": {
+    "start": "2025-01-01",
+    "end": "2026-02-03",
+    "freq": "1D",
+    "price_field": "Adj Close"
+  },
+  "stage1_weights": {
+    "Correlation": 0.1724137931034483,
+    "Distance (Gatev)": 0.1724137931034483,
+    "Cointegration (Engle\u2013Granger)": 0.1724137931034483,
+    "Combined Criteria (Sarmento\u2013Horta)": 0.13793103448275862,
+    "Supervised ML": 0.3448275862068966
+  },
+  "stage2_weights": {
+    "Mean Reversion (\u00b12\u03c3)": 0.33333333333333337,
+    "OU Model": 0.33333333333333337,
+    "Kalman Hedge (placeholder)": 0.33333333333333337
+  },
+  "backtest_config": {
+    "capital": 1000000.0,
+    "max_concurrent_pairs": 20,
+    "per_trade_cap": 20000.0,
+    "periods_per_year": 252,
+    "soft_stop_z": 2.5,
+    "soft_stop_decay": 0.5,
+    "soft_stop_persist_bars": 5
+  },
+  "selected_pairs": [
+    "LT-BHARTIARTL",
+    "SBIN-LT",
+    "RELIANCE-BHARTIARTL",
+    "BHARTIARTL-ASIANPAINT",
+    "TCS-INFY",
+    "SBIN-BHARTIARTL",
+    "LT-ASIANPAINT",
+    "SBIN-ASIANPAINT",
+    "RELIANCE-LT",
+    "RELIANCE-ASIANPAINT",
+    "HDFCBANK-ITC",
+    "RELIANCE-INFY",
+    "INFY-SBIN",
+    "RELIANCE-SBIN",
+    "RELIANCE-HDFCBANK",
+    "RELIANCE-TCS",
+    "INFY-BHARTIARTL",
+    "INFY-LT",
+    "HDFCBANK-BHARTIARTL",
+    "INFY-ASIANPAINT",
+    "ICICIBANK-ITC",
+    "TCS-ICICIBANK",
+    "HDFCBANK-ICICIBANK",
+    "HDFCBANK-LT",
+    "HDFCBANK-ASIANPAINT"
+  ],
+  "num_trades": 908
+}

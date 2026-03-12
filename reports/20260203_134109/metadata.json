@@ -1,0 +1,71 @@
+{
+  "run_id": "20260203_134109",
+  "timestamp": "2026-02-03T13:41:09.227393",
+  "universe": [
+    "ACMESOLAR",
+    "BAJAJHFL",
+    "FOCUS",
+    "IRB",
+    "HFCL",
+    "JIOFIN",
+    "KNRCON",
+    "MAITHANALL",
+    "MOREPENLAB",
+    "TITAGARH"
+  ],
+  "data_config": {
+    "start": "2025-01-01",
+    "end": "2026-02-03",
+    "freq": "1D",
+    "price_field": "Adj Close"
+  },
+  "stage1_weights": {
+    "Correlation": 0.2,
+    "Distance (Gatev)": 0.2,
+    "Cointegration (Engle\u2013Granger)": 0.2,
+    "Combined Criteria (Sarmento\u2013Horta)": 0.2,
+    "Supervised ML": 0.2
+  },
+  "stage2_weights": {
+    "Mean Reversion (\u00b12\u03c3)": 0.4,
+    "OU Model": 0.4,
+    "Kalman Hedge (placeholder)": 0.2
+  },
+  "backtest_config": {
+    "capital": 100000.0,
+    "max_concurrent_pairs": 5,
+    "per_trade_cap": 20000.0,
+    "periods_per_year": 252,
+    "soft_stop_z": 3.0,
+    "soft_stop_decay": 0.5,
+    "soft_stop_persist_bars": 5
+  },
+  "selected_pairs": [
+    "BAJAJHFL-KNRCON",
+    "BAJAJHFL-MOREPENLAB",
+    "HFCL-MOREPENLAB",
+    "KNRCON-MOREPENLAB",
+    "IRB-HFCL",
+    "IRB-MOREPENLAB",
+    "BAJAJHFL-HFCL",
+    "FOCUS-KNRCON",
+    "FOCUS-MOREPENLAB",
+    "BAJAJHFL-FOCUS",
+    "BAJAJHFL-IRB",
+    "HFCL-KNRCON",
+    "KNRCON-MAITHANALL",
+    "FOCUS-HFCL",
+    "FOCUS-IRB",
+    "BAJAJHFL-MAITHANALL",
+    "MOREPENLAB-TITAGARH",
+    "FOCUS-MAITHANALL",
+    "HFCL-TITAGARH",
+    "IRB-KNRCON",
+    "MAITHANALL-MOREPENLAB",
+    "MAITHANALL-TITAGARH",
+    "BAJAJHFL-TITAGARH",
+    "KNRCON-TITAGARH",
+    "HFCL-MAITHANALL"
+  ],
+  "num_trades": 843
+}

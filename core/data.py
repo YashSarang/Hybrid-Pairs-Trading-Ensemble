@@ -145,7 +145,7 @@ class YFinanceNSESource(DataSource):
         if cfg.freq == "1D":
             wide = wide.resample("1D").last()
         elif cfg.freq == "1H":
-            wide = wide.resample("1H").last()
+            wide = wide.resample("1h").last()
 
         return wide.ffill().dropna(axis=1, how="any")
 

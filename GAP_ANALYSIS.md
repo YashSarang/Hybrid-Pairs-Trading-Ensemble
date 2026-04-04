@@ -2,7 +2,7 @@
 
 Tracks planned architecture (from DevNotes.md) against implementation status. Update as work progresses.
 
-**Legend:** ✅ Done | 🔶 Partial | ❌ Missing
+**Legend:** [OK] Done |  Partial | [Error] Missing
 
 ---
 
@@ -10,9 +10,9 @@ Tracks planned architecture (from DevNotes.md) against implementation status. Up
 
 | # | Component | Status | Notes |
 |---|---|---|---|
-| 1.1 | Market Data (yfinance, CSV/Parquet upload) | ✅ | `core/data.py` — `YFinanceNSESource`, `CSVUploadSource` |
-| 1.2 | Alternative / Fundamental Data | ❌ | Not started |
-| 1.3 | Data Storage / Caching | ❌ | No Parquet cache; all data re-fetched every run |
+| 1.1 | Market Data (yfinance, CSV/Parquet upload) | [OK] | `core/data.py` — `YFinanceNSESource`, `CSVUploadSource` |
+| 1.2 | Alternative / Fundamental Data | [Error] | Not started |
+| 1.3 | Data Storage / Caching | [Error] | No Parquet cache; all data re-fetched every run |
 
 ---
 
@@ -20,12 +20,12 @@ Tracks planned architecture (from DevNotes.md) against implementation status. Up
 
 | # | Component | Status | Notes |
 |---|---|---|---|
-| 2.1 | Data Cleaning | ✅ | ffill, dropna, NaN/Inf handling |
-| 2.2 | Normalization / Alignment | ✅ | DatetimeIndex normalization, frequency resampling |
-| 2.3 | Spread Construction | ✅ | Unit hedge (A−B) and rolling-OLS beta hedge in `entry.py` |
-| 2.4 | Feature Engineering | 🔶 | Only exists inside `MLSelector._pair_features()`; no shared feature pipeline |
-| 2.5 | Regime Detection | 🔶 | Basic vol + correlation regime in `predictions.py`; no formal HMM/Markov model |
-| 2.6 | Data Storage | ❌ | No dedicated data layer; reports saved, raw prices not cached |
+| 2.1 | Data Cleaning | [OK] | ffill, dropna, NaN/Inf handling |
+| 2.2 | Normalization / Alignment | [OK] | DatetimeIndex normalization, frequency resampling |
+| 2.3 | Spread Construction | [OK] | Unit hedge (A−B) and rolling-OLS beta hedge in `entry.py` |
+| 2.4 | Feature Engineering |  | Only exists inside `MLSelector._pair_features()`; no shared feature pipeline |
+| 2.5 | Regime Detection |  | Basic vol + correlation regime in `predictions.py`; no formal HMM/Markov model |
+| 2.6 | Data Storage | [Error] | No dedicated data layer; reports saved, raw prices not cached |
 
 ---
 
@@ -33,9 +33,9 @@ Tracks planned architecture (from DevNotes.md) against implementation status. Up
 
 | # | Component | Status | Notes |
 |---|---|---|---|
-| 3.1 | Universe Filtering (liquidity/ADV) | 🔶 | `estimate_adv()` exists in `data.py` but never wired into the pipeline |
-| 3.2 | Similarity / Sector Screening | ❌ | Not started |
-| 3.3 | Candidate Pair Creation | 🔶 | Brute-force combinatorial only; no principled pre-screening |
+| 3.1 | Universe Filtering (liquidity/ADV) |  | `estimate_adv()` exists in `data.py` but never wired into the pipeline |
+| 3.2 | Similarity / Sector Screening | [Error] | Not started |
+| 3.3 | Candidate Pair Creation |  | Brute-force combinatorial only; no principled pre-screening |
 
 ---
 
@@ -43,16 +43,16 @@ Tracks planned architecture (from DevNotes.md) against implementation status. Up
 
 | # | Component | Status | Notes |
 |---|---|---|---|
-| 4.1.1 | Correlation Selector (Rolling Pearson) | ✅ | `CorrelationSelector` in `selectors.py` |
-| 4.1.2 | Distance Selector (Gatev et al. 2006) | ✅ | `DistanceSelector` in `selectors.py` |
-| 4.1.3 | Cointegration Selector (Engle-Granger + ADF) | ✅ | `CointegrationSelector` in `selectors.py` |
-| 4.1.4 | Combined Criteria Selector (Cointegration + Hurst) | ✅ | `CombinedCriteriaSelector` in `selectors.py` |
-| 4.2.1 | XGBoost Selector | ✅ | `MLSelector` in `selectors.py` (XGBoost primary, GB fallback) |
-| 4.2.2 | Gradient Boosting Selector | ✅ | Fallback inside `MLSelector` |
-| 4.3.1 | Graph Neural Network Selector | ✅ | `GNNSelector` in `core/selectors.py`. Two-layer GCN with correlation-weighted adjacency, 6 node features, multi-snapshot training via GradientTape, link-prediction head [hᵢ‖hⱼ‖hᵢ⊙hⱼ]. Sources: Kipf & Welling (2017), Zhang & Chen (2018), Matsunaga et al. (2019). |
-| 4.3.2 | LSTM / BiLSTM Selector | ✅ | `LSTMSelector` in `core/selectors.py`. 6-feature multivariate time series, sliding-window training, BiLSTM toggle. Sources: Hochreiter & Schmidhuber (1997), Schuster & Paliwal (1997), Fischer & Krauss (2018). |
-| 4.3.3 | Transformer Selector | ✅ | `TransformerSelector` in `core/selectors.py`. Multi-head self-attention encoder, sinusoidal positional encoding, GlobalAveragePooling1D head. Sources: Vaswani et al. (2017), Zerveas et al. (2021), Wen et al. (2023). |
-| 4.4 | Ensemble Scoring / Ranking | ✅ | `ensemble_pair_scores()` in `ensemble.py` — weighted average |
+| 4.1.1 | Correlation Selector (Rolling Pearson) | [OK] | `CorrelationSelector` in `selectors.py` |
+| 4.1.2 | Distance Selector (Gatev et al. 2006) | [OK] | `DistanceSelector` in `selectors.py` |
+| 4.1.3 | Cointegration Selector (Engle-Granger + ADF) | [OK] | `CointegrationSelector` in `selectors.py` |
+| 4.1.4 | Combined Criteria Selector (Cointegration + Hurst) | [OK] | `CombinedCriteriaSelector` in `selectors.py` |
+| 4.2.1 | XGBoost Selector | [OK] | `MLSelector` in `selectors.py` (XGBoost primary, GB fallback) |
+| 4.2.2 | Gradient Boosting Selector | [OK] | Fallback inside `MLSelector` |
+| 4.3.1 | Graph Neural Network Selector | [OK] | `GNNSelector` in `core/selectors.py`. Two-layer GCN with correlation-weighted adjacency, 6 node features, multi-snapshot training via GradientTape, link-prediction head [hᵢ‖hⱼ‖hᵢ⊙hⱼ]. Sources: Kipf & Welling (2017), Zhang & Chen (2018), Matsunaga et al. (2019). |
+| 4.3.2 | LSTM / BiLSTM Selector | [OK] | `LSTMSelector` in `core/selectors.py`. 6-feature multivariate time series, sliding-window training, BiLSTM toggle. Sources: Hochreiter & Schmidhuber (1997), Schuster & Paliwal (1997), Fischer & Krauss (2018). |
+| 4.3.3 | Transformer Selector | [OK] | `TransformerSelector` in `core/selectors.py`. Multi-head self-attention encoder, sinusoidal positional encoding, GlobalAveragePooling1D head. Sources: Vaswani et al. (2017), Zerveas et al. (2021), Wen et al. (2023). |
+| 4.4 | Ensemble Scoring / Ranking | [OK] | `ensemble_pair_scores()` in `ensemble.py` — weighted average |
 
 ---
 
@@ -60,12 +60,12 @@ Tracks planned architecture (from DevNotes.md) against implementation status. Up
 
 | # | Component | Status | Notes |
 |---|---|---|---|
-| 5.1a | Z-Score Threshold Model | ✅ | `ZScoreThreshold` in `entry.py` |
-| 5.1b | OU Model | ✅ | `OUThreshold` in `entry.py` |
-| 5.1c | Kalman Filter Hedge | ✅ | Real state-space KF implemented in `KalmanHedge` (`core/entry.py`). State = [β, α], random-walk transition, time-varying H_t. Sources: Kalman (1960), Elliott et al. (2005), Pole (2007). |
-| 5.2 | ML Signal Models | ✅ | `MLSignal` in `core/entry.py`. 11 spread features (z-score, lags, velocity, momentum, corr, vol_ratio), triclass label (+1/0/−1) from forward spread return, XGBoost primary ({-1,0,1}→{0,1,2} label remapping) / sklearn GBM fallback / ZScore fallback. Sources: Friedman (2001), Chen & Guestrin (2016), Krauss et al. (2017). |
-| **5.3** | **Reinforcement Learning Models** | ❌ | Not started (e.g., PPO/DQN agent on spread environment) |
-| 5.4 | Signal Ensemble / Meta-Decision Layer | ✅ | `ensemble_signals()` in `ensemble.py` |
+| 5.1a | Z-Score Threshold Model | [OK] | `ZScoreThreshold` in `entry.py` |
+| 5.1b | OU Model | [OK] | `OUThreshold` in `entry.py` |
+| 5.1c | Kalman Filter Hedge | [OK] | Real state-space KF implemented in `KalmanHedge` (`core/entry.py`). State = [β, α], random-walk transition, time-varying H_t. Sources: Kalman (1960), Elliott et al. (2005), Pole (2007). |
+| 5.2 | ML Signal Models | [OK] | `MLSignal` in `core/entry.py`. 11 spread features (z-score, lags, velocity, momentum, corr, vol_ratio), triclass label (+1/0/−1) from forward spread return, XGBoost primary ({-1,0,1}→{0,1,2} label remapping) / sklearn GBM fallback / ZScore fallback. Sources: Friedman (2001), Chen & Guestrin (2016), Krauss et al. (2017). |
+| **5.3** | **Reinforcement Learning Models** | [Error] | Not started (e.g., PPO/DQN agent on spread environment) |
+| 5.4 | Signal Ensemble / Meta-Decision Layer | [OK] | `ensemble_signals()` in `ensemble.py` |
 
 ---
 
@@ -73,10 +73,10 @@ Tracks planned architecture (from DevNotes.md) against implementation status. Up
 
 | # | Component | Status | Notes |
 |---|---|---|---|
-| 6.1 | Entry / Exit Logic | ✅ | Signal-based execution in `backtest.py` |
-| 6.2 | Position Sizing | 🔶 | Fixed notional per pair only; volatility-targeted sizing not implemented |
-| 6.3 | Transaction Cost & Slippage | ✅ | `IndianCosts` dataclass in `backtest.py` with full NSE cost model |
-| 6.4 | Order Execution Logic (live) | ❌ | No broker integration; Streamlit-only |
+| 6.1 | Entry / Exit Logic | [OK] | Signal-based execution in `backtest.py` |
+| 6.2 | Position Sizing |  | Fixed notional per pair only; volatility-targeted sizing not implemented |
+| 6.3 | Transaction Cost & Slippage | [OK] | `IndianCosts` dataclass in `backtest.py` with full NSE cost model |
+| 6.4 | Order Execution Logic (live) | [Error] | No broker integration; Streamlit-only |
 
 ---
 
@@ -84,10 +84,10 @@ Tracks planned architecture (from DevNotes.md) against implementation status. Up
 
 | # | Component | Status | Notes |
 |---|---|---|---|
-| 7.1 | Portfolio Optimization | ❌ | Equal weighting only; no mean-variance or risk-parity optimization |
-| 7.2 | Exposure Control | 🔶 | `max_concurrent_pairs`, `per_trade_cap` in `BacktestConfig` |
-| 7.3 | Risk Limits / Stop Rules | 🔶 | Soft z-score stop-loss only; no hard stops, drawdown limits, or VaR |
-| **7.4** | **Performance Attribution** | ❌ | Not started — critical for thesis; need to decompose returns by model contribution |
+| 7.1 | Portfolio Optimization | [Error] | Equal weighting only; no mean-variance or risk-parity optimization |
+| 7.2 | Exposure Control |  | `max_concurrent_pairs`, `per_trade_cap` in `BacktestConfig` |
+| 7.3 | Risk Limits / Stop Rules |  | Soft z-score stop-loss only; no hard stops, drawdown limits, or VaR |
+| **7.4** | **Performance Attribution** | [Error] | Not started — critical for thesis; need to decompose returns by model contribution |
 
 ---
 
@@ -95,10 +95,10 @@ Tracks planned architecture (from DevNotes.md) against implementation status. Up
 
 | # | Component | Status | Notes |
 |---|---|---|---|
-| 8.1 | Historical Simulation | ✅ | `backtest_pairs()` in `backtest.py` — vectorized, gross + net equity |
-| **8.2** | **Walk-Forward Validation** | ❌ | Not started — major academic gap; single in-sample backtest is not credible for a thesis |
-| **8.3** | **Stress Testing** | ❌ | Not started |
-| 8.4 | Benchmark Comparison | ✅ | `BenchmarkComparison` in `reports.py` — 7 Indian indices |
+| 8.1 | Historical Simulation | [OK] | `backtest_pairs()` in `backtest.py` — vectorized, gross + net equity |
+| **8.2** | **Walk-Forward Validation** | [Error] | Not started — major academic gap; single in-sample backtest is not credible for a thesis |
+| **8.3** | **Stress Testing** | [Error] | Not started |
+| 8.4 | Benchmark Comparison | [OK] | `BenchmarkComparison` in `reports.py` — 7 Indian indices |
 
 ---
 
@@ -106,39 +106,54 @@ Tracks planned architecture (from DevNotes.md) against implementation status. Up
 
 | # | Component | Status | Notes |
 |---|---|---|---|
-| 9.1 | Production Deployment | 🔶 | Streamlit MVP only |
-| 9.2 | Live Monitoring / Predictions | 🔶 | `PredictionEngine` in `predictions.py` — functional but basic |
-| 9.3 | Drift Detection | ❌ | Not started |
-| 9.4 | Retraining / Maintenance | ❌ | Not started |
+| 9.1 | Production Deployment |  | Streamlit MVP only |
+| 9.2 | Live Monitoring / Predictions |  | `PredictionEngine` in `predictions.py` — functional but basic |
+| 9.3 | Drift Detection | [Error] | Not started |
+| 9.4 | Retraining / Maintenance | [Error] | Not started |
+
+---
+
+## Experiment Framework (`experiments/`)
+
+All reproducible experiment scripts live in `experiments/`. Results are written to `experiments/results/` as JSON. Do **not** use the Streamlit `reports/` directory for thesis experiments — those are interactive-session artefacts.
+
+| Script | Status | Purpose |
+|---|---|---|
+| `experiments/config.py` | [OK] | Single source of truth — universe (35 NSE tickers, 8 sectors), date ranges, weights, seeds |
+| `experiments/freq_comparison.py` | [OK] | Daily vs hourly: Sharpe, cost drag, Hurst, signal reversal rate |
+| Walk-forward validation script | [Error] | Rolling OOS folds — see Phase 3 |
+| Ablation / attribution script | [Error] | Per-model isolation runs — see Phase 3 |
+
+Run: `python experiments/freq_comparison.py --mode stat_ml`
 
 ---
 
 ## Build Priority
 
 ### Phase 1 — Complete the Hybrid Core (thesis contribution)
-1. ✅ **Real Kalman Filter** — state-space KF with dynamic [β, α] state, implemented in `core/entry.py`
-2. ✅ **LSTM / BiLSTM Selector** — `LSTMSelector` in `core/selectors.py`; BiLSTM toggle, 6 temporal features, sliding-window training
-3. ✅ **Transformer Selector** — `TransformerSelector` in `core/selectors.py`; sinusoidal positional encoding, stacked multi-head self-attention encoder blocks
-4. ✅ **GNN Selector** — `GNNSelector` in `core/selectors.py`; GCN with GradientTape training, inductive weights applicable to any universe size
+1. [OK] **Real Kalman Filter** — state-space KF with dynamic [β, α] state, implemented in `core/entry.py`
+2. [OK] **LSTM / BiLSTM Selector** — `LSTMSelector` in `core/selectors.py`; BiLSTM toggle, 6 temporal features, sliding-window training
+3. [OK] **Transformer Selector** — `TransformerSelector` in `core/selectors.py`; sinusoidal positional encoding, stacked multi-head self-attention encoder blocks
+4. [OK] **GNN Selector** — `GNNSelector` in `core/selectors.py`; GCN with GradientTape training, inductive weights applicable to any universe size
 
 ### Phase 2 — Signal Layer Completion
-5. ✅ **ML Signal Model** — `MLSignal` in `core/entry.py`; XGBoost / GBM triclass classifier on 11 spread features
-6. ❌ **RL Signal Model** — PPO/DQN agent trained on spread environment
+5. [OK] **ML Signal Model** — `MLSignal` in `core/entry.py`; XGBoost / GBM triclass classifier on 11 spread features
+6. [Error] **RL Signal Model** — PPO/DQN agent trained on spread environment
 
 ### Phase 3 — Academic Rigour
-7. ❌ **Walk-Forward Validation** — rolling train/test windows; without this backtests lack credibility for a thesis
-8. ❌ **Performance Attribution** — decompose returns by model contribution; show what the ensemble gains vs. each component alone
+7. [Error] **Walk-Forward Validation** — rolling train/test windows; without this backtests lack credibility for a thesis
+8. [Error] **Performance Attribution** — decompose returns by model contribution; show what the ensemble gains vs. each component alone
 
 ### Phase 4 — Pipeline Hardening
-9. 🔶 **Universe Filtering** — wire `estimate_adv()` into pair generation; add sector-based screening
-10. ❌ **Feature Engineering Module** — extract shared `core/features.py` used by ML selector and ML signal model
-11. 🔶 **Volatility-Targeted Position Sizing** — replace fixed notional
-12. ❌ **Data Cache** — Parquet cache layer to avoid re-fetching on every run
+9.  **Universe Filtering** — wire `estimate_adv()` into pair generation; add sector-based screening
+10. [Error] **Feature Engineering Module** — extract shared `core/features.py` used by ML selector and ML signal model
+11.  **Volatility-Targeted Position Sizing** — replace fixed notional
+12. [Error] **Data Cache** — Parquet cache layer to avoid re-fetching on every run
 
 ### Phase 5 — Post-Thesis / Deployment
-13. ❌ Drift Detection
-14. ❌ Live order execution / broker integration
-15. ❌ Retraining pipeline
+13. [Error] Drift Detection
+14. [Error] Live order execution / broker integration
+15. [Error] Retraining pipeline
 
 ---
 
@@ -158,11 +173,11 @@ Issues found during codebase audit (March 2026). Tracked here so they don't get 
 | Q7 | `predictions.py` had stale `import traceback` + `traceback.print_exc()` debugging artifact | Removed |
 | Q8 | `reports.py` re-imported `yfinance as yf` inside `fetch_index_returns()` despite top-level import | Removed redundant inner import |
 | Q9 | `reports.py` used `print()` for logging | Replaced with `_log.warning` |
+| Q10 | `selectors.py` is 1,400+ lines — all 8 selectors in one file | Split into `selectors_statistical.py` + `selectors_ml.py` + `selectors_base.py` with re-export |
 
 ### Known / Pending
 | # | Issue | Severity | Notes |
 |---|---|---|---|
-| Q10 | `selectors.py` is 1,400+ lines — all 8 selectors in one file | Medium | Split into `selectors_statistical.py` + `selectors_ml.py` with re-export `__init__.py`; no logic change needed |
 | Q11 | `_zscore()` helper defined independently in `entry.py` and `backtest.py` (slightly different `min_periods` / denominator guard) | Low | Both versions intentionally different; document the difference or extract to `core/_math.py` |
 | Q12 | `MLSelector._pair_features()` and `MLSignal._build_features()` compute overlapping spread features independently | Medium | Blocked on Phase 4 item 10 (shared `core/features.py`) |
 | Q13 | Selector loop in `app.py` and `predictions.py` runs 8 selectors sequentially — with 50 stocks this can take 4+ minutes | High | Add `concurrent.futures.ThreadPoolExecutor` around selector loop; each selector is independent |
@@ -205,7 +220,7 @@ To justify the ensemble, you must show it outperforms any single model alone. Co
 - Maps to **Section 2.4** and **Phase 4 item 10**
 
 ### S5 — RL Signal Model (next implementation item)
-The remaining ❌ in Phase 2. Suggested approach:
+The remaining [Error] in Phase 2. Suggested approach:
 - Environment: state = feature vector from `build_pair_features()` at bar t; action = {−1, 0, +1}; reward = realized PnL net of costs
 - Agent: PPO (stable-baselines3) is easiest to get working; DQN as alternative
 - Training: same temporal split as LSTM (last 252 bars held out)

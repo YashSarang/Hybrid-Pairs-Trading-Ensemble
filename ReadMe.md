@@ -38,7 +38,7 @@ streamlit run .\app.py
 
 ## New Features
 
-### 📊 Comprehensive Report Management
+### Comprehensive Report Management
 
 Every simulation run is automatically saved to the `reports/` directory with:
 
@@ -47,7 +47,7 @@ Every simulation run is automatically saved to the `reports/` directory with:
 - **Time series data**: Equity curves, P&L, turnover
 - **Trade log**: Complete history of all trades with timestamps and signals
 
-### 📈 Benchmark Comparison
+### Benchmark Comparison
 
 Compare your strategy performance against major Indian indices:
 
@@ -64,7 +64,7 @@ Comparison includes:
 
 Toggle benchmark comparison on/off in the Reports page.
 
-### 🗂️ Reports Page Features
+### Reports Page Features
 
 - View all historical runs sorted by date
 - Expandable parameter details for each run
@@ -117,18 +117,18 @@ Each run saves to `reports/<YYYYMMDD_HHMMSS>/`:
 
 # Feature Summary: Report Management & Benchmark Comparison
 
-### Comprehensive Report Saving ✅
+### Comprehensive Report Saving [OK]
 
 **Status:** Fully Implemented
 
 Every simulation run now automatically saves:
 
-- ✅ Complete parameter configuration (universe, weights, backtest settings)
-- ✅ All selected data (tickers, date ranges, frequency)
-- ✅ Complete trade log with timestamps and signals
-- ✅ Performance metrics (Gross & Net)
-- ✅ Time series data (equity curves, P&L, turnover)
-- ✅ Selected pairs information
+- [OK] Complete parameter configuration (universe, weights, backtest settings)
+- [OK] All selected data (tickers, date ranges, frequency)
+- [OK] Complete trade log with timestamps and signals
+- [OK] Performance metrics (Gross & Net)
+- [OK] Time series data (equity curves, P&L, turnover)
+- [OK] Selected pairs information
 
 **Location:** `reports/<YYYYMMDD_HHMMSS>/`
 
@@ -143,3 +143,15 @@ Every simulation run now automatically saves:
 - `pnl_net.csv` - Net P&L time series
 - `turnover.csv` - Position changes
 - `trades.csv` - Complete trade log
+
+### Repository Map
+
+Hybrid-Pairs-Trading-Ensemble/ ├── app.py (1,452 lines) — Streamlit UI, NOT used for experiments  
+ ├── core/ — the library; used by both app.py and experiments/ │ ├── data.py — yfinance fetching, DataConfig │ ├── selectors_base.py — base classes: Pair, PairScore, PairSelector │ ├── selectors_statistical.py — Correlation, Distance, Cointegration, Combined (4 classical) │ ├── selectors_ml.py — MLSelector, LSTMSelector, TransformerSelector, GNNSelector (4 ML/DL) │ ├── selectors.py — re-exports everything above (backward compat) │ ├── entry.py — ZScoreThreshold, OUThreshold, KalmanHedge, MLSignal │ ├── ensemble.py — ensemble_pair_scores(), ensemble_signals() │ ├── backtest.py — vectorized backtester, IndianCosts, BacktestConfig │ ├── reports.py — ReportManager, BenchmarkComparison │ └── predictions.py — real-time prediction engine (Streamlit only) └── experiments/ — reproducible thesis scripts; results saved as JSON ├── config.py — universe (35 NSE tickers), date ranges, seeds, mode weights  
+ ├── freq_comparison.py — E1: daily vs hourly
+├── hold_period_sweep.py — E2: min_hold_bars sweep
+├── walk_forward.py — E4: expanding-window WFV (6 folds, 2020-2025)
+├── ablation.py — E3: per-model isolation runs
+├── benchmark_comparison.py — E5: vs Nifty/Sensex/BankNifty
+├── significance_tests.py — E6: bootstrap CI, Bonferroni
+└── results/ — 14 JSON result files already saved

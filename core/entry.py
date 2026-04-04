@@ -44,11 +44,14 @@ Notes:
 from __future__ import annotations
 
 from dataclasses import dataclass
+import logging
 import math
 from typing import Optional
 
 import numpy as np
 import pandas as pd
+
+log = logging.getLogger(__name__)
 
 # Optional ML dependencies -----------------------------------------------
 try:
@@ -59,6 +62,7 @@ except Exception:
 
 try:
     from sklearn.ensemble import GradientBoostingClassifier as _GBMClassifier
+    from sklearn.preprocessing import LabelEncoder as _LabelEncoder
     _HAS_GBM = True
 except Exception:
     _HAS_GBM = False
@@ -357,6 +361,7 @@ class MLSignal(EntryExitModel):
         self.learning_rate = learning_rate
         self._model = None
         self._label_offset = 0
+        self._label_encoder = None  # LabelEncoder for XGBoost (handles non-contiguous classes)
 
     # ------------------------------------------------------------------
     # Internal helpers
@@ -420,32 +425,51 @@ class MLSignal(EntryExitModel):
         y = labels[mask].values
 
         n_train = int(len(X) * self.train_frac)
+        log.debug(f"MLSignal.fit: n_valid={len(X)}, n_train={n_train}, min_train={self.min_train}, _HAS_XGB={_HAS_XGB}")
         if n_train < self.min_train:
+            log.warning(f"MLSignal.fit: insufficient training samples (n_train={n_train} < min_train={self.min_train}) — falling back to ZScoreThreshold")
             self._model = None
             return self
 
         X_tr, y_tr = X[:n_train], y[:n_train]
 
         if _HAS_XGB:
-            # XGBoost requires 0-indexed labels: remap {-1,0,+1} → {0,1,2}
-            self._model = _XGBClassifier(
-                n_estimators=self.n_estimators,
-                max_depth=self.max_depth,
-                learning_rate=self.learning_rate,
-                eval_metric="mlogloss",
-                verbosity=0,
-            )
-            self._model.fit(X_tr, y_tr + 1)
-            self._label_offset = 1
+            # Use LabelEncoder to handle any subset of {-1, 0, +1} as contiguous 0-based indices.
+            # This is necessary when neutral_pct=0 (default): labels are {-1,+1} only, so
+            # naive +1 remapping gives {0,2} which XGBoost rejects as non-contiguous.
+            try:
+                le = _LabelEncoder()
+                y_encoded = le.fit_transform(y_tr)   # {-1,0,1} or subset → {0,...,n_classes-1}
+                clf = _XGBClassifier(
+                    n_estimators=self.n_estimators,
+                    max_depth=self.max_depth,
+                    learning_rate=self.learning_rate,
+                    eval_metric="mlogloss",
+                    verbosity=0,
+                )
+                clf.fit(X_tr, y_encoded)
+                self._model = clf
+                self._label_encoder = le
+                self._label_offset = 0   # not used; inverse_transform handles decoding
+                log.debug(f"MLSignal.fit: XGBoost fitted successfully on {n_train} samples, classes={le.classes_}")
+            except Exception as exc:
+                log.warning(f"MLSignal.fit: XGBoost fit failed ({exc}) — falling back to ZScoreThreshold")
+                self._model = None
         elif _HAS_GBM:
-            self._model = _GBMClassifier(
-                n_estimators=self.n_estimators,
-                max_depth=self.max_depth,
-                learning_rate=self.learning_rate,
-            )
-            self._model.fit(X_tr, y_tr)
-            self._label_offset = 0
+            try:
+                clf = _GBMClassifier(
+                    n_estimators=self.n_estimators,
+                    max_depth=self.max_depth,
+                    learning_rate=self.learning_rate,
+                )
+                clf.fit(X_tr, y_tr)
+                self._model = clf
+                self._label_offset = 0
+            except Exception as exc:
+                log.warning(f"MLSignal.fit: GBM fit failed ({exc}) — falling back to ZScoreThreshold")
+                self._model = None
         else:
+            log.warning("MLSignal.fit: neither XGBoost nor GBM available — falling back to ZScoreThreshold")
             self._model = None
 
         return self
@@ -457,7 +481,10 @@ class MLSignal(EntryExitModel):
         feat = self._build_features(a, b)
         mask = feat.notna().all(axis=1)
         preds_raw = self._model.predict(feat[mask].values)
-        preds = preds_raw.astype(int) - self._label_offset  # map back to {-1,0,+1}
+        if self._label_encoder is not None:
+            preds = self._label_encoder.inverse_transform(preds_raw.astype(int))
+        else:
+            preds = preds_raw.astype(int) - self._label_offset  # GBM path: labels are original
 
         sig = pd.Series(0, index=feat.index)
         sig[mask] = preds

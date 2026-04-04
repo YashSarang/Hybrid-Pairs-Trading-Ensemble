@@ -22,24 +22,28 @@ A **two-stage ensemble pairs trading platform** for Indian NSE stocks, with a St
 
 ### Two-Stage Pipeline
 
-**Stage 1 — Pair Selection** (`core/selectors.py`): Five algorithms score stock pairs; scores are ensemble-averaged with user-set weights.
+**Stage 1 — Pair Selection** (`core/selectors_*.py`): Eight algorithms score stock pairs; scores are ensemble-averaged with user-set weights.
 - `CorrelationSelector` — rolling correlation
 - `DistanceSelector` — Gatev et al. (2006) normalized SSD
 - `CointegrationSelector` — Engle-Granger ADF test
 - `CombinedCriteriaSelector` — cointegration + Hurst exponent + half-life
 - `MLSelector` — XGBoost with engineered spread features
+- `LSTMSelector` — LSTM/BiLSTM multivariate sequence model
+- `TransformerSelector` — Multi-head self-attention encoder
+- `GNNSelector` — Graph Convolutional Network with link prediction
 
-**Stage 2 — Entry/Exit Signals** (`core/entry.py`): Three signal models; signals are ensemble-averaged with user-set weights, then discretized to {+1, 0, −1}.
+**Stage 2 — Entry/Exit Signals** (`core/entry.py`): Four signal models; signals are ensemble-averaged with user-set weights, then discretized to {+1, 0, −1}.
 - `ZScoreThreshold` — entry |z| > 2, exit |z| < 0.5
 - `OUThreshold` — Ornstein-Uhlenbeck process
-- `KalmanHedge` — dynamic hedge ratio (stub, not fully implemented)
+- `KalmanHedge` — State-space Kalman Filter dynamic hedge ratio
+- `MLSignal` — XGBoost/GBM classifier on spread features
 
 ### Core Modules
 
 | File | Role |
 |---|---|
 | `core/data.py` | `DataConfig` dataclass, yfinance fetching, CSV/Parquet override |
-| `core/selectors.py` | Stage 1 selector classes |
+| `core/selectors.py` | Re-exports all selectors from `selectors_base.py`, etc. |
 | `core/entry.py` | Stage 2 signal classes |
 | `core/ensemble.py` | Weighted score/signal combination utilities |
 | `core/backtest.py` | Vectorized backtester, `BacktestConfig`, `IndianCosts` dataclass |

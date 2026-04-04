@@ -1,3 +1,10 @@
+Run this in your terminal when ready — it uses the optimized settings (50k sequence cap + batch_size=256):
+                                                                                                                                                              
+  cd "C:\Code\Hybrid-Pairs-Trading-Ensemble"                                                                                                                    .venv/Scripts/activate                                                                                                                                      
+  python experiments/walk_forward.py --mode full --s2 ou_only 
+  
+
+
 This repository is for my Master's thesis, I am pursuing a M.S. by Research. So I have to ensure the standard of work is upto the mark and that evetual whatever work I will present at the end will be worthy of being called a Thesis.
 
 The aim is to build a Hybrid Pairs Trading Ensemble System.

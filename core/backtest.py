@@ -30,6 +30,53 @@ except Exception:  # pragma: no cover
 # Helpers
 # ---------------------------------------------
 
+def _apply_min_hold(sig: pd.Series, min_hold: int) -> pd.Series:
+    """Enforce a minimum holding period on a discrete {-1, 0, +1} signal.
+
+    Once a non-zero position is entered, any signal change — whether an exit
+    (non-zero -> 0) or a reversal (non-zero -> opposite non-zero) — is
+    suppressed until min_hold bars have elapsed in that position.
+
+    Why block exits as well as reversals?
+    The signal reversal rate in E1 was ~40%, driven largely by rapid
+    entry -> exit -> re-entry sequences (+1 -> 0 -> +1 within 2-3 bars)
+    rather than clean full reversals.  Blocking only reversals would miss
+    most of the whipsaw cost.  Blocking all changes for min_hold bars is
+    simpler, cheaper, and fully interpretable as a "commitment period".
+
+    Why apply before the soft stop?
+    The soft stop fires *after* this filter and can still zero the signal
+    unconditionally (breach_persist override).  Emergency exits are
+    therefore always honoured regardless of how long a position has been held.
+
+    Implementation: operates on .values to avoid pandas .iloc overhead
+    inside the loop.  O(n) time, O(n) space.
+    """
+    if min_hold <= 0:
+        return sig
+    arr = sig.values.copy().astype(int)
+    held = 0
+    current = 0
+    for i in range(len(arr)):
+        desired = int(arr[i])
+        if current == 0:
+            # Flat: enter any position freely; no hold constraint on entry.
+            current = desired
+            held = 1 if desired != 0 else 0
+        elif desired != current:
+            # Change requested (exit or reversal).
+            if held >= min_hold:
+                current = desired
+                held = 1 if desired != 0 else 0
+            else:
+                arr[i] = current   # maintain existing position
+                held += 1
+        else:
+            # Same position: just increment the hold counter.
+            held += 1
+    return pd.Series(arr, index=sig.index)
+
+
 def _zscore(x: pd.Series, lookback: int) -> pd.Series:
     m = x.rolling(lookback, min_periods=lookback // 3).mean()
     s = x.rolling(lookback, min_periods=lookback // 3).std(ddof=0)
@@ -107,6 +154,10 @@ class BacktestConfig:
     soft_stop_decay: float = 0.5
     soft_stop_persist_bars: int = 5
     soft_stop_lookback: int = 60
+    min_hold_bars: int = 0
+    """Minimum number of bars to hold a position before any change is allowed.
+    Set to 0 (default) to disable.  Used to reduce turnover-driven cost drag.
+    See _apply_min_hold() for the full rationale."""
 
 
 @dataclass
@@ -163,6 +214,10 @@ def backtest_pairs(
             for name, model in entry_models.items()
         }
         sig = ensemble_signals(signals_by_model, entry_weights).astype(float)
+
+        # Minimum hold period (anti-whipsaw filter, applied before soft stop
+        # so emergency exits can still override unconditionally)
+        sig = _apply_min_hold(sig, cfg.min_hold_bars).astype(float)
 
         # Soft stop
         spread = a - b

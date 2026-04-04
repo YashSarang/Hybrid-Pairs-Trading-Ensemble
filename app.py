@@ -131,7 +131,7 @@ def nse_pool_selector() -> List[str]:
 
         if universe:
             st.success(
-                f"✅ Selected {len(universe)} stocks: {', '.join(universe[:5])}{' ...' if len(universe) > 5 else ''}")
+                f"[OK] Selected {len(universe)} stocks: {', '.join(universe[:5])}{' ...' if len(universe) > 5 else ''}")
 
     elif "Upload CSV" in mode:
         st.markdown("**Upload a CSV file** with stock symbols")
@@ -142,9 +142,9 @@ def nse_pool_selector() -> List[str]:
             if "Ticker" in df.columns:
                 universe = [str(x).strip().upper()
                             for x in df["Ticker"].tolist() if str(x).strip()]
-                st.success(f"✅ Loaded {len(universe)} tickers from file.")
+                st.success(f"[OK] Loaded {len(universe)} tickers from file.")
             else:
-                st.error("❌ CSV must have a 'Ticker' column")
+                st.error("[Error] CSV must have a 'Ticker' column")
 
     else:  # Index constituents
         st.markdown("**Use index constituents** or paste your own list")
@@ -183,9 +183,9 @@ def nse_pool_selector() -> List[str]:
         universe = list(dict.fromkeys(pasted + uploaded))
 
         if universe:
-            st.success(f"✅ Prepared universe of {len(universe)} tickers")
+            st.success(f"[OK] Prepared universe of {len(universe)} tickers")
         else:
-            st.info("💡 Paste tickers or upload CSV to define your universe")
+            st.info("Tip: Paste tickers or upload CSV to define your universe")
 
     # Optional metadata/sector filters
     st.markdown(
@@ -443,7 +443,7 @@ def render_reports_page():
     st.divider()
 
     if not reports:
-        st.info("🚀 No saved reports yet. Run your first simulation to get started!")
+        st.info(" No saved reports yet. Run your first simulation to get started!")
         st.markdown("**Quick Start:**")
         st.markdown("1. Go to Simulator")
         st.markdown("2. Select NSE tickers (e.g., RELIANCE, TCS, INFY)")
@@ -464,7 +464,7 @@ def render_reports_page():
     report = load_cached_report(selected_report.run_id)
 
     # Display parameters
-    with st.expander("📋 Run Parameters", expanded=False):
+    with st.expander(" Run Parameters", expanded=False):
         col1, col2 = st.columns(2)
 
         with col1:
@@ -492,7 +492,7 @@ def render_reports_page():
         col1, col2 = st.columns([1, 2])
         with col1:
             generate_predictions_btn = st.button(
-                "🔮 Generate Current Predictions",
+                " Generate Current Predictions",
                 type="secondary",
                 help="Generate real-time predictions using this report's exact settings"
             )
@@ -517,7 +517,7 @@ def render_reports_page():
 
                     if prediction_result.recommendations:
                         st.success(
-                            f"✅ Generated {len(prediction_result.recommendations)} predictions!")
+                            f"[OK] Generated {len(prediction_result.recommendations)} predictions!")
 
                         # Store in session state for display
                         st.session_state[f"predictions_for_{selected_report.run_id}"] = prediction_result
@@ -541,18 +541,18 @@ def render_reports_page():
                         st.markdown("**Top 3 Current Recommendations:**")
                         for i, rec in enumerate(prediction_result.recommendations[:3], 1):
                             signal_strength = abs(rec.ensemble_signal)
-                            signal_icon = "🟢" if signal_strength > 0.5 else "🟡" if signal_strength > 0.2 else "⚪"
+                            signal_icon = "[On]" if signal_strength > 0.5 else "[Warn]" if signal_strength > 0.2 else "[Neutral]"
                             st.write(
                                 f"{i}. {rec.pair.a}/{rec.pair.b} - Score: {rec.score:.3f} {signal_icon}")
 
                     else:
                         st.warning(
-                            "⚠️ No predictions generated. Check market data availability.")
+                            "[Warning] No predictions generated. Check market data availability.")
 
                 except Exception as e:
-                    st.error(f"❌ Prediction generation failed: {str(e)}")
+                    st.error(f"[Error] Prediction generation failed: {str(e)}")
                     st.info(
-                        "💡 This might be due to market data availability or network issues.")
+                        "Tip: This might be due to market data availability or network issues.")
 
     # Key Metrics
     st.subheader("Performance Metrics")
@@ -612,11 +612,11 @@ def render_reports_page():
 
                             if not benchmark_data:
                                 st.error(
-                                    "❌ Failed to fetch any benchmark data")
+                                    "[Error] Failed to fetch any benchmark data")
                                 st.stop()
 
                             st.success(
-                                f"✅ Fetched data for {len(benchmark_data)} indices!")
+                                f"[OK] Fetched data for {len(benchmark_data)} indices!")
 
                             # Prepare strategy data
                             strategy_returns = (
@@ -674,7 +674,7 @@ def render_reports_page():
                                     "Strategy Return (%)": f"{metrics['strategy_return']*100:.2f}",
                                     "Index Return (%)": f"{metrics['benchmark_return']*100:.2f}",
                                     "Excess Return (%)": f"{metrics['excess_return']*100:.2f}",
-                                    "Outperformed": "✅" if metrics['excess_return'] > 0 else "❌"
+                                    "Outperformed": "[OK]" if metrics['excess_return'] > 0 else "[Error]"
                                 })
 
                             if comparison_table:
@@ -688,23 +688,23 @@ def render_reports_page():
 
                                 if outperformed > total / 2:
                                     st.success(
-                                        f"🎉 Strategy outperformed {outperformed}/{total} indices!")
+                                        f" Strategy outperformed {outperformed}/{total} indices!")
                                 else:
                                     st.warning(
-                                        f"📊 Strategy outperformed {outperformed}/{total} indices")
+                                        f" Strategy outperformed {outperformed}/{total} indices")
 
                         except Exception as e:
                             st.error(
-                                f"❌ Failed to fetch benchmark data: {str(e)}")
-                            st.info("💡 **Troubleshooting tips:**")
+                                f"[Error] Failed to fetch benchmark data: {str(e)}")
+                            st.info("Tip: **Troubleshooting tips:**")
                             st.info("• Check your internet connection")
                             st.info("• Try selecting fewer indices")
                             st.info("• Ensure the date range has available data")
             else:
-                st.info("👆 Select one or more indices above to compare")
+                st.info(" Select one or more indices above to compare")
 
     # Equity Curves
-    st.subheader("💹 Equity Curves")
+    st.subheader(" Equity Curves")
     equity_df = pd.DataFrame({
         "Gross": report["equity_gross"],
         "Net": report["equity_net"]
@@ -712,7 +712,7 @@ def render_reports_page():
     st.line_chart(equity_df)
 
     # Ensemble Weights Display
-    st.subheader("⚖️ Ensemble Configuration")
+    st.subheader(" Ensemble Configuration")
 
     col1, col2 = st.columns(2)
 
@@ -760,7 +760,7 @@ def render_reports_page():
             pass
 
     # Trades
-    st.subheader("📝 Trade Log")
+    st.subheader(" Trade Log")
     if not report["trades"].empty:
         st.dataframe(report["trades"], use_container_width=True)
 
@@ -776,7 +776,7 @@ def render_reports_page():
 
     # Delete report option
     st.divider()
-    if st.button("🗑️ Delete This Report", type="secondary"):
+    if st.button(" Delete This Report", type="secondary"):
         if report_mgr.delete_report(selected_report.run_id):
             st.success(
                 f"Report {selected_report.run_id} deleted successfully!")
@@ -854,7 +854,7 @@ def render_predictions_page():
                 latest_report = load_cached_report(reports[0].run_id)
                 universe = latest_report["metadata"]["universe"]
                 st.success(
-                    f"✅ Using {len(universe)} stocks from latest simulation")
+                    f"[OK] Using {len(universe)} stocks from latest simulation")
                 st.caption(
                     f"Stocks: {', '.join(universe[:5])}{' ...' if len(universe) > 5 else ''}")
             else:
@@ -894,7 +894,7 @@ def render_predictions_page():
                     }
 
                     st.success(
-                        f"✅ Using settings from report {selected_report.run_id[:8]}...")
+                        f"[OK] Using settings from report {selected_report.run_id[:8]}...")
                     st.caption(f"Universe: {len(universe)} stocks")
                     st.caption(
                         f"Stocks: {', '.join(universe[:5])}{' ...' if len(universe) > 5 else ''}")
@@ -920,9 +920,9 @@ def render_predictions_page():
                 if "Ticker" in df.columns:
                     universe = [str(x).strip().upper()
                                 for x in df["Ticker"].tolist() if str(x).strip()]
-                    st.success(f"✅ Loaded {len(universe)} tickers from file")
+                    st.success(f"[OK] Loaded {len(universe)} tickers from file")
                 else:
-                    st.error("❌ CSV must have a 'Ticker' column")
+                    st.error("[Error] CSV must have a 'Ticker' column")
 
     with col2:
         # Strategy weights (simplified)
@@ -1002,7 +1002,7 @@ def render_predictions_page():
         min_data_points = st.number_input(
             "Min data points", min_value=50, max_value=500, value=100, step=10)
     with col3:
-        refresh_btn = st.button("🔄 Get Predictions",
+        refresh_btn = st.button(" Get Predictions",
                                 type="primary", use_container_width=True)
 
     # Generate predictions
@@ -1023,17 +1023,17 @@ def render_predictions_page():
 
                 if not result.recommendations:
                     st.error(
-                        "❌ No recommendations generated. Check your universe and try again.")
+                        "[Error] No recommendations generated. Check your universe and try again.")
                     st.stop()
 
                 # Store result in session state
                 st.session_state["prediction_result"] = result
                 st.success(
-                    f"✅ Generated {len(result.recommendations)} recommendations!")
+                    f"[OK] Generated {len(result.recommendations)} recommendations!")
 
             except Exception as e:
-                st.error(f"❌ Prediction failed: {str(e)}")
-                st.info("💡 **Troubleshooting tips:**")
+                st.error(f"[Error] Prediction failed: {str(e)}")
+                st.info("Tip: **Troubleshooting tips:**")
                 st.info("• Check your internet connection")
                 st.info("• Verify stock symbols are correct")
                 st.info("• Try with fewer stocks or longer lookback period")
@@ -1044,7 +1044,7 @@ def render_predictions_page():
         result = st.session_state["prediction_result"]
 
         # Market overview
-        st.subheader("📊 Market Overview")
+        st.subheader(" Market Overview")
         col1, col2, col3, col4 = st.columns(4)
 
         with col1:
@@ -1068,11 +1068,11 @@ def render_predictions_page():
                 # Signal interpretation
                 signal_strength = abs(rec.ensemble_signal)
                 if signal_strength > 0.7:
-                    signal_desc = "🔴 Strong" if rec.ensemble_signal < 0 else "🟢 Strong"
+                    signal_desc = "[Off] Strong" if rec.ensemble_signal < 0 else "[On] Strong"
                 elif signal_strength > 0.3:
-                    signal_desc = "🟡 Moderate" if rec.ensemble_signal < 0 else "🟡 Moderate"
+                    signal_desc = "[Warn] Moderate" if rec.ensemble_signal < 0 else "[Warn] Moderate"
                 else:
-                    signal_desc = "⚪ Weak"
+                    signal_desc = "[Neutral] Weak"
 
                 # Direction
                 if rec.ensemble_signal > 0.1:
@@ -1100,7 +1100,7 @@ def render_predictions_page():
 
             # Download recommendations
             st.download_button(
-                label="📥 Download Recommendations CSV",
+                label=" Download Recommendations CSV",
                 data=rec_df.to_csv(index=False).encode("utf-8"),
                 file_name=f"predictions_{result.timestamp.strftime('%Y%m%d_%H%M%S')}.csv",
                 mime="text/csv",
@@ -1108,7 +1108,7 @@ def render_predictions_page():
 
             # Detailed analysis for top recommendation
             if result.recommendations:
-                st.subheader("🔍 Top Recommendation Analysis")
+                st.subheader(" Top Recommendation Analysis")
                 top_rec = result.recommendations[0]
 
                 col1, col2 = st.columns([1, 1])
@@ -1124,14 +1124,14 @@ def render_predictions_page():
                 with col2:
                     st.markdown("**Individual Model Signals**")
                     for model_name, signal in top_rec.signals.items():
-                        signal_color = "🟢" if signal > 0.1 else "🔴" if signal < -0.1 else "⚪"
+                        signal_color = "[On]" if signal > 0.1 else "[Off]" if signal < -0.1 else "[Neutral]"
                         st.write(f"{signal_color} {model_name}: {signal:.2f}")
 
                     st.markdown("**Risk Metrics**")
-                    st.write(f"📊 Volatility: {top_rec.volatility*100:.1f}%")
-                    st.write(f"🔗 Correlation: {top_rec.correlation:.2f}")
+                    st.write(f" Volatility: {top_rec.volatility*100:.1f}%")
+                    st.write(f" Correlation: {top_rec.correlation:.2f}")
                     st.write(
-                        f"💰 Current Spread: ₹{top_rec.current_spread:.2f}")
+                        f" Current Spread: ₹{top_rec.current_spread:.2f}")
 
         else:
             st.info(
@@ -1139,9 +1139,9 @@ def render_predictions_page():
 
     elif not universe:
         st.info(
-            "👆 Please select a stock universe and click 'Get Predictions' to start.")
+            " Please select a stock universe and click 'Get Predictions' to start.")
     else:
-        st.info("👆 Click 'Get Predictions' to generate real-time recommendations.")
+        st.info(" Click 'Get Predictions' to generate real-time recommendations.")
 
 
 # ---------------------------------------------
@@ -1245,38 +1245,8 @@ def simulator_page():
 
         # Backward-compat shim: if engine returns old shape, synthesize gross/net
         if not hasattr(res, "equity_gross"):
-            # old engine had: res.equity_curve, res.trades, res.metrics, res.params
-            equity_curve = getattr(res, "equity_curve", None)
-            if equity_curve is None or equity_curve.empty:
-                st.error("Backtest returned empty equity curve.")
-                st.stop()
-            # Rebuild minimal fields
-            res.equity_gross = equity_curve.rename("equity_gross")
-            res.equity_net = res.equity_gross.copy()
-            # Try to reconstruct per-bar PnL (diff of equity)
-            pnl = equity_curve.diff().fillna(0.0)
-            res.pnl_gross = pnl.rename("pnl_gross")
-            res.pnl_net = pnl.rename("pnl_net")
-            # If turnover not present, create zeros
-            if not hasattr(res, "turnover"):
-                res.turnover = pd.Series(
-                    0.0, index=equity_curve.index, name="turnover")
-            # Patch metrics into Gross.* / Net.* keys for UI
-            m = getattr(res, "metrics", {}) or {}
-            res.metrics = {
-                "Gross.Return": m.get("Total Return", 0.0),
-                "Gross.Sharpe": m.get("Sharpe", 0.0),
-                "Gross.Volatility": m.get("Volatility", 0.0),
-                "Gross.MaxDrawdown": m.get("Max Drawdown", 0.0),
-                "Net.Return": m.get("Total Return", 0.0),
-                "Net.Sharpe": m.get("Sharpe", 0.0),
-                "Net.Volatility": m.get("Volatility", 0.0),
-                "Net.MaxDrawdown": m.get("Max Drawdown", 0.0),
-                "Turnover.Trades": m.get("Turnover (trades)", 0),
-            }
-            # Ensure params has notional_each for overlays; default if missing
-            if "notional_each" not in res.params:
-                res.params["notional_each"] = float(bt_cfg.per_trade_cap)
+            st.warning("Backtest engine returned an incompatible result format. Ensure core.backtest is updated.")
+            st.stop()
 
         # KPIs: Gross vs Net
         st.subheader("Performance (Gross vs Net)")
@@ -1388,13 +1358,13 @@ def simulator_page():
                 "soft_stop_persist_bars": bt_cfg.soft_stop_persist_bars,
             },
         )
-        st.success(f"🎉 Report saved successfully!")
+        st.success(f" Report saved successfully!")
 
         col1, col2 = st.columns([1, 1])
         with col1:
             st.info(f"**Run ID:** `{run_id}`")
         with col2:
-            st.info("📊 View in Reports page →")
+            st.info(" View in Reports page →")
 
         # Quick metrics summary
         st.markdown("**Quick Summary:**")
@@ -1443,29 +1413,38 @@ def main():
         page_title="NSE Pairs Trading Simulator",
         layout="wide",
         initial_sidebar_state="expanded",
-        page_icon="📈"
+        page_icon=""
     )
+
+    # Professional CSS Theme
+    st.markdown("""
+        <style>
+        .stApp { background-color: #0f172a; color: #f8fafc; }
+        .stSidebar { background-color: #1e293b !important; }
+        h1, h2, h3 { font-family: 'Inter', sans-serif; color: #f1f5f9; }
+        .stMetric { background-color: #1e293b; padding: 1rem; border-radius: 0.5rem; border: 1px solid #334155; }
+        .stButton button { background-color: #2563eb; color: white; border: none; border-radius: 0.375rem; }
+        .stButton button:hover { background-color: #1d4ed8; }
+        div[data-testid="stExpander"] { background-color: #1e293b; border: 1px solid #334155; border-radius: 0.5rem; }
+        </style>
+    """, unsafe_allow_html=True)
 
     # Main navigation
     page = st.sidebar.radio(
         "Navigation",
         ["Simulator", "Predictions", "Reports"],
-        # ["🎯 Simulator", "🔮 Predictions", "📊 Reports"],
         index=0,
         help="Navigate between simulation, predictions, and report analysis"
     )
 
     if "Reports" in page:
         st.title("Trading Reports & Analysis")
-        # st.title("📊 Trading Reports & Analysis")
         render_reports_page()
     elif "Predictions" in page:
         st.title("Real-time Predictions & Recommendations")
-        # st.title("🔮 Real-time Predictions & Recommendations")
         render_predictions_page()
     else:
         st.title("NSE Pairs Trading Simulator")
-        # st.title("🎯 NSE Pairs Trading Simulator")
         simulator_page()
 
 

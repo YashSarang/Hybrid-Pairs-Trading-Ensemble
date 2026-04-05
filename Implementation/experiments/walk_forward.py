@@ -171,8 +171,7 @@ FOLDS = [
 # Helpers
 # ---------------------------------------------------------------------------
 
-def _build_selectors(mode: str) -> dict:
-    weights = _MODE_WEIGHTS[mode]
+def _build_selectors(weights: dict) -> dict:
     sel: dict = {}
     if weights.get("Correlation", 0):   sel["Correlation"]   = CorrelationSelector()
     if weights.get("Distance", 0):      sel["Distance"]      = DistanceSelector()
@@ -252,7 +251,11 @@ _CPU_SELECTORS = {"Correlation", "Distance", "Cointegration", "Combined", "ML"}
 _DL_SELECTORS  = {"LSTM", "Transformer", "GNN"}
 
 
-def select_pairs_train(train_prices: pd.DataFrame, mode: str, top_k: int) -> list[Pair]:
+def select_pairs_train(
+    train_prices: pd.DataFrame,
+    top_k: int,
+    s1_weights: dict,
+) -> list[Pair]:
     """Run all selectors on TRAINING prices only and return top-k pairs.
 
     CPU-based selectors (Correlation, Distance, Cointegration, Combined, ML)
@@ -263,8 +266,8 @@ def select_pairs_train(train_prices: pd.DataFrame, mode: str, top_k: int) -> lis
     contention; each model uses the full GPU for its training pass.
     """
     candidates = [Pair(a, b) for a, b in combinations(list(train_prices.columns), 2)]
-    selectors  = _build_selectors(mode)
-    weights    = _MODE_WEIGHTS[mode]
+    selectors  = _build_selectors(s1_weights)
+    weights    = s1_weights
     scores_by_model: dict = {}
 
     def _run_selector(name: str):
@@ -273,7 +276,7 @@ def select_pairs_train(train_prices: pd.DataFrame, mode: str, top_k: int) -> lis
         return name, sel.score_pairs(train_prices, candidates)
 
     # --- CPU selectors: run in parallel ---
-    cpu_names = [n for n in selectors if n in _CPU_SELECTORS and weights.get(n, 0) > 0]
+    cpu_names = [n for n in selectors if n in _CPU_SELECTORS and s1_weights.get(n, 0) > 0]
     n_workers = min(len(cpu_names), os.cpu_count() or 4)
     if cpu_names:
         with ThreadPoolExecutor(max_workers=n_workers) as pool:
@@ -287,7 +290,7 @@ def select_pairs_train(train_prices: pd.DataFrame, mode: str, top_k: int) -> lis
                     log.warning(f"    [{name}] failed: {exc}")
 
     # --- DL selectors: sequential on GPU ---
-    dl_names = [n for n in selectors if n in _DL_SELECTORS and weights.get(n, 0) > 0]
+    dl_names = [n for n in selectors if n in _DL_SELECTORS and s1_weights.get(n, 0) > 0]
     for name in dl_names:
         try:
             _, scores = _run_selector(name)
@@ -357,7 +360,7 @@ def _signals_for_pair(
 def run_fold(
     prices: pd.DataFrame,
     fold: dict,
-    mode: str,
+    s1_weights: dict,
     top_k: int,
     s2_weights: dict,
     capital: float,
@@ -394,7 +397,7 @@ def run_fold(
 
     # ---- Stage 1: select pairs on TRAINING data ----
     t0 = time.time()
-    selected = select_pairs_train(train_prices, mode, top_k)
+    selected = select_pairs_train(train_prices, top_k, s1_weights)
     display  = [f"{p.a.split('.')[0]}-{p.b.split('.')[0]}" for p in selected]
     log.info(f"    Pairs selected ({len(selected)}): {display[:5]} ...")
     t_sel = round(time.time() - t0, 1)
@@ -612,11 +615,15 @@ def print_results(fold_results: list[dict], agg: dict) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="E4: Walk-forward validation on NSE pairs trading strategy",
+        description="E4/E7: Walk-forward validation on NSE pairs trading strategy",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
     parser.add_argument("--mode", choices=["full", "stat_ml", "stat_only"],
-                        default="stat_only")
+                        default="stat_only",
+                        help="Predefined S1 weight preset. Ignored if --s1-weights is provided.")
+    parser.add_argument("--s1-weights", type=str, default=None,
+                        help='JSON dict of custom S1 selector weights, e.g. \'{"LSTM":3,"Correlation":2,"Distance":1,"Cointegration":1,"Combined":0.5,"ML":0,"Transformer":1,"GNN":0}\'. '
+                             'Overrides --mode when provided. Zero-weight selectors are skipped.')
     parser.add_argument("--s2", choices=["all", "no_ml", "ou_only"],
                         default="no_ml",
                         help="Stage 2 signal model config. 'no_ml' excludes MLSignal (E3 finding). "
@@ -625,10 +632,26 @@ def main() -> None:
     parser.add_argument("--top-k", type=int, default=DEFAULT_TOP_K)
     args = parser.parse_args()
 
+    # Resolve S1 weights: custom JSON overrides mode preset
+    if args.s1_weights:
+        try:
+            s1_weights = json.loads(args.s1_weights)
+        except json.JSONDecodeError as e:
+            raise ValueError(f"--s1-weights is not valid JSON: {e}") from e
+        # Fill missing keys with 0.0 so ensemble_pair_scores handles them
+        all_keys = ["Correlation", "Distance", "Cointegration", "Combined", "ML", "LSTM", "Transformer", "GNN"]
+        for k in all_keys:
+            s1_weights.setdefault(k, 0.0)
+        mode_label = f"custom({args.s1_weights[:60]})"
+    else:
+        s1_weights = _MODE_WEIGHTS[args.mode]
+        mode_label = args.mode
+
     s2_weights = _S2_PRESETS[args.s2]
 
     log.info("=" * 64)
-    log.info(f"E4 Walk-Forward Validation  |  mode={args.mode}  |  s2={args.s2}  |  top_k={args.top_k}")
+    log.info(f"Walk-Forward Validation  |  mode={mode_label}  |  s2={args.s2}  |  top_k={args.top_k}")
+    log.info(f"S1 weights: { {k: v for k, v in s1_weights.items() if v > 0} }")
     log.info(f"Folds: {[f['name'] for f in FOLDS]}")
     log.info(f"min_hold_bars={DEFAULT_MIN_HOLD}  capital={DEFAULT_CAPITAL:,.0f}")
     log.info("=" * 64)
@@ -652,7 +675,7 @@ def main() -> None:
         result = run_fold(
             prices=prices,
             fold=fold,
-            mode=args.mode,
+            s1_weights=s1_weights,
             top_k=args.top_k,
             s2_weights=s2_weights,
             capital=DEFAULT_CAPITAL,
@@ -689,7 +712,8 @@ def main() -> None:
 
     payload = {
         "experiment":  "E4_walk_forward_validation",
-        "mode":        args.mode,
+        "mode":        mode_label,
+        "s1_weights":  s1_weights,
         "s2":          args.s2,
         "top_k":       args.top_k,
         "min_hold":    DEFAULT_MIN_HOLD,

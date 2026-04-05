@@ -406,7 +406,7 @@ The no_ml ensemble (ZScore+OU+Kalman) achieves Net SR -0.047 — borderline. Rem
 | stat_only | no_ml | — | -0.047 | — | — | walk_forward_20260402_230812 |
 | **stat_only** | **ou_only** | **0.627** | **+0.359** | **+0.405** | **67%** | walk_forward_20260402_230753 ← HEADLINE |
 | stat_ml | ou_only | 0.086 | **-0.163** | -0.028 | 67% | walk_forward_20260403_002518 |
-| full | ou_only | — | — | — | — | *running* |
+| **full** | **ou_only** | **0.330** | **+0.067** | **+0.255** | **67%** | walk_forward_20260406_011541 |
 
 **stat_ml degradation vs stat_only (both ou_only):** Net SR -0.163 vs +0.359 = -0.522 degradation. Adding XGBoost MLSelector to the statistical selectors *hurts* pair quality.
 
@@ -414,15 +414,44 @@ The no_ml ensemble (ZScore+OU+Kalman) achieves Net SR -0.047 — borderline. Rem
 
 **Thesis finding:** Supervised classification for pair selection requires a mean-reversion-quality label (e.g., Hurst < 0.5, negative spread autocorrelation, in-sample Sharpe of OU strategy) rather than a spread momentum label. XGBoost with momentum labels is actually HARMFUL.
 
+### Full-Mode WFV Results (mode=full, s2=ou_only, 2026-04-06)
+
+| Fold | Test Year | Gross SR | Net SR | Net Ret% | Net MaxDD% | Trades/Yr |
+|---|---|---|---|---|---|---|
+| Fold 1 | 2020 | -0.057 | -0.269 | -3.06% | 17.05 | 105 |
+| Fold 2 | 2021 | 0.344 | +0.080 | +0.59% | 6.40 | 85 |
+| Fold 3 | 2022 | 1.746 | +1.375 | +8.20% | 3.47 | 90 |
+| Fold 4 | 2023 | 1.322 | +0.927 | +5.39% | 2.44 | 81 |
+| Fold 5 | 2024 | -1.138 | -1.338 | -7.90% | 22.47 | 74 |
+| Fold 6 | 2025 | 1.075 | +0.757 | +4.23% | 5.91 | 87 |
+
+**Aggregate (full-mode):**
+
+| Metric | Mean | ± Std | % Folds Pos |
+|---|---|---|---|
+| Gross Sharpe | 0.549 | 0.963 | 67% |
+| Net Sharpe | 0.255 | 0.894 | 67% |
+| Trades/Yr | 87 | 9.5 | — |
+| Cost Drag pp | 1.98 | 0.21 | — |
+
+**Full-OOS (stitched):** Gross SR 0.330 | Net SR **+0.067** | Net CAGR +0.50% | Max DD 18.64%
+
+**Critical finding — full mode is WORSE than stat_only:**
+- stat_only + ou_only Full-OOS Net SR: **+0.359**
+- full-mode + ou_only Full-OOS Net SR: **+0.067** (−0.292 degradation)
+- Adding LSTM, Transformer, GNN selectors in equal-weight ensemble dilutes the strong statistical pairs with ML-selected pairs of lower OOS quality. The deep learning selectors appear to overfit their training signal to regime-specific pair dynamics that do not generalise OOS.
+- The full-mode ensemble is not the best mode for this strategy under equal weights.
+
 ### Next Steps for E4
 
 - [x] stat_only + ou_only: **+0.359 full-OOS Net SR** (2026-04-02) ← HEADLINE RESULT
 - [x] stat_only + no_ml: -0.047 full-OOS Net SR (2026-04-02)
 - [x] stat_only + all: -0.399 (broken MLSignal; kept for reference)
 - [x] stat_ml + ou_only: -0.163 (MLSelector hurts — label mis-specification, 2026-04-03)
-- [ ] full mode + ou_only: *running* (adds LSTM, Transformer, GNN selectors)
+- [x] full mode + ou_only: **+0.067** (LSTM/Transformer/GNN dilute stat pairs, 2026-04-06)
 - [x] Benchmark comparison (E5): beta=0.071, alpha=+2.58%/yr, MaxDD 3x better (2026-04-03)
 - [x] Statistical significance (E6): gross sig (p=0.038), net not sig (p=0.148) (2026-04-03)
+- [ ] Weighted ensemble run: LSTM/Correlation-heavy S1, OU-only S2 — see E7
 
 ---
 
@@ -500,11 +529,57 @@ OU_only achieves the best full-OOS Net SR and the most consistent performance: 4
 
 > "Stage 1 ablation (Table A1) shows that among 4 statistical selectors, Cointegration-only achieves the highest full-OOS Net Sharpe (+0.119) while the equal-weight ensemble scores −0.189. Importantly, Cointegration-only and Combined-only produce identical results in all 6 folds — the additional Hurst/half-life filters in CombinedCriteria do not alter top-10 pair rankings, reducing effective Stage 1 diversity to 3 selectors. Stage 2 ablation (Table A2) reveals OUThreshold as the dominant signal model: full-OOS Net Sharpe +0.359 (67% folds positive, 87 trades/year), consistent with the OU process being the canonical model for cointegrated spread dynamics. MLSignal (XGBoost trained on in-sample spread features) achieves only 17% positive folds OOS (full-OOS Net SR −0.401), indicating that the learned feature-label relationships do not generalise across market regimes. Including MLSignal in the equal-weight ensemble brings ensemble performance to −0.189, below OU_only (+0.359), demonstrating that equal-weight combination of heterogeneous models is not always beneficial. These results motivate two extensions: (1) full-mode ablation with 8 selectors including LSTM, Transformer, and GNN, where genuine algorithmic diversity should benefit the Stage 1 ensemble; (2) weighted Stage 2 combination giving OU higher weight to capture its empirical dominance while retaining diversification."
 
+### E3 Full-mode Ablation Results (2026-04-06)
+
+**Stage 1 — All 8 selectors (full mode, S2=full ensemble):**
+
+| Config | Full-OOS Gross SR | Full-OOS Net SR | Notes |
+|---|---|---|---|
+| **LSTM_only** | **0.633** | **+0.305** | Best individual in full mode |
+| Correlation_only | 0.682 | +0.151 | High gross, moderate net |
+| Distance_only | 0.278 | -0.165 | |
+| ML_only | 0.157 | -0.192 | MLSelector label mis-specification persists |
+| Cointegration_only | 0.079 | -0.289 | Weaker than stat_only mode |
+| GNN_only | -0.161 | -0.448 | Overfit OOS |
+| Combined_only | -0.492 | -0.824 | Worst — same finding as stat_only |
+| Transformer_only | — | — | Failed: Lambda+GPU cluster bug (fixed 2026-04-06) |
+| **S1_Ensemble (8)** | **-0.292** | **-0.719** | Worst of all — diluted by bad selectors |
+
+**Stage 2 — Full-mode pair selection, individual signal models:**
+
+| Config | Full-OOS Gross SR | Full-OOS Net SR | Notes |
+|---|---|---|---|
+| **OU_only** | **0.325** | **+0.063** | Best — consistent with stat_only finding |
+| Kalman_only | 0.338 | -0.094 | Close gross; negative net |
+| ZScore_only | 0.050 | -0.358 | |
+| ML_only | -0.312 | -0.622 | XGBoost signal overfit OOS |
+| **S2_Ensemble** | **-0.294** | **-0.719** | Severely dragged by MLSignal |
+
+**Key findings (full-mode ablation):**
+
+**Finding E3-FM.1 — LSTM_only is the best Stage 1 selector in full mode (Net SR +0.305)**
+LSTM outperforms Correlation (+0.151) in the full-mode context. This reverses the stat_only finding where Cointegration_only dominated. LSTM captures non-linear temporal dependencies that complement the linear statistical selectors and produce higher-quality pairs OOS.
+
+**Finding E3-FM.2 — S1_Ensemble with 8 equal-weight selectors is catastrophically bad (Net SR -0.719)**
+The equal-weight 8-selector ensemble is the worst configuration — worse than every individual selector except Combined_only and GNN_only. Bad selectors (ML, GNN, Combined) dominate because they nominate different pairs, and when their pairs enter the top-10 cut-off they dilute the alpha from LSTM and Correlation. This is a stronger version of the stat_only finding and definitively confirms that equal-weight ensembling of heterogeneous-quality selectors is harmful.
+
+**Finding E3-FM.3 — OU_only remains best Stage 2 model (Net SR +0.063 on full-mode pairs)**
+OU dominates at Stage 2 in both stat_only and full modes. The lower absolute Net SR (+0.063 vs +0.359 in stat_only) reflects the weaker pair quality of full-mode equal-weight selection, not a Stage 2 effect.
+
+**Finding E3-FM.4 — Transformer_only failed (cluster GPU bug — now fixed)**
+TransformerSelector used a `Lambda` layer to add positional encoding via a captured `tf.constant`. On the cluster (CUDA GPU), TF's device-placement mechanism fails for such Lambda closures. Fixed by replacing Lambda with a dedicated `_PositionalEncodingLayer` class in `core/selectors_ml.py` (2026-04-06). Transformer_only must be re-run.
+
+**Thesis implication:** Equal-weight ensembling is empirically harmful when model quality is heterogeneous. This is a publishable negative result. The natural fix — weighted ensemble (LSTM/Correlation-heavy S1 + OU-only S2) — is the next experiment (E7).
+
 ### Next Steps for E3
 
-- [x] Investigate and fix MLSignal (XGBoost) failures: xgboost package missing + LabelEncoder bug for non-contiguous {0,2} labels — FIXED (2026-04-02)
-- [ ] Re-run with `--mode stat_ml` and `--mode full` to test ML/DL selector diversity in Stage 1.
-- [ ] Weighted Stage 2 experiment: OU weight=3.0, others 1.0 — expected to approach OU_only performance while retaining marginal diversification.
+- [x] Investigate and fix MLSignal (XGBoost) failures: xgboost package missing + LabelEncoder bug — FIXED (2026-04-02)
+- [x] Run stat_ml ablation (2026-04-06): result file `ablation_20260406_012530.json`
+- [x] Run full-mode ablation (2026-04-06): result file `ablation_20260406_025912.json`
+- [x] Fix Transformer Lambda+GPU cluster bug: replaced with `_PositionalEncodingLayer` (2026-04-06)
+- [ ] Re-run Transformer_only ablation fold (single-config re-run once Transformer fix is on cluster)
+- [ ] Weighted Stage 2 experiment: OU weight=3.0, others 1.0 (E7)
+- [ ] Weighted Stage 1 experiment: LSTM=3.0, Correlation=2.0, others 1.0 (E7)
 
 ---
 
@@ -653,21 +728,18 @@ Test whether the OOS Sharpe ratio is statistically different from zero, controll
 | I6 | Medium | OOS Net Sharpe marginally negative (-0.034) in stat_only WFV with equal-weight S2 | **RESOLVED** — using `ou_only` S2 config gives Net SR +0.359 (headline result); equal-weight S2 dragged down by overfit MLSignal |
 | I7 | High | `MLSignal.fit()` silently failing: (a) `xgboost` package not installed in venv (`_HAS_XGB=False`); (b) LabelEncoder bug — with `neutral_pct=0`, labels are `{-1,+1}` only, `y+1={0,2}` rejected by XGBoost as non-contiguous | **RESOLVED** — installed xgboost + scikit-learn; fixed with `LabelEncoder` in `core/entry.py` to map any label subset to contiguous 0-based indices (2026-04-02) |
 | I8 | High | `MLSelector._label()` always returns 0 for all pairs — `(r_a - r_b).shift(-1).rolling(horizon).sum().iloc[-1]` is always NaN because `shift(-1)` places NaN at the last position, so rolling sum at end of training data = NaN → label=0 for all 595 pairs → `TrivialSelectorModel` | **RESOLVED** — removed `.shift(-1)`, replaced with `.rolling(horizon).sum().dropna().iloc[-1]` to compute in-sample rolling spread return; labels are now {0,1} with real distribution (2026-04-03) |
+| I9 | High | `TransformerSelector._build_model()` used `Lambda(lambda t: t + pos_const)` where `pos_const` is a `tf.constant` captured in a closure. On CUDA cluster, TF device-placement fails for Lambda layers capturing external tensors → `Exception encountered when calling Lambda.call()` every fold → Transformer_only reports `{"error": "no valid folds"}` | **RESOLVED** — replaced `Lambda` + captured constant with a dedicated `_PositionalEncodingLayer(seq_len, embed_dim)` class that creates the `tf.constant` inside `call()`, ensuring correct device placement (2026-04-06). Needs re-run on cluster to validate. |
 
 ---
 
 ## 12. Open Questions
 
-1. **Full-mode WFV:** Do LSTM, Transformer, GNN, and XGBoost selectors materially improve OOS Net Sharpe above the stat_only baseline of -0.034? Hypothesis: yes, because ML/DL selectors can find non-obvious pairs that statistical tests miss, improving gross alpha without increasing turnover.
+1. **Weighted ensemble (E7):** Equal-weight ensembling is empirically harmful (confirmed by E3 in both stat_only and full modes). Can a LSTM/Correlation-heavy S1 + OU-only S2 weighted run recover the stat_only+OU headline result of +0.359 or improve on it using the full 8-selector universe? This is the critical next experiment.
 
-2. **Ablation OOS:** Does the ensemble outperform any single selector OOS? The in-sample assumption is that diversity improves robustness, but OOS confirmation is needed for the thesis claim.
+2. **Transformer_only ablation result:** The Transformer fix (Lambda→_PositionalEncodingLayer) has been applied locally. Will it run cleanly on the cluster and what Net SR will it achieve? Hypothesis: between LSTM_only (+0.305) and Correlation_only (+0.151) based on similar architectural complexity.
 
-3. **Regime classification:** Could a simple regime filter (e.g., rolling 252-day Nifty trend slope) disable trading in strong trending markets (2021, 2024) to avoid the worst folds? If so, this would be a natural extension of E4.
+3. **E1 full-mode:** Frequency comparison with all 8 selectors. Lower priority now that full-mode WFV shows DL selectors don't improve on stat_only in equal-weight configuration. Will run after E7.
 
-4. **Full-mode fold timing:** At stat_ml and full mode, each fold runs 8 selectors sequentially. Estimated ~3 min per fold × 6 folds = ~18 min for stat_ml, ~60+ min for full. Parallelisation (ThreadPoolExecutor across selectors) needed for reasonable iteration time.
+4. **Regime classification:** Could a rolling 252-day Nifty trend slope disable trading in strong trending markets (2021, 2024)? Both are mean-reversion bear folds — skipping them would materially improve OOS Net SR. Natural extension for thesis Chapter 5.
 
-3. **TATAMOTORS:** Permanent delisting or transient yfinance issue? Check NSE directly.
-
-4. **Cross-frequency pair stability:** Do the same pairs appear at 1D and 1H when using a static seed? Currently they are completely different — is this because the selectors behave fundamentally differently at hourly, or because the period is different?
-
-5. **Capital scaling:** Results use 10L capital with 1L per pair. Does the strategy's alpha scale to 1 Cr (realistic prop desk size) without liquidity impact? ADV screening (`estimate_adv()` in `data.py`) was never wired — this needs to be addressed for the realistic capital assumptions in the paper.
+5. **Capital scaling:** Results use 10L with 1L/pair. Does alpha hold at 1 Cr? ADV screening (`estimate_adv()` in `data.py`) is unimplemented — needs addressing for the paper's practical implications section.

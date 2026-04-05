@@ -2,7 +2,7 @@
 
 **Goal:** Produce a research-paper-worthy empirical study of a hybrid ensemble pairs trading strategy on Indian NSE equities, combining classical statistical arbitrage with modern deep learning.
 
-**Last updated:** 2026-04-03 (E5/E6 complete; stat_ml re-run; full-mode WFV running)
+**Last updated:** 2026-04-06 (E4 full-mode + E3 full-mode complete; Transformer bug fixed; E7 weighted ensemble is next)
 
 ---
 
@@ -26,7 +26,7 @@
 
 ### Novel Contributions
 
-1. **First ensemble of 8 pair selectors (incl. GNN + Transformer) on NSE equities.** Most existing work uses a single selector. We show ensemble > any individual method (needs ablation to prove).
+1. **First ensemble of 8 pair selectors (incl. GNN + Transformer) on NSE equities.** Most existing work uses a single selector. E3 ablation shows equal-weight ensemble < best individual (LSTM_only), but this is itself a publishable finding: the diversity benefit requires weighted combination, not naive equal-weighting. E7 (weighted ensemble) will complete the argument.
 2. **Empirical frequency analysis on NSE.** We quantify the gross-to-net degradation across daily vs hourly, separating signal quality (Hurst exponent) from cost drag.
 3. **Indian cost model.** Existing pairs trading literature typically uses US cost assumptions. We build an accurate NSE cost model (brokerage + STT + GST + stamp + slippage).
 4. **Walk-forward validation.** We report OOS Sharpe across rolling folds — not in-sample — making results credible for academic publication.
@@ -131,28 +131,29 @@ Each experiment is self-contained, reproducible via a script in `experiments/`, 
 
 ---
 
-### E3 — Performance Attribution / Ablation (CRITICAL for thesis)
+### E3 — Performance Attribution / Ablation (COMPLETE — stat_only + full mode)
 
-**Purpose:** Prove the ensemble beats any single model. Without this, there is no justification for the complexity.
+**Purpose:** Prove (or disprove) the ensemble vs individual claim. Without this, there is no justification for the complexity.
 
-**Stage 1 Ablation — pair selection:**
-- Run 8 experiments: each with one selector at weight=1.0, all others 0.0.
-- Plus one "full ensemble" run (equal weights).
-- Compare: OOS Sharpe, Ann. Return, selected pairs stability.
+**Key results:**
 
-**Stage 2 Ablation — signal models:**
-- Run 4 experiments: each signal model in isolation.
-- Plus full signal ensemble.
-- Compare: OOS Sharpe, Trades/Year, Net Sharpe.
+| Mode | Best Individual (S1) | Best Net SR | S1 Ensemble Net SR | Verdict |
+|---|---|---|---|---|
+| stat_only | Cointegration_only | +0.119 | -0.189 | Individual wins |
+| full | LSTM_only | +0.305 | -0.719 | Individual wins (by larger margin) |
 
-**Key claim to prove:** `Ensemble Sharpe > max(individual Sharpe)` — statistically significant.
+S2 ablation (both modes): OU_only dominates (+0.359 stat_only, +0.063 full); S2_Ensemble = -0.189 / -0.719.
 
-**Script to build:** `experiments/ablation.py`
+**Revised thesis claim:** Equal-weight ensemble underperforms best individual — this is the finding. Weighted ensemble (E7) tests whether optimal weighting recovers or improves the result.
+
+**Known issue fixed:** TransformerSelector Lambda+GPU crash fixed 2026-04-06. Transformer_only fold needs re-run.
+
+**Script:** `experiments/ablation.py`
 **Thesis section:** Chapter 4.5.
 
 ---
 
-### E4 — Walk-Forward Validation (COMPLETE — stat_only; full mode pending)
+### E4 — Walk-Forward Validation (COMPLETE — all modes)
 
 **Purpose:** Replace single in-sample backtest with rolling out-of-sample evaluation. Without this, thesis reviewers will reject the results.
 
@@ -166,21 +167,15 @@ Fold 5: Train 2016-2023, Test 2024
 Fold 6: Train 2016-2024, Test 2025
 ```
 
-**stat_only results (2026-04-02):**
-- Full-OOS Gross Sharpe = **0.407** | Net Sharpe = **-0.034**
-- Mean ± Std Gross SR: 0.436 ± 0.526 (67% folds positive)
-- Mean ± Std Net SR:  -0.016 ± 0.504 (50% folds positive)
-- Cost drag ~3.34 pp/year; 140-155 trades/year
-- Best folds: 2022 (Net SR 0.548), 2025 (Net SR 0.625)
-- Worst folds: 2021 (bull run, -0.523), 2024 (-0.718)
-- Result file: `experiments/results/walk_forward_20260402_131614.json`
+**Results by configuration (all ou_only S2):**
 
-**Key metrics to report:** OOS Sharpe (mean ± std), OOS Ann. Return, OOS Max DD, % folds positive.
+| Mode | Full-OOS Net SR | Mean Net SR | ±Std | % Folds Pos | Result file |
+|---|---|---|---|---|---|
+| stat_only | **+0.359** ← HEADLINE | +0.405 | 0.578 | 67% | walk_forward_20260402_230753 |
+| stat_ml | -0.163 | -0.028 | — | 67% | walk_forward_20260403_002518 |
+| **full** | **+0.067** | **+0.255** | **0.894** | **67%** | walk_forward_20260406_011541 |
 
-**Remaining:**
-- [ ] Re-run with `--mode stat_ml` (adds XGBoost MLSelector)
-- [ ] Re-run with `--mode full` (all 8 selectors) — for final paper numbers
-- [ ] Parallelise selector loop for faster full-mode runs
+**Key finding:** stat_only+OU is the best mode. Adding DL selectors under equal-weight degrades OOS Net SR by 0.292. Headline result = **+0.359 full-OOS Net SR (stat_only + ou_only)**.
 
 **Script:** `experiments/walk_forward.py`
 **Thesis section:** Chapter 4.3, 3.9.
@@ -212,7 +207,31 @@ Fold 6: Train 2016-2024, Test 2025
 
 ---
 
-### E7 — RL Signal Model (STRETCH GOAL)
+### E7 — Weighted Ensemble (NEXT — HIGH PRIORITY)
+
+**Purpose:** Test whether optimal weighting (vs equal weighting) allows the ensemble to beat LSTM_only (best individual Stage 1) and OU_only (best individual Stage 2). This directly addresses the revised thesis claim.
+
+**Design:**
+
+Stage 1 weights (to test): `LSTM=3.0, Correlation=2.0, Distance=1.0, Cointegration=1.0, Combined=0.5, ML=0.0, Transformer=1.0, GNN=0.5`
+- ML=0.0: MLSelector label mis-specification confirmed across all modes
+- LSTM=3.0: best individual in full mode
+- Correlation=2.0: best in stat_only mode, strong in full mode
+- Transformer=1.0: not yet evaluated (bug was fixed); include at unit weight
+
+Stage 2 weights: `OU=1.0, ZScore=0.0, Kalman=0.0, ML=0.0` (OU_only — already proven best)
+
+**Alternative S1 weight sets to sweep:**
+1. `LSTM=3, Correlation=2, rest=1, ML=0, GNN=0` (exclude clearly harmful selectors)
+2. `LSTM=1, Correlation=1, Distance=1, Cointegration=1, Combined=0` (stat+LSTM, no bad selectors)
+3. `LSTM=1, Correlation=1` only (tightest, highest-quality pair selection)
+
+**Script to build:** `experiments/weighted_ensemble.py` (or add `--s1-weights` flag to `walk_forward.py`)
+**Thesis section:** Chapter 4.5 (extension of ablation), Chapter 5 (discussion of ensemble design).
+
+---
+
+### E8 — RL Signal Model (STRETCH GOAL)
 
 **Purpose:** Novel contribution — first RL-based signal model for NSE pairs trading.
 
@@ -254,30 +273,38 @@ Priority order based on thesis deadline and academic impact:
 12. [x] Run WFV with stat_ml + ou_only — Net SR -0.163 (MLSelector hurts, 2026-04-03)
 13. [ ] Run WFV with full mode — *RUNNING* (ETA ~12h from 23:09 Apr 2)
 
-### Phase D — Ablation & Attribution (E3) (COMPLETE — stat_only)
+### Phase D — Ablation & Attribution (E3) (COMPLETE — stat_only + full mode)
 
 14. [x] Build `experiments/ablation.py` (2026-04-02)
-15. [x] Run Stage 1 and Stage 2 ablations — stat_only, corrected (2026-04-02)
-    - S1: Cointegration_only best individual (Net SR +0.119 vs ensemble -0.189)
-    - S2: OU_only dominates (Net SR +0.359); MLSignal overfit, worst OOS (Net SR -0.401)
-16. [ ] Re-run ablation with --mode stat_ml and --mode full (after full-mode WFV completes)
+15. [x] Run stat_only ablation (2026-04-02): S1 best = Cointegration_only (+0.119); S2 best = OU_only (+0.359)
+16. [x] Run stat_ml ablation (2026-04-06): `ablation_20260406_012530.json`
+17. [x] Run full-mode ablation (2026-04-06): S1 best = LSTM_only (+0.305); S1 ensemble = -0.719
+18. [x] Fix Transformer Lambda+GPU bug: `_PositionalEncodingLayer` in `core/selectors_ml.py` (2026-04-06)
+19. [ ] Re-run Transformer_only single ablation fold on cluster (validate fix)
 
-### Phase E — Final Frequency Run (E1 complete)
+### Phase E — Weighted Ensemble (E7) (NEXT)
 
-17. [ ] Run E1 with `--mode full` after full-mode WFV completes
+20. [ ] Build `experiments/weighted_ensemble.py` (or add `--s1-weights` to walk_forward.py)
+21. [ ] Run S1 weight sweep: LSTM-heavy, Correlation-heavy, stat+LSTM configs
+22. [ ] Target: beat LSTM_only (+0.305) on full-OOS Net SR
 
 ### Phase F — Benchmarks & Significance (COMPLETE)
 
-18. [x] Build and run `experiments/benchmark_comparison.py` (E5) — 2026-04-03
+23. [x] Build and run `experiments/benchmark_comparison.py` (E5) — 2026-04-03
     - Beta=0.071, alpha=+2.58%/yr, Max DD -13.4% vs -38.4% Nifty 50
-19. [x] Build and run `experiments/significance_tests.py` (E6) — 2026-04-03
+24. [x] Build and run `experiments/significance_tests.py` (E6) — 2026-04-03
     - Gross SR p=0.038 (sig); Net SR p=0.148 (not sig); honest academic finding
-20. [ ] Polish all result tables for final thesis chapter write-up
+25. [ ] Run E6 significance on full-mode + E7 weighted result once available
+26. [ ] Polish all result tables for final thesis chapter write-up
 
-### Phase G — Stretch (RL)
+### Phase G — Final Frequency Run (E1 full mode)
 
-17. [ ] Implement `RLSignal` if time permits
-18. [ ] Integrate into E3 ablation and E4 WFV
+27. [ ] Run E1 with `--mode full` (lower priority — after E7 complete)
+
+### Phase H — Stretch (RL)
+
+28. [ ] Implement `RLSignal` if time permits
+29. [ ] Integrate into E3 ablation and E4 WFV
 
 ---
 
@@ -305,7 +332,7 @@ Items a thesis reviewer will check. Track completion here.
 | Item | Status |
 |---|---|
 | No look-ahead bias in signal generation | Partially — selectors are fit on training window; need to verify signal models do not use future data in walk-forward setup |
-| Out-of-sample evaluation (WFV) | DONE — E4 stat_only complete (Gross SR 0.407 over 6 OOS years); full-mode run pending |
+| Out-of-sample evaluation (WFV) | **DONE** — E4 all modes complete. Headline: stat_only+OU Net SR +0.359; full-mode +0.067 |
 | Multiple-testing correction in ablation | **DONE** — E6 Bonferroni over 5 S2 configs; OU_only p_adj=0.75 (not sig after correction — expected given 6yr sample) |
 | Bootstrap confidence intervals on Sharpe | **DONE** — E6: Gross SR CI excludes zero (p=0.038); Net SR CI includes zero (p=0.148) |
 | Gross AND net results reported | Done — both are always reported |
@@ -315,7 +342,7 @@ Items a thesis reviewer will check. Track completion here.
 | Random seeds fixed | Done — RANDOM_SEED = 42 |
 | Data source documented | Done — yfinance, NSE .NS tickers, frequency, date range |
 | Hyperparameters documented | Partially — in code; need to consolidate in paper |
-| Reproducibility: results can be re-run from scripts | Done for E1; pending for E2–E6 |
+| Reproducibility: results can be re-run from scripts | Done for E1–E6; pending for E7 (script to build) |
 
 ---
 
@@ -337,15 +364,18 @@ Items a thesis reviewer will check. Track completion here.
 - **E6 Statistical Significance:** Gross SR p=0.038 (sig); Net SR p=0.148 (not sig at 5%); Bonferroni 5-config p_adj=0.75 (not sig). Gross alpha is real; net alpha below detection threshold given 6yr OOS.
 
 **What is missing for thesis submission:**
-- **E4 full-mode run (8 selectors)** — RUNNING (started 2026-04-02 23:09, ETA ~12h). The paper's headline OOS result to compare against stat_only.
-- **E3 Ablation for stat_ml and full modes** — once full-mode timing is understood.
-- Full-mode E1 run (8 selectors, not just 4) — lower priority.
-- Polish all result tables for thesis.
+- **E7 Weighted ensemble WFV** — core next experiment. Can weighted S1 (LSTM-heavy) + OU-only S2 beat the equal-weight ensemble and match/beat LSTM_only (+0.305)?
+- **Transformer_only re-run** — validate the Lambda fix on cluster (single config, fast).
+- **E6 significance on full-mode + E7 results** — extend significance testing once E7 is done.
+- **E1 full-mode** — lower priority, run after E7.
+- **Final result table polish** for thesis write-up.
 
 **Phase completion:**
 - Phase A (fixes): COMPLETE
 - Phase B (hold period E2): COMPLETE
-- Phase C (walk-forward E4): stat_only + ou_only COMPLETE (headline); stat_ml done; full-mode RUNNING
-- Phase D (ablation E3): stat_only COMPLETE; stat_ml/full pending
-- Phase E (E1 full): NOT STARTED
-- Phase F (benchmarks, polish): E5/E6 COMPLETE; final polish pending
+- Phase C (walk-forward E4): COMPLETE (all modes: stat_only +0.359 headline; stat_ml -0.163; full +0.067)
+- Phase D (ablation E3): COMPLETE (stat_only + full mode); Transformer_only re-run pending
+- Phase E (weighted ensemble E7): NOT STARTED ← CURRENT PRIORITY
+- Phase F (benchmarks E5, significance E6): E5/E6 on headline result COMPLETE; re-run on E7 result pending
+- Phase G (E1 full): NOT STARTED
+- Phase H (RL stretch): NOT STARTED

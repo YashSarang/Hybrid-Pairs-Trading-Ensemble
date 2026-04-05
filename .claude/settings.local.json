@@ -38,7 +38,8 @@
       "Bash(nvidia-smi --query-gpu=name,driver_version,memory.total --format=csv,noheader)",
       "Bash(nvidia-smi)",
       "Bash(wc:*)",
-      "Bash(grep -n \"entry_rl\\\\|RLSignal\" /c/Code/Hybrid-Pairs-Trading-Ensemble/core/*.py /c/Code/Hybrid-Pairs-Trading-Ensemble/experiments/*.py)"
+      "Bash(grep -n \"entry_rl\\\\|RLSignal\" /c/Code/Hybrid-Pairs-Trading-Ensemble/core/*.py /c/Code/Hybrid-Pairs-Trading-Ensemble/experiments/*.py)",
+      "Bash(python3:*)"
     ]
   }
 }

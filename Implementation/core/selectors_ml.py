@@ -563,6 +563,28 @@ class LSTMSelector(PairSelector):
 # Transformer selector
 # ---------------------------------------------
 
+if _HAS_TF:
+    class _PositionalEncodingLayer(tf.keras.layers.Layer):
+        """Non-trainable layer that adds sinusoidal positional encoding.
+
+        Avoids the Lambda + captured-tf.constant pattern, which causes
+        device-placement failures on GPU clusters (TF issue with Lambda.call).
+        """
+        def __init__(self, seq_len: int, embed_dim: int, **kwargs):
+            super().__init__(trainable=False, **kwargs)
+            angles = np.arange(seq_len)[:, None] / np.power(
+                10000.0, (2 * (np.arange(embed_dim)[None, :] // 2)) / embed_dim
+            )
+            angles[:, 0::2] = np.sin(angles[:, 0::2])
+            angles[:, 1::2] = np.cos(angles[:, 1::2])
+            # Store as float32 numpy; converted to tensor on first call
+            self._pe_np = angles[None, :, :].astype(np.float32)  # (1, seq_len, embed_dim)
+
+        def call(self, x):
+            pe = tf.constant(self._pe_np, dtype=x.dtype)
+            return x + pe
+
+
 class TransformerSelector(PairSelector):
     """Transformer encoder pair selector using temporal spread features."""
     name = "Transformer"
@@ -641,12 +663,9 @@ class TransformerSelector(PairSelector):
         return angles[np.newaxis, :, :].astype(np.float32)
 
     def _build_model(self) -> object:
-        pos_enc = self._positional_encoding(self.seq_len, self.embed_dim)
-        pos_const = tf.constant(pos_enc, dtype=tf.float32)
-
         inputs = Input(shape=(self.seq_len, self._N_FEATURES))
         x = Dense(self.embed_dim)(inputs)
-        x = Lambda(lambda t: t + pos_const)(x)
+        x = _PositionalEncodingLayer(self.seq_len, self.embed_dim)(x)
 
         for _ in range(self.num_layers):
             attn = MultiHeadAttention(

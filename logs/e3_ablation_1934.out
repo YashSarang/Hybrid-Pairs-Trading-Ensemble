@@ -1,0 +1,14 @@
+==========================================
+E3: Ablation Study
+Start time: Sun Apr  5 01:42:28 AM IST 2026
+==========================================
+Python: /users/student/pg/pg24/yash.sarang/miniconda3/envs/pairs_trading/bin/python
+Conda env: pairs_trading
+Stage 1: stat_ml
+Loading data from cache: data_cache/daily_prices.parquet
+
+Stage 2: full
+Loading data from cache: data_cache/daily_prices.parquet
+==========================================
+End time: Sun Apr  5 01:42:51 AM IST 2026
+==========================================

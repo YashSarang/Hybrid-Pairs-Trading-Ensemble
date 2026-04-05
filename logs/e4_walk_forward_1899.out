@@ -1,0 +1,15 @@
+==========================================
+E4: Walk-Forward Validation
+Signal: ou_only (best statistical signal)
+Start time: Sun Apr  5 12:53:46 AM IST 2026
+==========================================
+Bootstrapping pip...
+
+Checking CUDA availability...
+
+Running walk-forward validation...
+
+==========================================
+E4 FAILED - Check logs for details
+End time: Sun Apr  5 12:55:59 AM IST 2026
+==========================================

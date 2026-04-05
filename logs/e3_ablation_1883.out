@@ -1,0 +1,12 @@
+==========================================
+E3: Ablation Study
+Stage 1: stat_ml (classical + XGBoost)
+Stage 2: full (all 8 selectors)
+Start time: Sun Apr  5 12:35:17 AM IST 2026
+==========================================
+Installing requirements...
+Checking CUDA availability...
+
+========== Stage 1: stat_ml ==========
+Running ablation with classical selectors + XGBoost...
+Stage 1 (stat_ml) FAILED

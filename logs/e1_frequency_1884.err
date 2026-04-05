@@ -1,0 +1,6 @@
+/var/spool/slurmd/job01884/slurm_script: line 36: .venv/bin/activate: No such file or directory
+/var/spool/slurmd/job01884/slurm_script: line 41: pip: command not found
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+ModuleNotFoundError: No module named 'torch'
+python3: can't open file '/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/experiments/freq_comparison.py': [Errno 2] No such file or directory

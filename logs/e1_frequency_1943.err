@@ -1,0 +1,89 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1775344440.205818   90656 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1775344444.314978   90656 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+04:44:06  INFO      Frequency Comparison Experiment — 2026-04-05 04:44
+04:44:06  INFO      Universe : 35 stocks | Period   : 2024-05-05 -> 2026-04-04 | Selectors: full | Top-K    : 10
+04:44:06  INFO      ================================================================
+04:44:06  INFO        FREQUENCY: 1D   |   universe=35 stocks   |   mode=full
+04:44:06  INFO      ================================================================
+04:44:06  INFO      [1/5] Fetching price data …
+/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/core/data.py:136: PerformanceWarning: indexing past lexsort depth may impact performance.
+  if col in data.columns:
+/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/core/data.py:137: PerformanceWarning: indexing past lexsort depth may impact performance.
+  s = data[col]
+04:44:06  INFO          35 tickers × 694 bars  (2024-05-06 -> 2026-03-30)
+04:44:06  INFO      [2/5] Generating pair candidates …
+04:44:06  INFO          595 candidates from 35 tickers
+04:44:06  INFO      [3/5] Stage 1 — pair selection …
+04:44:06  INFO          [Correlation] fitting + scoring …
+04:44:06  INFO          [Correlation] done in 0.2s
+04:44:06  INFO          [Distance] fitting + scoring …
+04:44:06  INFO          [Distance] done in 0.0s
+04:44:06  INFO          [Cointegration] fitting + scoring …
+04:44:11  INFO          [Cointegration] done in 5.1s
+04:44:11  INFO          [Combined] fitting + scoring …
+04:44:29  INFO          [Combined] done in 17.8s
+04:44:29  INFO          [ML] fitting + scoring …
+04:44:34  INFO      [MLSelector.fit] y class counts: {0: 257, 1: 338}
+/users/student/pg/pg24/yash.sarang/miniconda3/envs/pairs_trading/lib/python3.10/site-packages/xgboost/core.py:751: UserWarning: [04:44:35] WARNING: /__w/xgboost/xgboost/src/common/error_msg.cc:62: Falling back to prediction using DMatrix due to mismatched devices. This might lead to higher memory usage and slower performance. XGBoost is running on: cuda:0, while the input data is on: cpu.
+Potential solutions:
+- Use a data structure that matches the device ordinal in the booster.
+- Set the device for booster before call to inplace_predict.
+
+This warning will only be shown once.
+
+  return func(**kwargs)
+04:45:04  INFO          [ML] done in 34.9s
+04:45:04  INFO          [LSTM] fitting + scoring …
+04:45:14  INFO      [LSTMSelector] 215390 sequences, class dist: {0: 106282, 1: 109108}
+04:45:14  INFO      [LSTMSelector] Subsampled to 50000 sequences.
+/users/student/pg/pg24/yash.sarang/miniconda3/envs/pairs_trading/lib/python3.10/site-packages/keras/src/layers/rnn/bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+04:46:09  INFO      [LSTMSelector] Training complete.
+04:46:14  INFO          [LSTM] done in 69.8s
+04:46:14  INFO          [Transformer] fitting + scoring …
+04:46:23  INFO      [TransformerSelector] 215390 sequences, class dist: {0: 106282, 1: 109108}
+04:46:23  INFO      [TransformerSelector] Subsampled to 50000 sequences.
+04:46:23  WARNING       [Transformer] FAILED — Exception encountered when calling Lambda.call().
+
+[1mWe could not automatically infer the shape of the Lambda's output. Please specify the `output_shape` argument for this Lambda layer.[0m
+
+Arguments received by Lambda.call():
+  • args=('<KerasTensor shape=(None, 60, 32), dtype=float16, sparse=False, ragged=False, name=keras_tensor_18>',)
+  • kwargs={'mask': 'None'}
+04:46:23  INFO          [GNN] fitting + scoring …
+04:46:25  INFO      [GNNSelector] Training on 8 snapshots, N=35 stocks.
+04:48:32  INFO      [GNNSelector] Training complete.
+04:48:33  INFO          [GNN] done in 129.8s
+04:48:33  INFO          Top-10 pairs selected. Top 5: ['TCS/WIPRO', 'AXISBANK/IOC', 'HDFCBANK/ACC', 'IOC/BPCL', 'TCS/INFY'] …
+04:48:33  INFO      [4/5] Stage 2 — backtest …
+04:48:33  INFO      [5/5] Computing spread diagnostics …
+04:48:33  INFO          Experiment complete in 266.9s
+04:48:33  INFO      ================================================================
+04:48:33  INFO        FREQUENCY: 1H   |   universe=35 stocks   |   mode=full
+04:48:33  INFO      ================================================================
+04:48:33  INFO      [1/5] Fetching price data …
+/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/core/data.py:136: PerformanceWarning: indexing past lexsort depth may impact performance.
+  if col in data.columns:
+/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/core/data.py:137: PerformanceWarning: indexing past lexsort depth may impact performance.
+  s = data[col]
+04:48:33  INFO          35 tickers × 16711 bars  (2024-05-06 -> 2026-04-02)
+04:48:33  INFO      [2/5] Generating pair candidates …
+04:48:33  INFO          595 candidates from 35 tickers
+04:48:33  INFO      [3/5] Stage 1 — pair selection …
+04:48:33  INFO          [Correlation] fitting + scoring …
+04:48:34  INFO          [Correlation] done in 0.8s
+04:48:34  INFO          [Distance] fitting + scoring …
+04:48:34  INFO          [Distance] done in 0.0s
+04:48:34  INFO          [Cointegration] fitting + scoring …
+04:48:39  INFO          [Cointegration] done in 5.6s
+04:48:39  INFO          [Combined] fitting + scoring …
+04:48:59  INFO          [Combined] done in 19.5s
+04:48:59  INFO          [ML] fitting + scoring …
+04:56:39  INFO      [MLSelector.fit] y class counts: {0: 357, 1: 238}
+05:12:18  INFO          [ML] done in 1399.4s
+05:12:18  INFO          [LSTM] fitting + scoring …
+05:12:32  INFO      [LSTMSelector] 9745505 sequences, class dist: {0: 6382175, 1: 3363330}
+/var/spool/slurmd/job01943/slurm_script: line 27: 90656 Killed                  python experiments/freq_comparison.py --mode full --freqs 1D 1H
+slurmstepd-anandi: error: Detected 1 oom_kill event in StepId=1943.batch. Some of the step tasks have been OOM Killed.

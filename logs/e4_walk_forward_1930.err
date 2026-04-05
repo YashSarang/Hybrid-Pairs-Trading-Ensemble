@@ -1,0 +1,25 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1775333349.942648   75279 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1775333353.617623   75279 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+01:39:15  INFO      ================================================================
+01:39:15  INFO      E4 Walk-Forward Validation  |  mode=full  |  s2=ou_only  |  top_k=10
+01:39:15  INFO      Folds: ['Fold1_2020', 'Fold2_2021', 'Fold3_2022', 'Fold4_2023', 'Fold5_2024', 'Fold6_2025']
+01:39:15  INFO      min_hold_bars=30  capital=1,000,000
+01:39:15  INFO      ================================================================
+01:39:15  INFO      [Data] Fetching full 10-year daily prices ...
+01:39:16  ERROR     
+35 Failed downloads:
+01:39:16  ERROR     ['INDUSINDBK.NS', 'ACC.NS', 'ULTRACEMCO.NS', 'IOC.NS', 'EICHERMOT.NS', 'INFY.NS', 'TATASTEEL.NS', 'M&M.NS', 'HCLTECH.NS', 'ICICIBANK.NS', 'AXISBANK.NS', 'BPCL.NS', 'MARUTI.NS', 'CIPLA.NS', 'DRREDDY.NS', 'TCS.NS', 'WIPRO.NS', 'ONGC.NS', 'ITC.NS', 'HINDALCO.NS', 'TECHM.NS', 'BRITANNIA.NS', 'DIVISLAB.NS', 'RELIANCE.NS', 'SUNPHARMA.NS', 'JSWSTEEL.NS', 'BAJAJ-AUTO.NS', 'SHREECEM.NS', 'HDFCBANK.NS', 'HINDUNILVR.NS', 'HEROMOTOCO.NS', 'NESTLEIND.NS', 'COALINDIA.NS', 'SBIN.NS', 'KOTAKBANK.NS']: TypeError("'NoneType' object is not subscriptable")
+Traceback (most recent call last):
+  File "/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/walk_forward.py", line 705, in <module>
+    main()
+  File "/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/walk_forward.py", line 643, in main
+    f"({prices.index[0].date()} -> {prices.index[-1].date()})")
+  File "/users/student/pg/pg24/yash.sarang/miniconda3/envs/pairs_trading/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 5401, in __getitem__
+    return getitem(key)
+  File "/users/student/pg/pg24/yash.sarang/miniconda3/envs/pairs_trading/lib/python3.10/site-packages/pandas/core/arrays/datetimelike.py", line 398, in __getitem__
+    result = cast("Union[Self, DTScalarOrNaT]", super().__getitem__(key))
+  File "/users/student/pg/pg24/yash.sarang/miniconda3/envs/pairs_trading/lib/python3.10/site-packages/pandas/core/arrays/_mixins.py", line 284, in __getitem__
+    result = self._ndarray[key]
+IndexError: index 0 is out of bounds for axis 0 with size 0

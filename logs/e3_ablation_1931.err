@@ -1,0 +1,67 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1775333372.990156   75351 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1775333377.298772   75351 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+01:39:38  INFO      ================================================================
+01:39:38  INFO      E3 Ablation  |  mode=stat_ml  |  stage=both  |  top_k=10
+01:39:38  INFO      min_hold=30  capital=1,000,000
+01:39:38  INFO      ================================================================
+01:39:38  INFO      [Data] Fetching full 10-year daily prices ...
+01:39:43  ERROR     
+35 Failed downloads:
+01:39:43  ERROR     ['TECHM.NS', 'COALINDIA.NS', 'JSWSTEEL.NS', 'EICHERMOT.NS', 'IOC.NS', 'NESTLEIND.NS', 'ONGC.NS', 'MARUTI.NS', 'BAJAJ-AUTO.NS', 'HEROMOTOCO.NS', 'SHREECEM.NS', 'BPCL.NS', 'BRITANNIA.NS', 'ICICIBANK.NS', 'HINDALCO.NS', 'CIPLA.NS', 'M&M.NS', 'ITC.NS', 'SBIN.NS', 'KOTAKBANK.NS', 'DIVISLAB.NS', 'HCLTECH.NS', 'AXISBANK.NS', 'ACC.NS', 'INFY.NS', 'TATASTEEL.NS', 'HDFCBANK.NS', 'ULTRACEMCO.NS', 'SUNPHARMA.NS', 'DRREDDY.NS', 'TCS.NS', 'INDUSINDBK.NS', 'WIPRO.NS', 'RELIANCE.NS', 'HINDUNILVR.NS']: TypeError("'NoneType' object is not subscriptable")
+01:39:43  INFO        0 tickers x 0 bars
+01:39:43  INFO      
+--- Running Stage 1 Ablation ---
+01:39:43  INFO        Stage 1 ablation: ['Correlation_only', 'Distance_only', 'Cointegration_only', 'Combined_only', 'ML_only', 'S1_Ensemble']
+01:39:43  INFO        [S1] Config: Correlation_only
+01:39:43  INFO        [S1] Config: Distance_only
+01:39:43  INFO        [S1] Config: Cointegration_only
+01:39:43  INFO        [S1] Config: Combined_only
+01:39:43  INFO        [S1] Config: ML_only
+01:39:43  INFO        [S1] Config: S1_Ensemble
+01:39:43  INFO      
+--- Running Stage 2 Ablation ---
+01:39:43  INFO        [S2] Pre-selecting pairs per fold ...
+01:39:43  INFO        [S2] Config: ZScore_only
+01:39:43  INFO        [S2] Config: OU_only
+01:39:43  INFO        [S2] Config: Kalman_only
+01:39:43  INFO        [S2] Config: ML_only
+01:39:43  INFO        [S2] Config: S2_Ensemble
+01:39:43  INFO      Total ablation time: 0s
+01:39:43  INFO      Results saved -> /users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/results/ablation_20260405_013943.json
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1775333387.365556   75470 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1775333391.185234   75470 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+01:39:52  INFO      ================================================================
+01:39:52  INFO      E3 Ablation  |  mode=full  |  stage=both  |  top_k=10
+01:39:52  INFO      min_hold=30  capital=1,000,000
+01:39:52  INFO      ================================================================
+01:39:52  INFO      [Data] Fetching full 10-year daily prices ...
+01:39:53  ERROR     
+35 Failed downloads:
+01:39:53  ERROR     ['ICICIBANK.NS', 'CIPLA.NS', 'BPCL.NS', 'MARUTI.NS', 'HINDUNILVR.NS', 'EICHERMOT.NS', 'HEROMOTOCO.NS', 'TECHM.NS', 'ONGC.NS', 'SHREECEM.NS', 'DIVISLAB.NS', 'DRREDDY.NS', 'TCS.NS', 'AXISBANK.NS', 'JSWSTEEL.NS', 'SUNPHARMA.NS', 'COALINDIA.NS', 'NESTLEIND.NS', 'WIPRO.NS', 'ACC.NS', 'ULTRACEMCO.NS', 'HDFCBANK.NS', 'IOC.NS', 'HCLTECH.NS', 'ITC.NS', 'SBIN.NS', 'INFY.NS', 'TATASTEEL.NS', 'KOTAKBANK.NS', 'BAJAJ-AUTO.NS', 'HINDALCO.NS', 'BRITANNIA.NS', 'M&M.NS', 'RELIANCE.NS', 'INDUSINDBK.NS']: TypeError("'NoneType' object is not subscriptable")
+01:39:54  INFO        0 tickers x 0 bars
+01:39:54  INFO      
+--- Running Stage 1 Ablation ---
+01:39:54  INFO        Stage 1 ablation: ['Correlation_only', 'Distance_only', 'Cointegration_only', 'Combined_only', 'ML_only', 'LSTM_only', 'Transformer_only', 'GNN_only', 'S1_Ensemble']
+01:39:54  INFO        [S1] Config: Correlation_only
+01:39:54  INFO        [S1] Config: Distance_only
+01:39:54  INFO        [S1] Config: Cointegration_only
+01:39:54  INFO        [S1] Config: Combined_only
+01:39:54  INFO        [S1] Config: ML_only
+01:39:54  INFO        [S1] Config: LSTM_only
+01:39:54  INFO        [S1] Config: Transformer_only
+01:39:54  INFO        [S1] Config: GNN_only
+01:39:54  INFO        [S1] Config: S1_Ensemble
+01:39:54  INFO      
+--- Running Stage 2 Ablation ---
+01:39:54  INFO        [S2] Pre-selecting pairs per fold ...
+01:39:54  INFO        [S2] Config: ZScore_only
+01:39:54  INFO        [S2] Config: OU_only
+01:39:54  INFO        [S2] Config: Kalman_only
+01:39:54  INFO        [S2] Config: ML_only
+01:39:54  INFO        [S2] Config: S2_Ensemble
+01:39:54  INFO      Total ablation time: 0s
+01:39:54  INFO      Results saved -> /users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/results/ablation_20260405_013954.json

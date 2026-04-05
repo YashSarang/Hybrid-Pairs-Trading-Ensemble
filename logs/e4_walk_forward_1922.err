@@ -1,0 +1,96 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1775332503.431699   74577 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1775332511.228660   74577 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+01:25:13  INFO      ================================================================
+01:25:13  INFO      E4 Walk-Forward Validation  |  mode=full  |  s2=ou_only  |  top_k=10
+01:25:13  INFO      Folds: ['Fold1_2020', 'Fold2_2021', 'Fold3_2022', 'Fold4_2023', 'Fold5_2024', 'Fold6_2025']
+01:25:13  INFO      min_hold_bars=30  capital=1,000,000
+01:25:13  INFO      ================================================================
+01:25:13  INFO      [Data] Fetching full 10-year daily prices ...
+01:25:13  INFO      Failed to create TzCache, reason: Error creating TzCache folder: '/users/student/pg/pg24/yash.sarang/.cache/py-yfinance' reason: [Errno 17] File exists: '/users/student/pg/pg24/yash.sarang/.cache/py-yfinance'. TzCache will not be used. Tip: You can direct cache to use a different location with 'set_tz_cache_location(mylocation)'
+01:25:13  INFO      Failed to create TzCache, reason: Error creating TzCache folder: '/users/student/pg/pg24/yash.sarang/.cache/py-yfinance' reason: [Errno 17] File exists: '/users/student/pg/pg24/yash.sarang/.cache/py-yfinance'. TzCache will not be used. Tip: You can direct cache to use a different location with 'set_tz_cache_location(mylocation)'
+01:25:13  INFO      Failed to create TzCache, reason: Error creating TzCache folder: '/users/student/pg/pg24/yash.sarang/.cache/py-yfinance' reason: [Errno 17] File exists: '/users/student/pg/pg24/yash.sarang/.cache/py-yfinance'. TzCache will not be used. Tip: You can direct cache to use a different location with 'set_tz_cache_location(mylocation)'
+01:25:13  ERROR     Failed to get ticker 'HDFCBANK.NS' reason: database is locked
+01:25:13  ERROR     Failed to get ticker 'JSWSTEEL.NS' reason: Impersonating chrome136 is not supported
+01:25:13  ERROR     Failed to get ticker 'ICICIBANK.NS' reason: Impersonating chrome136 is not supported
+01:25:13  ERROR     $ICICIBANK.NS: possibly delisted; no timezone found
+01:25:13  ERROR     Failed to get ticker 'SBIN.NS' reason: Impersonating chrome136 is not supported
+01:25:13  ERROR     $SBIN.NS: possibly delisted; no timezone found
+01:25:13  ERROR     Failed to get ticker 'HINDUNILVR.NS' reason: Impersonating chrome136 is not supported
+01:25:13  ERROR     $HINDUNILVR.NS: possibly delisted; no timezone found
+01:25:13  ERROR     Failed to get ticker 'BRITANNIA.NS' reason: Impersonating chrome136 is not supported
+01:25:13  ERROR     $BRITANNIA.NS: possibly delisted; no timezone found
+01:25:13  ERROR     Failed to get ticker 'EICHERMOT.NS' reason: Impersonating chrome136 is not supported
+01:25:13  ERROR     $EICHERMOT.NS: possibly delisted; no timezone found
+01:25:13  ERROR     Failed to get ticker 'INFY.NS' reason: Impersonating chrome136 is not supported
+01:25:13  ERROR     $INFY.NS: possibly delisted; no timezone found
+01:25:13  ERROR     Failed to get ticker 'DRREDDY.NS' reason: Impersonating chrome136 is not supported
+01:25:13  ERROR     $DRREDDY.NS: possibly delisted; no timezone found
+01:25:13  ERROR     Failed to get ticker 'TECHM.NS' reason: Impersonating chrome136 is not supported
+01:25:13  ERROR     $TECHM.NS: possibly delisted; no timezone found
+01:25:13  ERROR     Failed to get ticker 'ULTRACEMCO.NS' reason: Impersonating chrome136 is not supported
+01:25:13  ERROR     $ULTRACEMCO.NS: possibly delisted; no timezone found
+01:25:13  ERROR     Failed to get ticker 'ITC.NS' reason: Impersonating chrome136 is not supported
+01:25:13  ERROR     $ITC.NS: possibly delisted; no timezone found
+01:25:13  ERROR     Failed to get ticker 'COALINDIA.NS' reason: Impersonating chrome136 is not supported
+01:25:13  ERROR     $COALINDIA.NS: possibly delisted; no timezone found
+01:25:14  ERROR     Failed to get ticker 'DIVISLAB.NS' reason: Impersonating chrome136 is not supported
+01:25:14  ERROR     $DIVISLAB.NS: possibly delisted; no timezone found
+01:25:14  ERROR     Failed to get ticker 'BPCL.NS' reason: Impersonating chrome136 is not supported
+01:25:14  ERROR     $BPCL.NS: possibly delisted; no timezone found
+01:25:14  ERROR     Failed to get ticker 'KOTAKBANK.NS' reason: Impersonating chrome136 is not supported
+01:25:14  ERROR     $KOTAKBANK.NS: possibly delisted; no timezone found
+01:25:14  ERROR     Failed to get ticker 'TATASTEEL.NS' reason: Impersonating chrome136 is not supported
+01:25:14  ERROR     $TATASTEEL.NS: possibly delisted; no timezone found
+01:25:14  ERROR     Failed to get ticker 'IOC.NS' reason: Impersonating chrome136 is not supported
+01:25:14  ERROR     $IOC.NS: possibly delisted; no timezone found
+01:25:14  ERROR     Failed to get ticker 'SUNPHARMA.NS' reason: Impersonating chrome136 is not supported
+01:25:14  ERROR     $SUNPHARMA.NS: possibly delisted; no timezone found
+01:25:14  ERROR     Failed to get ticker 'ONGC.NS' reason: Impersonating chrome136 is not supported
+01:25:14  ERROR     $ONGC.NS: possibly delisted; no timezone found
+01:25:14  ERROR     Failed to get ticker 'HINDALCO.NS' reason: Impersonating chrome136 is not supported
+01:25:14  ERROR     $HINDALCO.NS: possibly delisted; no timezone found
+01:25:14  ERROR     Failed to get ticker 'SHREECEM.NS' reason: Impersonating chrome136 is not supported
+01:25:14  ERROR     $SHREECEM.NS: possibly delisted; no timezone found
+01:25:14  ERROR     Failed to get ticker 'M&M.NS' reason: Impersonating chrome136 is not supported
+01:25:14  ERROR     $M&M.NS: possibly delisted; no timezone found
+01:25:14  ERROR     Failed to get ticker 'HCLTECH.NS' reason: Impersonating chrome136 is not supported
+01:25:14  ERROR     $HCLTECH.NS: possibly delisted; no timezone found
+01:25:14  ERROR     Failed to get ticker 'HEROMOTOCO.NS' reason: Impersonating chrome136 is not supported
+01:25:14  ERROR     $HEROMOTOCO.NS: possibly delisted; no timezone found
+01:25:14  ERROR     Failed to get ticker 'ACC.NS' reason: Impersonating chrome136 is not supported
+01:25:14  ERROR     $ACC.NS: possibly delisted; no timezone found
+01:25:14  ERROR     Failed to get ticker 'RELIANCE.NS' reason: Impersonating chrome136 is not supported
+01:25:14  ERROR     $RELIANCE.NS: possibly delisted; no timezone found
+01:25:14  ERROR     Failed to get ticker 'WIPRO.NS' reason: Impersonating chrome136 is not supported
+01:25:14  ERROR     $WIPRO.NS: possibly delisted; no timezone found
+01:25:14  ERROR     Failed to get ticker 'CIPLA.NS' reason: Impersonating chrome136 is not supported
+01:25:14  ERROR     $CIPLA.NS: possibly delisted; no timezone found
+01:25:14  ERROR     Failed to get ticker 'MARUTI.NS' reason: Impersonating chrome136 is not supported
+01:25:14  ERROR     $MARUTI.NS: possibly delisted; no timezone found
+01:25:14  ERROR     Failed to get ticker 'AXISBANK.NS' reason: Impersonating chrome136 is not supported
+01:25:14  ERROR     $AXISBANK.NS: possibly delisted; no timezone found
+01:25:14  ERROR     Failed to get ticker 'NESTLEIND.NS' reason: Impersonating chrome136 is not supported
+01:25:14  ERROR     $NESTLEIND.NS: possibly delisted; no timezone found
+01:25:14  ERROR     Failed to get ticker 'TCS.NS' reason: Impersonating chrome136 is not supported
+01:25:14  ERROR     $TCS.NS: possibly delisted; no timezone found
+01:25:14  ERROR     Failed to get ticker 'INDUSINDBK.NS' reason: Impersonating chrome136 is not supported
+01:25:14  ERROR     $INDUSINDBK.NS: possibly delisted; no timezone found
+01:25:14  ERROR     
+35 Failed downloads:
+01:25:14  ERROR     ['BAJAJ-AUTO.NS']: OperationalError('database is locked')
+01:25:14  ERROR     ['ICICIBANK.NS', 'SBIN.NS', 'HINDUNILVR.NS', 'BRITANNIA.NS', 'EICHERMOT.NS', 'INFY.NS', 'DRREDDY.NS', 'TECHM.NS', 'ULTRACEMCO.NS', 'ITC.NS', 'COALINDIA.NS', 'DIVISLAB.NS', 'BPCL.NS', 'KOTAKBANK.NS', 'TATASTEEL.NS', 'IOC.NS', 'SUNPHARMA.NS', 'ONGC.NS', 'HINDALCO.NS', 'SHREECEM.NS', 'M&M.NS', 'HCLTECH.NS', 'HEROMOTOCO.NS', 'ACC.NS', 'RELIANCE.NS', 'WIPRO.NS', 'CIPLA.NS', 'MARUTI.NS', 'AXISBANK.NS', 'NESTLEIND.NS', 'TCS.NS', 'INDUSINDBK.NS']: possibly delisted; no timezone found
+01:25:14  ERROR     ['HDFCBANK.NS', 'JSWSTEEL.NS']: ImpersonateError('Impersonating chrome136 is not supported')
+Traceback (most recent call last):
+  File "/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/walk_forward.py", line 705, in <module>
+    main()
+  File "/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/walk_forward.py", line 643, in main
+    f"({prices.index[0].date()} -> {prices.index[-1].date()})")
+  File "/users/student/pg/pg24/yash.sarang/miniconda3/envs/pairs_trading/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 5401, in __getitem__
+    return getitem(key)
+  File "/users/student/pg/pg24/yash.sarang/miniconda3/envs/pairs_trading/lib/python3.10/site-packages/pandas/core/arrays/datetimelike.py", line 398, in __getitem__
+    result = cast("Union[Self, DTScalarOrNaT]", super().__getitem__(key))
+  File "/users/student/pg/pg24/yash.sarang/miniconda3/envs/pairs_trading/lib/python3.10/site-packages/pandas/core/arrays/_mixins.py", line 284, in __getitem__
+    result = self._ndarray[key]
+IndexError: index 0 is out of bounds for axis 0 with size 0

@@ -1,0 +1,32 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1775333570.845089   75683 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1775333574.694671   75683 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+01:42:56  INFO      Frequency Comparison Experiment — 2026-04-05 01:42
+01:42:56  INFO      Universe : 35 stocks | Period   : 2024-05-05 -> 2026-04-04 | Selectors: full | Top-K    : 10
+01:42:56  INFO      ================================================================
+01:42:56  INFO        FREQUENCY: 1D   |   universe=35 stocks   |   mode=full
+01:42:56  INFO      ================================================================
+01:42:56  INFO      [1/5] Fetching price data …
+/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/core/data.py:136: PerformanceWarning: indexing past lexsort depth may impact performance.
+  if col in data.columns:
+/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/core/data.py:137: PerformanceWarning: indexing past lexsort depth may impact performance.
+  s = data[col].rename(_strip_ns(t))
+Traceback (most recent call last):
+  File "/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/freq_comparison.py", line 539, in <module>
+    main()
+  File "/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/freq_comparison.py", line 517, in main
+    results[freq] = run_experiment(
+  File "/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/freq_comparison.py", line 265, in run_experiment
+    prices = src.get_prices(universe, cfg)
+  File "/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/core/data.py", line 137, in get_prices
+    s = data[col].rename(_strip_ns(t))
+  File "/users/student/pg/pg24/yash.sarang/miniconda3/envs/pairs_trading/lib/python3.10/site-packages/pandas/core/frame.py", line 5789, in rename
+    return super()._rename(
+  File "/users/student/pg/pg24/yash.sarang/miniconda3/envs/pairs_trading/lib/python3.10/site-packages/pandas/core/generic.py", line 1135, in _rename
+    new_index = ax._transform_index(f, level=level)
+  File "/users/student/pg/pg24/yash.sarang/miniconda3/envs/pairs_trading/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 6583, in _transform_index
+    items = [func(x) for x in self]
+  File "/users/student/pg/pg24/yash.sarang/miniconda3/envs/pairs_trading/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 6583, in <listcomp>
+    items = [func(x) for x in self]
+TypeError: 'str' object is not callable

@@ -1,0 +1,29 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1775333144.387789   75203 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1775333148.383648   75203 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+01:35:50  INFO      ================================================================
+01:35:50  INFO      E4 Walk-Forward Validation  |  mode=full  |  s2=ou_only  |  top_k=10
+01:35:50  INFO      Folds: ['Fold1_2020', 'Fold2_2021', 'Fold3_2022', 'Fold4_2023', 'Fold5_2024', 'Fold6_2025']
+01:35:50  INFO      min_hold_bars=30  capital=1,000,000
+01:35:50  INFO      ================================================================
+01:35:50  INFO      [Data] Fetching full 10-year daily prices ...
+/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/core/data.py:106: UserWarning: Could not infer format, so each element will be parsed individually, falling back to `dateutil`. To ensure parsing is consistent and as-expected, please specify a format.
+  data = pd.read_csv(cache_file, index_col=0, header=[0, 1], parse_dates=True)
+Traceback (most recent call last):
+  File "/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/walk_forward.py", line 705, in <module>
+    main()
+  File "/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/walk_forward.py", line 639, in main
+    prices = YFinanceNSESource().get_prices(NSE_UNIVERSE, cfg)
+  File "/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/core/data.py", line 152, in get_prices
+    wide = wide.loc[(wide.index >= pd.Timestamp(cfg.start))
+  File "/users/student/pg/pg24/yash.sarang/miniconda3/envs/pairs_trading/lib/python3.10/site-packages/pandas/core/ops/common.py", line 76, in new_method
+    return method(self, other)
+  File "/users/student/pg/pg24/yash.sarang/miniconda3/envs/pairs_trading/lib/python3.10/site-packages/pandas/core/arraylike.py", line 60, in __ge__
+    return self._cmp_method(other, operator.ge)
+  File "/users/student/pg/pg24/yash.sarang/miniconda3/envs/pairs_trading/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 7267, in _cmp_method
+    result = ops.comp_method_OBJECT_ARRAY(op, self._values, other)
+  File "/users/student/pg/pg24/yash.sarang/miniconda3/envs/pairs_trading/lib/python3.10/site-packages/pandas/core/ops/array_ops.py", line 129, in comp_method_OBJECT_ARRAY
+    result = libops.scalar_compare(x.ravel(), y, op)
+  File "pandas/_libs/ops.pyx", line 107, in pandas._libs.ops.scalar_compare
+TypeError: '>=' not supported between instances of 'str' and 'Timestamp'

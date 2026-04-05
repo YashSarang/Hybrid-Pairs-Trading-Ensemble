@@ -1,0 +1,30 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1775333554.638493   75607 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1775333558.691309   75607 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+01:42:40  INFO      ================================================================
+01:42:40  INFO      E4 Walk-Forward Validation  |  mode=full  |  s2=ou_only  |  top_k=10
+01:42:40  INFO      Folds: ['Fold1_2020', 'Fold2_2021', 'Fold3_2022', 'Fold4_2023', 'Fold5_2024', 'Fold6_2025']
+01:42:40  INFO      min_hold_bars=30  capital=1,000,000
+01:42:40  INFO      ================================================================
+01:42:40  INFO      [Data] Fetching full 10-year daily prices ...
+/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/core/data.py:136: PerformanceWarning: indexing past lexsort depth may impact performance.
+  if col in data.columns:
+/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/core/data.py:137: PerformanceWarning: indexing past lexsort depth may impact performance.
+  s = data[col].rename(_strip_ns(t))
+Traceback (most recent call last):
+  File "/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/walk_forward.py", line 705, in <module>
+    main()
+  File "/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/walk_forward.py", line 639, in main
+    prices = YFinanceNSESource().get_prices(NSE_UNIVERSE, cfg)
+  File "/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/core/data.py", line 137, in get_prices
+    s = data[col].rename(_strip_ns(t))
+  File "/users/student/pg/pg24/yash.sarang/miniconda3/envs/pairs_trading/lib/python3.10/site-packages/pandas/core/frame.py", line 5789, in rename
+    return super()._rename(
+  File "/users/student/pg/pg24/yash.sarang/miniconda3/envs/pairs_trading/lib/python3.10/site-packages/pandas/core/generic.py", line 1135, in _rename
+    new_index = ax._transform_index(f, level=level)
+  File "/users/student/pg/pg24/yash.sarang/miniconda3/envs/pairs_trading/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 6583, in _transform_index
+    items = [func(x) for x in self]
+  File "/users/student/pg/pg24/yash.sarang/miniconda3/envs/pairs_trading/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 6583, in <listcomp>
+    items = [func(x) for x in self]
+TypeError: 'str' object is not callable

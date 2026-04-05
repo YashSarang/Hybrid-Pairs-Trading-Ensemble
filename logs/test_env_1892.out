@@ -1,0 +1,53 @@
+==========================================
+Testing environment setup
+==========================================
+
+Python version:
+Python 3.12.3
+
+Checking for pip:
+/usr/bin/python3: No module named pip
+pip not found via -m pip
+
+Checking for get-pip.py:
+get-pip.py not found
+
+Checking available Python packages:
+Python path: ['', '/usr/lib/python312.zip', '/usr/lib/python3.12', '/usr/lib/python3.12/lib-dynload', '/usr/local/lib/python3.12/dist-packages', '/usr/lib/python3/dist-packages']
+
+Checking for apt:
+/usr/bin/apt
+apt 2.8.3 (amd64)
+
+Checking for conda:
+conda not available
+
+Checking for mamba:
+mamba not available
+
+Checking for uv:
+uv not available
+
+Checking installed Python packages:
+CommandNotFound
+DistUpgrade
+HweSupportStatus
+NvidiaDetector
+OpenSSL
+Quirks
+UbuntuDrivers
+UpdateManager
+__future__
+__hello__
+__phello__
+_aix_support
+_asyncio
+_bz2
+_cffi_backend
+_codecs_cn
+_codecs_hk
+_codecs_iso2022
+_codecs_jp
+_codecs_kr
+
+==========================================

@@ -1,0 +1,13 @@
+==========================================
+E4: Walk-Forward Validation
+Signal: ou_only (best statistical signal)
+Start time: Sun Apr  5 12:28:14 AM IST 2026
+==========================================
+Creating virtual environment...
+Installing requirements...
+Checking CUDA availability...
+Running walk-forward validation...
+==========================================
+E4 FAILED - Check logs for details
+End time: Sun Apr  5 12:28:14 AM IST 2026
+==========================================

@@ -1,0 +1,81 @@
+==========================================
+E3: Ablation Study
+Start time: Sun Apr  5 01:39:24 AM IST 2026
+==========================================
+Python: /users/student/pg/pg24/yash.sarang/miniconda3/envs/pairs_trading/bin/python
+Conda env: pairs_trading
+Stage 1: stat_ml
+
+==============================================================================================================
+  STAGE 1 ABLATION — Out-of-Sample Results (mean +/- std across 6 folds, 2020-2025)
+==============================================================================================================
+                Config    GrossSharpeMean      NetSharpeMean    NetRet% Mean   MaxDD% Mean    Trd/YrMean   FullOOS GrossSR   FullOOS NetSR
+--------------------------------------------------------------------------------------------------------------
+      Correlation_only  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]               nan             nan
+         Distance_only  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]               nan             nan
+    Cointegration_only  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]               nan             nan
+         Combined_only  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]               nan             nan
+               ML_only  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]               nan             nan
+S1_Ensemble [ENSEMBLE]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]               nan             nan
+--------------------------------------------------------------------------------------------------------------
+
+  Verdict: BEST INDIVIDUAL >= ENSEMBLE  (ensemble full-OOS Net SR -inf  vs  best individual -inf;  margin=+nan)
+==============================================================================================================
+
+
+==============================================================================================================
+  STAGE 2 ABLATION — Out-of-Sample Results (mean +/- std across 6 folds, 2020-2025)
+==============================================================================================================
+                Config    GrossSharpeMean      NetSharpeMean    NetRet% Mean   MaxDD% Mean    Trd/YrMean   FullOOS GrossSR   FullOOS NetSR
+--------------------------------------------------------------------------------------------------------------
+           ZScore_only  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]               nan             nan
+               OU_only  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]               nan             nan
+           Kalman_only  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]               nan             nan
+               ML_only  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]               nan             nan
+S2_Ensemble [ENSEMBLE]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]               nan             nan
+--------------------------------------------------------------------------------------------------------------
+
+  Verdict: BEST INDIVIDUAL >= ENSEMBLE  (ensemble full-OOS Net SR -inf  vs  best individual -inf;  margin=+nan)
+==============================================================================================================
+
+
+Stage 2: full
+
+==============================================================================================================
+  STAGE 1 ABLATION — Out-of-Sample Results (mean +/- std across 6 folds, 2020-2025)
+==============================================================================================================
+                Config    GrossSharpeMean      NetSharpeMean    NetRet% Mean   MaxDD% Mean    Trd/YrMean   FullOOS GrossSR   FullOOS NetSR
+--------------------------------------------------------------------------------------------------------------
+      Correlation_only  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]               nan             nan
+         Distance_only  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]               nan             nan
+    Cointegration_only  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]               nan             nan
+         Combined_only  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]               nan             nan
+               ML_only  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]               nan             nan
+             LSTM_only  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]               nan             nan
+      Transformer_only  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]               nan             nan
+              GNN_only  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]               nan             nan
+S1_Ensemble [ENSEMBLE]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]               nan             nan
+--------------------------------------------------------------------------------------------------------------
+
+  Verdict: BEST INDIVIDUAL >= ENSEMBLE  (ensemble full-OOS Net SR -inf  vs  best individual -inf;  margin=+nan)
+==============================================================================================================
+
+
+==============================================================================================================
+  STAGE 2 ABLATION — Out-of-Sample Results (mean +/- std across 6 folds, 2020-2025)
+==============================================================================================================
+                Config    GrossSharpeMean      NetSharpeMean    NetRet% Mean   MaxDD% Mean    Trd/YrMean   FullOOS GrossSR   FullOOS NetSR
+--------------------------------------------------------------------------------------------------------------
+           ZScore_only  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]               nan             nan
+               OU_only  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]               nan             nan
+           Kalman_only  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]               nan             nan
+               ML_only  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]               nan             nan
+S2_Ensemble [ENSEMBLE]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]  nan +/-nan [nan%]               nan             nan
+--------------------------------------------------------------------------------------------------------------
+
+  Verdict: BEST INDIVIDUAL >= ENSEMBLE  (ensemble full-OOS Net SR -inf  vs  best individual -inf;  margin=+nan)
+==============================================================================================================
+
+==========================================
+End time: Sun Apr  5 01:39:54 AM IST 2026
+==========================================

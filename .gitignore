@@ -1,59 +1,10 @@
 # Python
 __pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
+
 
 # Virtual Environment
 .venv/
-venv/
-ENV/
-env/
 
 # IDE
-# .kiro
+.kiro/
 .vscode/
-.idea/
-*.swp
-*.swo
-*~
-
-# Reports (keep structure but ignore data)
-# reports/*/
-!reports/README.md
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Streamlit
-.streamlit/
-
-# Data files
-*.csv
-*.parquet
-!requirements.txt
-
-# Models
-*.pkl
-*.h5
-*.joblib
-
-# Logs
-*.log

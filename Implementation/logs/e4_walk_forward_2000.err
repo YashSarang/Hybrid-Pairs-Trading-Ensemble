@@ -1,0 +1,144 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1775416566.940424  116868 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1775416571.244011  116868 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+00:46:13  INFO      ================================================================
+00:46:13  INFO      E4 Walk-Forward Validation  |  mode=full  |  s2=ou_only  |  top_k=10
+00:46:13  INFO      Folds: ['Fold1_2020', 'Fold2_2021', 'Fold3_2022', 'Fold4_2023', 'Fold5_2024', 'Fold6_2025']
+00:46:13  INFO      min_hold_bars=30  capital=1,000,000
+00:46:13  INFO      ================================================================
+00:46:13  INFO      [Data] Fetching full 10-year daily prices ...
+/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/core/data.py:136: PerformanceWarning: indexing past lexsort depth may impact performance.
+  if col in data.columns:
+/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/core/data.py:137: PerformanceWarning: indexing past lexsort depth may impact performance.
+  s = data[col]
+00:46:13  INFO        35 tickers x 3742 bars  (2016-01-01 -> 2026-03-30)
+00:46:13  INFO        --- Fold1_2020 | Train 2016-01-01 -> 2019-12-31 | Test 2020-01-01 -> 2020-12-31 ---
+00:46:34  INFO      [MLSelector.fit] y class counts: {0: 335, 1: 260}
+[00:46:35] WARNING: /__w/xgboost/xgboost/src/common/error_msg.cc:62: Falling back to prediction using DMatrix due to mismatched devices. This might lead to higher memory usage and slower performance. XGBoost is running on: cuda:0, while the input data is on: cpu.
+Potential solutions:
+- Use a data structure that matches the device ordinal in the booster.
+- Set the device for booster before call to inplace_predict.
+
+This warning will only be shown once.
+
+00:47:27  INFO      [LSTMSelector] 671755 sequences, class dist: {0: 335187, 1: 336568}
+00:47:27  INFO      [LSTMSelector] Subsampled to 50000 sequences.
+/users/student/pg/pg24/yash.sarang/miniconda3/envs/pairs_trading/lib/python3.10/site-packages/keras/src/layers/rnn/bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+00:48:03  INFO      [LSTMSelector] Training complete.
+00:48:21  INFO      [TransformerSelector] 671755 sequences, class dist: {0: 335187, 1: 336568}
+00:48:21  INFO      [TransformerSelector] Subsampled to 50000 sequences.
+00:48:21  WARNING       [Transformer] failed: Exception encountered when calling Lambda.call().
+
+[1mWe could not automatically infer the shape of the Lambda's output. Please specify the `output_shape` argument for this Lambda layer.[0m
+
+Arguments received by Lambda.call():
+  • args=('<KerasTensor shape=(None, 60, 32), dtype=float16, sparse=False, ragged=False, name=keras_tensor_18>',)
+  • kwargs={'mask': 'None'}
+00:48:24  INFO      [GNNSelector] Training on 8 snapshots, N=35 stocks.
+00:50:28  INFO      [GNNSelector] Training complete.
+00:50:28  INFO          Pairs selected (10): ['M&M-ONGC', 'TATASTEEL-JSWSTEEL', 'MARUTI-BAJAJ-AUTO', 'ONGC-COALINDIA', 'M&M-IOC'] ...
+00:50:28  INFO          OOS => Gross Sharpe=-0.057  Net Sharpe=-0.269  Net Ret=-3.06%  Trades/yr=105  [sel=255.4s bt=0.1s]
+00:50:28  INFO        --- Fold2_2021 | Train 2016-01-01 -> 2020-12-31 | Test 2021-01-01 -> 2021-12-31 ---
+00:50:59  INFO      [MLSelector.fit] y class counts: {0: 340, 1: 255}
+00:51:58  INFO      [LSTMSelector] 889525 sequences, class dist: {0: 442602, 1: 446923}
+00:51:58  INFO      [LSTMSelector] Subsampled to 50000 sequences.
+/users/student/pg/pg24/yash.sarang/miniconda3/envs/pairs_trading/lib/python3.10/site-packages/keras/src/layers/rnn/bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+00:52:46  INFO      [LSTMSelector] Training complete.
+00:53:00  INFO      [TransformerSelector] 889525 sequences, class dist: {0: 442602, 1: 446923}
+00:53:00  INFO      [TransformerSelector] Subsampled to 50000 sequences.
+00:53:00  WARNING       [Transformer] failed: Exception encountered when calling Lambda.call().
+
+[1mWe could not automatically infer the shape of the Lambda's output. Please specify the `output_shape` argument for this Lambda layer.[0m
+
+Arguments received by Lambda.call():
+  • args=('<KerasTensor shape=(None, 60, 32), dtype=float16, sparse=False, ragged=False, name=keras_tensor_38>',)
+  • kwargs={'mask': 'None'}
+00:53:02  INFO      [GNNSelector] Training on 7 snapshots, N=35 stocks.
+00:54:52  INFO      [GNNSelector] Training complete.
+00:54:52  INFO          Pairs selected (10): ['ICICIBANK-AXISBANK', 'TECHM-JSWSTEEL', 'HDFCBANK-AXISBANK', 'KOTAKBANK-AXISBANK', 'TCS-WIPRO'] ...
+00:54:52  INFO          OOS => Gross Sharpe=0.344  Net Sharpe=0.080  Net Ret=0.59%  Trades/yr=85  [sel=263.6s bt=0.1s]
+00:54:52  INFO        --- Fold3_2022 | Train 2016-01-01 -> 2021-12-31 | Test 2022-01-01 -> 2022-12-31 ---
+00:55:28  INFO      [MLSelector.fit] y class counts: {0: 306, 1: 289}
+00:56:38  INFO      [LSTMSelector] 1106700 sequences, class dist: {0: 549456, 1: 557244}
+00:56:39  INFO      [LSTMSelector] Subsampled to 50000 sequences.
+/users/student/pg/pg24/yash.sarang/miniconda3/envs/pairs_trading/lib/python3.10/site-packages/keras/src/layers/rnn/bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+00:57:09  INFO      [LSTMSelector] Training complete.
+00:57:24  INFO      [TransformerSelector] 1106700 sequences, class dist: {0: 549456, 1: 557244}
+00:57:25  INFO      [TransformerSelector] Subsampled to 50000 sequences.
+00:57:25  WARNING       [Transformer] failed: Exception encountered when calling Lambda.call().
+
+[1mWe could not automatically infer the shape of the Lambda's output. Please specify the `output_shape` argument for this Lambda layer.[0m
+
+Arguments received by Lambda.call():
+  • args=('<KerasTensor shape=(None, 60, 32), dtype=float16, sparse=False, ragged=False, name=keras_tensor_58>',)
+  • kwargs={'mask': 'None'}
+00:57:27  INFO      [GNNSelector] Training on 8 snapshots, N=35 stocks.
+00:59:32  INFO      [GNNSelector] Training complete.
+00:59:32  INFO          Pairs selected (10): ['ULTRACEMCO-ACC', 'SUNPHARMA-HINDALCO', 'HINDUNILVR-BRITANNIA', 'BAJAJ-AUTO-HEROMOTOCO', 'ONGC-IOC'] ...
+00:59:32  INFO          OOS => Gross Sharpe=1.746  Net Sharpe=1.375  Net Ret=7.60%  Trades/yr=90  [sel=280.5s bt=0.1s]
+00:59:32  INFO        --- Fold4_2023 | Train 2016-01-01 -> 2022-12-31 | Test 2023-01-01 -> 2023-12-31 ---
+01:00:16  INFO      [MLSelector.fit] y class counts: {0: 250, 1: 345}
+01:01:33  INFO      [LSTMSelector] 1323875 sequences, class dist: {0: 657867, 1: 666008}
+01:01:34  INFO      [LSTMSelector] Subsampled to 50000 sequences.
+/users/student/pg/pg24/yash.sarang/miniconda3/envs/pairs_trading/lib/python3.10/site-packages/keras/src/layers/rnn/bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+01:02:03  INFO      [LSTMSelector] Training complete.
+01:02:16  INFO      [TransformerSelector] 1323875 sequences, class dist: {0: 657867, 1: 666008}
+01:02:16  INFO      [TransformerSelector] Subsampled to 50000 sequences.
+01:02:16  WARNING       [Transformer] failed: Exception encountered when calling Lambda.call().
+
+[1mWe could not automatically infer the shape of the Lambda's output. Please specify the `output_shape` argument for this Lambda layer.[0m
+
+Arguments received by Lambda.call():
+  • args=('<KerasTensor shape=(None, 60, 32), dtype=float16, sparse=False, ragged=False, name=keras_tensor_78>',)
+  • kwargs={'mask': 'None'}
+01:02:19  INFO      [GNNSelector] Training on 8 snapshots, N=35 stocks.
+01:04:23  INFO      [GNNSelector] Training complete.
+01:04:23  INFO          Pairs selected (10): ['ITC-COALINDIA', 'ICICIBANK-COALINDIA', 'TATASTEEL-HINDALCO', 'CIPLA-COALINDIA', 'MARUTI-M&M'] ...
+01:04:23  INFO          OOS => Gross Sharpe=1.322  Net Sharpe=0.927  Net Ret=4.38%  Trades/yr=81  [sel=290.8s bt=0.1s]
+01:04:23  INFO        --- Fold5_2024 | Train 2016-01-01 -> 2023-12-31 | Test 2024-01-01 -> 2024-12-31 ---
+01:05:24  INFO      [MLSelector.fit] y class counts: {0: 281, 1: 314}
+01:07:04  INFO      [LSTMSelector] 1541050 sequences, class dist: {0: 766018, 1: 775032}
+01:07:05  INFO      [LSTMSelector] Subsampled to 50000 sequences.
+/users/student/pg/pg24/yash.sarang/miniconda3/envs/pairs_trading/lib/python3.10/site-packages/keras/src/layers/rnn/bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+01:07:49  INFO      [LSTMSelector] Training complete.
+01:08:02  INFO      [TransformerSelector] 1541050 sequences, class dist: {0: 766018, 1: 775032}
+01:08:03  INFO      [TransformerSelector] Subsampled to 50000 sequences.
+01:08:03  WARNING       [Transformer] failed: Exception encountered when calling Lambda.call().
+
+[1mWe could not automatically infer the shape of the Lambda's output. Please specify the `output_shape` argument for this Lambda layer.[0m
+
+Arguments received by Lambda.call():
+  • args=('<KerasTensor shape=(None, 60, 32), dtype=float16, sparse=False, ragged=False, name=keras_tensor_98>',)
+  • kwargs={'mask': 'None'}
+01:08:05  INFO      [GNNSelector] Training on 8 snapshots, N=35 stocks.
+01:10:11  INFO      [GNNSelector] Training complete.
+01:10:12  INFO          Pairs selected (10): ['INDUSINDBK-M&M', 'HEROMOTOCO-IOC', 'INFY-TECHM', 'TCS-INFY', 'IOC-BPCL'] ...
+01:10:12  INFO          OOS => Gross Sharpe=-1.138  Net Sharpe=-1.338  Net Ret=-11.54%  Trades/yr=74  [sel=348.3s bt=0.1s]
+01:10:12  INFO        --- Fold6_2025 | Train 2016-01-01 -> 2024-12-31 | Test 2025-01-01 -> 2025-12-31 ---
+01:11:10  INFO      [MLSelector.fit] y class counts: {0: 297, 1: 298}
+01:12:49  INFO      [LSTMSelector] 1758820 sequences, class dist: {0: 879622, 1: 879198}
+01:12:50  INFO      [LSTMSelector] Subsampled to 50000 sequences.
+/users/student/pg/pg24/yash.sarang/miniconda3/envs/pairs_trading/lib/python3.10/site-packages/keras/src/layers/rnn/bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+01:13:15  INFO      [LSTMSelector] Training complete.
+01:13:31  INFO      [TransformerSelector] 1758820 sequences, class dist: {0: 879622, 1: 879198}
+01:13:32  INFO      [TransformerSelector] Subsampled to 50000 sequences.
+01:13:32  WARNING       [Transformer] failed: Exception encountered when calling Lambda.call().
+
+[1mWe could not automatically infer the shape of the Lambda's output. Please specify the `output_shape` argument for this Lambda layer.[0m
+
+Arguments received by Lambda.call():
+  • args=('<KerasTensor shape=(None, 60, 32), dtype=float16, sparse=False, ragged=False, name=keras_tensor_118>',)
+  • kwargs={'mask': 'None'}
+01:13:34  INFO      [GNNSelector] Training on 8 snapshots, N=35 stocks.
+01:15:41  INFO      [GNNSelector] Training complete.
+01:15:41  INFO          Pairs selected (10): ['HCLTECH-TECHM', 'IOC-COALINDIA', 'INFY-TECHM', 'TECHM-DIVISLAB', 'HCLTECH-DIVISLAB'] ...
+01:15:41  INFO          OOS => Gross Sharpe=1.075  Net Sharpe=0.757  Net Ret=4.61%  Trades/yr=87  [sel=329.1s bt=0.1s]
+01:15:41  INFO      All folds done in 1768s
+01:15:41  INFO      Results saved -> /users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/results/walk_forward_20260406_011541.json

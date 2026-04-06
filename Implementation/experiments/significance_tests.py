@@ -301,7 +301,9 @@ def main() -> None:
 
     # --- Load ---
     if args.wfv:
-        wfv_path = _RESULTS_DIR / args.wfv
+        p = Path(args.wfv)
+        # Accept absolute paths, paths relative to CWD, or bare filenames
+        wfv_path = p if p.is_absolute() else (_RESULTS_DIR / p.name)
     else:
         wfv_path = _find_wfv_file(args.mode, args.s2)
 

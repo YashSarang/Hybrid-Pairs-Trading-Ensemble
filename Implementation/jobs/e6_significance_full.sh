@@ -21,17 +21,17 @@ conda activate pairs_trading
 
 cd /users/student/pg/pg24/$(whoami)/Hybrid-Pairs-Trading-Ensemble/Implementation
 
-# Run significance tests on the full-mode WFV result (walk_forward_20260406_011541.json)
-echo "--- Significance on full-mode WFV result ---"
+# Run significance tests on full-mode WFV result (E4 full-mode)
+echo "--- Significance on full-mode WFV result (E4 full) ---"
 python experiments/significance_tests.py \
-    --wfv experiments/results/walk_forward_20260406_011541.json \
+    --wfv walk_forward_20260406_011541.json \
     --mode full --s2 ou_only
 
-# Run significance on E7 best weighted result
-# Uncomment and set E7_BEST_RESULT to the actual E7 output filename after E7 runs
-# E7_BEST_RESULT=$(ls -t experiments/results/walk_forward_*.json | head -1)
-# echo "--- Significance on E7 best result: $E7_BEST_RESULT ---"
-# python experiments/significance_tests.py --wfv "$E7_BEST_RESULT" --mode custom --s2 ou_only
+# Run significance on E7 Config C (LSTM+Correlation only — best overall result, Net SR 0.451)
+echo "--- Significance on E7 Config C: LSTM+Corr only ---"
+python experiments/significance_tests.py \
+    --wfv walk_forward_20260406_045231.json \
+    --mode custom --s2 ou_only
 
 echo "=========================================="
 echo "End time: $(date)"

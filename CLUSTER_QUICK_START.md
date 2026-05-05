@@ -11,7 +11,7 @@
 
 ```bash
 # SSH into cluster
-ssh <ldapusername>@kalpana.minds.iitb.ac.in
+ssh yash.sarang@kalpana.minds.iitb.ac.in
 
 # Navigate to project
 cd /users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble
@@ -130,7 +130,3 @@ cat logs/e4_walk_forward_<job_id>.err
 
 ---
 
-## Support
-
-For cluster issues: CMInDS Helpdesk
-For code issues: Check logs and error messages

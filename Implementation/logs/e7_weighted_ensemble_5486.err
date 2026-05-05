@@ -44,3 +44,22 @@ I0000 00:00:1778011112.361227    7125 port.cc:153] oneDNN custom operations are 
 01:40:36  INFO      [LSTMSelector] Training complete.
 01:40:51  INFO      [TransformerSelector] 1106700 sequences, class dist: {0: 549456, 1: 557244}
 01:40:52  INFO      [TransformerSelector] Subsampled to 50000 sequences.
+01:42:15  INFO      [TransformerSelector] Training complete.
+01:42:17  INFO          Pairs selected (10): ['ULTRACEMCO-ACC', 'INFY-WIPRO', 'INFY-TECHM', 'TCS-HCLTECH', 'BAJAJ-AUTO-HEROMOTOCO'] ...
+01:42:17  INFO          OOS => Gross Sharpe=1.574  Net Sharpe=1.228  Net Ret=7.35%  Trades/yr=91  [sel=231.0s bt=0.1s]
+01:42:17  INFO        --- Fold4_2023 | Train 2016-01-01 -> 2022-12-31 | Test 2023-01-01 -> 2023-12-31 ---
+01:42:28  INFO      [LSTMSelector] 1323875 sequences, class dist: {0: 657867, 1: 666008}
+01:42:28  INFO      [LSTMSelector] Subsampled to 50000 sequences.
+/users/student/pg/pg24/yash.sarang/miniconda3/envs/pairs_trading/lib/python3.10/site-packages/keras/src/layers/rnn/bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+01:44:56  INFO      [LSTMSelector] Training complete.
+01:45:17  INFO      [TransformerSelector] 1323875 sequences, class dist: {0: 657867, 1: 666008}
+01:45:18  INFO      [TransformerSelector] Subsampled to 50000 sequences.
+01:47:31  INFO      [TransformerSelector] Training complete.
+01:47:33  INFO          Pairs selected (10): ['ITC-COALINDIA', 'ICICIBANK-COALINDIA', 'SBIN-AXISBANK', 'ICICIBANK-SBIN', 'ICICIBANK-INDUSINDBK'] ...
+01:47:33  INFO          OOS => Gross Sharpe=1.211  Net Sharpe=0.878  Net Ret=4.30%  Trades/yr=71  [sel=315.9s bt=0.1s]
+01:47:33  INFO        --- Fold5_2024 | Train 2016-01-01 -> 2023-12-31 | Test 2024-01-01 -> 2024-12-31 ---
+01:47:54  INFO      [LSTMSelector] 1541050 sequences, class dist: {0: 766018, 1: 775032}
+01:47:55  INFO      [LSTMSelector] Subsampled to 50000 sequences.
+/users/student/pg/pg24/yash.sarang/miniconda3/envs/pairs_trading/lib/python3.10/site-packages/keras/src/layers/rnn/bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)

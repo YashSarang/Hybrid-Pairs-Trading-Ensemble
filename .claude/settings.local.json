@@ -39,7 +39,10 @@
       "Bash(nvidia-smi)",
       "Bash(wc:*)",
       "Bash(grep -n \"entry_rl\\\\|RLSignal\" /c/Code/Hybrid-Pairs-Trading-Ensemble/core/*.py /c/Code/Hybrid-Pairs-Trading-Ensemble/experiments/*.py)",
-      "Bash(python3:*)"
+      "Bash(python3:*)",
+      "Bash(rm EXECUTION_SUMMARY.md Currently_Doing.md ENSEMBLE_METHODOLOGY.md DevNotes.md)",
+      "Bash(rm jobs/submit_all.sh jobs/test_env.sh jobs/bootstrap_pip.sh jobs/e1_frequency_full.sh)",
+      "Bash(ls \"C:\\\\Code\\\\Hybrid-Pairs-Trading-Ensemble\\\\Implementation/\"*.md \"C:\\\\Code\\\\Hybrid-Pairs-Trading-Ensemble\\\\Implementation/\"*.sh)"
     ]
   }
 }

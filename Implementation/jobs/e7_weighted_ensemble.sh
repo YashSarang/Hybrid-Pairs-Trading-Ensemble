@@ -1,7 +1,8 @@
 #!/bin/bash
 #SBATCH --job-name=e7_weighted_ensemble
 #SBATCH --account=cminds_anandi
-#SBATCH --partition=cn3_l40s
+#SBATCH --partition=cn3_anandi
+#SBATCH --qos=anandi
 #SBATCH --gres=gpu:1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=8

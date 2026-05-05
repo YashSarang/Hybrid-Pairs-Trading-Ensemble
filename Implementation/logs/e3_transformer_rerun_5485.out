@@ -1,0 +1,5 @@
+==========================================
+E3: Transformer_only ablation re-run
+Fix: Lambda+GPU crash replaced with _PositionalEncodingLayer
+Start time: Wed May  6 01:27:53 AM IST 2026
+==========================================

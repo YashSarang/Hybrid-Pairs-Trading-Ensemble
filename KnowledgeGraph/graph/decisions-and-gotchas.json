@@ -1,0 +1,153 @@
+{
+  "description": "Known bugs, fixed bugs, key architectural decisions, and files to never load.",
+  "lastUpdated": "2026-05-06",
+
+  "doNotLoad": [
+    {
+      "file": "Implementation/app.py",
+      "reason": "60KB / ~15k tokens. Load only when making Streamlit UI changes."
+    },
+    {
+      "file": "Implementation/core/selectors_ml.py",
+      "reason": "39KB / ~10k tokens. Load only when modifying DL selector implementations."
+    },
+    {
+      "file": "Implementation/core/predictions.py",
+      "reason": "21KB / ~5k tokens. Load only for real-time prediction work."
+    },
+    {
+      "file": "Implementation/experiments/walk_forward.py",
+      "reason": "28KB / ~7k tokens. Load only when modifying the WFV script itself."
+    },
+    {
+      "file": "Implementation/experiments/results/ (any raw file)",
+      "reason": "JSON experiment outputs. Never load in full. Ask for specific metric extracts."
+    },
+    {
+      "file": "Implementation/Research.md",
+      "reason": "54KB / ~13k tokens. Full experiment log — use experiments.json graph instead for summaries."
+    }
+  ],
+
+  "fixedBugs": [
+    {
+      "id": "BUG-01",
+      "description": "TransformerSelector Lambda layer incompatibility with TensorFlow GPU serialization",
+      "file": "Implementation/core/selectors_ml.py",
+      "fix": "Replaced Lambda layer with named `_PositionalEncodingLayer` subclass",
+      "fixDate": "2026-04-06",
+      "impact": "TransformerSelector was crashing on GPU — all Transformer results pre-fix are invalid. Transformer_only single-fold re-run on cluster still pending to validate."
+    },
+    {
+      "id": "BUG-02",
+      "description": "MLSelector._label() all-zero bug — shift(-1) caused all labels to be zero due to lookahead",
+      "file": "Implementation/core/selectors_ml.py",
+      "fix": "Removed shift(-1) — labels are now computed without lookahead",
+      "fixDate": "2026-04-03",
+      "impact": "MLSelector results before this fix are invalid. Post-fix: MLSelector still hurts OOS (stat_ml Net SR -0.163) — it's a label mis-specification, not just a bug."
+    },
+    {
+      "id": "BUG-03",
+      "description": "MLSignal LabelEncoder bug causing crash on unseen labels in OOS folds",
+      "file": "Implementation/core/entry.py",
+      "fix": "Fixed LabelEncoder handling + installed xgboost",
+      "fixDate": "2026-04-02",
+      "impact": "MLSignal now runs but is confirmed worst signal model (Net SR -0.401, OOS overfit)."
+    },
+    {
+      "id": "BUG-04",
+      "description": "TATAMOTORS.NS had data quality issues — frequently missing bars",
+      "file": "Implementation/experiments/config.py",
+      "fix": "Replaced TATAMOTORS.NS with M&M.NS in the 35-stock universe",
+      "fixDate": "2026-04-02",
+      "impact": "All results before this fix used a bad ticker. All published results (E1-E6) use the corrected universe."
+    },
+    {
+      "id": "BUG-05",
+      "description": "yfinance frequency string deprecation — '1H' caused FutureWarning",
+      "file": "Implementation/core/data.py",
+      "fix": "Changed '1H' to '1h' (lowercase)",
+      "fixDate": "2026-04-02",
+      "impact": "Non-breaking warning only; now clean."
+    }
+  ],
+
+  "keyDecisions": [
+    {
+      "decision": "Daily (1D) data only for all main experiments",
+      "rationale": "E1: Gross SR 1.14 (daily) vs 0.49 (hourly); hourly selects poor pairs and goes bankrupt after costs.",
+      "locked": true
+    },
+    {
+      "decision": "DEFAULT_MIN_HOLD = 30 trading days",
+      "rationale": "E2 sweep over [0,5,10,15,20,25,30,40] days — 30 days is the Pareto-optimal elbow (Net SR +0.481, cost drag 2.09pp/yr). Locked in experiments/config.py.",
+      "locked": true
+    },
+    {
+      "decision": "35 NSE large-cap stocks, 8 sectors (all Nifty 100)",
+      "rationale": "Diverse enough for cross-sector pairs; liquid; 561 pairs is tractable. Universe fixed before any backtest.",
+      "locked": true
+    },
+    {
+      "decision": "Expanding-window WFV (6 folds, 2020–2025 test years)",
+      "rationale": "More data in later folds = better model quality; standard in academic finance.",
+      "locked": true
+    },
+    {
+      "decision": "Equal weights for ablation study (E3)",
+      "rationale": "Any other choice would bias the individual model comparisons.",
+      "locked": true
+    },
+    {
+      "decision": "OU-only as Stage 2 signal in all WFV headline experiments",
+      "rationale": "E3 ablation: OUThreshold Net SR +0.359 vs ensemble -0.189. MLSignal overfit, ZScore and Kalman underperform.",
+      "locked": true
+    },
+    {
+      "decision": "MLSelector weight = 0.0 in E7 weighted ensemble",
+      "rationale": "Label mis-specification confirmed across all modes — momentum label is not predictive of mean-reversion quality.",
+      "locked": true
+    },
+    {
+      "decision": "INR 10 lakh capital, 1 lakh per pair",
+      "rationale": "Realistic retail/prop desk size; avoids ADV constraints at 1L notional.",
+      "locked": true
+    },
+    {
+      "decision": "Separate Research.md (log) and Plan.md (roadmap)",
+      "rationale": "Research.md records what was found; Plan.md records what to do next. Neither is a scratch file.",
+      "locked": true
+    },
+    {
+      "decision": "RANDOM_SEED = 42 fixed across all experiments",
+      "rationale": "Academic reproducibility requirement.",
+      "locked": true
+    },
+    {
+      "decision": "IndianCosts dataclass with NSE-specific rates",
+      "rationale": "Existing pairs trading literature uses US cost assumptions — inaccurate for NSE. Indian model adds STT (10bp sell-side), stamp duty, GST.",
+      "locked": true
+    }
+  ],
+
+  "academicRigorChecklist": {
+    "noLookAheadBias": "Partial — selectors fit on training window; signal models need verification in WFV setup",
+    "outOfSampleEvaluation": "DONE — E4 all modes complete",
+    "multipleTestingCorrection": "DONE — E6 Bonferroni over 5 S2 configs",
+    "bootstrapCI": "DONE — E6: Gross SR CI excludes zero (p=0.038)",
+    "grossAndNetResults": "Done — both always reported",
+    "accurateCostModel": "Done — IndianCosts with NSE-specific rates",
+    "benchmarkComparison": "DONE — E5 complete",
+    "universeFixedBeforeBacktest": "Done — locked in experiments/config.py",
+    "randomSeedsFixed": "Done — RANDOM_SEED = 42",
+    "dataSourceDocumented": "Done — yfinance, NSE .NS tickers",
+    "reproducibility": "Done for E1–E6; E7 script not yet built"
+  },
+
+  "pendingWork": [
+    "E7: Build experiments/weighted_ensemble.py (or add --s1-weights flag to walk_forward.py)",
+    "E3: Re-run Transformer_only single ablation fold — jobs/e3_transformer_rerun.sh",
+    "E6: Re-run significance tests on full-mode and E7 results once available",
+    "E1: Full-mode frequency comparison (lower priority, after E7)"
+  ]
+}

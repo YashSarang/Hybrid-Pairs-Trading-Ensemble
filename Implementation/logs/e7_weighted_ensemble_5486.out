@@ -1,0 +1,7 @@
+==========================================
+E7: Weighted Ensemble Walk-Forward
+Start time: Wed May  6 01:27:53 AM IST 2026
+Hypothesis: LSTM-heavy S1 + OU-only S2 beats equal-weight ensemble
+==========================================
+
+--- Config A: LSTM=3, Correlation=2, Distance=1, Cointegration=1, Transformer=1 ---

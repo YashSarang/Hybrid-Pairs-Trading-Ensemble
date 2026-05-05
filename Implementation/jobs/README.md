@@ -1,6 +1,6 @@
 # SLURM Job Scripts — Hybrid Pairs Trading Ensemble
 
-Job submission scripts for the CMInDS Kalpana cluster (partition: `cn3_l40s`, account: `cminds_anandi`).
+Job submission scripts for the CMInDS Kalpana cluster (partition: `cn3_anandi`, account: `cminds_anandi`).
 
 ## Current Status (as of 2026-04-06)
 

@@ -1,0 +1,46 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1778011098.147789    7125 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1778011112.361227    7125 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+01:28:43  INFO      ================================================================
+01:28:43  INFO      Walk-Forward Validation  |  mode=custom({"LSTM":3,"Correlation":2,"Distance":1,"Cointegration":1,"Co)  |  s2=ou_only  |  top_k=10
+01:28:43  INFO      S1 weights: {'LSTM': 3, 'Correlation': 2, 'Distance': 1, 'Cointegration': 1, 'Transformer': 1}
+01:28:43  INFO      Folds: ['Fold1_2020', 'Fold2_2021', 'Fold3_2022', 'Fold4_2023', 'Fold5_2024', 'Fold6_2025']
+01:28:43  INFO      min_hold_bars=30  capital=1,000,000
+01:28:43  INFO      ================================================================
+01:28:43  INFO      [Data] Fetching full 10-year daily prices ...
+/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/core/data.py:136: PerformanceWarning: indexing past lexsort depth may impact performance.
+  if col in data.columns:
+/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/core/data.py:137: PerformanceWarning: indexing past lexsort depth may impact performance.
+  s = data[col]
+01:28:43  INFO        35 tickers x 3742 bars  (2016-01-01 -> 2026-03-30)
+01:28:43  INFO        --- Fold1_2020 | Train 2016-01-01 -> 2019-12-31 | Test 2020-01-01 -> 2020-12-31 ---
+01:28:52  INFO      [LSTMSelector] 671755 sequences, class dist: {0: 335187, 1: 336568}
+01:28:52  INFO      [LSTMSelector] Subsampled to 50000 sequences.
+/users/student/pg/pg24/yash.sarang/miniconda3/envs/pairs_trading/lib/python3.10/site-packages/keras/src/layers/rnn/bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+01:32:12  INFO      [LSTMSelector] Training complete.
+01:32:20  INFO      [TransformerSelector] 671755 sequences, class dist: {0: 335187, 1: 336568}
+01:32:21  INFO      [TransformerSelector] Subsampled to 50000 sequences.
+01:34:56  INFO      [TransformerSelector] Training complete.
+01:34:58  INFO          Pairs selected (10): ['ONGC-COALINDIA', 'MARUTI-BAJAJ-AUTO', 'HINDUNILVR-NESTLEIND', 'M&M-ONGC', 'TATASTEEL-JSWSTEEL'] ...
+01:34:58  INFO          OOS => Gross Sharpe=0.108  Net Sharpe=-0.127  Net Ret=-1.32%  Trades/yr=106  [sel=375.0s bt=0.1s]
+01:34:58  INFO        --- Fold2_2021 | Train 2016-01-01 -> 2020-12-31 | Test 2021-01-01 -> 2021-12-31 ---
+01:35:17  INFO      [LSTMSelector] 889525 sequences, class dist: {0: 442602, 1: 446923}
+01:35:17  INFO      [LSTMSelector] Subsampled to 50000 sequences.
+/users/student/pg/pg24/yash.sarang/miniconda3/envs/pairs_trading/lib/python3.10/site-packages/keras/src/layers/rnn/bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+01:37:43  INFO      [LSTMSelector] Training complete.
+01:37:49  INFO      [TransformerSelector] 889525 sequences, class dist: {0: 442602, 1: 446923}
+01:37:49  INFO      [TransformerSelector] Subsampled to 50000 sequences.
+01:38:24  INFO      [TransformerSelector] Training complete.
+01:38:26  INFO          Pairs selected (10): ['TECHM-JSWSTEEL', 'INFY-WIPRO', 'TCS-WIPRO', 'ICICIBANK-AXISBANK', 'INFY-HCLTECH'] ...
+01:38:26  INFO          OOS => Gross Sharpe=0.832  Net Sharpe=0.597  Net Ret=4.18%  Trades/yr=73  [sel=207.9s bt=0.1s]
+01:38:26  INFO        --- Fold3_2022 | Train 2016-01-01 -> 2021-12-31 | Test 2022-01-01 -> 2022-12-31 ---
+01:38:45  INFO      [LSTMSelector] 1106700 sequences, class dist: {0: 549456, 1: 557244}
+01:38:46  INFO      [LSTMSelector] Subsampled to 50000 sequences.
+/users/student/pg/pg24/yash.sarang/miniconda3/envs/pairs_trading/lib/python3.10/site-packages/keras/src/layers/rnn/bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+01:40:36  INFO      [LSTMSelector] Training complete.
+01:40:51  INFO      [TransformerSelector] 1106700 sequences, class dist: {0: 549456, 1: 557244}
+01:40:52  INFO      [TransformerSelector] Subsampled to 50000 sequences.

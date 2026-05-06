@@ -100,6 +100,7 @@ from core.backtest import BacktestConfig, IndianCosts, _apply_min_hold
 from core.data import DataConfig, YFinanceNSESource
 from core.ensemble import ensemble_pair_scores, ensemble_signals
 from core.entry import KalmanHedge, MLSignal, OUThreshold, ZScoreThreshold
+from core.entry_rl import RLSignal
 from core.selectors import (
     CombinedCriteriaSelector,
     CointegrationSelector,
@@ -151,6 +152,7 @@ _S2_PRESETS = {
     "all":     DEFAULT_S2_WEIGHTS,    # all 4 signal models, equal weight
     "no_ml":   STAT_S2_WEIGHTS,       # ZScore + OU + Kalman (exclude MLSignal)
     "ou_only": OU_ONLY_S2_WEIGHTS,    # OUThreshold only — best from E3 ablation
+    "rl_only": {"RL": 1.0},           # RLSignal only (E8 Experiment)
 }
 
 # ---------------------------------------------------------------------------
@@ -332,6 +334,7 @@ def _signals_for_pair(
         "OU":     OUThreshold(),
         "Kalman": KalmanHedge(),
         "ML":     MLSignal(),
+        "RL":     RLSignal(),
     }
 
     idx_full = a_full.index.intersection(b_full.index)
@@ -446,9 +449,9 @@ def run_fold(
         # PnL computation
         r_spread     = a_full.pct_change().fillna(0) - b_full.pct_change().fillna(0)
         sig_prev     = sig_scaled.shift(1).fillna(0).astype(int)
-        pair_turn    = (sig_scaled != sig_prev).astype(int)
+        pair_turn    = (sig_scaled - sig_prev).abs()
         pair_gross   = sig_prev * r_spread * notional
-        pair_costs   = pair_turn * cost_frac * notional
+        pair_costs   = pair_turn * (cost_frac / 2.0) * notional
 
         pnl_gross   = pnl_gross.add(pair_gross.reindex(full_index).fillna(0),  fill_value=0)
         cost_series = cost_series.add(pair_costs.reindex(full_index).fillna(0), fill_value=0)
@@ -624,10 +627,11 @@ def main() -> None:
     parser.add_argument("--s1-weights", type=str, default=None,
                         help='JSON dict of custom S1 selector weights, e.g. \'{"LSTM":3,"Correlation":2,"Distance":1,"Cointegration":1,"Combined":0.5,"ML":0,"Transformer":1,"GNN":0}\'. '
                              'Overrides --mode when provided. Zero-weight selectors are skipped.')
-    parser.add_argument("--s2", choices=["all", "no_ml", "ou_only"],
+    parser.add_argument("--s2", choices=["all", "no_ml", "ou_only", "rl_only"],
                         default="no_ml",
                         help="Stage 2 signal model config. 'no_ml' excludes MLSignal (E3 finding). "
                              "'ou_only' uses OUThreshold only (best E3 ablation result). "
+                             "'rl_only' uses PPO-based RLSignal (E8 experiment). "
                              "'all' uses equal-weight all 4 models.")
     parser.add_argument("--top-k", type=int, default=DEFAULT_TOP_K)
     args = parser.parse_args()

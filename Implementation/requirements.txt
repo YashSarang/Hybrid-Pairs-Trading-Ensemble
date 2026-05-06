@@ -9,3 +9,5 @@ tensorflow[and-cuda]
 yfinance
 pytest
 joblib
+stable-baselines3
+gymnasium

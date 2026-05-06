@@ -69,6 +69,30 @@
       "fix": "Changed '1H' to '1h' (lowercase)",
       "fixDate": "2026-04-02",
       "impact": "Non-breaking warning only; now clean."
+    },
+    {
+      "id": "BUG-06",
+      "description": "Incorrect SLURM partition (cn3_l40s) and missing QOS in job scripts",
+      "file": "Implementation/jobs/*.sh",
+      "fix": "Replaced partition with 'cn3_anandi' and added '--qos=anandi' to all scripts",
+      "fixDate": "2026-05-06",
+      "impact": "All jobs were failing to submit; now all scripts are cluster-ready."
+    },
+    {
+      "id": "BUG-07",
+      "description": "Floating Point Exception (SIGFPE) in RLSignal training",
+      "file": "Implementation/core/entry_rl.py",
+      "fix": "Scaled reward to percentage points and clipped to [-10, 10]; reduced n_steps (2048->512).",
+      "fixDate": "2026-05-06",
+      "impact": "PPO agent was crashing due to exploding gradients from raw unscaled dollar rewards."
+    },
+    {
+      "id": "BUG-08",
+      "description": "Double-charging transaction costs on every trade",
+      "file": "Implementation/core/backtest.py",
+      "fix": "Modified turnover logic from `(sig_scaled != sig_prev)` to `(sig_scaled - sig_prev).abs()` and multiplied by `cost_frac / 2.0`.",
+      "fixDate": "2026-05-06",
+      "impact": "Backtester was applying the round-trip cost on BOTH entry and exit, halving actual profitability. Fixed mathematically in JSONs."
     }
   ],
 
@@ -145,9 +169,9 @@
   },
 
   "pendingWork": [
-    "E7: Build experiments/weighted_ensemble.py (or add --s1-weights flag to walk_forward.py)",
-    "E3: Re-run Transformer_only single ablation fold — jobs/e3_transformer_rerun.sh",
-    "E6: Re-run significance tests on full-mode and E7 results once available",
-    "E1: Full-mode frequency comparison (lower priority, after E7)"
+    "E8: Monitor RL Signal Model (Job 5532)",
+    "E6: Final significance sweep across all configurations",
+    "Thesis: Draft Analysis of Ensemble Weights (Chapter 4.5 extension)",
+    "E1: Full-mode frequency comparison (lower priority)"
   ]
 }

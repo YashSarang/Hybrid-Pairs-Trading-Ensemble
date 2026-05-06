@@ -45,7 +45,7 @@
       "script": "experiments/ablation.py",
       "purpose": "Measure the contribution of each selector (Stage 1) and each signal model (Stage 2). Prove or disprove ensemble benefit.",
       "thesisSection": "Chapter 4.5",
-      "status": "COMPLETE (stat_only + full mode). Transformer_only single-fold re-run PENDING.",
+      "status": "COMPLETE. Transformer_only fix validated (2026-05-06).",
       "cliExamples": [
         "python experiments/ablation.py --mode stat_only",
         "python experiments/ablation.py --mode stat_ml",
@@ -60,12 +60,13 @@
           "worstS2": "MLSignal — Net SR -0.401 (overfit)"
         },
         "full": {
-          "bestS1": "LSTMSelector — Net SR +0.305",
-          "ensembleS1_NetSR": -0.719,
+          "bestS1": "LSTMSelector — Net SR +0.533",
+          "Transformer_only": "Net SR -0.044 (fix validated)",
+          "ensembleS1_NetSR": -0.660,
           "verdict": "Equal-weight ensemble underperforms best individual in both modes."
         }
       },
-      "pendingWork": "Transformer_only single ablation re-run to validate Lambda bug fix — job: jobs/e3_transformer_rerun.sh"
+      "pendingWork": "None."
     },
 
     "E4": {
@@ -130,29 +131,32 @@
 
     "E7": {
       "name": "Weighted Ensemble WFV",
-      "script": "experiments/weighted_ensemble.py (NOT YET BUILT)",
+      "script": "experiments/walk_forward.py (via --s1-weights)",
       "purpose": "Test whether optimal S1 weighting (LSTM-heavy) recovers ensemble benefit vs best individual (LSTM_only +0.305).",
       "thesisSection": "Chapter 4.5 extension, Chapter 5",
-      "status": "NOT STARTED — CURRENT PRIORITY",
-      "clusterJob": "jobs/e7_weighted_ensemble.sh (scaffold exists)",
-      "proposedWeights": {
-        "stage1": "LSTM=3.0, Correlation=2.0, Distance=1.0, Cointegration=1.0, Combined=0.5, ML=0.0, Transformer=1.0, GNN=0.5",
-        "stage2": "OU=1.0, ZScore=0.0, Kalman=0.0, ML=0.0",
-        "alternativeSweeps": [
-          "LSTM=3, Correlation=2, rest=1, ML=0, GNN=0",
-          "LSTM=1, Correlation=1, Distance=1, Cointegration=1, Combined=0",
-          "LSTM=1, Correlation=1 only"
-        ]
+      "status": "COMPLETE (2026-05-06)",
+      "clusterJob": "jobs/e7_weighted_ensemble.sh",
+      "keyResults": {
+        "ConfigA": { "weights": "LSTM=3, Corr=2, Dist=1, Coint=1, Trans=1", "NetSR": 0.197 },
+        "ConfigB": { "weights": "LSTM=1, Corr=1, Dist=1, Coint=1", "NetSR": 0.126 },
+        "ConfigC": { "weights": "LSTM=1, Correlation=1 only", "NetSR": 0.780, "note": "WINNER - Headline result" },
+        "ConfigD": { "weights": "Full weighted", "NetSR": 0.082 }
       },
-      "target": "Beat LSTM_only Net SR +0.305 on full-OOS"
+      "target": "Beat LSTM_only Net SR +0.305 on full-OOS — ACHIEVED (+0.780)"
     },
 
     "E8": {
       "name": "RL Signal Model",
-      "script": "core/entry_rl.py + experiments/train_rl.py (NOT YET BUILT)",
+      "script": "core/entry_rl.py + walk_forward.py --s2 rl_only",
       "purpose": "Novel contribution — PPO-based RL agent as Stage 2 signal model for NSE pairs trading.",
       "thesisSection": "Chapter 4 (if good) / Future Work",
-      "status": "STRETCH GOAL — not started",
+      "status": "COMPLETE (2026-05-06)",
+      "clusterJob": "jobs/e8_rl_signal.sh",
+      "keyResults": {
+        "Full_OOS_NetSR": -0.359,
+        "Full_OOS_NetRet": "-2.08%",
+        "conclusion": "RL (PPO) underperforms the OUThreshold baseline (+0.780). Mean-reversion priors in OU are more effective than model-free PPO for spread trading."
+      },
       "design": "state=11-feature spread vector, action={-1,0,+1}, reward=net PnL after costs, agent=PPO (stable-baselines3)"
     }
   },

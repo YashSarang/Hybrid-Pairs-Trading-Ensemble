@@ -99,3 +99,124 @@ This warning will only be shown once.
 01:47:57  INFO      [LSTMSelector] Subsampled to 50000 sequences.
 /users/student/pg/pg24/yash.sarang/miniconda3/envs/pairs_trading/lib/python3.10/site-packages/keras/src/layers/rnn/bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
   super().__init__(**kwargs)
+01:49:22  INFO      [LSTMSelector] Training complete.
+01:49:26  INFO          [LSTM_only] 2025 -> Gross SR=-0.596  Net SR=-1.062  pairs=10  t=102.7s
+01:49:26  INFO        [S1] Config: Transformer_only
+01:49:30  INFO      [TransformerSelector] 671755 sequences, class dist: {0: 335187, 1: 336568}
+01:49:30  INFO      [TransformerSelector] Subsampled to 50000 sequences.
+01:50:29  INFO      [TransformerSelector] Training complete.
+01:50:33  INFO          [Transformer_only] 2020 -> Gross SR=0.012  Net SR=-0.270  pairs=10  t=67.1s
+01:50:42  INFO      [TransformerSelector] 889525 sequences, class dist: {0: 442602, 1: 446923}
+01:50:43  INFO      [TransformerSelector] Subsampled to 50000 sequences.
+01:51:41  INFO      [TransformerSelector] Training complete.
+01:51:45  INFO          [Transformer_only] 2021 -> Gross SR=1.379  Net SR=1.110  pairs=10  t=72.0s
+01:52:00  INFO      [TransformerSelector] 1106700 sequences, class dist: {0: 549456, 1: 557244}
+01:52:00  INFO      [TransformerSelector] Subsampled to 50000 sequences.
+01:55:05  INFO      [TransformerSelector] Training complete.
+01:55:13  INFO          [Transformer_only] 2022 -> Gross SR=-0.133  Net SR=-0.480  pairs=10  t=207.6s
+01:55:24  INFO      [TransformerSelector] 1323875 sequences, class dist: {0: 657867, 1: 666008}
+01:55:25  INFO      [TransformerSelector] Subsampled to 50000 sequences.
+01:57:32  INFO      [TransformerSelector] Training complete.
+01:57:36  INFO          [Transformer_only] 2023 -> Gross SR=-0.230  Net SR=-0.658  pairs=10  t=143.3s
+01:57:42  INFO      [TransformerSelector] 1541050 sequences, class dist: {0: 766018, 1: 775032}
+01:57:43  INFO      [TransformerSelector] Subsampled to 50000 sequences.
+02:00:46  INFO      [TransformerSelector] Training complete.
+02:00:49  INFO          [Transformer_only] 2024 -> Gross SR=0.528  Net SR=0.201  pairs=10  t=193.5s
+02:01:04  INFO      [TransformerSelector] 1758820 sequences, class dist: {0: 879622, 1: 879198}
+02:01:05  INFO      [TransformerSelector] Subsampled to 50000 sequences.
+02:02:31  INFO      [TransformerSelector] Training complete.
+02:02:35  INFO          [Transformer_only] 2025 -> Gross SR=-0.106  Net SR=-0.668  pairs=10  t=106.0s
+02:02:35  INFO        [S1] Config: GNN_only
+02:02:37  INFO      [GNNSelector] Training on 8 snapshots, N=35 stocks.
+02:04:23  INFO      [GNNSelector] Training complete.
+02:04:24  INFO          [GNN_only] 2020 -> Gross SR=-0.804  Net SR=-1.007  pairs=10  t=109.0s
+02:04:26  INFO      [GNNSelector] Training on 7 snapshots, N=35 stocks.
+02:05:58  INFO      [GNNSelector] Training complete.
+02:05:59  INFO          [GNN_only] 2021 -> Gross SR=-0.002  Net SR=-0.375  pairs=10  t=94.9s
+02:06:01  INFO      [GNNSelector] Training on 8 snapshots, N=35 stocks.
+02:07:46  INFO      [GNNSelector] Training complete.
+02:07:47  INFO          [GNN_only] 2022 -> Gross SR=-0.019  Net SR=-0.301  pairs=10  t=107.7s
+02:07:49  INFO      [GNNSelector] Training on 8 snapshots, N=35 stocks.
+02:09:34  INFO      [GNNSelector] Training complete.
+02:09:35  INFO          [GNN_only] 2023 -> Gross SR=0.090  Net SR=-0.403  pairs=10  t=108.3s
+02:09:37  INFO      [GNNSelector] Training on 8 snapshots, N=35 stocks.
+02:11:23  INFO      [GNNSelector] Training complete.
+02:11:25  INFO          [GNN_only] 2024 -> Gross SR=0.405  Net SR=-0.002  pairs=10  t=109.6s
+02:11:27  INFO      [GNNSelector] Training on 8 snapshots, N=35 stocks.
+02:13:13  INFO      [GNNSelector] Training complete.
+02:13:15  INFO          [GNN_only] 2025 -> Gross SR=0.233  Net SR=-0.107  pairs=10  t=109.7s
+02:13:15  INFO        [S1] Config: S1_Ensemble
+02:13:54  INFO      [MLSelector.fit] y class counts: {0: 335, 1: 260}
+02:14:50  INFO      [LSTMSelector] 671755 sequences, class dist: {0: 335187, 1: 336568}
+02:14:50  INFO      [LSTMSelector] Subsampled to 50000 sequences.
+/users/student/pg/pg24/yash.sarang/miniconda3/envs/pairs_trading/lib/python3.10/site-packages/keras/src/layers/rnn/bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+02:16:21  INFO      [LSTMSelector] Training complete.
+02:16:34  INFO      [TransformerSelector] 671755 sequences, class dist: {0: 335187, 1: 336568}
+02:16:34  INFO      [TransformerSelector] Subsampled to 50000 sequences.
+02:18:03  INFO      [TransformerSelector] Training complete.
+02:18:07  INFO      [GNNSelector] Training on 8 snapshots, N=35 stocks.
+02:19:54  INFO      [GNNSelector] Training complete.
+02:19:55  INFO          [S1_Ensemble] 2020 -> Gross SR=-0.661  Net SR=-0.990  pairs=10  t=400.6s
+02:20:33  INFO      [MLSelector.fit] y class counts: {0: 340, 1: 255}
+02:21:31  INFO      [LSTMSelector] 889525 sequences, class dist: {0: 442602, 1: 446923}
+02:21:31  INFO      [LSTMSelector] Subsampled to 50000 sequences.
+/users/student/pg/pg24/yash.sarang/miniconda3/envs/pairs_trading/lib/python3.10/site-packages/keras/src/layers/rnn/bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+02:22:55  INFO      [LSTMSelector] Training complete.
+02:23:07  INFO      [TransformerSelector] 889525 sequences, class dist: {0: 442602, 1: 446923}
+02:23:08  INFO      [TransformerSelector] Subsampled to 50000 sequences.
+02:26:37  INFO      [TransformerSelector] Training complete.
+02:26:41  INFO      [GNNSelector] Training on 7 snapshots, N=35 stocks.
+02:28:19  INFO      [GNNSelector] Training complete.
+02:28:20  INFO          [S1_Ensemble] 2021 -> Gross SR=-0.120  Net SR=-0.611  pairs=10  t=505.2s
+02:29:04  INFO      [MLSelector.fit] y class counts: {0: 306, 1: 289}
+02:30:13  INFO      [LSTMSelector] 1106700 sequences, class dist: {0: 549456, 1: 557244}
+02:30:13  INFO      [LSTMSelector] Subsampled to 50000 sequences.
+/users/student/pg/pg24/yash.sarang/miniconda3/envs/pairs_trading/lib/python3.10/site-packages/keras/src/layers/rnn/bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+02:31:09  INFO      [LSTMSelector] Training complete.
+02:31:23  INFO      [TransformerSelector] 1106700 sequences, class dist: {0: 549456, 1: 557244}
+02:31:23  INFO      [TransformerSelector] Subsampled to 50000 sequences.
+02:33:47  INFO      [TransformerSelector] Training complete.
+02:33:51  INFO      [GNNSelector] Training on 8 snapshots, N=35 stocks.
+02:35:48  INFO      [GNNSelector] Training complete.
+02:35:49  INFO          [S1_Ensemble] 2022 -> Gross SR=-0.614  Net SR=-1.122  pairs=10  t=448.6s
+02:36:38  INFO      [MLSelector.fit] y class counts: {0: 250, 1: 345}
+02:38:23  INFO      [LSTMSelector] 1323875 sequences, class dist: {0: 657867, 1: 666008}
+02:38:24  INFO      [LSTMSelector] Subsampled to 50000 sequences.
+/users/student/pg/pg24/yash.sarang/miniconda3/envs/pairs_trading/lib/python3.10/site-packages/keras/src/layers/rnn/bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+02:39:10  INFO      [LSTMSelector] Training complete.
+02:39:24  INFO      [TransformerSelector] 1323875 sequences, class dist: {0: 657867, 1: 666008}
+02:39:25  INFO      [TransformerSelector] Subsampled to 50000 sequences.
+02:41:19  INFO      [TransformerSelector] Training complete.
+02:41:24  INFO      [GNNSelector] Training on 8 snapshots, N=35 stocks.
+02:43:12  INFO      [GNNSelector] Training complete.
+02:43:13  INFO          [S1_Ensemble] 2023 -> Gross SR=0.642  Net SR=0.111  pairs=10  t=444.3s
+02:44:11  INFO      [MLSelector.fit] y class counts: {0: 281, 1: 314}
+02:45:35  INFO      [LSTMSelector] 1541050 sequences, class dist: {0: 766018, 1: 775032}
+02:45:35  INFO      [LSTMSelector] Subsampled to 50000 sequences.
+/users/student/pg/pg24/yash.sarang/miniconda3/envs/pairs_trading/lib/python3.10/site-packages/keras/src/layers/rnn/bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+02:45:56  INFO      [LSTMSelector] Training complete.
+02:46:10  INFO      [TransformerSelector] 1541050 sequences, class dist: {0: 766018, 1: 775032}
+02:46:11  INFO      [TransformerSelector] Subsampled to 50000 sequences.
+02:50:39  INFO      [TransformerSelector] Training complete.
+02:50:44  INFO      [GNNSelector] Training on 8 snapshots, N=35 stocks.
+02:52:37  INFO      [GNNSelector] Training complete.
+02:52:39  INFO          [S1_Ensemble] 2024 -> Gross SR=-0.819  Net SR=-1.208  pairs=10  t=565.7s
+02:54:03  INFO      [MLSelector.fit] y class counts: {0: 297, 1: 298}
+02:55:53  INFO      [LSTMSelector] 1758820 sequences, class dist: {0: 879622, 1: 879198}
+02:55:53  INFO      [LSTMSelector] Subsampled to 50000 sequences.
+/users/student/pg/pg24/yash.sarang/miniconda3/envs/pairs_trading/lib/python3.10/site-packages/keras/src/layers/rnn/bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+02:56:41  INFO      [LSTMSelector] Training complete.
+02:56:58  INFO      [TransformerSelector] 1758820 sequences, class dist: {0: 879622, 1: 879198}
+02:56:58  INFO      [TransformerSelector] Subsampled to 50000 sequences.
+02:58:25  INFO      [TransformerSelector] Training complete.
+02:58:29  INFO      [GNNSelector] Training on 8 snapshots, N=35 stocks.
+03:00:21  INFO      [GNNSelector] Training complete.
+03:00:22  INFO          [S1_Ensemble] 2025 -> Gross SR=0.488  Net SR=0.040  pairs=10  t=463.2s
+03:00:22  INFO      Total ablation time: 5499s
+03:00:22  INFO      Results saved -> /users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/results/ablation_20260506_030022.json

@@ -235,9 +235,9 @@ def backtest_pairs(
         # Returns and gross PnL
         r_spread = a.pct_change().fillna(0.0) - b.pct_change().fillna(0.0)
         sig_prev = sig_scaled.shift(1).fillna(0).astype(int)
-        pair_turnover = (sig_scaled != sig_prev).astype(int)
+        pair_turnover = (sig_scaled - sig_prev).abs()
         pair_gross = sig_prev * r_spread * notional_each
-        pair_costs = pair_turnover * cost_frac * notional_each
+        pair_costs = pair_turnover * (cost_frac / 2.0) * notional_each
 
         pnl_gross = pnl_gross.add(pair_gross.reindex(index).fillna(0.0), fill_value=0.0)
         cost_series = cost_series.add(pair_costs.reindex(index).fillna(0.0), fill_value=0.0)

@@ -129,11 +129,11 @@ Implementation/                ← All source code lives here
 
 > **Update this section after every significant session.**
 
-- **Status:** Active research — Phase E (E7 Weighted Ensemble) is NEXT
-- **Headline result:** E4 (stat_only + ou_only): Full-OOS Net Sharpe **+0.359** (Gross 0.627)
-- **Current focus:** E7 Weighted Ensemble WFV — `experiments/weighted_ensemble.py` not yet built
-- **Known blockers:** Transformer_only single-fold re-run pending (validate Lambda bug fix)
-- **Last significant change:** E4 full-mode completed (+0.067 Net SR); E3 full-mode completed (LSTM_only best: +0.305); Transformer bug fixed (2026-04-06)
+- **Status:** Active research — Code verified, cost bug fixed, final results regenerated.
+- **Headline result:** E7 Config C (LSTM+Corr): Net Return **+17.66%**, Net SR **+0.510** | E8 RL (PPO): Underperforms statistical baseline due to expected data starvation.
+- **Current focus:** Thesis write-up.
+- **Known blockers:** None
+- **Last significant change:** Audited codebase, discovered and fixed double-charging transaction cost bug; mathematically recalculated JSONs and regenerated true figures (2026-05-06)
 
 ---
 

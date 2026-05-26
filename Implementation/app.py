@@ -121,9 +121,9 @@ def nse_pool_selector() -> List[str]:
     universe: List[str] = []
     
     # Add helpful stock symbol reference dropdown
-    with st.expander("📚 NSE Stock Symbol Reference (Click to expand)", expanded=False):
+    with st.expander("NSE Stock Symbol Reference (Click to expand)", expanded=False):
         st.markdown("### Quick Reference: Copy symbols from sectors below")
-        st.info("💡 **Tip:** Select a sector, click 'Copy Symbols', then paste into the input box above")
+        st.info("**Tip:** Select a sector, click 'Copy Symbols', then paste into the input box above")
         
         # Sector selection
         sector = st.selectbox(
@@ -351,11 +351,11 @@ def sidebar_controls():
         )
 
         if cost_preset == "Discount Broker":
-            # Zerodha/Upstox type costs
-            # Flat ₹20 per order = ~0 bps for large trades
-            brokerage_bps, exchange_txn_bps, sebi_bps = 0.0, 0.345, 0.01
+            # Zerodha/Upstox type costs (2024-2026)
+            # Flat ₹20 per order = 0 bps for large trades
+            brokerage_bps, exchange_txn_bps, sebi_bps = 0.0, 0.322, 0.01
             stt_bps_sell, gst_rate, stamp_bps_buy = 10.0, 0.18, 1.5
-            slippage_bps, intraday = 1.5, True
+            slippage_bps, intraday = 2.0, False  # Delivery trading
         elif cost_preset == "Premium Broker":
             # Traditional full-service broker
             brokerage_bps, exchange_txn_bps, sebi_bps = 25.0, 0.345, 0.01  # 0.25% brokerage
@@ -371,11 +371,22 @@ def sidebar_controls():
             stt_bps_sell, gst_rate, stamp_bps_buy = 10.0, 0.18, 1.5
             slippage_bps, intraday = 2.0, True
 
-        # Show selected preset values
+        # Show selected preset values with accurate round-trip cost
+        # Create temporary IndianCosts object to calculate exact round-trip
+        temp_costs = IndianCosts(
+            brokerage_bps=float(brokerage_bps),
+            exchange_txn_bps=float(exchange_txn_bps),
+            sebi_bps=float(sebi_bps),
+            stt_bps_sell=float(stt_bps_sell),
+            gst_rate=float(gst_rate),
+            stamp_bps_buy=float(stamp_bps_buy),
+            slippage_bps=float(slippage_bps),
+            intraday=intraday
+        )
+        rt_cost = temp_costs.round_trip_cost_fraction() * 10000  # Convert to bps
         st.sidebar.caption(f"Using {cost_preset} preset:")
-        st.sidebar.caption(f"• Brokerage: {brokerage_bps} bps")
-        st.sidebar.caption(
-            f"• Total cost: ~{(brokerage_bps*2 + exchange_txn_bps*2 + stt_bps_sell + stamp_bps_buy + slippage_bps):.1f} bps per round trip")
+        st.sidebar.caption(f"• Brokerage: {brokerage_bps} bps per leg")
+        st.sidebar.caption(f"• Round-trip cost: {rt_cost:.2f} bps")
 
     soft_stop = st.sidebar.checkbox(
         "Enable unstrict soft stop-loss", value=True)
@@ -942,9 +953,9 @@ def render_predictions_page():
                 universe_mode = "Quick Entry"
         
         # Add helpful stock symbol reference dropdown
-        with st.expander("📚 NSE Stock Symbol Reference", expanded=False):
+        with st.expander("NSE Stock Symbol Reference", expanded=False):
             st.markdown("### Quick Reference: Copy symbols from sectors below")
-            st.info("💡 **Tip:** Select a sector below and copy the symbols to paste above")
+            st.info("**Tip:** Select a sector below and copy the symbols to paste above")
             
             # Sector selection
             sector_pred = st.selectbox(

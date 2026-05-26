@@ -9,7 +9,9 @@ This app uses the refactored core modules:
 
 Pages:
 - Simulator (main)
+- Predictions (real-time recommendations)
 - Reports (saved evaluations from current session)
+- Literature Review (paper comparisons and reproductions)
 
 Note: Default results record **gross** performance (no costs). NET is an overlay
 computed from user-set cost params for comparison.
@@ -1503,6 +1505,377 @@ def simulator_page():
 
 
 # ---------------------------------------------
+# Literature Review Pages
+# ---------------------------------------------
+
+def load_literature_data():
+    """Load literature review data from JSON file."""
+    import json
+    import os
+    
+    lit_path = os.path.join(os.path.dirname(__file__), "literature_data.json")
+    try:
+        with open(lit_path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        return data.get("papers", [])
+    except Exception as e:
+        st.error(f"Failed to load literature data: {e}")
+        return []
+
+
+def load_negative_result_content():
+    """Load the NEGATIVE_RESULT.md file for PCA-OU paper."""
+    import os
+    
+    neg_result_path = os.path.join(
+        os.path.dirname(__file__), 
+        "..", 
+        "Literature-Review", 
+        "2010-PCA-OU-Avellaneda-StatArb", 
+        "NEGATIVE_RESULT.md"
+    )
+    try:
+        with open(neg_result_path, "r", encoding="utf-8") as f:
+            return f.read()
+    except Exception:
+        return None
+
+
+def render_paper_details(paper):
+    """Render detailed view of a single paper with results comparison."""
+    st.subheader(f"{paper['title']}")
+    
+    # Paper metadata
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.markdown("**Authors**")
+        st.write(paper["authors"])
+        
+        st.markdown("**Journal**")
+        st.write(paper["journal"])
+        
+        st.markdown("**Category**")
+        st.write(paper["category"])
+        
+    with col2:
+        st.markdown("**Year**")
+        st.write(paper["year"])
+        
+        st.markdown("**Method**")
+        st.write(paper["method"].upper())
+        
+        st.markdown("**Status**")
+        status_text = {
+            "reproduced": "REPRODUCED",
+            "failed": "FAILED",
+            "documented": "DOCUMENTED",
+            "planned": "PLANNED"
+        }
+        status_style = {
+            "reproduced": ":green[REPRODUCED]",
+            "failed": ":red[FAILED]",
+            "documented": ":orange[DOCUMENTED]",
+            "planned": ":gray[PLANNED]"
+        }
+        st.markdown(status_style.get(paper['status'], paper['status'].upper()))
+    
+    st.divider()
+    
+    # Results comparison
+    st.markdown("### Results Comparison")
+    
+    claimed = paper.get("claimed_results", {})
+    our = paper.get("our_results", {})
+    
+    if claimed or our:
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown("**Claimed Results (Original Paper)**")
+            if claimed:
+                for key, value in claimed.items():
+                    if key == "description":
+                        st.info(value)
+                    else:
+                        st.write(f"- **{key.replace('_', ' ').title()}**: {value}")
+            else:
+                st.write("No specific results claimed")
+        
+        with col2:
+            st.markdown("**Our Results (NSE Implementation)**")
+            if our:
+                for key, value in our.items():
+                    if key == "key_finding":
+                        st.error(f"**Key Finding**: {value}")
+                    elif key == "success_rate":
+                        st.write(f"- **Success Rate**: {value}")
+                    else:
+                        st.write(f"- **{key.replace('_', ' ').title()}**: {value}")
+            else:
+                st.write("Not yet implemented")
+    
+    # Visualizations for papers with numeric results
+    if our and any(k in our for k in ["sharpe", "return", "trades_per_year"]):
+        st.markdown("### Performance Visualization")
+        
+        # Create comparison data
+        metrics_data = {}
+        
+        if "sharpe" in our:
+            claimed_sharpe = claimed.get("sharpe", 0)
+            our_sharpe = our.get("sharpe", 0)
+            if claimed_sharpe or our_sharpe:
+                metrics_data["Sharpe Ratio"] = {
+                    "Claimed": float(claimed_sharpe) if claimed_sharpe else 0,
+                    "NSE": float(our_sharpe)
+                }
+        
+        if "return" in claimed or "return_pct" in claimed:
+            claimed_ret = claimed.get("return", claimed.get("return_pct", 0))
+            our_ret = our.get("return", our.get("return_pct", 0))
+            if claimed_ret or our_ret:
+                metrics_data["Return %"] = {
+                    "Claimed": float(claimed_ret) if claimed_ret else 0,
+                    "NSE": float(our_ret) if our_ret else 0
+                }
+        
+        if metrics_data:
+            # Display as bar chart
+            metrics_df = pd.DataFrame(metrics_data)
+            st.bar_chart(metrics_df)
+    
+    # Special section for PCA-OU failure
+    if paper["id"] == "avellaneda_2010":
+        st.divider()
+        st.markdown("### Critical Negative Result Analysis")
+        
+        neg_content = load_negative_result_content()
+        if neg_content:
+            with st.expander("Full Failure Analysis Report", expanded=False):
+                # Remove emoji from the markdown content
+                cleaned_content = neg_content.replace("❌", "X").replace("✅", "OK").replace("🔬", "").replace("📊", "").replace("🔍", "").replace("📉", "").replace("🎓", "").replace("📝", "").replace("🏆", "").replace("📂", "").replace("🚀", "")
+                st.markdown(cleaned_content)
+        
+        # Summary highlights
+        col1, col2, col3 = st.columns(3)
+        
+        with col1:
+            st.metric("Success Rate", "0%", delta="-100%", delta_color="inverse")
+        
+        with col2:
+            st.metric("Tradeable Stocks", "0 / 35")
+        
+        with col3:
+            st.metric("Test Periods", "5 years")
+        
+        st.error(
+            "**Key Finding**: Industry-standard PCA-OU method achieves 0% success rate on NSE. "
+            "All 35 stocks failed half-life constraint across 2020-2024. Idiosyncratic residuals "
+            "lack mean-reversion property observed in US markets."
+        )
+        
+        st.info(
+            "**Research Implication**: This negative result strengthens the contribution of the "
+            "LSTM+Correlation ensemble, which achieves Net SR +0.451 where PCA-OU finds zero "
+            "tradeable opportunities."
+        )
+    
+    # Notes
+    if paper.get("notes"):
+        st.divider()
+        st.markdown("### Implementation Notes")
+        st.info(paper["notes"])
+
+
+def render_literature_review_page():
+    """Render the main literature review page with filtering and overview."""
+    papers = load_literature_data()
+    
+    if not papers:
+        st.error("Failed to load literature data")
+        return
+    
+    # Overview metrics
+    col1, col2, col3, col4 = st.columns(4)
+    
+    with col1:
+        st.metric("Total Papers", len(papers))
+    
+    with col2:
+        reproduced_count = sum(1 for p in papers if p["status"] == "reproduced")
+        st.metric("Reproduced", reproduced_count)
+    
+    with col3:
+        failed_count = sum(1 for p in papers if p["status"] == "failed")
+        st.metric("Failed", failed_count)
+    
+    with col4:
+        year_range = f"{min(p['year'] for p in papers)}-{max(p['year'] for p in papers)}"
+        st.metric("Year Range", year_range)
+    
+    st.divider()
+    
+    # Filters
+    st.markdown("### Filter Papers")
+    
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        status_filter = st.multiselect(
+            "Status",
+            options=["reproduced", "failed", "documented", "planned"],
+            default=["reproduced", "failed", "documented", "planned"],
+            format_func=lambda x: x.upper()
+        )
+    
+    with col2:
+        categories = sorted(set(p["category"] for p in papers))
+        category_filter = st.multiselect(
+            "Category",
+            options=categories,
+            default=categories
+        )
+    
+    with col3:
+        methods = sorted(set(p["method"] for p in papers))
+        method_filter = st.multiselect(
+            "Method",
+            options=methods,
+            default=methods,
+            format_func=lambda x: x.upper()
+        )
+    
+    # Filter papers
+    filtered_papers = [
+        p for p in papers
+        if p["status"] in status_filter
+        and p["category"] in category_filter
+        and p["method"] in method_filter
+    ]
+    
+    st.markdown(f"**Showing {len(filtered_papers)} of {len(papers)} papers**")
+    
+    st.divider()
+    
+    # Visualizations
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.markdown("### Status Distribution")
+        status_counts = {}
+        for p in filtered_papers:
+            status_counts[p["status"]] = status_counts.get(p["status"], 0) + 1
+        
+        status_df = pd.DataFrame({
+            "Status": list(status_counts.keys()),
+            "Count": list(status_counts.values())
+        })
+        st.bar_chart(status_df.set_index("Status"))
+    
+    with col2:
+        st.markdown("### Timeline")
+        year_counts = {}
+        for p in filtered_papers:
+            year_counts[p["year"]] = year_counts.get(p["year"], 0) + 1
+        
+        timeline_df = pd.DataFrame({
+            "Year": sorted(year_counts.keys()),
+            "Papers": [year_counts[y] for y in sorted(year_counts.keys())]
+        })
+        st.line_chart(timeline_df.set_index("Year"))
+    
+    st.divider()
+    
+    # Papers table
+    st.markdown("### Papers Overview")
+    
+    # Prepare table data
+    table_data = []
+    for p in filtered_papers:
+        # Get Sharpe ratio for display
+        our_sharpe = p.get("our_results", {}).get("sharpe", "N/A")
+        claimed_sharpe = p.get("claimed_results", {}).get("sharpe", "N/A")
+        
+        table_data.append({
+            "Year": p["year"],
+            "Title": p["title"][:50] + "..." if len(p["title"]) > 50 else p["title"],
+            "Authors": p["authors"].split(",")[0] + " et al." if "," in p["authors"] else p["authors"],
+            "Method": p["method"].upper(),
+            "Category": p["category"],
+            "Status": p["status"].upper(),
+            "Our Sharpe": our_sharpe if our_sharpe != "N/A" else "N/A",
+            "Paper ID": p["id"]
+        })
+    
+    df = pd.DataFrame(table_data)
+    
+    # Display interactive table
+    st.dataframe(
+        df[["Year", "Title", "Authors", "Method", "Status", "Our Sharpe"]],
+        use_container_width=True,
+        hide_index=True
+    )
+    
+    # Paper selection for details
+    st.divider()
+    st.markdown("### View Paper Details")
+    
+    paper_options = {
+        f"{p['year']} - {p['authors'].split(',')[0]} - {p['title'][:40]}...": p["id"]
+        for p in filtered_papers
+    }
+    
+    selected_paper_title = st.selectbox(
+        "Select a paper to view detailed comparison",
+        options=list(paper_options.keys())
+    )
+    
+    if selected_paper_title:
+        selected_paper_id = paper_options[selected_paper_title]
+        selected_paper = next(p for p in papers if p["id"] == selected_paper_id)
+        
+        with st.expander("Paper Details & Results Comparison", expanded=True):
+            render_paper_details(selected_paper)
+    
+    # Summary insights
+    st.divider()
+    st.markdown("### Key Insights")
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.markdown("**Successful Methods on NSE**")
+        successful = [
+            p for p in papers 
+            if p["status"] == "reproduced" and p.get("our_results", {}).get("sharpe", 0) > 0
+        ]
+        successful_sorted = sorted(
+            successful, 
+            key=lambda p: p.get("our_results", {}).get("sharpe", 0), 
+            reverse=True
+        )
+        
+        for p in successful_sorted[:5]:
+            sharpe = p.get("our_results", {}).get("sharpe", 0)
+            st.write(f"- **{p['method'].upper()}**: Sharpe {sharpe:.3f} ({p['year']})")
+    
+    with col2:
+        st.markdown("**Failed/Problematic Methods**")
+        failed = [
+            p for p in papers
+            if p["status"] == "failed" or (
+                p["status"] == "reproduced" and 
+                p.get("our_results", {}).get("sharpe", 1) <= 0
+            )
+        ]
+        
+        for p in failed:
+            sharpe = p.get("our_results", {}).get("sharpe", "N/A")
+            st.write(f"- **{p['method'].upper()}**: {p['status'].upper()} ({p['year']})")
+
+
+# ---------------------------------------------
 # Main
 # ---------------------------------------------
 
@@ -1530,12 +1903,15 @@ def main():
     # Main navigation
     page = st.sidebar.radio(
         "Navigation",
-        ["Simulator", "Predictions", "Reports"],
+        ["Simulator", "Predictions", "Reports", "Literature Review"],
         index=0,
-        help="Navigate between simulation, predictions, and report analysis"
+        help="Navigate between simulation, predictions, report analysis, and literature review"
     )
 
-    if "Reports" in page:
+    if "Literature Review" in page:
+        st.title("Literature Review & Paper Comparisons")
+        render_literature_review_page()
+    elif "Reports" in page:
         st.title("Trading Reports & Analysis")
         render_reports_page()
     elif "Predictions" in page:

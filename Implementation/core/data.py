@@ -131,12 +131,19 @@ class YFinanceNSESource(DataSource):
             field = cfg.price_field if cfg.price_field in fields else "Close"
             frames = []
             tickers = [t if t.endswith(".NS") else f"{t}.NS" for t in universe]
+            missing_tickers = []
             for t in tickers:
                 col = (t, field)
                 if col in data.columns:
                     s = data[col]
                     s.name = _strip_ns(t)
                     frames.append(s)
+                else:
+                    missing_tickers.append(t)
+            
+            if missing_tickers:
+                print(f"Warning: {len(missing_tickers)} ticker(s) not found in Yahoo data: {', '.join(missing_tickers)}")
+            
             if not frames:
                 raise RuntimeError(
                     "No matching price field found in Yahoo data.")

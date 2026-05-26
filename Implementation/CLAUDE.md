@@ -65,7 +65,7 @@ Every backtest run auto-saves to `reports/<YYYYMMDD_HHMMSS>/`:
 
 ### Cost Model (`IndianCosts`)
 
-Default NSE transaction costs: brokerage 3 bps, exchange 0.345 bps, SEBI 0.01 bps, STT 10 bps (sell only), stamp 1 bps (buy only), GST 18%, slippage 2 bps/leg. Toggle `intraday` flag for intraday vs. delivery STT rates.
+Default NSE transaction costs (2024-2026 discount broker rates): brokerage 0 bps (zero for Zerodha/Upstox/Groww), exchange 0.322 bps, SEBI 0.01 bps, STT 10 bps (sell only), stamp 1.5 bps (buy only), GST 18%, slippage 2 bps/leg. Round-trip total: 16.3 bps. Toggle `intraday` flag for intraday vs. delivery STT rates.
 
 ### Adding a New Algorithm (Plugin Guide)
 

@@ -81,7 +81,7 @@ Toggle benchmark comparison on/off in the Reports page.
 
 - Portfolio mode: Top-K per day (equal notional per pair) for MVP.
 
-- Costs & slippage defaults: 10 bps cost per leg, 5 bps slippage.
+- Costs & slippage defaults: NSE IndianCosts model (16.3 bps round-trip: 0 bps brokerage for discount brokers, 0.322 bps exchange, 10 bps STT on sell, 1.5 bps stamp on buy, 2 bps slippage per leg).
 
 - Sizing: fixed-notional in MVP; add volatility-targeted sizing later.
 

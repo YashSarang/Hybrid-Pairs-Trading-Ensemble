@@ -32,7 +32,7 @@ Knoll, Stübinger and Grottke (2019) examine pairs trading performance across 34
 
 Several modifications to the original distance method have been proposed. Nath (2003) applies the distance method to US Treasury markets and finds that the method works best when pairs are restricted to economically similar instruments. Elliott, van der Hoek and Malcolm (2005) develop an OU process model within the distance-pair framework, replacing the ad hoc ±2σ rule with theoretically motivated thresholds derived from the estimated OU parameters.
 
-Bowen, Hutchinson and O'Sullivan (2010) study the impact of transaction costs on pairs trading profitability and find that the strategy becomes unprofitable once realistic trading costs are applied for retail investors, though it remains profitable at institutional cost levels. This result is directly relevant to this thesis: at NSE's approximately 60 bps round-trip cost (vs. the 5–10 bps typically assumed for US equities), cost management is not a secondary consideration but the primary challenge.
+Bowen, Hutchinson and O'Sullivan (2010) study the impact of transaction costs on pairs trading profitability and find that the strategy becomes unprofitable once realistic trading costs are applied for retail investors, though it remains profitable at institutional cost levels. This result is directly relevant to this thesis: NSE transaction costs using discount brokers (16.3 bps round-trip as of 2024–2026, versus the 5–10 bps typically assumed for US equities) make cost management a primary concern rather than a secondary consideration in strategy design.
 
 ---
 
@@ -171,7 +171,7 @@ Rathor and Singh (2019) apply both the distance method and cointegration-based s
 
 Several structural features of the Indian NSE market create challenges not present in the US or European equity contexts that dominate the pairs trading literature:
 
-**Transaction costs:** As detailed in Section 3.3, the NSE round-trip cost of ~60 bps is 3–5× higher than typical US equity assumptions. This difference is large enough to completely reverse the sign of net alpha for strategies that are marginally profitable in the US context.
+**Transaction costs:** As detailed in Section 3.3, the NSE round-trip cost of 16.3 bps (using discount broker rates from 2024–2026) remains higher than typical US equity assumptions (5–10 bps). This difference impacts the net profitability of strategies that are marginally profitable in the US context.
 
 **Short-selling constraints:** NSE's Securities Lending and Borrowing (SLB) mechanism has limited liquidity for individual large-cap equities. For institutional investors, the practical cost of maintaining a short position is estimated at 50–100 bps annualised over the SLB fee, though this varies by stock and time period. This thesis abstracts away from SLB costs and assumes frictionless short selling, which modestly overstates net performance.
 

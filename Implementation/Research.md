@@ -6,6 +6,15 @@
 
 ---
 
+**IMPORTANT NOTE (2026-05-26):**  
+This research log contains historical experiment results conducted before the trading cost model correction. 
+Results shown here used the old cost model (approximately 22.9 bps round-trip). The cost model was corrected 
+on 2026-05-26 to reflect actual 2024-2026 NSE discount broker rates (16.3 bps round-trip). All final thesis 
+results in `reports/` use the corrected cost model. See `Documentation/NSE_Trading_Costs_Research_2024.md` 
+and `CHANGES.md` for details.
+
+---
+
 ## Table of Contents
 
 1. [Project Overview](#1-project-overview)

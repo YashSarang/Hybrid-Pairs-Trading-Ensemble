@@ -124,12 +124,12 @@ class IndianCosts:
     intraday: whether the model represents intraday vs delivery (for defaults)
     slippage_bps_per_leg: modeled slippage per leg
     """
-    brokerage_bps: float = 3.0
-    exchange_txn_bps: float = 0.345
-    sebi_bps: float = 0.01
-    stt_bps_sell: float = 10.0
-    gst_rate: float = 0.18
-    stamp_bps_buy: float = 1.0
+    brokerage_bps: float = 0.0  # Zero for discount brokers (Zerodha, Upstox, Groww)
+    exchange_txn_bps: float = 0.322  # NSE transaction charge (updated from 0.345)
+    sebi_bps: float = 0.01  # SEBI fee (correct as of Aug 2024)
+    stt_bps_sell: float = 10.0  # STT on sell leg only
+    gst_rate: float = 0.18  # GST on (brokerage + exchange)
+    stamp_bps_buy: float = 1.5  # Stamp duty on buy leg (updated from 1.0)
     intraday: bool = True
     slippage_bps_per_leg: float = 2.0
 

@@ -60,17 +60,18 @@ We use a detailed NSE cost model (`IndianCosts` dataclass, `core/backtest.py`) t
 
 | Component | Bps (per leg) | Notes |
 |---|---|---|
-| Brokerage | 3.0 | Flat fee assumption (institutional/discount broker) |
-| Exchange transaction charge | 0.345 | NSE standard |
-| SEBI regulatory fee | 0.01 | Fixed statutory |
+| Brokerage | 0.0 | Zero for discount brokers (Zerodha, Upstox, Groww) |
+| Exchange transaction charge | 0.322 | NSE standard (2024–2026) |
+| SEBI regulatory fee | 0.01 | Fixed statutory (reduced Aug 2024) |
 | Securities Transaction Tax (STT) | 10.0 | Sell leg only (delivery rate) |
-| Stamp duty | 1.0 | Buy leg only |
-| GST on brokerage + exchange | ~0.62 | 18% × (brokerage + exchange) |
+| Stamp duty | 1.5 | Buy leg only (Finance Act 2020) |
+| GST on brokerage + exchange | 0.058 | 18% × (0 + 0.322) |
 | Slippage (market impact) | 2.0 | Estimate per leg for large-cap stocks |
-| **Total per leg** | **~17 bps** | |
-| **Total round-trip (2 legs)** | **~60 bps** | Per pair trade |
+| **Total per leg (buy)** | **~3.9 bps** | |
+| **Total per leg (sell)** | **~12.4 bps** | |
+| **Total round-trip (2 legs)** | **16.3 bps** | Per pair trade |
 
-The effective round-trip cost for a pairs trade — which requires simultaneously buying one stock and shorting the other — is approximately **60 basis points** per trade. This is substantially higher than the US equity cost model (typically 10–20 bps) assumed in most pairs trading academic literature.
+The effective round-trip cost for a pairs trade — which requires simultaneously buying one stock and shorting the other — is approximately **16.3 basis points** per trade using discount broker rates (2024–2026). This reflects zero brokerage (standard for discount brokers like Zerodha and Upstox since 2020), corrected NSE exchange fees (0.322 bps), and updated stamp duty (1.5 bps per Finance Act 2020). This cost is still higher than the US equity cost model (typically 5–10 bps) assumed in most pairs trading academic literature.
 
 The formula implemented in code:
 
@@ -512,7 +513,7 @@ For reproducibility, the complete set of fixed experimental hyperparameters is d
 | Capital | ₹10,00,000 (INR 10 lakh) | Retail/prop desk scale |
 | Per-pair notional | ₹1,00,000 (INR 1 lakh) | Equal-weight sizing |
 | Min hold period | 30 trading days | E2 empirical result |
-| Round-trip cost | ~60 bps | NSE IndianCosts model |
+| Round-trip cost | 16.3 bps | NSE IndianCosts model (2024–2026 discount broker rates) |
 | Bootstrap samples | B = 10,000 | Standard |
 | Bootstrap block length | 30 days | Matches min-hold |
 | Newey-West lags | $\lfloor 4(T/100)^{2/9} \rfloor$ | Newey-West (1987) rule |

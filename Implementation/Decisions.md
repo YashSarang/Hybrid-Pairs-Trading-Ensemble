@@ -15,7 +15,7 @@ Format: each entry has a **Decision**, **Context** (what problem it solves), **R
 **Reasoning (empirical, from E1):**
 - Gross Sharpe fell 57% from daily (1.14) to hourly (0.49) on the same universe and date window.
 - Spread Hurst exponent rose from 0.190 (daily) to 0.251 (hourly), confirming that hourly spreads contain more microstructure noise and are less mean-reverting.
-- At hourly frequency, 904 trades/year at ~60 bps round-trip caused the strategy to lose more than its entire capital (Net Max DD = 214%).
+- At hourly frequency, 904 trades/year at the then-estimated round-trip cost (note: cost model was later corrected to 16.3 bps in May 2026) caused the strategy to lose more than its entire capital (Net Max DD = 214%).
 - The hourly selector identified qualitatively different pairs (e.g., MARUTI-BRITANNIA, a cross-sector pair with no obvious economic relationship) compared to daily (TCS-WIPRO, TCS-INFY — well-established IT sector co-integrations). This suggests hourly selectors are picking up noise-driven statistical artifacts rather than genuine economic co-movement.
 
 **Reasoning (theoretical):**
@@ -104,7 +104,7 @@ Format: each entry has a **Decision**, **Context** (what problem it solves), **R
 **Context:** A more lenient alternative would block only reversals and allow exits at any time.
 
 **Reasoning (from E1 data):**
-- Signal reversal rate in E1 was 40.4% (daily). Examination of the trades log shows many patterns of the form +1 -> 0 -> +1 within 2–3 bars — rapid entry, exit, re-entry. These are NOT full reversals (+1 -> -1) but are equally costly (2 round-trips in 3 bars = ~120 bps cost on a signal that barely moved).
+- Signal reversal rate in E1 was 40.4% (daily). Examination of the trades log shows many patterns of the form +1 -> 0 -> +1 within 2–3 bars — rapid entry, exit, re-entry. These are NOT full reversals (+1 -> -1) but are equally costly (2 round-trips in 3 bars = approximately 33 bps cost using 16.3 bps per round-trip on a signal that barely moved).
 - Blocking only reversals would leave this rapid-exit pattern unconstrained and would not substantially reduce turnover.
 - Blocking all changes for min_hold bars eliminates both patterns with a single parameter.
 
@@ -170,7 +170,7 @@ Format: each entry has a **Decision**, **Context** (what problem it solves), **R
 **Context:** E2 (hold_period_sweep.py) swept min_hold_bars ∈ {0, 5, 10, 15, 20, 25, 30, 40} on the full 10-year daily dataset. Hold=30 produced the peak net Sharpe (0.481) and peak gross Sharpe (0.963).
 
 **Reasoning — why 30 days is the optimum (not arbitrary):**
-- At hold < 20 days: the signal layer over-trades relative to mean-reversion speed. Cost drag (2+ pp per round-trip, 60 bps) exceeds alpha per trade.
+- At hold < 20 days: the signal layer over-trades relative to mean-reversion speed. Cost drag (approximately 1.6 pp per round-trip using 16.3 bps per trade) exceeds alpha per trade when compounded across excessive turnover.
 - At hold = 20–30 days: positions are held long enough to realise mean-reversion alpha (Hurst 0.19, estimated OU half-life ~20–30 days) while cost drag falls to 2–3 pp/year.
 - At hold = 40 days: positions are held past the mean-reversion half-life. A spread that has reverted and begun diverging in the other direction is still being held long — turning a winning trade into a losing one. Net Sharpe collapses from +0.481 to −0.239.
 - This boundary (30 vs 40 days) is directly consistent with OU theory: the half-life of the mean-reversion process is ~log(2)/κ, where κ is the reversion speed. For Hurst ≈ 0.19 spreads, this gives half-life ≈ 20–30 bars, which is exactly where performance peaks.

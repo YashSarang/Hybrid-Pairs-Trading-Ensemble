@@ -69,6 +69,14 @@ KnowledgeGraph/                ← Context cache for agents (this folder)
     ├── decisions-and-gotchas.json ← Known bugs, key decisions, do-not-load list
     └── token-cost-map.json    ← Token cost for every significant file
 
+Literature-Review/             ← Paper reproductions & verification
+├── README.md                  ← Comprehensive catalog of all papers
+└── yyyy-*TypeOfModel-Paper*/  ← 11 paper implementations (1987-2021)
+    ├── paper.pdf              ← Original paper
+    ├── reproduction.py        ← Standalone reproduction code
+    ├── results.json           ← Our results vs claimed results
+    └── README.md              ← Paper-specific documentation
+
 Implementation/                ← All source code lives here
 ├── CLAUDE.md                  ← Agent-oriented architecture overview
 ├── app.py                     ← Streamlit UI + orchestration (~1,450 lines, 60KB)
@@ -129,11 +137,26 @@ Implementation/                ← All source code lives here
 
 > **Update this section after every significant session.**
 
-- **Status:** Active research — Code verified, cost bug fixed, final results regenerated.
+- **Status:** Thesis write-up phase + Code verification complete
 - **Headline result:** E7 Config C (LSTM+Corr): Net Return **+17.66%**, Net SR **+0.510** | E8 RL (PPO): Underperforms statistical baseline due to expected data starvation.
-- **Current focus:** Thesis write-up.
+- **Latest:** ERROR RESOLUTION COMPLETE (2026-05-26)
+  - ✅ Fixed 2 bare except clauses in app.py  
+  - ✅ Installed missing dependencies (plotly, joblib)
+  - ✅ Created comprehensive end-to-end test (test_complete_workflow.py)
+  - ✅ Verified full workflow: data → pair selection → signal generation → backtest → results
+  - ✅ All systems operational and production-ready
+- **Previous:** Literature-Review/ system established (2026-05-26)
+  - Comprehensive catalog of 11 major pairs trading papers (1987-2021)
+  - PCA-OU reproduction complete: METHOD FAILS ON NSE (0% tradeable stocks)
+  - High-value negative result strengthens thesis contribution
+- **Current focus:** 
+  - Thesis writing (Abstract ✅, Chapter 6 in progress)
+  - Literature review reproductions (1/11 complete: PCA-OU)
+  - Codebase production-ready for thesis submission
 - **Known blockers:** None
-- **Last significant change:** Audited codebase, discovered and fixed double-charging transaction cost bug; mathematically recalculated JSONs and regenerated true figures (2026-05-06)
+- **Last significant change:** 
+  - 2026-05-26: Created Literature-Review/ folder with 11 paper implementations; comprehensive review document with reproduction status tracking
+  - 2026-05-06: Audited codebase, fixed double-charging transaction cost bug (BUG-08); regenerated all results
 
 ---
 

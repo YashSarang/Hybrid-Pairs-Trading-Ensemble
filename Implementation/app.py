@@ -42,6 +42,7 @@ from core.ensemble import normalize_weights, ensemble_pair_scores, scores_to_fra
 from core.backtest import IndianCosts, BacktestConfig, backtest_pairs
 from core.reports import ReportManager, BenchmarkComparison
 from core.predictions import PredictionEngine
+from nse_symbols_reference import NSE_STOCK_SYMBOLS, format_symbols_for_input
 
 APP_TITLE = "Comparative Analysis for Pairs Trading (NSE)"
 DEFAULT_START = (datetime.now(timezone.utc).date() -
@@ -118,6 +119,43 @@ def nse_pool_selector() -> List[str]:
     )
 
     universe: List[str] = []
+    
+    # Add helpful stock symbol reference dropdown
+    with st.expander("📚 NSE Stock Symbol Reference (Click to expand)", expanded=False):
+        st.markdown("### Quick Reference: Copy symbols from sectors below")
+        st.info("💡 **Tip:** Select a sector, click 'Copy Symbols', then paste into the input box above")
+        
+        # Sector selection
+        sector = st.selectbox(
+            "Select Sector:",
+            options=list(NSE_STOCK_SYMBOLS.keys()),
+            index=len(NSE_STOCK_SYMBOLS) - 1  # Default to "Top 30 Liquid Stocks"
+        )
+        
+        if sector:
+            sector_data = NSE_STOCK_SYMBOLS[sector]
+            st.markdown(f"**{sector}**")
+            st.caption(sector_data["description"])
+            
+            # Format symbols for easy copying
+            symbols_text = format_symbols_for_input(sector_data["symbols"])
+            
+            # Display in a text area for easy selection and copying
+            st.text_area(
+                f"Symbols ({len(sector_data['symbols'])} stocks)",
+                value=symbols_text,
+                height=120,
+                help="Click inside, press Ctrl+A to select all, then Ctrl+C to copy"
+            )
+            
+            # Also show as a list for reference
+            cols = st.columns(3)
+            for i, symbol in enumerate(sector_data["symbols"]):
+                with cols[i % 3]:
+                    st.code(symbol, language=None)
+        
+        st.markdown("---")
+        st.caption(f"**Total unique symbols across all sectors:** {len(set(s for d in NSE_STOCK_SYMBOLS.values() for s in d['symbols']))}")
 
     if "Manual Entry" in mode:
         st.markdown("**Enter NSE stock symbols** (without .NS suffix)")
@@ -734,9 +772,9 @@ def render_reports_page():
             )
             fig1.update_traces(textposition='inside', textinfo='percent+label')
             st.plotly_chart(fig1, use_container_width=True)
-        except:
-            # Fallback if plotly not available
-            pass
+        except Exception as e:
+            # Fallback if plotly chart fails
+            st.warning(f"Could not render Stage 1 pie chart: {e}")
 
     with col2:
         st.markdown("**Stage 2: Entry/Exit Weights**")
@@ -755,9 +793,9 @@ def render_reports_page():
             )
             fig2.update_traces(textposition='inside', textinfo='percent+label')
             st.plotly_chart(fig2, use_container_width=True)
-        except:
-            # Fallback if plotly not available
-            pass
+        except Exception as e:
+            # Fallback if plotly chart fails
+            st.warning(f"Could not render Stage 2 pie chart: {e}")
 
     # Trades
     st.subheader(" Trade Log")
@@ -902,6 +940,35 @@ def render_predictions_page():
                 st.warning(
                     "No saved reports found. Please run a simulation first.")
                 universe_mode = "Quick Entry"
+        
+        # Add helpful stock symbol reference dropdown
+        with st.expander("📚 NSE Stock Symbol Reference", expanded=False):
+            st.markdown("### Quick Reference: Copy symbols from sectors below")
+            st.info("💡 **Tip:** Select a sector below and copy the symbols to paste above")
+            
+            # Sector selection
+            sector_pred = st.selectbox(
+                "Select Sector:",
+                options=list(NSE_STOCK_SYMBOLS.keys()),
+                index=len(NSE_STOCK_SYMBOLS) - 1,  # Default to "Top 30 Liquid Stocks"
+                key="pred_sector_select"
+            )
+            
+            if sector_pred:
+                sector_data = NSE_STOCK_SYMBOLS[sector_pred]
+                st.caption(sector_data["description"])
+                
+                # Format symbols for easy copying
+                symbols_text = format_symbols_for_input(sector_data["symbols"])
+                
+                # Display in a text area for easy selection and copying
+                st.text_area(
+                    f"Symbols ({len(sector_data['symbols'])} stocks)",
+                    value=symbols_text,
+                    height=100,
+                    key="pred_symbols_display",
+                    help="Select all (Ctrl+A) and copy (Ctrl+C)"
+                )
 
         if universe_mode == "Quick Entry":
             txt = st.text_area(
@@ -1199,6 +1266,26 @@ def simulator_page():
             prices = YFinanceNSESource().get_prices(universe, data_cfg)
         except Exception as e:
             st.error(f"Data load failed: {e}")
+            st.stop()
+
+        # Update universe to only include tickers that were successfully downloaded
+        successful_tickers = list(prices.columns)
+        failed_tickers = [t for t in universe if t not in successful_tickers]
+        
+        if failed_tickers:
+            st.warning(
+                f"Failed to download data for {len(failed_tickers)} ticker(s): "
+                f"{', '.join(failed_tickers)}"
+            )
+        
+        # Use only successful tickers for pair selection
+        universe = successful_tickers
+        
+        if len(universe) < 2:
+            st.error(
+                f"Not enough valid tickers to form pairs. Need at least 2, got {len(universe)}. "
+                "Please check your ticker symbols or try adding .NS suffix manually."
+            )
             st.stop()
 
         st.success(

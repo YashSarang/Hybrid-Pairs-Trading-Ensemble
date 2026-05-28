@@ -263,14 +263,14 @@ def run_walk_forward(market: str, selector_names: List[str], n_folds: int = 6):
     
     # WFV fold definitions (from config)
     wfv_cfg = config['walk_forward']
+    # Walk-forward folds (1-year train, 1-year test, rolling)
+    # Matches thesis structure: each fold tests on a full calendar year
+    # Note: 2024 test truncated to available data (2024-01-01 to 2025-04-30)
     folds = [
-        # (fold_idx, train_start, train_end, test_start, test_end)
-        (1, "2020-01-01", "2020-12-31", "2021-01-01", "2021-06-30"),
-        (2, "2020-07-01", "2021-06-30", "2021-07-01", "2021-12-31"),
-        (3, "2021-01-01", "2021-12-31", "2022-01-01", "2022-06-30"),
-        (4, "2021-07-01", "2022-06-30", "2022-07-01", "2022-12-31"),
-        (5, "2022-01-01", "2022-12-31", "2023-01-01", "2023-06-30"),
-        (6, "2022-07-01", "2023-06-30", "2023-07-01", "2024-12-31"),
+        (1, "2020-01-01", "2020-12-31", "2021-01-01", "2021-12-31"),
+        (2, "2021-01-01", "2021-12-31", "2022-01-01", "2022-12-31"),
+        (3, "2022-01-01", "2022-12-31", "2023-01-01", "2023-12-31"),
+        (4, "2023-01-01", "2023-12-31", "2024-01-01", "2025-04-30"),  # 16 months (limited by data)
     ][:n_folds]
     
     fold_results = []

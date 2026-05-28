@@ -1,0 +1,11 @@
+{
+  "Gross.Return": 0.4982558179325471,
+  "Gross.Sharpe": 0.16973872452327146,
+  "Gross.Volatility": 0.39621203841450536,
+  "Gross.MaxDrawdown": 0.41083717487954186,
+  "Net.Return": 0.00309389793254697,
+  "Net.Sharpe": 0.0010537601252824482,
+  "Net.Volatility": 0.3962966894944688,
+  "Net.MaxDrawdown": 0.5975779302035532,
+  "Turnover.Trades": 1760
+}

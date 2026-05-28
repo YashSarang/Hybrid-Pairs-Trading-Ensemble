@@ -1,0 +1,109 @@
+# United Kingdom Market Configuration
+# FTSE 100 top 35 stocks by market cap
+
+market:
+  name: "United Kingdom"
+  code: "FTSE"
+  currency: "GBP"
+  timezone: "Europe/London"
+
+universe:
+  # Top 35 FTSE 100 stocks by market cap (as of 2025)
+  # Yahoo Finance ticker format: {ticker}.L
+  tickers:
+    - "SHEL.L"      # Shell
+    - "AZN.L"       # AstraZeneca
+    - "HSBA.L"      # HSBC Holdings
+    - "BP.L"        # BP
+    - "ULVR.L"      # Unilever
+    - "DGE.L"       # Diageo
+    - "GSK.L"       # GSK
+    - "RIO.L"       # Rio Tinto
+    - "LSEG.L"      # London Stock Exchange Group
+    - "NG.L"        # National Grid
+    - "REL.L"       # RELX
+    - "BARC.L"      # Barclays
+    - "LLOY.L"      # Lloyds Banking Group
+    - "TSCO.L"      # Tesco
+    - "VOD.L"       # Vodafone
+    - "PRU.L"       # Prudential
+    - "AAL.L"       # Anglo American
+    - "BA.L"        # BAE Systems
+    - "CRH.L"       # CRH
+    - "BT-A.L"      # BT Group
+    - "IMB.L"       # Imperial Brands
+    - "GLEN.L"      # Glencore
+    - "AV.L"        # Aviva
+    - "BATS.L"      # British American Tobacco
+    - "SSE.L"       # SSE
+    - "ANTO.L"      # Antofagasta
+    - "LGEN.L"      # Legal & General
+    - "RKT.L"       # Reckitt Benckiser
+    - "FLTR.L"      # Flutter Entertainment
+    - "EXPN.L"      # Experian
+    - "SGRO.L"      # Segro
+    - "PSN.L"       # Persimmon
+    - "SMDS.L"      # Smith & Nephew
+    - "ABF.L"       # Associated British Foods
+    - "WPP.L"       # WPP
+
+  sectors:
+    Energy: ["SHEL.L", "BP.L"]
+    Pharma: ["AZN.L", "GSK.L"]
+    Finance: ["HSBA.L", "LSEG.L", "BARC.L", "LLOY.L", "PRU.L", "AV.L", "LGEN.L"]
+    Consumer: ["ULVR.L", "DGE.L", "TSCO.L", "RKT.L", "ABF.L"]
+    Tobacco: ["IMB.L", "BATS.L"]
+    Materials: ["RIO.L", "AAL.L", "GLEN.L", "ANTO.L"]
+    Utilities: ["NG.L", "SSE.L"]
+    Telecom: ["VOD.L", "BT-A.L"]
+    Industrials: ["BA.L", "CRH.L", "SMDS.L"]
+    Media: ["REL.L", "WPP.L"]
+    Tech: ["EXPN.L"]
+    Gaming: ["FLTR.L"]
+    Real_Estate: ["SGRO.L", "PSN.L"]
+
+data:
+  start_date: "2020-01-01"
+  end_date: "2025-05-01"
+  frequency: "1d"
+  source: "yfinance"
+  cache_dir: "experimental-ablation/data/uk"
+
+costs:
+  # UK (LSE) transaction cost model
+  brokerage_bps: 1.0
+  stamp_duty_bps: 5.0      # 0.5% on purchases only
+  ptm_levy_bps: 0.01       # Panel on Takeovers and Mergers levy
+  slippage_bps: 2.0
+  # Total round-trip: ~10 bps
+
+backtest:
+  initial_capital: 1000000   # 1M GBP
+  max_concurrent_pairs: 10
+  per_trade_notional: 50000  # 50K per leg
+  hold_period_days: 20
+
+selectors:
+  weights:
+    correlation: 0.15
+    distance: 0.10
+    cointegration: 0.10
+    combined: 0.05
+    ml: 0.15
+    lstm: 0.25
+    transformer: 0.10
+    gnn: 0.10
+
+signals:
+  weights:
+    zscore: 0.30
+    ou: 0.30
+    kalman: 0.25
+    ml: 0.15
+
+walk_forward:
+  n_folds: 6
+  train_months: 12
+  test_months: 6
+
+random_seed: 42

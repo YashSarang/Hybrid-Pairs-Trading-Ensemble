@@ -1,0 +1,108 @@
+# India (NSE) Market Configuration
+# Baseline from thesis experiments/config.py
+
+market:
+  name: "India"
+  code: "NSE"
+  currency: "INR"
+  timezone: "Asia/Kolkata"
+
+universe:
+  # Top 35 Nifty 50 stocks by market cap (as of 2025)
+  tickers:
+    - "RELIANCE.NS"
+    - "TCS.NS"
+    - "HDFCBANK.NS"
+    - "INFY.NS"
+    - "ICICIBANK.NS"
+    - "HINDUNILVR.NS"
+    - "ITC.NS"
+    - "SBIN.NS"
+    - "BHARTIARTL.NS"
+    - "KOTAKBANK.NS"
+    - "LT.NS"
+    - "AXISBANK.NS"
+    - "ASIANPAINT.NS"
+    - "MARUTI.NS"
+    - "HCLTECH.NS"
+    - "WIPRO.NS"
+    - "ULTRACEMCO.NS"
+    - "SUNPHARMA.NS"
+    - "NESTLEIND.NS"
+    - "TITAN.NS"
+    - "BAJFINANCE.NS"
+    - "ONGC.NS"
+    - "NTPC.NS"
+    - "POWERGRID.NS"
+    - "M&M.NS"
+    - "TATAMOTORS.NS"
+    - "TATASTEEL.NS"
+    - "TECHM.NS"
+    - "ADANIENT.NS"
+    - "COALINDIA.NS"
+    - "IOC.NS"
+    - "BPCL.NS"
+    - "GRASIM.NS"
+    - "HINDALCO.NS"
+    - "JSWSTEEL.NS"
+
+  sectors:
+    IT: ["TCS.NS", "INFY.NS", "HCLTECH.NS", "WIPRO.NS", "TECHM.NS"]
+    Banking: ["HDFCBANK.NS", "ICICIBANK.NS", "SBIN.NS", "AXISBANK.NS", "KOTAKBANK.NS"]
+    Energy: ["RELIANCE.NS", "ONGC.NS", "IOC.NS", "BPCL.NS"]
+    Auto: ["MARUTI.NS", "M&M.NS", "TATAMOTORS.NS"]
+    Pharma: ["SUNPHARMA.NS"]
+    FMCG: ["HINDUNILVR.NS", "ITC.NS", "NESTLEIND.NS", "TITAN.NS"]
+    Infra: ["LT.NS", "NTPC.NS", "POWERGRID.NS"]
+    Metals: ["TATASTEEL.NS", "HINDALCO.NS", "JSWSTEEL.NS", "COALINDIA.NS"]
+    Finance: ["BAJFINANCE.NS"]
+    Misc: ["BHARTIARTL.NS", "ASIANPAINT.NS", "ULTRACEMCO.NS", "ADANIENT.NS", "GRASIM.NS"]
+
+data:
+  start_date: "2020-01-01"
+  end_date: "2025-05-01"
+  frequency: "1d"
+  source: "yfinance"
+  cache_dir: "experimental-ablation/data/india"
+
+costs:
+  # NSE transaction cost model (institutional, delivery)
+  brokerage_bps: 3.0
+  exchange_bps: 0.345
+  sebi_bps: 0.01
+  stt_bps: 10.0        # Securities Transaction Tax (sell leg only)
+  gst_rate: 0.18       # GST on brokerage + exchange
+  stamp_bps: 1.0       # Stamp duty (buy leg only)
+  slippage_bps: 2.0
+  # Total round-trip: ~60 bps
+
+backtest:
+  initial_capital: 10000000  # 1 Cr INR
+  max_concurrent_pairs: 10
+  per_trade_notional: 500000  # 5 lakh per leg
+  hold_period_days: 20
+
+selectors:
+  weights:
+    correlation: 0.15
+    distance: 0.10
+    cointegration: 0.10
+    combined: 0.05
+    ml: 0.15
+    lstm: 0.25
+    transformer: 0.10
+    gnn: 0.10
+
+signals:
+  weights:
+    zscore: 0.30
+    ou: 0.30
+    kalman: 0.25
+    ml: 0.15
+
+walk_forward:
+  n_folds: 6
+  train_months: 12
+  test_months: 6
+
+random_seed: 42

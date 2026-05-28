@@ -208,18 +208,26 @@ def backtest_pairs(
         a = a.reindex(idx).ffill()
         b = b.reindex(idx).ffill()
 
-        # Ensemble signal
-        signals_by_model: Dict[str, pd.Series] = {
-            name: model.trade_signals(a, b).reindex(idx).fillna(0)
-            for name, model in entry_models.items()
-        }
+        # Fit each entry model on this pair's price history, then generate signals.
+        # fit() is idempotent for stateless models (ZScore, OU, Kalman) and
+        # essential for stateful models (MLSignal) that train a classifier.
+        signals_by_model: Dict[str, pd.Series] = {}
+        for name, model in entry_models.items():
+            try:
+                fitted = model.fit(a, b)
+                signals_by_model[name] = fitted.trade_signals(a, b).reindex(idx).fillna(0)
+            except Exception:
+                signals_by_model[name] = pd.Series(0, index=idx)
+
         sig = ensemble_signals(signals_by_model, entry_weights).astype(float)
 
         # Minimum hold period (anti-whipsaw filter, applied before soft stop
         # so emergency exits can still override unconditionally)
         sig = _apply_min_hold(sig, cfg.min_hold_bars).astype(float)
 
-        # Soft stop
+        # Soft stop — scale the *notional* used in PnL, not the discrete signal.
+        # Scaling the signal then rounding back to int would neutralize the decay,
+        # since round(0.5 * 1) = 1, leaving the position unchanged.
         spread = a - b
         z = _zscore(spread, cfg.soft_stop_lookback)
         breach = z.abs() > cfg.soft_stop_z
@@ -227,16 +235,21 @@ def backtest_pairs(
             breach.rolling(cfg.soft_stop_persist_bars).sum().fillna(0)
             >= cfg.soft_stop_persist_bars
         )
-        scale = pd.Series(1.0, index=idx)
-        scale.loc[breach] = cfg.soft_stop_decay
-        sig_scaled = (sig * scale).round().astype(int)
-        sig_scaled.loc[breach_persist] = 0
+        # Hard exit on persistent breach; discrete signal stays ±1 for turnover tracking
+        sig_scaled = sig.round().astype(int)
+        sig_scaled[breach_persist] = 0
+
+        # Notional scale: full on normal bars, decayed on soft-stop breach bars
+        notional_scale = pd.Series(notional_each, index=idx)
+        notional_scale[breach] = notional_each * cfg.soft_stop_decay
+        notional_scale[breach_persist] = 0.0
 
         # Returns and gross PnL
         r_spread = a.pct_change().fillna(0.0) - b.pct_change().fillna(0.0)
         sig_prev = sig_scaled.shift(1).fillna(0).astype(int)
+        notional_prev = notional_scale.shift(1).fillna(notional_each)
         pair_turnover = (sig_scaled - sig_prev).abs()
-        pair_gross = sig_prev * r_spread * notional_each
+        pair_gross = sig_prev * r_spread * notional_prev
         pair_costs = pair_turnover * (cost_frac / 2.0) * notional_each
 
         pnl_gross = pnl_gross.add(pair_gross.reindex(index).fillna(0.0), fill_value=0.0)
@@ -263,6 +276,9 @@ def backtest_pairs(
 
     m_g = _metrics_from_pnl(pnl_gross, cfg.capital, cfg.periods_per_year)
     m_n = _metrics_from_pnl(pnl_net, cfg.capital, cfg.periods_per_year)
+    # Count trade events: each row in the trades log is one discrete entry/exit/reversal.
+    # turnover_series.sum() would double-count reversals (1→-1 gives turnover=2).
+    num_trade_events = sum(len(df) for df in all_trades)
     metrics = {
         "Gross.Return": m_g["Return"],
         "Gross.Sharpe": m_g["Sharpe"],
@@ -272,7 +288,7 @@ def backtest_pairs(
         "Net.Sharpe": m_n["Sharpe"],
         "Net.Volatility": m_n["Volatility"],
         "Net.MaxDrawdown": m_n["MaxDrawdown"],
-        "Turnover.Trades": int(turnover_series.sum()),
+        "Turnover.Trades": num_trade_events,
     }
 
     trades = (

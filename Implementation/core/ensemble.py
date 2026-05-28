@@ -95,7 +95,10 @@ def ensemble_signals(
     1) Align to a common DatetimeIndex
     2) Clip each model's signal to [-1, 1]
     3) Weight-average using normalized absolute weights (sign preserved)
-    4) Hard sign() to {-1, 0, 1}; additionally zero out small magnitudes within `neutral_band`
+    4) Hard sign() to {-1, 0, 1}; additionally zero out blended values
+       whose absolute value is below `neutral_band * max_single_model_weight`.
+       Scaling by the max weight ensures a signal from even one dominant model
+       is not wrongly suppressed when many zero-weight models are present.
     """
     if not signals_by_model:
         raise ValueError("signals_by_model is empty")
@@ -117,7 +120,12 @@ def ensemble_signals(
 
     blended = aligned.values @ w
     out = np.sign(blended)
-    # Neutral band to avoid whipsaws
-    out[np.abs(blended) < float(neutral_band)] = 0
+
+    # Scale the neutral band by the largest single-model weight so that a strong
+    # signal from any model with material weight always passes through, even when
+    # many other models contribute zero (e.g. ML/Kalman weights set to 0).
+    effective_band = float(neutral_band) * float(w.max())
+    out[np.abs(blended) < effective_band] = 0
 
     return pd.Series(out.astype(int), index=aligned.index, name="signal")
+

@@ -322,6 +322,9 @@ class MLSelector(PairSelector):
                 out.append(PairScore(p, 0.0, {"ml": False}))
             return out
         for p in candidates:
+            if p.a not in prices.columns or p.b not in prices.columns:
+                out.append(PairScore(p, 0.0, {}))
+                continue
             a = prices[p.a].dropna()
             b = prices[p.b].dropna()
             idx = a.index.intersection(b.index)

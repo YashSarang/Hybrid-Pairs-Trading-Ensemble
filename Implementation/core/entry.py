@@ -145,7 +145,7 @@ class ZScoreThreshold(EntryExitModel):
         else:
             spread = a - b
         z = _zscore(spread, self.lookback)
-        sig = pd.Series(0, index=spread.index)
+        sig = pd.Series(np.nan, index=spread.index)
         sig[z > self.entry_z] = -1  # spread high => short A, long B
         sig[z < -self.entry_z] = +1
         sig[(z.abs() < self.exit_z)] = 0
@@ -174,20 +174,27 @@ class OUThreshold(EntryExitModel):
             spread = a - beta * b
         else:
             spread = a - b
+
         mu = spread.rolling(self.lookback).mean()
-        x = (spread - mu).dropna()
-        if len(x) < 10:
-            return pd.Series(0, index=spread.index)
-        x_lag = x.shift(1).dropna()
-        y = x.loc[x_lag.index]
-        var = x_lag.var()
-        phi = (x_lag.cov(y) / (var + 1e-12)) if var != 0 else 0.0
-        halflife = -1 / math.log(abs(phi)) if 1e-6 < abs(phi) < 1 else np.inf
-        k = 1 / halflife if halflife != np.inf else 0.0
-        metric = (k * (spread - mu)).fillna(0)
-        s = metric.rolling(
-            self.lookback // 2).std(ddof=0).bfill().fillna(0)
-        sig = pd.Series(0, index=spread.index)
+        x = spread - mu  # demeaned spread
+
+        # Rolling AR(1) phi estimate: cov(x_t, x_{t-1}) / var(x_{t-1})
+        # Using rolling windows ensures we only use past data at each bar (no look-ahead).
+        x_lag = x.shift(1)
+        rolling_cov = x.rolling(self.lookback).cov(x_lag)
+        rolling_var = x_lag.rolling(self.lookback).var()
+        phi = (rolling_cov / (rolling_var + 1e-12)).clip(-0.9999, 0.9999)
+
+        # Half-life and mean-reversion speed k = 1/halflife from rolling phi
+        # log(0) is undefined so clip phi away from 0 and ±1
+        safe_phi = phi.abs().clip(1e-6, 0.9999)
+        halflife = -1.0 / np.log(safe_phi)  # element-wise; >0 when phi in (0,1)
+        k = (1.0 / halflife).fillna(0.0).clip(0.0)  # non-negative speed
+
+        metric = (k * x).fillna(0)
+        s = metric.rolling(self.lookback // 2).std(ddof=0).bfill().fillna(0)
+
+        sig = pd.Series(np.nan, index=spread.index)
         sig[metric > self.entry_k * s] = -1
         sig[metric < -self.entry_k * s] = +1
         sig[(metric.abs() < self.exit_k * s)] = 0
@@ -281,7 +288,7 @@ class KalmanHedge(EntryExitModel):
 
         z = pd.Series(innovations / innov_stds, index=idx)
 
-        sig = pd.Series(0, index=idx)
+        sig = pd.Series(np.nan, index=idx)
         sig[z > self.entry_z] = -1   # spread above mean → short A, long B
         sig[z < -self.entry_z] = 1   # spread below mean → long A, short B
         sig[z.abs() < self.exit_z] = 0

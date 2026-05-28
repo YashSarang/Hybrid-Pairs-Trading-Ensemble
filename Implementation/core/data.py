@@ -101,15 +101,40 @@ class YFinanceNSESource(DataSource):
 
         # Try to load from cache first
         cache_file = "data_cache/daily_prices.parquet" if cfg.freq == "1D" else "data_cache/hourly_prices.parquet"
+
+        data = None
         if os.path.exists(cache_file):
-            print(f"Loading data from cache: {cache_file}")
-            data = pd.read_parquet(cache_file)
-        else:
+            try:
+                cached = pd.read_parquet(cache_file)
+                tickers_ns = [t if t.endswith(".NS") else f"{t}.NS" for t in universe]
+
+                # Check that ALL requested tickers are present in the cache
+                if isinstance(cached.columns, pd.MultiIndex):
+                    available = set(cached.columns.get_level_values(0))
+                    if all(t in available for t in tickers_ns):
+                        print(f"Loading data from cache: {cache_file}")
+                        data = cached
+                    else:
+                        missing = [t for t in tickers_ns if t not in available]
+                        print(f"Cache missing tickers {missing}, downloading fresh data.")
+                else:
+                    available = set(cached.columns)
+                    if all(t in available for t in tickers_ns):
+                        print(f"Loading data from cache: {cache_file}")
+                        data = cached
+                    else:
+                        missing = [t for t in tickers_ns if t not in available]
+                        print(f"Cache missing tickers {missing}, downloading fresh data.")
+            except Exception as e:
+                print(f"Cache load failed ({e}), downloading fresh data.")
+
+        if data is None:
             # Normalize tickers to Yahoo format
             tickers = [t if t.endswith(".NS") else f"{t}.NS" for t in universe]
             interval = FREQ_TO_YF_INTERVAL[cfg.freq]
-            start = pd.Timestamp(cfg.start)
-            end = pd.Timestamp(cfg.end) + pd.Timedelta(days=1)
+            # Use tz-naive Timestamps for yfinance
+            start = pd.Timestamp(cfg.start).tz_localize(None)
+            end = pd.Timestamp(cfg.end).tz_localize(None) + pd.Timedelta(days=1)
 
             data = yf.download(
                 tickers=tickers,
@@ -127,7 +152,7 @@ class YFinanceNSESource(DataSource):
             return t[:-3] if t.endswith(".NS") else t
 
         if isinstance(data.columns, pd.MultiIndex):
-            fields = list(data.columns.levels[1])
+            fields = list(data.columns.get_level_values(1).unique())
             field = cfg.price_field if cfg.price_field in fields else "Close"
             frames = []
             tickers = [t if t.endswith(".NS") else f"{t}.NS" for t in universe]
@@ -136,6 +161,11 @@ class YFinanceNSESource(DataSource):
                 col = (t, field)
                 if col in data.columns:
                     s = data[col]
+                    # When the cache has a 3-level MultiIndex, indexing with a
+                    # 2-tuple returns a DataFrame; squeeze to Series.
+                    if isinstance(s, pd.DataFrame):
+                        s = s.iloc[:, 0]
+                    s = s.copy()
                     s.name = _strip_ns(t)
                     frames.append(s)
                 else:
@@ -156,9 +186,11 @@ class YFinanceNSESource(DataSource):
             wide = data[[field]].rename(columns={field: name})
 
         wide = _to_datetime_index(wide)
-        # Clip and resample to exact requested frequency (safety)
-        wide = wide.loc[(wide.index >= pd.Timestamp(cfg.start))
-                        & (wide.index <= pd.Timestamp(cfg.end))]
+        # Ensure tz-naive timestamps for comparison (cfg.start/end may be date or
+        # tz-aware datetime objects from Streamlit date_input / DEFAULT_START)
+        ts_start = pd.Timestamp(cfg.start).tz_localize(None)
+        ts_end = pd.Timestamp(cfg.end).tz_localize(None)
+        wide = wide.loc[(wide.index >= ts_start) & (wide.index <= ts_end)]
         if cfg.freq == "1D":
             wide = wide.resample("1D").last()
         elif cfg.freq == "1H":
@@ -249,8 +281,9 @@ class CSVUploadSource(DataSource):
             raise ValueError("No valid data found in uploaded files.")
 
         wide = pd.concat(dfs, axis=1).sort_index()
-        wide = wide.loc[(wide.index >= pd.Timestamp(cfg.start))
-                        & (wide.index <= pd.Timestamp(cfg.end))]
+        ts_start = pd.Timestamp(cfg.start).tz_localize(None)
+        ts_end = pd.Timestamp(cfg.end).tz_localize(None)
+        wide = wide.loc[(wide.index >= ts_start) & (wide.index <= ts_end)]
         if cfg.freq != "1D":
             wide = wide.resample(cfg.freq).last().dropna(how="all")
         return wide.ffill().dropna(axis=1, how="any")

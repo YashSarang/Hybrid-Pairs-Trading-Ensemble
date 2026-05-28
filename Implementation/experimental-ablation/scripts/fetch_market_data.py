@@ -40,8 +40,7 @@ def fetch_ticker_data(ticker: str, start_date: str, end_date: str) -> pd.DataFra
             start=start_date,
             end=end_date,
             interval="1d",
-            progress=False,
-            show_errors=False
+            progress=False
         )
         
         if data.empty:

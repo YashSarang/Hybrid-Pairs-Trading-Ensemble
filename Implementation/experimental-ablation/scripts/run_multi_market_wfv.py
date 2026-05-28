@@ -27,7 +27,7 @@ from core.data import YFinanceNSESource
 from core.selectors import (
     CorrelationSelector, DistanceSelector, CointegrationSelector,
     CombinedCriteriaSelector, MLSelector, LSTMSelector,
-    TransformerSelector, GNNSelector
+    TransformerSelector, GNNSelector, Pair
 )
 from core.entry import ZScoreThreshold, OUThreshold, KalmanHedge, MLSignal
 from core.backtest import backtest_pairs, BacktestConfig, IndianCosts
@@ -86,7 +86,7 @@ def build_cost_model(config: Dict):
             slippage_bps=costs_cfg.get('slippage_bps', 2.0)
         )
 
-def get_selector(name: str, **kwargs):
+def get_selector(name: str):
     """Instantiate selector by name."""
     selector_map = {
         'correlation': CorrelationSelector,
@@ -98,7 +98,7 @@ def get_selector(name: str, **kwargs):
         'transformer': TransformerSelector,
         'gnn': GNNSelector
     }
-    return selector_map[name](**kwargs)
+    return selector_map[name]()
 
 def get_signal_model(name: str, **kwargs):
     """Instantiate signal model by name."""
@@ -137,7 +137,8 @@ def run_fold(
     
     # Generate candidate pairs (combinatorial)
     tickers = list(prices.columns)
-    candidate_pairs = [(a, b) for i, a in enumerate(tickers) for b in tickers[i+1:]]
+    from itertools import combinations
+    candidate_pairs = [Pair(a, b) for a, b in combinations(tickers, 2)]
     
     print(f"Candidate pairs: {len(candidate_pairs)}\n")
     
@@ -153,27 +154,27 @@ def run_fold(
         print(f"Training {sel_name}...", end=" ", flush=True)
         
         try:
-            selector = get_selector(sel_name, window=252)
-            scores = selector.rank_pairs(train_prices, candidate_pairs)
+            selector = get_selector(sel_name)
+            selector.fit(train_prices)
+            scores = selector.score_pairs(train_prices, candidate_pairs)
             selector_scores[sel_name] = scores
-            print(f"✅ {len([s for s in scores.values() if s > 0])} pairs scored")
+            print(f"✅ {len([s for s in scores if s.score > 0])} pairs scored")
         except Exception as e:
             print(f"❌ Error: {str(e)[:60]}")
-            selector_scores[sel_name] = {pair: 0.0 for pair in candidate_pairs}
+            selector_scores[sel_name] = []
     
     # Ensemble pair scores
     print(f"\nEnsembling {len(selector_scores)} selectors...")
     ensemble_scores = ensemble_pair_scores(
         selector_scores,
-        {k: selector_weights[k] for k in selector_scores.keys()}
+        {k: selector_weights[k] for k in selector_scores.keys()},
+        top_k=config['backtest']['max_concurrent_pairs']
     )
     
-    # Top-K pairs
-    top_k = config['backtest']['max_concurrent_pairs']
-    sorted_pairs = sorted(ensemble_scores.items(), key=lambda x: x[1], reverse=True)
-    selected_pairs = [pair for pair, score in sorted_pairs[:top_k] if score > 0]
+    # Extract top-K pairs (ensemble_pair_scores returns List[PairScore])
+    selected_pairs = [ps.pair for ps in ensemble_scores]
     
-    print(f"Selected pairs: {len(selected_pairs)} (target {top_k})\n")
+    print(f"Selected pairs: {len(selected_pairs)} (target {config['backtest']['max_concurrent_pairs']})\n")
     
     if not selected_pairs:
         print("❌ No pairs selected, skipping fold\n")
@@ -217,35 +218,38 @@ def run_fold(
     print(f"\nBacktesting {len(selected_pairs)} pairs on test period...")
     
     bt_config = BacktestConfig(
-        initial_capital=config['backtest']['initial_capital'],
-        per_trade_notional=config['backtest']['per_trade_notional'],
+        capital=config['backtest']['initial_capital'],
         max_concurrent_pairs=config['backtest']['max_concurrent_pairs'],
-        hold_period_days=config['backtest']['hold_period_days'],
-        costs=build_cost_model(config)
+        per_trade_cap=config['backtest']['per_trade_notional'],
+        costs=build_cost_model(config),
+        periods_per_year=252,  # Daily data
+        min_hold_bars=config['backtest']['hold_period_days']
     )
     
-    # Use ensemble signal (weighted combination)
-    from core.entry import ZScoreThreshold  # Default fallback
-    default_signal = ZScoreThreshold(train_window=60, entry_z=2.0, exit_z=0.5, stop_z=4.0)
+    # Build entry models (simplified: single OU threshold for now)
+    entry_models = {
+        "OU": OUThreshold(train_window=60, entry_z=2.0, exit_z=0.5, stop_z=4.0)
+    }
+    entry_weights = {"OU": 1.0}
     
     results = backtest_pairs(
         prices=test_prices,
-        pairs=selected_pairs,
-        signal_model=default_signal,  # Simplified for now
-        config=bt_config
+        selected_pairs=selected_pairs,
+        entry_models=entry_models,
+        entry_weights=entry_weights,
+        cfg=bt_config
     )
     
     # Extract metrics
-    metrics = results['metrics']
+    metrics = results.metrics
     
     print(f"\n{'='*40}")
     print(f"FOLD {fold_idx} RESULTS")
     print(f"{'='*40}")
-    print(f"Net Sharpe:   {metrics['net_sharpe']:.3f}")
-    print(f"Gross Sharpe: {metrics['gross_sharpe']:.3f}")
-    print(f"Max DD:       {metrics['max_drawdown']*100:.1f}%")
-    print(f"Win Rate:     {metrics['win_rate']*100:.1f}%")
-    print(f"Total Trades: {metrics['total_trades']}")
+    print(f"Net Sharpe:   {metrics['Net.Sharpe']:.3f}")
+    print(f"Gross Sharpe: {metrics['Gross.Sharpe']:.3f}")
+    print(f"Max DD:       {metrics['Net.MaxDrawdown']*100:.1f}%")
+    print(f"Total Trades: {int(metrics['Turnover.Trades'])}")
     print(f"{'='*40}\n")
     
     return {
@@ -255,9 +259,9 @@ def run_fold(
         'test_start': test_start,
         'test_end': test_end,
         'selected_pairs': len(selected_pairs),
-        'pairs': [f"{a}_{b}" for a, b in selected_pairs],
+        'pairs': [f"{p.a}_{p.b}" for p in selected_pairs],
         'selector_scores': {
-            sel: {f"{a}_{b}": float(score) for (a, b), score in scores.items()}
+            sel: {f"{ps.pair.a}_{ps.pair.b}": float(ps.score) for ps in scores}
             for sel, scores in selector_scores.items()
         },
         'metrics': {k: float(v) if isinstance(v, (np.floating, np.integer)) else v 
@@ -301,8 +305,8 @@ def run_walk_forward(market: str, selector_names: List[str], n_folds: int = 6):
         fold_results.append(result)
     
     # Aggregate results
-    net_sharpes = [r['metrics']['net_sharpe'] for r in fold_results if 'metrics' in r]
-    gross_sharpes = [r['metrics']['gross_sharpe'] for r in fold_results if 'metrics' in r]
+    net_sharpes = [r['metrics']['Net.Sharpe'] for r in fold_results if 'metrics' in r]
+    gross_sharpes = [r['metrics']['Gross.Sharpe'] for r in fold_results if 'metrics' in r]
     
     summary = {
         'market': config['market']['name'],

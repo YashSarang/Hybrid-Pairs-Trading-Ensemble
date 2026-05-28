@@ -62,12 +62,13 @@ def build_cost_model(config: Dict):
     if market_code == 'NSE':
         return IndianCosts(
             brokerage_bps=costs_cfg['brokerage_bps'],
-            exchange_bps=costs_cfg['exchange_bps'],
+            exchange_txn_bps=costs_cfg.get('exchange_bps', 0.322),
             sebi_bps=costs_cfg['sebi_bps'],
-            stt_bps=costs_cfg['stt_bps'],
+            stt_bps_sell=costs_cfg.get('stt_bps', 10.0),
             gst_rate=costs_cfg['gst_rate'],
-            stamp_bps=costs_cfg['stamp_bps'],
-            slippage_bps=costs_cfg['slippage_bps']
+            stamp_bps_buy=costs_cfg.get('stamp_bps', 1.5),
+            intraday=True,
+            slippage_bps_per_leg=costs_cfg.get('slippage_bps', 2.0)
         )
     else:
         # Generic cost model for non-India markets
@@ -77,13 +78,14 @@ def build_cost_model(config: Dict):
             if k.endswith('_bps') and isinstance(v, (int, float))
         )
         return IndianCosts(
-            brokerage_bps=total_bps / 2,  # Split into brokerage
-            exchange_bps=0,
+            brokerage_bps=total_bps / 4,
+            exchange_txn_bps=total_bps / 4,
             sebi_bps=0,
-            stt_bps=0,
+            stt_bps_sell=0,
             gst_rate=0,
-            stamp_bps=0,
-            slippage_bps=costs_cfg.get('slippage_bps', 2.0)
+            stamp_bps_buy=0,
+            intraday=True,
+            slippage_bps_per_leg=costs_cfg.get('slippage_bps', 2.0)
         )
 
 def get_selector(name: str):
@@ -190,30 +192,6 @@ def run_fold(
             'error': 'No pairs selected'
         }
     
-    # Train signal models on selected pairs
-    signal_weights = config['signals']['weights']
-    signal_models = {}
-    
-    for sig_name, weight in signal_weights.items():
-        if weight == 0:
-            continue
-        
-        print(f"Training signal model: {sig_name}...", end=" ", flush=True)
-        
-        try:
-            model = get_signal_model(sig_name, train_window=60)
-            
-            # Fit on train data for selected pairs
-            for pair in selected_pairs:
-                if hasattr(model, 'fit'):
-                    spread = train_prices[pair[0]] - train_prices[pair[1]]
-                    model.fit(spread)
-            
-            signal_models[sig_name] = model
-            print("✅")
-        except Exception as e:
-            print(f"❌ {str(e)[:60]}")
-    
     # Backtest on test period
     print(f"\nBacktesting {len(selected_pairs)} pairs on test period...")
     
@@ -226,9 +204,9 @@ def run_fold(
         min_hold_bars=config['backtest']['hold_period_days']
     )
     
-    # Build entry models (simplified: single OU threshold for now)
+    # Build entry models (simplified: single OUThreshold for now)
     entry_models = {
-        "OU": OUThreshold(train_window=60, entry_z=2.0, exit_z=0.5, stop_z=4.0)
+        "OU": OUThreshold(lookback=252, entry_k=1.5, exit_k=0.2)
     }
     entry_weights = {"OU": 1.0}
     

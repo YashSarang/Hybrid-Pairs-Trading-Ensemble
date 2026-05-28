@@ -204,11 +204,11 @@ def run_fold(
         min_hold_bars=config['backtest']['hold_period_days']
     )
     
-    # Build entry models (simplified: single OUThreshold for now)
+    # Build entry models (use ZScoreThreshold with shorter lookback for shorter test periods)
     entry_models = {
-        "OU": OUThreshold(lookback=252, entry_k=1.5, exit_k=0.2)
+        "ZScore": ZScoreThreshold(lookback=60, entry_z=2.0, exit_z=0.5)
     }
-    entry_weights = {"OU": 1.0}
+    entry_weights = {"ZScore": 1.0}
     
     results = backtest_pairs(
         prices=test_prices,

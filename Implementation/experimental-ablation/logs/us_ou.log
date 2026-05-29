@@ -1,0 +1,178 @@
+
+============================================================
+Multi-Market WFV: UNITED STATES
+============================================================
+Universe: 35 tickers
+Period: 2020-01-02 to 2025-04-30
+Selectors: correlation, distance, cointegration, combined, ml, lstm, transformer, gnn
+Folds: 4
+============================================================
+
+
+============================================================
+FOLD 1
+Train: 2020-01-01 to 2020-12-31
+Test:  2021-01-01 to 2021-12-31
+============================================================
+
+Train shape: (253, 35)
+Test shape:  (252, 35)
+
+Candidate pairs: 595
+
+Training correlation... ✅ 595 pairs scored
+Training distance... ✅ 0 pairs scored
+Training cointegration... ✅ 0 pairs scored
+Training combined... ✅ 0 pairs scored
+Training ml... ✅ 0 pairs scored
+Training lstm... [LSTMSelector] TensorFlow unavailable; will return neutral scores.
+✅ 0 pairs scored
+Training transformer... [TransformerSelector] TensorFlow unavailable; will return neutral scores.
+✅ 0 pairs scored
+Training gnn... [GNNSelector] TensorFlow unavailable; will return neutral scores.
+✅ 0 pairs scored
+
+Ensembling 8 selectors...
+Selected pairs: 10 (target 10)
+
+
+Backtesting 10 pairs on test period...
+
+========================================
+FOLD 1 RESULTS
+========================================
+Net Sharpe:   0.000
+Gross Sharpe: 0.000
+Max DD:       0.0%
+Total Trades: 0
+========================================
+
+
+============================================================
+FOLD 2
+Train: 2021-01-01 to 2021-12-31
+Test:  2022-01-01 to 2022-12-31
+============================================================
+
+Train shape: (252, 35)
+Test shape:  (251, 35)
+
+Candidate pairs: 595
+
+Training correlation... ✅ 0 pairs scored
+Training distance... ✅ 0 pairs scored
+Training cointegration... ✅ 0 pairs scored
+Training combined... ✅ 0 pairs scored
+Training ml... ✅ 0 pairs scored
+Training lstm... [LSTMSelector] TensorFlow unavailable; will return neutral scores.
+✅ 0 pairs scored
+Training transformer... [TransformerSelector] TensorFlow unavailable; will return neutral scores.
+✅ 0 pairs scored
+Training gnn... [GNNSelector] TensorFlow unavailable; will return neutral scores.
+✅ 0 pairs scored
+
+Ensembling 8 selectors...
+Selected pairs: 10 (target 10)
+
+
+Backtesting 10 pairs on test period...
+
+========================================
+FOLD 2 RESULTS
+========================================
+Net Sharpe:   0.000
+Gross Sharpe: 0.000
+Max DD:       0.0%
+Total Trades: 0
+========================================
+
+
+============================================================
+FOLD 3
+Train: 2022-01-01 to 2022-12-31
+Test:  2023-01-01 to 2023-12-31
+============================================================
+
+Train shape: (251, 35)
+Test shape:  (250, 35)
+
+Candidate pairs: 595
+
+Training correlation... ✅ 0 pairs scored
+Training distance... ✅ 0 pairs scored
+Training cointegration... ✅ 0 pairs scored
+Training combined... ✅ 0 pairs scored
+Training ml... ✅ 0 pairs scored
+Training lstm... [LSTMSelector] TensorFlow unavailable; will return neutral scores.
+✅ 0 pairs scored
+Training transformer... [TransformerSelector] TensorFlow unavailable; will return neutral scores.
+✅ 0 pairs scored
+Training gnn... [GNNSelector] TensorFlow unavailable; will return neutral scores.
+✅ 0 pairs scored
+
+Ensembling 8 selectors...
+Selected pairs: 10 (target 10)
+
+
+Backtesting 10 pairs on test period...
+
+========================================
+FOLD 3 RESULTS
+========================================
+Net Sharpe:   0.000
+Gross Sharpe: 0.000
+Max DD:       0.0%
+Total Trades: 0
+========================================
+
+
+============================================================
+FOLD 4
+Train: 2023-01-01 to 2023-12-31
+Test:  2024-01-01 to 2025-04-30
+============================================================
+
+Train shape: (250, 35)
+Test shape:  (333, 35)
+
+Candidate pairs: 595
+
+Training correlation... ✅ 0 pairs scored
+Training distance... ✅ 0 pairs scored
+Training cointegration... ✅ 0 pairs scored
+Training combined... ✅ 0 pairs scored
+Training ml... ✅ 0 pairs scored
+Training lstm... [LSTMSelector] TensorFlow unavailable; will return neutral scores.
+✅ 0 pairs scored
+Training transformer... [TransformerSelector] TensorFlow unavailable; will return neutral scores.
+✅ 0 pairs scored
+Training gnn... [GNNSelector] TensorFlow unavailable; will return neutral scores.
+✅ 0 pairs scored
+
+Ensembling 8 selectors...
+Selected pairs: 10 (target 10)
+
+
+Backtesting 10 pairs on test period...
+
+========================================
+FOLD 4 RESULTS
+========================================
+Net Sharpe:   0.000
+Gross Sharpe: 0.000
+Max DD:       0.0%
+Total Trades: 0
+========================================
+
+
+============================================================
+SUMMARY: UNITED STATES
+============================================================
+Avg Net Sharpe:   0.000 ± 0.000
+Avg Gross Sharpe: 0.000
+Cost Drag:        0.000
+Transaction Cost: 2.7 bps
+
+💾 Saved: C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\experimental-ablation\results\us\wfv_4folds_ou_20260529_070452.json
+============================================================
+

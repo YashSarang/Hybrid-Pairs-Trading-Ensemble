@@ -206,11 +206,11 @@ def run_fold(
     # Build entry models based on signal_model choice
     if signal_model == 'zscore':
         entry_models = {
-            "ZScore": ZScoreThreshold(lookback=60, entry_z=2.0, exit_z=0.5)
+            "ZScore": ZScoreThreshold(lookback=126, entry_z=2.0, exit_z=0.5)
         }
     elif signal_model == 'ou':
         entry_models = {
-            "OU": OUThreshold(lookback=252, entry_k=1.5, exit_k=0.2)
+            "OU": OUThreshold(lookback=126, entry_k=1.5, exit_k=0.2)
         }
     elif signal_model == 'kalman':
         entry_models = {

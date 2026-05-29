@@ -223,9 +223,9 @@ def run_rolling_fold(
         "train_end": train_end,
         "test_start": test_start,
         "test_end": test_end,
-        "selected_pairs": len(selected_pair_names),
-        "pairs": selected_pair_names,
-        "selector_scores": {k: dict(list(v.items())[:20]) for k, v in selector_scores.items()},  # Top 20 per selector
+        "selected_pairs": len(selected_pairs),
+        "pairs": [f"{p.a}-{p.b}" for p in selected_pairs],
+        "selector_counts": {k: len(v) for k, v in selector_scores.items()},  # Pair count per selector
         "sel_time_s": sel_time,
         "bt_time_s": bt_time,
         "gross_sharpe": metrics["Gross.Sharpe"],

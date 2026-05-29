@@ -27,10 +27,12 @@ This script (rolling):
 
 FOLD STRUCTURE (Rolling 12-month)
 ----------------------------------
-  Fold 1:  Train 2020  |  Test 2021
-  Fold 2:  Train 2021  |  Test 2022
-  Fold 3:  Train 2022  |  Test 2023
-  Fold 4:  Train 2023  |  Test 2024 (partial)
+  Fold 1:  Train 2019  |  Test 2020  (E1 equivalent)
+  Fold 2:  Train 2020  |  Test 2021  (E2 equivalent)
+  Fold 3:  Train 2021  |  Test 2022  (E3 equivalent)
+  Fold 4:  Train 2022  |  Test 2023  (E4 equivalent)
+  Fold 5:  Train 2023  |  Test 2024  (E5 equivalent)
+  Fold 6:  Train 2024  |  Test 2025  (E6 equivalent)
 
 SIGNAL PARAMETERS
 -----------------
@@ -276,11 +278,14 @@ def main():
     logger.info(f"✓ {len(selectors)} selectors ready")
     
     # Define rolling folds (12-month train, 12-month test)
+    # Matches thesis E1-E6 test years exactly
     folds = [
-        (1, "2020-01-01", "2020-12-31", "2021-01-01", "2021-12-31"),
-        (2, "2021-01-01", "2021-12-31", "2022-01-01", "2022-12-31"),
-        (3, "2022-01-01", "2022-12-31", "2023-01-01", "2023-12-31"),
-        (4, "2023-01-01", "2023-12-31", "2024-01-01", "2024-04-30"),  # Partial 2024
+        (1, "2019-01-01", "2019-12-31", "2020-01-01", "2020-12-31"),  # E1: 2020 test
+        (2, "2020-01-01", "2020-12-31", "2021-01-01", "2021-12-31"),  # E2: 2021 test
+        (3, "2021-01-01", "2021-12-31", "2022-01-01", "2022-12-31"),  # E3: 2022 test
+        (4, "2022-01-01", "2022-12-31", "2023-01-01", "2023-12-31"),  # E4: 2023 test
+        (5, "2023-01-01", "2023-12-31", "2024-01-01", "2024-12-31"),  # E5: 2024 test
+        (6, "2024-01-01", "2024-12-31", "2025-01-01", "2025-12-31"),  # E6: 2025 test
     ]
     
     # Execute folds

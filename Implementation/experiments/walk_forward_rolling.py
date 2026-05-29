@@ -82,6 +82,7 @@ from core.selectors import (
     TransformerSelector,
     GNNSelector,
 )
+from experiments.config import NSE_UNIVERSE
 
 logging.basicConfig(
     level=logging.INFO,
@@ -240,15 +241,21 @@ def main():
     logger.info("="*70)
     
     # Load NSE data (2020-2024)
-    logger.info("\n📥 Loading NSE Nifty 50 data...")
+    logger.info("\n📥 Loading NSE Nifty 100 data...")
+    
+    # Fetch prices
     data_cfg = DataConfig(
-        source=YFinanceNSESource(),
-        start_date="2020-01-01",
-        end_date="2024-12-31",
-        tickers_file=Path(__file__).parent.parent / "data" / "nse_nifty50_tickers.txt",
+        start=datetime(2020, 1, 1),
+        end=datetime(2024, 12, 31),
+        freq="1D"
     )
     
-    prices = data_cfg.fetch()
+    prices = YFinanceNSESource().get_prices(NSE_UNIVERSE, data_cfg)
+    
+    # Filter for coverage
+    coverage = prices.notna().mean()
+    prices = prices[coverage[coverage >= 0.80].index]
+    
     logger.info(f"✓ Loaded {len(prices.columns)} tickers, {len(prices)} days")
     
     # Build selectors once

@@ -254,13 +254,13 @@ def main():
     logger.info("Signal Parameters: lookback=126 (both ZScore and OU)")
     logger.info("="*70)
     
-    # Load NSE data (2020-2024)
-    logger.info("\n📥 Loading NSE Nifty 100 data...")
+    # Load NSE data (2019-2025 for all 6 folds)
+    logger.info("\\n📥 Loading NSE Nifty 100 data...")
     
     # Fetch prices
     data_cfg = DataConfig(
-        start=datetime(2020, 1, 1),
-        end=datetime(2024, 12, 31),
+        start=datetime(2019, 1, 1),  # Include 2019 for Fold 1 training
+        end=datetime(2025, 12, 31),   # Include 2025 for Fold 6 testing
         freq="1D"
     )
     

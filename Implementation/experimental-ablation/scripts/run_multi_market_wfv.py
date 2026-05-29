@@ -114,13 +114,12 @@ def get_signal_model(name: str, **kwargs):
 
 def run_fold(
     fold_idx: int,
-    train_start: str,
-    train_end: str,
-    test_start: str,
-    test_end: str,
+    train_start: str, train_end: str,
+    test_start: str, test_end: str,
     prices: pd.DataFrame,
     config: Dict,
-    selector_names: List[str]
+    selector_names: List[str],
+    signal_model: str = 'zscore'
 ) -> Dict:
     """Run a single WFV fold."""
     
@@ -204,11 +203,27 @@ def run_fold(
         min_hold_bars=config['backtest']['hold_period_days']
     )
     
-    # Build entry models (use ZScoreThreshold with shorter lookback for shorter test periods)
-    entry_models = {
-        "ZScore": ZScoreThreshold(lookback=60, entry_z=2.0, exit_z=0.5)
-    }
-    entry_weights = {"ZScore": 1.0}
+    # Build entry models based on signal_model choice
+    if signal_model == 'zscore':
+        entry_models = {
+            "ZScore": ZScoreThreshold(lookback=60, entry_z=2.0, exit_z=0.5)
+        }
+    elif signal_model == 'ou':
+        entry_models = {
+            "OU": OUThreshold(lookback=252, entry_k=1.5, exit_k=0.2)
+        }
+    elif signal_model == 'kalman':
+        entry_models = {
+            "Kalman": KalmanHedge()
+        }
+    elif signal_model == 'ml':
+        entry_models = {
+            "ML": MLSignal()
+        }
+    else:
+        raise ValueError(f"Unknown signal model: {signal_model}")
+    
+    entry_weights = {list(entry_models.keys())[0]: 1.0}
     
     results = backtest_pairs(
         prices=test_prices,
@@ -246,7 +261,7 @@ def run_fold(
                    for k, v in metrics.items()}
     }
 
-def run_walk_forward(market: str, selector_names: List[str], n_folds: int = 6):
+def run_walk_forward(market: str, selector_names: List[str], n_folds: int, signal_model: str = 'zscore'):
     """Run full walk-forward validation for a market."""
     
     config = load_config(market)
@@ -278,7 +293,7 @@ def run_walk_forward(market: str, selector_names: List[str], n_folds: int = 6):
     for fold_idx, train_start, train_end, test_start, test_end in folds:
         result = run_fold(
             fold_idx, train_start, train_end, test_start, test_end,
-            prices, config, selector_names
+            prices, config, selector_names, signal_model
         )
         fold_results.append(result)
     
@@ -289,6 +304,7 @@ def run_walk_forward(market: str, selector_names: List[str], n_folds: int = 6):
     summary = {
         'market': config['market']['name'],
         'market_code': config['market']['code'],
+        'signal_model': signal_model,
         'n_folds': len(fold_results),
         'selectors': selector_names,
         'avg_net_sharpe': float(np.mean(net_sharpes)) if net_sharpes else 0.0,
@@ -306,7 +322,7 @@ def run_walk_forward(market: str, selector_names: List[str], n_folds: int = 6):
     results_dir = Path(__file__).parent.parent / "results" / market
     results_dir.mkdir(parents=True, exist_ok=True)
     
-    output_file = results_dir / f"wfv_{n_folds}folds_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+    output_file = results_dir / f"wfv_{n_folds}folds_{signal_model}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
     
     with open(output_file, 'w') as f:
         json.dump(summary, f, indent=2)
@@ -338,13 +354,19 @@ def main():
     parser.add_argument(
         '--n_folds',
         type=int,
-        default=6,
-        help='Number of folds (default: 6)'
+        default=4,
+        help='Number of folds (default: 4)'
+    )
+    parser.add_argument(
+        '--signal_model',
+        choices=['zscore', 'ou', 'kalman', 'ml'],
+        default='zscore',
+        help='Signal model to use (default: zscore)'
     )
     
     args = parser.parse_args()
     
-    run_walk_forward(args.market, args.selectors, args.n_folds)
+    run_walk_forward(args.market, args.selectors, args.n_folds, args.signal_model)
 
 if __name__ == "__main__":
     main()

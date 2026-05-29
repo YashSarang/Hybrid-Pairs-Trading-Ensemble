@@ -40,7 +40,21 @@ C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\ru
   warnings.warn(
 C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\keras\src\export\tf2onnx_lib.py:8: FutureWarning: In the future `np.object` will be defined as the corresponding NumPy scalar.
   if not hasattr(np, "object"):
+12:42:54 [INFO] ======================================================================
+12:42:54 [INFO] ROLLING-WINDOW WALK-FORWARD VALIDATION
+12:42:54 [INFO] Methodology: Fixed 12-month training windows
+12:42:54 [INFO] Signal Parameters: lookback=126 (both ZScore and OU)
+12:42:54 [INFO] ======================================================================
+12:42:54 [INFO] 
+📥 Loading NSE Nifty 50 data...
 Traceback (most recent call last):
-  File "C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\experiments\walk_forward_rolling.py", line 75, in <module>
-    from core.selectors_stat import CorrelationSelector, DistanceSelector, CointegrationSelector, CombinedScoreSelector
-ModuleNotFoundError: No module named 'core.selectors_stat'
+  File "C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\experiments\walk_forward_rolling.py", line 335, in <module>
+    main()
+    ~~~~^^
+  File "C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\experiments\walk_forward_rolling.py", line 244, in main
+    data_cfg = DataConfig(
+        source=YFinanceNSESource(),
+    ...<2 lines>...
+        tickers_file=Path(__file__).parent.parent / "data" / "nse_nifty50_tickers.txt",
+    )
+TypeError: DataConfig.__init__() got an unexpected keyword argument 'source'

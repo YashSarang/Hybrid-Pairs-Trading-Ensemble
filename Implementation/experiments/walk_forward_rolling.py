@@ -71,9 +71,17 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from core.backtest import BacktestConfig, IndianCosts, backtest_pairs
 from core.data import DataConfig, YFinanceNSESource
-from core.entry import ZScoreThreshold, OUThreshold, KalmanHedge, MLSignal
-from core.selectors_stat import CorrelationSelector, DistanceSelector, CointegrationSelector, CombinedScoreSelector
-from core.selectors_ml import MLSelector, LSTMSelector, TransformerSelector, GNNSelector
+from core.entry import ZScoreThreshold, OUThreshold
+from core.selectors import (
+    CorrelationSelector,
+    DistanceSelector,
+    CointegrationSelector,
+    CombinedCriteriaSelector,
+    MLSelector,
+    LSTMSelector,
+    TransformerSelector,
+    GNNSelector,
+)
 
 logging.basicConfig(
     level=logging.INFO,
@@ -89,7 +97,7 @@ def build_selectors() -> Dict:
         "Correlation": CorrelationSelector(),
         "Distance": DistanceSelector(),
         "Cointegration": CointegrationSelector(),
-        "Combined": CombinedScoreSelector(),
+        "Combined": CombinedCriteriaSelector(),
         "ML": MLSelector(),
         "LSTM": LSTMSelector(),
         "Transformer": TransformerSelector(),

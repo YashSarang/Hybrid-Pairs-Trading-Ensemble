@@ -205,12 +205,19 @@ Chapter 3 Section 3.6 demonstrated that rolling-window methodology improves NSE 
 
 | Year | NSE Rolling (Nifty 100) | India Multi-Market (Nifty 50) | Delta | Winner |
 |------|-------------------------|-------------------------------|-------|--------|
-| 2021 | +0.572 | [TBD — load from JSON] | [TBD] | [TBD] |
-| 2022 | +0.847 | [TBD] | [TBD] | [TBD] |
-| 2023 | -0.485 | [TBD] | [TBD] | [TBD] |
-| 2024 | -1.270 | [TBD] | [TBD] | [TBD] |
+| 2021 | +0.572 | **+0.604** | +0.032 | 🇮🇳 India |
+| 2022 | +0.847 | -0.080 | -0.927 | NSE |
+| 2023 | -0.485 | **+1.996** ★ | +2.481 | 🇮🇳 India |
+| 2024 | -1.270 | **+0.840** | +2.110 | 🇮🇳 India |
 
-**[TODO: Extract fold-by-fold from `experimental-ablation/results/wfv_india_zscore.json`]**
+**★ Best performer across all folds**
+
+**India wins 3 out of 4 folds (75%)**
+
+**Key Insights:**
+- **2022 anomaly:** India's only loss (-0.080) occurred in the year NSE had its best performance (+0.847). Hypothesis: Nifty 50 universe may have missed a sectoral rotation that benefited Nifty 100 pairs.
+- **2023-2024 dominance:** India crushed NSE by +2.5 and +2.1 Sharpe units when NSE turned negative. Smaller universe (Nifty 50) → more concentrated signals → higher conviction pairs → better performance in volatile markets.
+- **Aggregate effect:** Despite losing 2022, India's aggregate +0.840 is **16.2x better** than NSE's +0.052 due to massive wins in 2023-2024.
 
 ---
 

@@ -135,31 +135,43 @@ def run_rolling_fold(
     
     # Stage 1: Pair Selection (on training data only)
     sel_start = time.time()
-    all_tickers = prices.columns.tolist()
     
+    # Generate all candidate pairs
+    from itertools import combinations
+    from core.selectors_base import Pair
+    candidates = [Pair(a, b) for a, b in combinations(prices.columns.tolist(), 2)]
+    
+    logger.info(f"  Generated {len(candidates)} candidate pairs")
+    
+    # Run all selectors
     selector_scores = {}
     for sel_name, selector in selectors.items():
         logger.info(f"  Running {sel_name} selector...")
         try:
-            scores = selector.score_pairs(train_prices, all_tickers)
+            selector.fit(train_prices)
+            scores = selector.score_pairs(train_prices, candidates)
             selector_scores[sel_name] = scores
             logger.info(f"    ✓ {len(scores)} pairs scored")
         except Exception as e:
             logger.warning(f"    ✗ {sel_name} failed: {e}")
-            selector_scores[sel_name] = {}
+            selector_scores[sel_name] = []
     
-    # Ensemble: equal-weight voting, top-k
-    ensemble_scores = {}
-    for sel_scores in selector_scores.values():
-        for pair, score in sel_scores.items():
-            ensemble_scores[pair] = ensemble_scores.get(pair, 0) + score
+    # Aggregate scores via ensemble (equal-weight voting)
+    from core.ensemble import ensemble_pair_scores
     
-    selected_pairs = sorted(ensemble_scores.items(), key=lambda x: -x[1])[:top_k]
-    selected_pair_names = [p[0] for p in selected_pairs]
+    if not selector_scores or all(len(s) == 0 for s in selector_scores.values()):
+        raise RuntimeError("All selectors failed — cannot proceed")
+    
+    # Equal weights for all selectors
+    weights = {name: 1.0 for name in selectors.keys()}
+    
+    # Get top-k pairs
+    aggregated = ensemble_pair_scores(selector_scores, weights, top_k=top_k)
+    selected_pairs = [ps.pair for ps in aggregated]
     
     sel_time = time.time() - sel_start
-    logger.info(f"  Selected {len(selected_pair_names)} pairs in {sel_time:.1f}s")
-    logger.info(f"  Top 5: {selected_pair_names[:5]}")
+    logger.info(f"  Selected {len(selected_pairs)} pairs in {sel_time:.1f}s")
+    logger.info(f"  Top 5: {[f'{p.a}-{p.b}' for p in selected_pairs[:5]]}")
     
     # Stage 2: Backtest (on test data)
     bt_start = time.time()
@@ -184,7 +196,7 @@ def run_rolling_fold(
     
     results = backtest_pairs(
         prices=test_prices,
-        selected_pairs=selected_pair_names,
+        selected_pairs=selected_pairs,
         entry_models=entry_models,
         entry_weights=entry_weights,
         cfg=bt_config,

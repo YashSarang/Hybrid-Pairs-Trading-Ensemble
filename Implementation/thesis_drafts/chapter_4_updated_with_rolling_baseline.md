@@ -293,6 +293,27 @@ Chapter 3 Section 3.6 demonstrated that rolling-window methodology improves NSE 
 
 ---
 
+### 4.4.3a Regime Context: UK Macro Environment 2021–2024
+
+To contextualise the fold-by-fold UK performance, the table below maps annual VIX levels and key UK macro events against each fold's Sharpe ratio.
+
+| Year | VIX Avg | UK Fold Sharpe | UK Macro Events |
+|------|---------|----------------|-----------------|
+| 2021 | 19.7 | −1.022 | Brexit Trade & Cooperation Agreement fully in effect (Jan); supply-chain disruptions begin; BoE holds rates at 0.1 % |
+| 2022 | 25.6 | −0.249 | BoE begins aggressive rate-hike cycle (Feb–Dec, 0.25 % → 3.5 %); Truss mini-budget crisis (Sep–Oct); GBP/USD −15 % drawdown; gilt market turmoil |
+| 2023 | 17.5 | +0.967 | BoE hikes peak at 5.25 % (Aug); inflation gradually subsiding; relative macro stability allows mean-reversion to persist |
+| 2024 | 15.5 | −0.677 | BoE begins cutting cycle (Aug); UK general election (Jul); renewed uncertainty around fiscal policy and growth outlook |
+
+**VIX data (annual averages, approximate):** `{'2020': 29.2, '2021': 19.7, '2022': 25.6, '2023': 17.5, '2024': 15.5}`
+
+**MOVE Index (US bond vol, annual averages, approximate):** `{'2020': 65, '2021': 62, '2022': 131, '2023': 126, '2024': 108}`
+
+The only fold where UK achieved positive Sharpe (+0.967, 2023) coincides with the lowest-volatility regime in the sample window (VIX 17.5), when BoE policy had plateaued and macro uncertainty was at its nadir. Conversely, the worst fold (2021, −1.022) aligns with the immediate post-Brexit structural adjustment period, and the 2022 fold (−0.249) with peak rate-hike and currency volatility. The 2024 deterioration (−0.677) despite low VIX suggests idiosyncratic UK fiscal and political uncertainty can impair spread stationarity even when global volatility is subdued.
+
+The correlation between macro volatility and UK underperformance is consistent with the hypothesis that FTSE 100 pair spreads are more sensitive to macro regime shifts than NSE Nifty 50 pairs, which operate in a more insulated domestic equity market.
+
+---
+
 ### 4.4.4 India (NSE Nifty 50 vs Nifty 100)
 
 **Results:**

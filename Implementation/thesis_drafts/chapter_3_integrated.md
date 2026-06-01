@@ -10,7 +10,7 @@ This chapter presents the baseline walk-forward validation of the hybrid pairs t
 - **Section 3.3**: Selector Ensemble Configuration
 - **Section 3.4**: Walk-Forward Results (Expanding Window)
 - **Section 3.5**: Analysis and Discussion
-- **Section 3.6**: Sensitivity Analysis — Rolling Window Methodology ✅ **[COMPLETE]**
+- **Section 3.6**: Sensitivity Analysis — Rolling Window Methodology **[COMPLETE]**
 
 **Key Finding:** NSE pairs trading fails under expanding windows (-0.409 Sharpe, 1,096 trades). Rolling windows improve performance modestly (+0.052 Sharpe) through transaction cost reduction but remain marginally profitable and statistically insignificant. Multi-market validation (Chapter 4) is required.
 
@@ -46,7 +46,7 @@ The NSE baseline validation addresses three research questions:
 
 **Signals Tested:**
 - **ZScoreThreshold**: Normalized spread crosses ±2σ (lookback = 126 days)
-- **OUThreshold**: Ornstein-Uhlenbeck mean-reversion with MLE parameters (lookback = 126 days)
+- **OUThreshold**: Ornstein-Uhlenbeck mean-reversion signal using rolling AR(1) spread estimation (lookback = 126 days; entry at k=1.5 std, exit at k=0.2 std)
 
 **Entry/Exit:**
 - Entry: Signal triggers (spread exceeds threshold)
@@ -54,7 +54,7 @@ The NSE baseline validation addresses three research questions:
 - Position sizing: Equal-weighted across 10 pairs
 
 **Transaction Costs:**
-- Indian market: 16.4 bps per round-trip (STT + brokerage + slippage)
+- Indian market: 16.28 bps per round-trip — STT (sell): 10.0 bps, NSE exchange fee: 0.322 bps, SEBI fee: 0.01 bps, stamp duty (buy): 1.5 bps, GST on fees: 18%, slippage: 2.0 bps per leg (2024 rates, source: NSE circular)
 - Applied on entry and exit
 
 ---
@@ -85,8 +85,10 @@ The NSE baseline validation addresses three research questions:
 **Missing Data:** Forward-fill up to 3 consecutive days, else exclude stock
 
 **Stationarity Tests:**
-- ADF test on price spreads (cointegration filter)
+- ADF test on price spreads (cointegration ranking criterion)
 - Half-life calculation (exclude pairs with HL > 60 days)
+
+> **Note:** ADF test is used as a ranking criterion by CointegrationSelector only. OUThreshold does not apply an ADF exclusion filter; stationarity is implicitly enforced via reversion speed (k = 1/half-life) in the signal formula.
 
 ---
 
@@ -276,7 +278,7 @@ All other parameters held constant:
 | **Avg Cost Drag** | -0.526 | -0.057 | **+0.469** | **-89.2%** |
 
 **Statistical significance:**
-- Paired t-test: *t* = 1.105, *p* = 0.320 (two-tailed)
+- Paired t-test: *t* = 1.105, *p* = 0.320 (Bonferroni-corrected for 2 methodologies: p_corrected = 0.640) (two-tailed)
 - **Result**: Difference is **not statistically significant** at α = 0.05
 - Effect size: Cohen's *d* = 0.451 (small to medium effect)
 
@@ -293,12 +295,12 @@ The rolling window methodology shows a substantial absolute improvement (+0.461 
 |------|-----------|----------------------|--------------------|-------|--------|----------------|
 | 1    | 2020      | -0.675               | **+0.096**         | **+0.770** | Rolling | COVID-19 crash, extreme volatility |
 | 2    | 2021      | **+0.802**           | +0.572             | -0.230 | Expanding | Post-COVID recovery, stable trends |
-| 3    | 2022      | -0.616               | **+0.847**         | **+1.462** ⭐ | Rolling | Ukraine war, inflation, regime shift |
+|| 3    | 2022      | -0.616               | **+0.847**         | **+1.462** * | Rolling | Ukraine war, inflation, regime shift |
 | 4    | 2023      | **+0.114**           | -0.485             | -0.599 | Expanding | AI boom, trending markets |
 | 5    | 2024      | **-0.850**           | -1.270             | -0.420 | Expanding | Both unprofitable, expanding less bad |
-| 6    | 2025      | -1.230               | **+0.552**         | **+1.782** ⭐ | Rolling | Expanding's worst year |
+|| 6    | 2025      | -1.230               | **+0.552**         | **+1.782** * | Rolling | Expanding's worst year |
 
-⭐ = Largest performance gaps (>1.4 Sharpe units)
+* = Largest performance gaps (>1.4 Sharpe units)
 
 **Scorecard:** Rolling wins 4/6 folds (67%), including the 3 largest deltas.
 
@@ -416,7 +418,7 @@ Beyond statistical performance, rolling windows offer operational advantages:
 
 ### Statistical Insignificance
 
-The paired t-test yields *p* = 0.320, well above conventional significance thresholds (α = 0.05 or 0.10). This reflects:
+The paired t-test yields *p* = 0.320 (Bonferroni-corrected for 2 methodologies: p_corrected = 0.640), well above conventional significance thresholds (α = 0.05 or 0.10). This reflects:
 
 1. **High variance**: Both methods exhibit σ ≈ 0.75-0.80, indicating year-to-year Sharpe instability
 2. **Small sample size**: *n* = 6 folds provides limited statistical power (power ≈ 0.32 for detecting d = 0.45 at α = 0.05)
@@ -446,7 +448,7 @@ The LSTM, Transformer, and GNN selectors produced different pair rankings across
 
 ### Interpretation
 
-The rolling window sensitivity analysis reveals a **trade-frequency-driven improvement** (+0.461 Sharpe, +113%) that does not achieve statistical significance (*p* = 0.320). The mechanism is transparent: 73% fewer trades reduce transaction costs by 89%, translating directly to +0.469 Sharpe units. At the gross (pre-cost) level, neither methodology dominates — rolling wins in volatile years (2020, 2022, 2025) but loses in stable/trending years (2021, 2023, 2024).
+The rolling window sensitivity analysis reveals a **trade-frequency-driven improvement** (+0.461 Sharpe, +113%) that does not achieve statistical significance (*p* = 0.320; Bonferroni-corrected for 2 methodologies: p_corrected = 0.640). The mechanism is transparent: 73% fewer trades reduce transaction costs by 89%, translating directly to +0.469 Sharpe units. At the gross (pre-cost) level, neither methodology dominates — rolling wins in volatile years (2020, 2022, 2025) but loses in stable/trending years (2021, 2023, 2024).
 
 This conditional advantage suggests that **optimal training window length is regime-dependent**, not universally superior. A hybrid approach — dynamically selecting expanding vs rolling based on market volatility indicators — might outperform both fixed strategies. However, such adaptive methods introduce look-ahead bias risks and were beyond this thesis scope.
 
@@ -481,7 +483,7 @@ We conducted a complete rolling-window re-validation of the NSE Nifty 100 pairs 
 
 2. **Mechanism**: Entirely cost-driven — 73% trade reduction eliminates 89% of cost drag (+0.469 Sharpe units)
 
-3. **Statistical insignificance**: Improvement is not statistically significant (*p* = 0.320, *d* = 0.451), due to high variance and small sample size (*n* = 6)
+3. **Statistical insignificance**: Improvement is not statistically significant (*p* = 0.320, Bonferroni-corrected for 2 methodologies: p_corrected = 0.640; *d* = 0.451), due to high variance and small sample size (*n* = 6)
 
 4. **Regime-conditional advantage**: Rolling outperforms in volatile/regime-shift years (2020, 2022, 2025) but underperforms in stable/trending years (2021, 2023)
 

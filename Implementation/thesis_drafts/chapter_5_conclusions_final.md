@@ -169,10 +169,7 @@ The 8-selector ensemble (4 statistical + 4 ML) successfully generated trades in 
 
 ### 5.3.1 For Practitioners
 
-**Portfolio Allocation:**
-- **Tier 1 (Deploy):** India + ZScore (50% capital, +0.840 Sharpe)
-- **Tier 2 (Consider):** Brazil + OU (20%), India + OU (10%)
-- **Tier 3 (Avoid):** US, UK, NSE (all marginally negative or barely positive)
+Note: The following observations are based on historical backtest results (4 folds, 2021-2024) and are intended for academic discussion only. Past performance does not predict future results. Estimated Sharpe ratios carry high uncertainty (bootstrapped 95% CI for India ZScore: [-0.207, +0.758] across all runs). Real-money deployment based solely on these results would be premature. Minimum requirements before live deployment: (1) out-of-sample validation on 2025+ data, (2) live paper trading for 12+ months, (3) statistical significance at alpha=0.05 after Bonferroni correction for multiple comparisons, (4) confirmation of ML selector reproducibility (currently non-deterministic under GPU execution).
 
 **Risk Management:**
 - Cap India at 50% (concentration risk despite dominance)
@@ -400,7 +397,7 @@ The answer is: **Yes, but only in the RIGHT emerging markets.**
 
 NSE is the wrong market. India (Nifty 50) is the right market. The ensemble framework is robust and generalizable, but **it cannot create alpha where none exists**. It can only **amplify existing mean-reversion opportunities**.
 
-**The future of pairs trading is not in Wall Street. It's in Mumbai.**
+These findings suggest that universe selection and market microstructure — rather than algorithmic sophistication — are the primary determinants of pairs trading profitability in emerging markets.
 
 ---
 

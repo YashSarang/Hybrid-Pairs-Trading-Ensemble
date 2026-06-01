@@ -124,6 +124,8 @@ The NSE baseline validation addresses three research questions:
 - Select 10 pairs with highest ensemble scores
 - Break ties by individual selector agreement count
 
+**Reproducibility Note:** ML selector outputs are sensitive to floating-point execution order under GPU parallelism, a documented TensorFlow limitation. CPU-only execution (CUDA_VISIBLE_DEVICES="") with TF_DETERMINISTIC_OPS=1 reduces mean-level run-to-run variance from 1.226 to 0.131 Sharpe (9.4x improvement), with 100% fold-level sign concordance across 2 reproducibility runs. Fold-level variance (max 0.861 Sharpe) persists due to oneDNN float ordering. Results should be interpreted as directionally reliable but not precisely reproducible to the second decimal place. All reported results use the final run under CPU-only deterministic mode.
+
 ---
 
 ## Section 3.4: Walk-Forward Results (Expanding Window)
@@ -490,6 +492,8 @@ We conducted a complete rolling-window re-validation of the NSE Nifty 100 pairs 
 5. **Economic irrelevance**: +0.052 Sharpe remains marginally profitable and is **16x worse than India+ZScore** (+0.840) using the same rolling methodology
 
 **Conclusion:** Methodology optimization (expanding → rolling) provides modest, statistically insignificant improvement for NSE pairs trading. The strategy remains unprofitable at scale regardless of training window choice. **Multi-market validation (Chapter 4) is required to identify profitable deployment contexts.**
+
+**Note on Bonferroni correction:** The Bonferroni-corrected p-value for this two-methodology comparison is p_corrected = 0.640 (= 0.320 × 2), confirming that rolling windows do not provide a statistically significant improvement over expanding windows when multiple comparisons are accounted for.
 
 ---
 

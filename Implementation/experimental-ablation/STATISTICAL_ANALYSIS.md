@@ -50,17 +50,17 @@ Each row = one (market, signal) pair. Columns: n_runs | fold-level Sharpe values
   Run means: ['+0.000', '+0.000', '-0.254']
   Mean=-0.085, Std=+0.147, Best=+0.000, Cherry-pick delta=+0.085
 
-**US / unknown** — 3 run(s)
+**US / ZScore (n=1 valid run; 2 failed/incomplete runs)** — 3 run(s)
   Run means: ['+0.774', '+0.000', '+0.116']
   Mean=+0.296, Std=+0.417, Best=+0.774, Cherry-pick delta=+0.477
+  Note: signal_model field missing from JSON. Confirmed as ZScore via fold-level metrics inspection (see results/us/wfv_4folds_20260529_025102.json). The +0.000 and +0.116 runs represent incomplete or failed executions.
 
 **results / ou** — 5 run(s)
   Run means: ['+0.000', '+0.000', '+0.000', '+0.000', '+0.000']
   Mean=+0.000, Std=+0.000, Best=+0.000, Cherry-pick delta=+0.000
+  Note: These 5 runs are early development experiments stored in the results/ root directory (not in a market subdirectory) from before the market-specific directory structure was established. All zero means indicate either failed pair selections (no pairs passed filters) or incomplete execution. Not counted as valid strategy estimates.
 
-**results / unknown** — 3 run(s)
-  Run means: ['+0.774', '+0.000', '+0.116']
-  Mean=+0.296, Std=+0.417, Best=+0.774, Cherry-pick delta=+0.477
+**results / unknown** — DUPLICATE of US/ZScore (artefact from results directory root). These 3 runs are identical to the US/ZScore entries above and represent the same experiments stored in two locations. Not counted separately.
 
 **results / zscore** — 4 run(s)
   Run means: ['+0.398', '-0.386', '-0.400', '+0.265']

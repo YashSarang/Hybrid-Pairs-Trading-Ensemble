@@ -65,7 +65,7 @@ Vidyamurthy (2004) and Elliott, van der Hoek & Malcolm (2005) formalized pairs t
 3. **Computation cost**: ADF tests scale quadratically with universe size (100 stocks → 4,950 pairs to test)
 
 **Implication for This Thesis:**  
-We include cointegration as one of 8 selectors but do NOT rely on it exclusively. Section 4.4 will show that cointegration-selected pairs underperform in UK/Brazil markets, motivating ensemble diversification.
+We include cointegration as one of 7 active selectors but do NOT rely on it exclusively. Section 4.4 will show that cointegration-selected pairs underperform in UK/Brazil markets, motivating ensemble diversification.
 
 ---
 
@@ -130,8 +130,8 @@ Zhang & Ma (2012) pioneered **ensemble pairs trading**:
 - Result: 15% higher Sharpe than best single selector on Chinese A-shares (2005-2010)
 
 Our Work Extends This:
-- **8 selectors** (4 statistical + 4 ML) vs Zhang's 3
-- **Walk-forward validation** (6 folds) vs single backtest
+- **7 active selectors** (4 statistical + 3 ML; CNNSelector disabled) vs Zhang's 3
+- **Walk-forward validation** (4 folds for multi-market experiments; 6 folds for NSE baseline) vs single backtest
 - **Multi-market validation** (4 geographies) vs single market
 - **Statistical rigor** (p-values, Cohen's d) vs point estimates
 
@@ -214,7 +214,7 @@ Zhang & Ma (2012) on Chinese A-shares:
 - Explains why: Distance works in trending regimes, cointegration in mean-reverting regimes, copula in fat-tailed regimes
 
 **Implication for This Thesis:**  
-We extend Zhang's framework to **8 selectors** (adding 4 ML models) and test whether diversity gains persist across markets. Hypothesis: Ensemble advantage **larger in emerging markets** (higher regime uncertainty) than developed markets (more stable).
+We extend Zhang's framework to **7 active selectors** (adding 3 ML models; CNNSelector disabled) and test whether diversity gains persist across markets. Hypothesis: Ensemble advantage **larger in emerging markets** (higher regime uncertainty) than developed markets (more stable).
 
 ---
 
@@ -229,10 +229,10 @@ Caruana et al. (2008) show that ensembles with >50 models **overfit** unless:
 If all models fail on the same examples (e.g., all equity models fail during sector rotation), ensemble provides no benefit. Solution: Include models with different failure modes (statistical + ML).
 
 **Computational Cost:**  
-Training 8 selectors × 4 markets × 6 folds = 192 model runs. Our experiments took ~48 hours on 16GB RAM machine (Section 3.2 documents runtime).
+Training 7 active selectors × 4 markets × 4 folds (multi-market) = 112 model runs for Chapter 4; 7 selectors × 1 market × 6 folds = 42 runs for Chapter 3 baseline. Our experiments took ~48 hours on 16GB RAM machine (Section 3.2 documents runtime).
 
 **Implication for This Thesis:**  
-We limit to 8 selectors (manageable complexity) and use equal-weight voting (no hyperparameter tuning of weights). This balances simplicity and performance.
+We limit to 7 active selectors (manageable complexity; CNNSelector disabled due to sequence length constraints) and use equal-weight voting (no hyperparameter tuning of weights). This balances simplicity and performance.
 
 ---
 
@@ -253,7 +253,7 @@ If markets are perfectly efficient, arbitrageurs cannot profit → no incentive 
 **Implication:**  
 Pairs trading profitability in India (+0.840 Sharpe) suggests:
 1. Indian markets are **semi-strong form inefficient** (public information not fully reflected in prices)
-2. Transaction costs (16.4 bps) are non-trivial, maintaining arbitrage equilibrium
+2. Transaction costs (16.28 bps) are non-trivial, maintaining arbitrage equilibrium
 3. Risk (regime shifts, structural breaks) deters arbitrage capital, preserving opportunities
 
 ---
@@ -287,12 +287,12 @@ Pairs trading profitability in India (+0.840 Sharpe) suggests:
 - Distance-based method: +9.2% annual return (gross), +3.5% (net after 50 bps costs)
 - Cointegration: +12.1% (gross), +6.8% (net)
 - **Finding:** Profitability persists over 12 years (weak-form inefficiency confirmed)
-- **Caveat:** Used actual transaction costs (50 bps, conservative vs our 16.4 bps realistic estimate)
+- **Caveat:** Used actual transaction costs (50 bps, conservative vs our 16.28 bps realistic estimate)
 
 **Liew & Wu (2013):** Profitability Drivers
 - Pairs from **same sector** (financials-financials, energy-energy) more profitable than cross-sector
 - **Smaller market cap** stocks (Nifty 100 positions 51-100) more profitable than large-cap (Nifty 50)
-- **Contradicts our Chapter 4 finding** that Nifty 50 (+0.840) >> Nifty 100 (+0.052) — we investigate why in Section 4.3
+- **Contradicts our Chapter 4 finding** that Nifty 50 (+0.840) >> Nifty 100 (+0.052) — we investigate why in Section 4.3.4
 
 **Triantafyllopoulos & Montana (2011):** Regime Switching
 - Indian pairs exhibit **regime dependency**: mean-reverting in 2005-2007 bull market, divergent in 2008 crisis
@@ -351,7 +351,7 @@ Identical framework across 4 continents → isolates **market effect** from **me
 Zhang & Ma (2012) only work combining multiple selectors, but limited to 3 statistical methods.
 
 **Our Contribution:**  
-8 selectors (4 statistical + 4 ML) with formal diversity analysis (Section 3.5 measures pairwise selector correlation).
+7 active selectors (4 statistical + 3 ML; CNNSelector disabled) with formal diversity analysis (Section 3.5 measures pairwise selector correlation).
 
 ---
 
@@ -371,7 +371,7 @@ Use actual NSE cost structure → shows rolling NSE barely profitable (+0.052) v
 Most papers report single backtest results, no confidence intervals, no walk-forward validation, no p-values.
 
 **Our Contribution:**  
-- 6-fold walk-forward validation (no peeking)
+- 4-fold walk-forward validation for multi-market experiments; 6-fold for NSE baseline (no peeking)
 - Statistical tests: Wilcoxon signed-rank (p=0.320 for rolling improvement), Cohen's d effect sizes
 - Reproducibility section documents ML non-determinism (Section 3.6.7)
 - Public code repository: github.com/YashSarang/Hybrid-Pairs-Trading-Ensemble
@@ -384,7 +384,7 @@ Most papers report single backtest results, no confidence intervals, no walk-for
 Distance methods (1980s) → Cointegration (2000s) → Machine Learning (2010s) → **Hybrid Ensembles (this thesis)**
 
 **Ensemble Learning:**  
-Diversity improves robustness (Polikar 2006, Zhang 2012) → **We extend to 8 selectors (4 statistical + 4 ML)**
+Diversity improves robustness (Polikar 2006, Zhang 2012) → **We extend to 7 active selectors (4 statistical + 3 ML; CNNSelector disabled)**
 
 **Market Efficiency:**  
 Emerging markets offer persistent opportunities (Bekaert 2002, Nath 2015) → **We quantify the NSE Nifty 50 +0.700 Sharpe uplift over Nifty 100**
@@ -393,13 +393,13 @@ Emerging markets offer persistent opportunities (Bekaert 2002, Nath 2015) → **
 First work to combine:
 1. Ensemble selectors (statistical + ML)
 2. Multi-market validation (4 continents)
-3. Realistic costs (16.4 bps actual Indian structure)
-4. Walk-forward rigor (6 folds, p-values, effect sizes)
+3. Realistic costs (16.28 bps actual Indian structure)
+4. Walk-forward rigor (4-fold multi-market, 6-fold NSE baseline, p-values, effect sizes)
 5. Open-source reproducibility (public code + data)
 
 **Research Questions Revisited:**
-- **RQ1 (Ensemble NSE):** Chapter 3 tests if 8 selectors overcome NSE limitations → Answer: Partial success (+0.052 rolling) but insufficient
-- **RQ2 (Cost Threshold):** Chapter 3/4 establish gross Sharpe > +0.90 needed for net > +0.80 under 16.4 bps
+- **RQ1 (Ensemble NSE):** Chapter 3 tests if 7 active selectors overcome NSE limitations → Answer: Partial success (+0.052 rolling) but insufficient
+- **RQ2 (Cost Threshold):** Chapter 3/4 establish gross Sharpe > +0.90 needed for net > +0.80 under 16.28 bps
 - **RQ3 (Universe Quality):** Does universe selection (Nifty 50 vs Nifty 100) produce larger Sharpe improvement than methodology optimization (rolling vs expanding windows)? → Chapter 4 Answer: **YES — Nifty 50 universe quality produces +0.700 Sharpe uplift (rolling baseline: +0.752 vs +0.052) vs methodology improvement of +0.461 Sharpe, with the universe quality result being the only finding statistically distinguishable from zero (95% CI [+0.422, +1.082], p=0.036).**
 
 ---

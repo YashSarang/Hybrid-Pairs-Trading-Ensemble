@@ -46,7 +46,7 @@ Chapter 3 Section 3.6 demonstrated that rolling-window methodology improves NSE 
 | **Top-K Pairs** | 10 | Unchanged from Chapter 3 |
 | **Signal Models** | ZScore + OU | Test both for robustness |
 | **Lookback** | 126 days | Validated in Section 3.6 |
-| **Selector Ensemble** | 8 selectors | Full ensemble |
+| **Selector Ensemble** | 7 active selectors (CNNSelector disabled) | Full ensemble |
 
 **Critical Design Choice:**
 - We use **rolling (not expanding)** as the multi-market baseline
@@ -59,7 +59,7 @@ Chapter 3 Section 3.6 demonstrated that rolling-window methodology improves NSE 
 
 **Markets chosen for:**
 1. **Liquidity**: Top-35 constituents per market (minimize execution risk)
-2. **Cost Diversity**: 2.7 bps (US) to 16.4 bps (India) — tests cost sensitivity
+2. **Cost Diversity**: 2.7 bps (US) to 16.28 bps (India) — tests cost sensitivity
 3. **Geographic Spread**: Americas, Europe, Asia — tests regime diversity
 4. **Data Availability**: Complete 2020-2025 coverage (6-year span)
 
@@ -90,8 +90,11 @@ Chapter 3 Section 3.6 demonstrated that rolling-window methodology improves NSE 
 | — | GB | ZScore | +0.010 | +0.361 | +0.265 | 2 | 111 | 8.0 |
 | — | BR | ZScore | -0.312 | +0.124 | -0.225 | 2 | 115 | 8.4 |
 | — | US | OU | -0.085 | +0.147 | 0.000 | 3 | 39 | 2.7 |
+| — | US | ZScore | +0.774 | +0.887 | exploratory (n=1) | 4 | — | 2.74 bps |
 | — | GB | OU | -0.135 | +0.234 | 0.000 | 3 | 42 | 8.0 |
 | Ref | IN (Nifty 100, expanding) | ZScore | -0.409 | — | -0.409 | 1 | 1,096 | 16.28 |
+
+> **Note:** US ZScore result is a single run (n=1); confidence interval not computed. Fold results: [−0.335, +2.147, +0.626, +0.656]. Driven by 2022 bear-market fold; not confirmed across multiple runs.
 
 **Baseline: Rolling NSE from Section 3.6 (+0.052 Sharpe, optimized methodology)**  
 **Reference: Expanding NSE from Chapter 3 (-0.409 Sharpe, failed baseline)**
@@ -140,8 +143,8 @@ Under honest period-matched arithmetic: methodology improvement (expanding → r
 **4. Transaction Costs Alone Don't Explain Performance**
 
 **Counterintuitive Results:**
-- US has LOWEST costs (2.7 bps) but FAILS (OU: -0.254)
-- India has HIGHEST costs (16.4 bps) but WINS (+0.840)
+- US has LOWEST costs (2.7 bps) but FAILS (OU: -0.085 mean)
+- India has HIGHEST costs (16.28 bps) but WINS (+0.284 mean, +0.840 best run)
 
 **Implication:** Signal strength >> transaction costs. Weak correlations can't be saved by low costs.
 
@@ -173,7 +176,7 @@ Under honest period-matched arithmetic: methodology improvement (expanding → r
 - NSE: +0.052 Sharpe, 293 trades
 - Multi-market avg: +0.033 Sharpe, 69.7 trades/config
 
-**Multi-market trades 76% less on average, yet India outperforms 16x!**
+**Multi-market trades 76% less on average, yet India outperforms ~5.5x (honest 3-run mean +0.284 vs NSE rolling +0.052)!**
 
 ---
 
@@ -181,7 +184,7 @@ Under honest period-matched arithmetic: methodology improvement (expanding → r
 
 ### 4.3.1 Why India Dominates
 
-**India multi-market (Nifty 50) achieves +0.840 Sharpe, while Chapter 3 NSE (Nifty 100) rolling achieved +0.052. Same costs (16.4 bps), same methodology (rolling), but 16x different performance.**
+**India multi-market (Nifty 50) achieves +0.284 mean Sharpe (3-run mean; best GPU run +0.840; CPU-deterministic range +0.353–+0.484), ~5.5x vs NSE rolling baseline, while Chapter 3 NSE (Nifty 100) rolling achieved +0.052. Same costs (16.28 bps), same methodology (rolling), but meaningfully different performance.**
 
 **Hypotheses:**
 
@@ -224,7 +227,7 @@ Under honest period-matched arithmetic: methodology improvement (expanding → r
 **Key Insights:**
 - **2022 anomaly:** India's only loss (-0.080) occurred in the year NSE had its best performance (+0.847). Hypothesis: Nifty 50 universe may have missed a sectoral rotation that benefited Nifty 100 pairs.
 - **2023-2024 dominance:** India crushed NSE by +2.5 and +2.1 Sharpe units when NSE turned negative. Smaller universe (Nifty 50) → more concentrated signals → higher conviction pairs → better performance in volatile markets.
-- **Aggregate effect:** Despite losing 2022, India's aggregate +0.840 is **16.2x better** than NSE's +0.052 due to massive wins in 2023-2024.
+- **Aggregate effect:** Despite losing 2022, India's aggregate mean (+0.284) is **~5.5x better** than NSE's +0.052 (best single GPU run +0.840, 16.2x, but this is cherry-picked) due to massive wins in 2023-2024.
 
 ---
 
@@ -240,13 +243,13 @@ Under honest period-matched arithmetic: methodology improvement (expanding → r
 - Avg: 48.8 trades/fold
 - Net Sharpe: +0.052
 
-**India trades 37% LESS but achieves 16x HIGHER Sharpe.**
+**India trades 37% LESS but achieves ~5.5x higher mean Sharpe (honest 3-run mean +0.284 vs NSE +0.052; best GPU run 16x using cherry-picked +0.840).**
 
 **Sharpe per Trade:**
 - India: +0.840 / 123 = **+0.0068 Sharpe/trade**
 - NSE: +0.052 / 293 = **+0.0002 Sharpe/trade**
 
-**India is 34x more efficient per trade!**
+**India is more trade-efficient (NSE Nifty 50 achieves superior risk-adjusted returns with ~37% fewer trades than the Nifty 100 rolling baseline)**
 
 ---
 
@@ -428,7 +431,7 @@ These results are based on backtesting under walk-forward validation and do not 
 - Machine learning signals (ensemble LSTM/Transformer predictions)
 
 **4. Transaction Cost Modeling**
-- Current: Flat 16.4 bps (NSE), 2.7 bps (US), etc.
+- Current: Flat 16.28 bps (NSE), 2.7 bps (US), etc.
 - Reality: Volume-dependent slippage, intraday spreads
 - Test with realistic cost curves
 
@@ -443,9 +446,8 @@ These results are based on backtesting under walk-forward validation and do not 
 
 ### Key Findings
 
-1. **Multi-Market India Dominates**
-   - +0.840 Sharpe (Nifty 50 + ZScore)
-   - 16x better than rolling NSE (+0.052)
+1. **India Nifty 50 + ZScore**
+   - +0.284 mean Sharpe (3-run mean; 95% CI [−0.207, +0.758]); CPU-deterministic range +0.353–+0.484; best single GPU run +0.840. ~5.5x vs NSE rolling baseline using honest mean.
    - 305% better than expanding NSE (-0.409)
 
 2. **Period-Matched Methodology vs Geography**
@@ -456,7 +458,7 @@ These results are based on backtesting under walk-forward validation and do not 
 
 3. **Universe Quality Matters**
    - Nifty 50 (blue chips) >> Nifty 100 (diluted)
-   - +0.788 Sharpe gap (Nifty 50 vs rolling Nifty 100)
+   - +0.700 Sharpe gap (Nifty 50 rolling +0.752 vs rolling Nifty 100 +0.052)
    - Universe selection doubles methodology improvement
 
 4. **Signal Model is Market-Dependent**
@@ -465,7 +467,7 @@ These results are based on backtesting under walk-forward validation and do not 
    - No universal "best signal"
 
 5. **Transaction Costs Don't Explain Performance**
-   - US (2.7 bps) fails, India (16.4 bps) wins
+   - US (2.7 bps) fails, India (16.28 bps) wins (+0.284 mean Sharpe)
    - Signal strength >> cost optimization
 
 ---
@@ -474,10 +476,10 @@ These results are based on backtesting under walk-forward validation and do not 
 
 **Chapter 3 demonstrated:** NSE pairs trading fails (expanding: -0.409) or barely survives (rolling: +0.052).
 
-**Chapter 4 demonstrates:** Multi-market India thrives (+0.840), proving the framework is NOT broken — NSE is simply the wrong market.
+**Chapter 4 demonstrates:** Multi-market India shows strong positive results (+0.284 mean Sharpe, +0.840 best GPU run), suggesting the framework is NOT broken — NSE Nifty 100 is simply a weaker universe.
 
 **Chapter 5 will conclude:**
-- **Primary contribution:** Multi-market validation reveals India as a 16x-better market
+- **Primary contribution:** Multi-market validation reveals India Nifty 50 as a ~5.5x-better-on-average market (honest 3-run mean)
 - **Secondary contribution:** Rolling windows improve cost efficiency (+113%)
 - **Tertiary contribution:** Ensemble selectors generalize across markets
    - **Key insight:** Universe quality (Nifty 50) is the dominant driver; methodology and geography improvements are comparable under period-matched analysis
@@ -485,22 +487,10 @@ These results are based on backtesting under walk-forward validation and do not 
 ---
 
 **The thesis narrative:**
-> "We built a sophisticated ensemble pairs trading framework and tested it on NSE. It failed (-0.409 Sharpe). We optimized the methodology with rolling windows. It improved modestly (+0.052 Sharpe, non-significant). We tested across four markets. **India crushed it (+0.840 Sharpe, 16x better).** The breakthrough is WHERE we trade, not HOW we trade."
+> "We built a sophisticated ensemble pairs trading framework and tested it on NSE. It failed (-0.409 Sharpe). We optimized the methodology with rolling windows. It improved modestly (+0.052 Sharpe, non-significant). We tested across four markets. **India showed strong results (+0.284 mean Sharpe across 3 runs; +0.840 best GPU run; ~5.5x vs rolling NSE baseline using honest mean).** The breakthrough is WHERE we trade, not HOW we trade."
 
 ---
 
 **[End of Chapter 4 — Updated with Rolling NSE Baseline]**
 
 ---
-
-**Integration Notes:**
-- All multi-market results now benchmarked against **rolling NSE (+0.052)** from Section 3.6
-- Expanding NSE (-0.409) retained as "failed baseline" reference
-- 16x multiplier (India +0.840 / NSE +0.052) is the thesis headline number
-- Geographic > methodology narrative consistent throughout
-- Sections 4.3-4.4 need fold-by-fold data from JSON files (TODO for next phase)
-
-**Files to Update:**
-- `experimental-ablation/MULTI_MARKET_RESULTS.md` ← Add rolling NSE baseline row
-- `reports/chapter4_results.md` ← Merge with this new draft
-- Figures: Generate bar charts (Market × Signal performance, India vs NSE comparison)

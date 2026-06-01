@@ -4,7 +4,7 @@
 
 This thesis investigated hybrid ensemble pairs trading across methodologies and markets, addressing the research question: **Can ensemble selector frameworks overcome the limitations of traditional pairs trading in emerging markets?**
 
-**Main Finding:** **Geographic diversification dominates methodology optimization.** While rolling-window training improves NSE performance by 113%, multi-market India achieves 16x better results, proving the breakthrough is **WHERE we trade, not HOW we trade.**
+**Main Finding:** **Universe quality dominates methodology optimization.** While rolling-window training improves NSE performance by 113%, multi-market India (Nifty 50) achieves 5.5x better results (honest 3-run mean; best-run multiplier 16x), suggesting the breakthrough is **WHERE we trade and WHICH universe we select.**
 
 ---
 
@@ -12,14 +12,14 @@ This thesis investigated hybrid ensemble pairs trading across methodologies and 
 
 ### 5.1.1 Three-Tiered Contribution
 
-**PRIMARY CONTRIBUTION: Multi-Market Validation Reveals Geographic Alpha**
+**PRIMARY CONTRIBUTION: Universe Quality Dominates — NSE Nifty 50 Statistical Advantage**
 
-Chapter 4 demonstrated that multi-market India (Nifty 50 + ZScore) achieves **+0.840 Sharpe**, 16x better than rolling NSE (+0.052) and 305% better than expanding NSE (-0.409).
+Chapter 4 demonstrated that multi-market India (Nifty 50 + ZScore) achieves **+0.284 mean Sharpe (3-run mean; best single run +0.840; CPU-deterministic range +0.353–+0.484)**, 5.5x better (honest 3-run mean; best-run multiplier 16x) than rolling NSE (+0.052) and outperforming expanding NSE (-0.409).
 
 **Key Insight:**
 - Even with optimized methodology (rolling windows), NSE barely profitable (+0.052 Sharpe)
 - India dominates with SAME costs (16.28 bps), SAME methodology (rolling), but DIFFERENT universe (Nifty 50 vs 100)
-- Geographic diversification improvement (+0.788) is **1.7x larger** than methodology improvement (+0.461)
+- Under honest period-matched arithmetic: methodology improvement (expanding → rolling, same period) = +0.461 Sharpe. Period-matched geographic improvement (NSE rolling 2021-2024 mean −0.084 → India multi-market mean +0.284) = +0.368 Sharpe. Methodology improvement marginally exceeds geographic improvement. Both are dominated by the Nifty 50 universe quality effect (+0.700 Sharpe uplift, the only statistically significant finding, 95% CI [+0.422, +1.082], p=0.036).
 
 **Implication:** Pairs trading research should prioritize market selection over algorithm tuning.
 
@@ -45,7 +45,7 @@ Chapter 3 Section 3.6 demonstrated that rolling-window methodology improves NSE 
 
 **TERTIARY CONTRIBUTION: Ensemble Selectors Generalize Across Markets**
 
-The 8-selector ensemble (4 statistical + 4 ML) successfully generated trades in 7/7 multi-market experiments (US, India, Brazil, UK), demonstrating framework generalizability.
+The 7-selector ensemble (4 statistical + 3 ML; CNNSelector disabled) successfully generated trades in 7/7 multi-market experiments (US, India, Brazil, UK), demonstrating framework generalizability.
 
 **Validation:**
 - Statistical selectors (Correlation, Distance, Cointegration) work universally
@@ -66,7 +66,7 @@ The 8-selector ensemble (4 statistical + 4 ML) successfully generated trades in 
 **RQ1: Can hybrid selector ensembles outperform single-selector baselines on NSE?**
 
 **Answer:** **YES, but insufficient to overcome cost drag.**
-- Ensemble (8 selectors) Net Sharpe: +0.052 (rolling) vs -0.409 (expanding)
+- Ensemble (7 active selectors) Net Sharpe: +0.052 (rolling) vs -0.409 (expanding)
 - Individual selectors untested in isolation (future work)
 - Cost drag (-0.526 expanding, -0.057 rolling) dominates performance
 
@@ -76,10 +76,10 @@ The 8-selector ensemble (4 statistical + 4 ML) successfully generated trades in 
 
 **RQ2: What is the profitability threshold for pairs trading under Indian transaction costs (16.28 bps)?**
 
-**Answer:** **Gross Sharpe > +0.90 required for Net Sharpe > +0.80.**
+**Answer:** **Gross Sharpe > +0.90 required for Net Sharpe > +0.80.** (Note: the +0.60 threshold in Chapter 3 Section 3.5.1 applies to the expanding window configuration with higher cost drag; +0.90 applies to the general deployment-worthy case.)
 
 **Evidence:**
-- India multi-market: Gross +0.907 → Net +0.840 (cost drag -0.067)
+- India multi-market: Gross +0.907 → Net +0.284 mean Sharpe (3-run mean; best single run +0.840; CPU-deterministic range +0.353–+0.484) (cost drag -0.067 on best run)
 - NSE rolling: Gross +0.108 → Net +0.052 (cost drag -0.057)
 - NSE expanding: Gross +0.108 → Net -0.409 (cost drag -0.526)
 
@@ -115,7 +115,7 @@ The 8-selector ensemble (4 statistical + 4 ML) successfully generated trades in 
 **Answer:** **India (Nifty 50) dominates; US/UK fail; Brazil moderate.**
 
 **Evidence:**
-- India + ZScore: **+0.840 Sharpe** (123 trades, 16x better than NSE)
+- India + ZScore: **+0.284 mean Sharpe (3-run mean; best single run +0.840; CPU-deterministic range +0.353–+0.484)** (123 trades, 5.5x better (honest 3-run mean; best-run multiplier 16x) than NSE)
 - Brazil + OU: +0.321 Sharpe (32 trades, 6x better than NSE)
 - US + OU: -0.254 Sharpe (39 trades, FAILS despite 2.7 bps costs)
 - UK + OU: -0.405 Sharpe (42 trades, FAILS universally)
@@ -126,7 +126,7 @@ The 8-selector ensemble (4 statistical + 4 ML) successfully generated trades in 
 3. **Sector concentration**: Nifty 50 = 40% financials, 15% IT → strong within-sector pairs
 4. **Universe quality**: Nifty 50 blue chips >> Nifty 100 diluted mid-caps
 
-**Conclusion:** Geographic alpha is LARGE and REAL. India's +0.840 Sharpe is not luck — it's structural.
+**Conclusion:** The Nifty 50 universe quality effect is large and consistent: +0.752 Sharpe (rolling, statistical-only, 95% CI [+0.422, +1.082]), the only result in this study statistically distinguishable from zero. The +0.840 best-run result is the highest of three ML-ensemble GPU runs (mean +0.284); reproducible CPU-deterministic runs yield +0.353–+0.484.
 
 ---
 
@@ -138,8 +138,8 @@ The 8-selector ensemble (4 statistical + 4 ML) successfully generated trades in 
 - Question: Can ensemble methods overcome these limitations?
 
 ### Chapter 2: Literature & Methodology
-- Surveyed 40+ pairs trading papers (Gatev 1999 → Do & Faff 2010 → Broussard 2012)
-- Built 8-selector ensemble (4 statistical + 4 ML)
+- Surveyed 40+ pairs trading papers (Gatev 2006 → Do & Faff 2010 → Broussard 2012)
+- Built 7-selector ensemble (4 statistical + 3 ML; CNNSelector disabled)
 - Defined walk-forward validation protocol (expanding windows, 6 folds)
 
 ### Chapter 3: NSE Baseline FAILS → Optimization HELPS (modestly)
@@ -151,14 +151,13 @@ The 8-selector ensemble (4 statistical + 4 ML) successfully generated trades in 
 
 ### Chapter 4: Multi-Market BREAKTHROUGH → India 16x Better
 - Tested 4 markets (US, India, Brazil, UK) × 2 signals (ZScore, OU) = 7 configs
-- **India + ZScore:** **+0.840 Sharpe** (123 trades) ★★★
-- vs Rolling NSE: +0.788 gap (+1,515% improvement, **16x multiplier**)
-- vs Expanding NSE: +1.249 gap (+305% improvement)
-- **Geographic improvement (NSE → India) is 1.7x LARGER than methodology improvement (expanding → rolling)**
+- **India + ZScore:** **+0.284 mean Sharpe (3-run mean; best single run +0.840; CPU-deterministic range +0.353–+0.484)** (123 trades) ★★★
+- vs Rolling NSE: 5.5x better (honest 3-run mean; best-run multiplier 16x)
+- **Under honest period-matched arithmetic, methodology improvement marginally exceeds geographic improvement; both are dominated by the Nifty 50 universe quality effect.**
 - **Conclusion:** The breakthrough is WHERE we trade, not HOW we trade.
 
 ### Chapter 5: Conclusions
-- **Primary contribution:** Multi-market validation reveals India as 16x-better market
+- **Primary contribution:** Universe quality dominates — Nifty 50 statistical advantage (only statistically significant finding, p=0.036)
 - **Secondary contribution:** Rolling windows improve cost efficiency but remain insignificant
 - **Tertiary contribution:** Ensemble selectors generalize across markets
 - **Key insight:** Geographic diversification dominates methodology tuning
@@ -184,8 +183,8 @@ Note: The following observations are based on historical backtest results (4 fol
 ### 5.3.2 For Researchers
 
 **Replication Priority:**
-1. **Reproduce India +0.840:** Validate on independent data (2026+), different vendors
-2. **Test Nifty 50 vs 100:** Is universe quality THE driver? (+0.788 gap)
+1. **Reproduce results within the CPU-deterministic range (+0.353–+0.484):** Validate on independent data (2026+), different vendors
+2. **Test Nifty 50 vs 100:** Is universe quality THE driver?
 3. **Investigate India-specific factors:** Retail dominance, momentum clustering, sector concentration
 
 **Methodology Extensions:**
@@ -291,7 +290,7 @@ Note: The following observations are based on historical backtest results (4 fol
 - Kalman filter (dynamic hedge ratios)
 - Copula-based dependencies (Gaussian, t-copula)
 - ML signals (ensemble LSTM/Transformer predictions)
-- Test on India (if +0.840 → +1.0+, we have a winner!)
+- Test on India (if CPU-deterministic range (+0.353–+0.484) → +1.0+, we have a winner!)
 
 **2. Multi-Market Portfolio Optimization**
 - Optimize allocation across India+Brazil+NSE
@@ -318,7 +317,7 @@ Note: The following observations are based on historical backtest results (4 fol
 **1. Real-Time Deployment & Paper Trading**
 - Build production system with live NSE/Nifty 50 feeds
 - Paper trade for 12 months (2026-2027)
-- Validate India +0.840 on unseen data
+- Validate India results (CPU-deterministic range +0.353–+0.484) on unseen data
 - Measure real execution costs vs assumptions
 
 **2. Alternative Asset Classes**
@@ -332,9 +331,7 @@ Note: The following observations are based on historical backtest results (4 fol
 - Publish in top-tier journal (*Journal of Financial Markets*, *JFE*)
 
 **4. Commercialization**
-- Launch India pairs trading fund (₹50 crore seed capital)
-- Target institutional investors (Sharpe 0.8+ is attractive)
-- Track live performance vs backtests (decay curve analysis)
+- Commercialisation would require: (1) replication on 2026+ live out-of-sample data, (2) point-in-time index constituent lists (eliminating look-ahead bias documented in Section 3.2.1), (3) live paper trading for 12+ months, and (4) statistical significance maintained at alpha=0.05 across multiple independent test periods.
 
 ---
 
@@ -344,9 +341,9 @@ Note: The following observations are based on historical backtest results (4 fol
 
 **This thesis demonstrates that geographic diversification dominates methodology optimization in pairs trading.**
 
-NSE pairs trading fails (-0.409 Sharpe expanding) or barely survives (+0.052 Sharpe rolling). Multi-market India thrives (+0.840 Sharpe), achieving 16x better performance with the SAME costs, SAME methodology, but DIFFERENT market structure.
+NSE pairs trading fails (-0.409 Sharpe expanding) or barely survives (+0.052 Sharpe rolling). Multi-market India thrives (+0.284 mean Sharpe (3-run mean; best single run +0.840; CPU-deterministic range +0.353–+0.484)), achieving 5.5x better performance (honest 3-run mean; best-run multiplier 16x) with the SAME costs, SAME methodology, but DIFFERENT market structure (Nifty 50 universe quality).
 
-**The breakthrough is not algorithmic — it's geographic.**
+**The breakthrough is not algorithmic, and not simply geographic — it is about universe quality. NSE Nifty 50 blue-chip concentration produces structural mean-reversion opportunities that persist across methodology choices.**
 
 ---
 
@@ -354,7 +351,7 @@ NSE pairs trading fails (-0.409 Sharpe expanding) or barely survives (+0.052 Sha
 
 **Conventional wisdom:** Pairs trading is dead (efficient markets hypothesis, HFT competition).
 
-**This thesis:** Pairs trading is ALIVE in India, structurally superior to US/UK/Brazil.
+**This thesis:** Pairs trading is ALIVE in India (Nifty 50), with results consistent with structural superiority over US/UK/Brazil, though causal identification is beyond the scope of this backtest study.
 
 **Implication:** The academic literature's US-centric focus has missed the largest opportunities in emerging Asia.
 
@@ -366,7 +363,7 @@ NSE pairs trading fails (-0.409 Sharpe expanding) or barely survives (+0.052 Sha
 
 NSE rolling (+0.052) is a masterclass in squeezing blood from a stone — 73% trade reduction, 89% cost drag elimination, +113% improvement — yet still barely profitable.
 
-India (+0.840) is a masterclass in finding the right stone — same ensemble, same rolling windows, but 16x better results.
+India Nifty 50 (+0.284 mean Sharpe (3-run mean; best single run +0.840; CPU-deterministic range +0.353–+0.484)) is a masterclass in finding the right stone — same ensemble, same rolling windows, but 5.5x better results (honest 3-run mean; best-run multiplier 16x).
 
 **Lesson:** Market selection > algorithm tuning.
 
@@ -377,13 +374,13 @@ India (+0.840) is a masterclass in finding the right stone — same ensemble, sa
 **Open Question:** Why does India dominate?
 
 **Hypotheses tested:**
-- ✅ Universe quality (Nifty 50 > 100): +0.788 gap
+- ✅ Universe quality (Nifty 50 > 100): +0.700 Sharpe uplift (statistically significant, p=0.036)
 - ⚠️ Retail dominance: Plausible but unproven
 - ⚠️ Momentum clustering: Literature support, not tested here
 - ⚠️ Sector concentration: Plausible, needs pair-level analysis
 
 **Future work must:**
-1. Replicate India +0.840 on 2026+ data (out-of-sample validation)
+1. Replicate India results within CPU-deterministic range (+0.353–+0.484) on 2026+ data (out-of-sample validation)
 2. Test causal mechanisms (retail volume × Sharpe, sector-specific pairs)
 3. Expand to ASEAN/Asia (Indonesia, Thailand, Malaysia)
 
@@ -440,6 +437,7 @@ This thesis documents that the NSE Nifty 50 universe achieves +0.752 Sharpe (rol
 | Std Dev of Differences | 0.799 |
 | t-statistic | 1.105 |
 | **p-value** | **0.320** |
+| Bonferroni-corrected p-value | 0.640 (= 0.320 × 2, for 2-methodology comparison) |
 | Cohen's d | 0.451 |
 | **Significance** | **NOT significant** (α = 0.05) |
 

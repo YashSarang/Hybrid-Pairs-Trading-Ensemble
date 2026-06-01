@@ -435,7 +435,7 @@ The paired t-test yields *p* = 0.320 (Bonferroni-corrected for 2 methodologies: 
 While rolling's +0.052 mean Sharpe is positive (vs expanding's -0.409), it remains:
 - **Economically marginal**: Annualized return ≈ 0.6% (assuming 12% volatility), barely covering implementation costs (data, execution systems)
 - **Statistically indistinguishable from zero**: 95% CI = [-0.590, +0.694], includes zero
-- **Dominated by multi-market alternatives**: As Chapter 4 will demonstrate, India+ZScore achieves +0.840 Sharpe using identical rolling methodology — **16x better than NSE rolling**
+- **Dominated by multi-market alternatives**: As Chapter 4 will demonstrate, India+ZScore achieves +0.840 Sharpe (best GPU run; honest 3-run mean = +0.284; CPU-deterministic range = +0.353–+0.484), compared to NSE rolling +0.052 (5.5x multiplier using honest mean; 16x using cherry-picked best run).
 
 ### Non-Determinism in ML Selectors
 
@@ -475,7 +475,7 @@ The rolling window analysis establishes an **optimistic baseline** for NSE pairs
 - Best-case consistency: 4/6 positive folds
 - Best-case cost efficiency: 48.8 trades/year
 
-**Chapter 4's multi-market validation will demonstrate that geographic diversification dominates methodology tuning**: India+ZScore achieves +0.840 Sharpe using the *same* rolling methodology, a **+0.788 gap (+1,515% better)**. This 16x multiplier indicates that market selection is the primary determinant of pairs trading profitability, not training window length.
+**Chapter 4's multi-market validation will demonstrate that geographic diversification dominates methodology tuning**: India+ZScore achieves +0.840 Sharpe using the *same* rolling methodology, a **+0.232 gap using honest period-matched arithmetic (India mean +0.284 − NSE rolling 2021-2024 mean −0.084 = +0.368; methodology improvement = +0.461). The 16x multiplier was computed from cherry-picked best run (+0.840) against full-period NSE baseline (+0.052); the honest multiplier is 5.5x (mean +0.284 / +0.052)**. This suggests that market selection is the primary determinant of pairs trading profitability, not training window length.
 
 ---
 
@@ -491,7 +491,7 @@ We conducted a complete rolling-window re-validation of the NSE Nifty 100 pairs 
 
 4. **Regime-conditional advantage**: Rolling outperforms in volatile/regime-shift years (2020, 2022, 2025) but underperforms in stable/trending years (2021, 2023)
 
-5. **Economic irrelevance**: +0.052 Sharpe remains marginally profitable and is **16x worse than India+ZScore** (+0.840) using the same rolling methodology
+5. **Economic irrelevance**: +0.052 Sharpe remains marginally profitable. NSE rolling +0.052 is the deterministic baseline. India multi-market mean = +0.284 (5.5x, honest); best GPU run = +0.840 (16x, cherry-picked single run).
 
 **Conclusion:** Methodology optimization (expanding → rolling) provides modest, statistically insignificant improvement for NSE pairs trading. The strategy remains unprofitable at scale regardless of training window choice. **Multi-market validation (Chapter 4) is required to identify profitable deployment contexts.**
 
@@ -545,18 +545,20 @@ Lo, A. W. (2004). The adaptive markets hypothesis: Market efficiency from an evo
 **Methodology optimization (expanding → rolling) is insufficient to achieve robust profitability on NSE.**
 
 **Chapter 4 will demonstrate that:**
-- Multi-market validation (India+ZScore) achieves +0.840 Sharpe
-- **16x better than rolling NSE** (+0.052)
+- Multi-market validation (India+ZScore) achieves +0.840 Sharpe (best GPU run; honest mean = +0.284)
+- **5.5x better than rolling NSE** (+0.052) using honest mean; 16x using cherry-picked best run
 - **Geographic diversification dominates methodology tuning**
 
 ---
 
 ## References (Chapter 3)
 
-- Gatev, E., Goetzmann, W. N., & Rouwenhorst, K. G. (1999). Pairs trading: Performance of a relative-value arbitrage rule. *Review of Financial Studies*, 12(4), 797-827.
+- Gatev, E., Goetzmann, W. N., & Rouwenhorst, K. G. (2006). Pairs trading: Performance of a relative-value arbitrage rule. *Review of Financial Studies*, 19(3), 797-832.
 - Do, B., & Faff, R. (2010). Does simple pairs trading still work? *Financial Analysts Journal*, 66(4), 83-95.
 - Broussard, J. P., & Vaihekoski, M. (2012). Profitability of pairs trading strategy in an illiquid market with multiple share classes. *Journal of International Financial Markets, Institutions and Money*, 22(5), 1188-1201.
 - Lo, A. W. (2004). The adaptive markets hypothesis: Market efficiency from an evolutionary perspective. *Journal of Portfolio Management*, 30(5), 15-29.
+- Nath, G., & Brooks, R. (2015). Pairs trading strategies in the Indian stock market. *Applied Economics*, 47(57), 6224-6240.
+- Bhootra, A., & Hur, J. (2013). The timing of analyst forecast revisions and the limits to arbitrage. *Journal of Financial and Quantitative Analysis*, 48(4), 1219-1247.
 
 ---
 

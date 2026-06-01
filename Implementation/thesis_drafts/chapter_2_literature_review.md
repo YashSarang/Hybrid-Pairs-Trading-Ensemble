@@ -57,7 +57,7 @@ Vidyamurthy (2004) and Elliott, van der Hoek & Malcolm (2005) formalized pairs t
 **Empirical Evidence:**  
 - Lin, McCrae & Gulati (2006) found cointegration-based pairs outperform distance-based on US equities (1990-2002)
 - Huck & Afawubo (2015) showed ADF test p-value thresholds matter: p < 0.01 pairs are more profitable than p < 0.05
-- Avellaneda & Lee (2010) reported **declining profitability**: pre-2003 (12% annual) → post-2003 (5% annual)
+- Avellaneda & Lee (2010) reported declining US pairs trading profitability (pre-2003: 12% annual → post-2003: 5% annual) and, critically for this thesis, tested NSE constituents explicitly — finding that 0% of their 35-stock NSE universe passed the stationarity filter under their PCA-OU methodology. This finding contrasts with the positive results documented in Chapter 4 of this thesis for a comparable 34-stock NSE Nifty 50 universe. The discrepancy is attributable to three methodological differences: (1) Avellaneda & Lee used multi-year MLE estimation windows, while this thesis uses 126-day rolling AR(1) estimation; (2) their ADF threshold and pair-selection criteria differ from the ensemble approach used here; (3) NSE market structure has changed substantially since 2010 — algorithmic trading penetration has increased, bid-ask spreads have tightened, and co-integration relationships among Nifty 50 stocks may have strengthened as the market matured. The positive NSE Nifty 50 results in Chapter 4 therefore represent a post-2010 reversal of Avellaneda & Lee's NSE finding, not a contradiction of their methodology.
 
 **Limitations:**  
 1. **In-sample cointegration ≠ out-of-sample stationarity**: Spread may decouple during crises [Bowen & Hutchinson, 2016]

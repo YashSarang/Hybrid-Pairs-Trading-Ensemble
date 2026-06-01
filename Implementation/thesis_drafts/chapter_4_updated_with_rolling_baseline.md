@@ -10,10 +10,10 @@ Chapter 3 demonstrated that NSE pairs trading is unprofitable under expanding-wi
 3. Which markets offer structurally superior mean-reversion opportunities?
 
 **Markets Tested:**
-- US United States (S&P 500 subset, 2.7 bps costs)
-- IN India (NSE Nifty 50, 16.4 bps costs)
-- BR Brazil (B3 Ibovespa, 8.4 bps costs)
-- GB United Kingdom (FTSE 100, 8.0 bps costs)
+- US: United States (S&P 500 subset, 2.7 bps costs)
+- IN: India (NSE Nifty 50, 16.28 bps costs)
+- BR: Brazil (B3 Ibovespa, 8.4 bps costs)
+- GB: United Kingdom (FTSE 100, 8.0 bps costs)
 
 **Key Finding:** NSE Nifty 50 universe achieves +0.752 Sharpe (rolling) and +1.064 Sharpe (expanding) — matching or exceeding multi-market India (+0.840, best run; mean +0.284 across 3 runs). Universe quality (Nifty 50 blue-chip concentration) dominates both methodology optimization and geographic diversification.
 
@@ -52,6 +52,8 @@ Chapter 3 Section 3.6 demonstrated that rolling-window methodology improves NSE 
 - We use **rolling (not expanding)** as the multi-market baseline
 - This ensures comparison to the **BEST NSE methodology** (+0.052), not the failed baseline (-0.409)
 - If multi-market still dominates, the case for geography > methodology is strongest
+
+> **Design Note:** Chapter 3 baseline experiments used 6-fold walk-forward validation (2020-2025, expanding window). Chapter 4 multi-market experiments use 4-fold walk-forward validation (2021-2024, rolling window). This difference reflects the rolling vs expanding window design choice, not an error. Direct fold-count-adjusted comparisons between Chapter 3 and Chapter 4 results are not possible; the Chapter 3 rolling NSE result (+0.052 Sharpe, 4-fold equivalent) is used as the consistent baseline throughout Chapter 4.
 
 ### 4.1.3 Market Selection Criteria
 
@@ -106,6 +108,8 @@ Chapter 3 Section 3.6 demonstrated that rolling-window methodology improves NSE 
 
 **Universe selection (Nifty 50 vs 100) is the dominant performance driver.**
 
+The 0.556 Sharpe gap between the mean (+0.284) and best run (+0.840) is attributable to ML selector non-determinism under GPU execution, documented in Chapter 3 Section 3.3.2. The three India ZScore GPU runs produced means of +0.398, −0.386, and +0.840, a spread of 1.226 Sharpe — consistent with TensorFlow floating-point non-determinism. Under CPU-only deterministic execution (CUDA_VISIBLE_DEVICES="", TF_DETERMINISTIC_OPS=1), two reproducibility runs produce +0.353 and +0.484 (difference: 0.131 Sharpe, 4/4 fold sign concordance). The mean multi-market result is therefore best interpreted as the CPU-deterministic range (+0.353 to +0.484), not the GPU best-run (+0.840).
+
 ---
 
 **2. Universe Quality > Geographic Diversification > Methodology Tuning**
@@ -115,6 +119,8 @@ Chapter 3 Section 3.6 demonstrated that rolling-window methodology improves NSE 
 - **Geographic improvement (Rolling NSE → India):** +0.788 Sharpe (+1,515%)
 
 **India's advantage is 1.7x larger than the entire methodology optimization.**
+
+> **Scope of this finding:** The universe quality effect documented here is specific to NSE (Nifty 50 vs Nifty 100, 2021-2024). Whether analogous effects exist in other markets (e.g., S&P 50 vs S&P 500, FTSE 50 vs FTSE 100) is an open empirical question. Cross-market replication of the universe quality experiment is left for future work.
 
 ---
 
@@ -274,6 +280,8 @@ Chapter 3 Section 3.6 demonstrated that rolling-window methodology improves NSE 
 - Emerging market inefficiency → mean-reversion opportunities persist
 
 **Key Insight:** Signal model choice critical in Brazil. ZScore overtrades (115 trades) and loses; OU is selective (32 trades) and wins.
+
+Note: the +0.321 Brazil OU result in the original analysis was the best of three runs (run means: 0.000, 0.000, +0.321); the honest 3-run mean is +0.107 ± 0.185, reported in Table 4.2.1.
 
 ---
 

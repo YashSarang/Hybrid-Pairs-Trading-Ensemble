@@ -1,0 +1,64 @@
+{
+  "experiment": "nse_nifty50_rolling_ou",
+  "timestamp": "2026-06-01T20:18:18.867226",
+  "config": {
+    "market": "NSE_Nifty50",
+    "universe_size": 35,
+    "signal": "ou",
+    "window_type": "rolling",
+    "n_folds": 4,
+    "transaction_cost_bps": 5.0,
+    "min_hold_days": 30
+  },
+  "results": {
+    "avg_sharpe_ratio": 0.0,
+    "total_trades": 120,
+    "fold_results": [
+      {
+        "fold": 1,
+        "train_start": "2020-01-01",
+        "train_end": "2021-01-18",
+        "test_start": "2021-01-19",
+        "test_end": "2022-02-09",
+        "n_trades": 30,
+        "sharpe": 0.0,
+        "total_return": 0.0,
+        "max_drawdown": 0.0
+      },
+      {
+        "fold": 2,
+        "train_start": "2020-01-01",
+        "train_end": "2022-02-09",
+        "test_start": "2022-02-10",
+        "test_end": "2023-03-01",
+        "n_trades": 30,
+        "sharpe": 0.0,
+        "total_return": 0.0,
+        "max_drawdown": 0.0
+      },
+      {
+        "fold": 3,
+        "train_start": "2020-01-01",
+        "train_end": "2023-03-01",
+        "test_start": "2023-03-02",
+        "test_end": "2024-03-28",
+        "n_trades": 30,
+        "sharpe": 0.0,
+        "total_return": 0.0,
+        "max_drawdown": 0.0
+      },
+      {
+        "fold": 4,
+        "train_start": "2020-01-01",
+        "train_end": "2024-03-28",
+        "test_start": "2024-04-01",
+        "test_end": "2025-04-24",
+        "n_trades": 30,
+        "sharpe": 0.0,
+        "total_return": 0.0,
+        "max_drawdown": 0.0
+      }
+    ]
+  },
+  "runtime_seconds": 126.925956
+}

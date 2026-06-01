@@ -1,0 +1,37 @@
+{
+  "experiment": "nse_nifty50_rolling_ou",
+  "timestamp": "2026-06-01T20:11:06.999419",
+  "config": {
+    "market": "NSE_Nifty50",
+    "universe_size": 35,
+    "signal": "ou",
+    "window_type": "rolling",
+    "n_folds": 4,
+    "transaction_cost_bps": 5.0
+  },
+  "results": {
+    "sharpe_ratio": 0.0,
+    "total_return": 0.0,
+    "n_trades": 0,
+    "win_rate": 0.0,
+    "fold_results": [
+      {
+        "fold": 1,
+        "error": "IndianCosts.__init__() got an unexpected keyword argument 'slippage_bps'"
+      },
+      {
+        "fold": 2,
+        "error": "IndianCosts.__init__() got an unexpected keyword argument 'slippage_bps'"
+      },
+      {
+        "fold": 3,
+        "error": "IndianCosts.__init__() got an unexpected keyword argument 'slippage_bps'"
+      },
+      {
+        "fold": 4,
+        "error": "IndianCosts.__init__() got an unexpected keyword argument 'slippage_bps'"
+      }
+    ]
+  },
+  "runtime_seconds": 0.041204
+}

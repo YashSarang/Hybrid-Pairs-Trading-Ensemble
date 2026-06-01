@@ -11,3 +11,4 @@ pytest
 joblib
 stable-baselines3
 gymnasium
+torch

@@ -2,7 +2,52 @@
 
 > **For AI coding agents:** Read this file at the start of every session. It is the cheapest way (~800 tokens) to understand the full codebase. Do not read raw source files until you know you need them.
 
-**Last updated:** 2026-05-06
+**Last updated:** 2026-06-01 21:20 IST
+
+---
+
+## 🚨 REPRODUCIBILITY CRISIS — CURRENT STATUS (2026-06-01)
+
+**Control experiment COMPLETE (Job 8459).** Results below determine thesis narrative.
+
+### NSE Nifty 50 + Rolling Windows (4 statistical selectors, no ML)
+| Signal | Avg Net Sharpe | Std | Verdict |
+|--------|---------------|-----|---------|
+| ZScore | **+0.752 ± 0.361** | high variance | **SCENARIO A threshold MET (≥0.70)** |
+| OU     | +0.147 ± 0.255 | 3 of 4 folds: 0 trades | OU underperforms on Nifty 50 |
+
+ZScore fold-by-fold: +1.127, +0.218, +0.627, +1.036 (126 trades total)
+
+### 2×2 Comparison Matrix
+| Universe | Method | Signal | Sharpe | Status |
+|----------|--------|--------|--------|--------|
+| Nifty 100 | Expanding | ZScore | -0.409 | ✅ Chapter 3 |
+| Nifty 100 | Rolling | ZScore | +0.052 | ✅ Chapter 3 |
+| **Nifty 50 (CTRL)** | **Rolling** | **ZScore** | **+0.752** | ✅ **NEW — June 1** |
+| Nifty 50 (CTRL) | Rolling | OU | +0.147 | ✅ NEW — June 1 |
+| India Multi-Mkt | Rolling | ZScore | +0.840 | ⚠️ Best of 3 runs |
+| India Multi-Mkt | Rolling | ZScore | +0.284 | ⚠️ Mean of 3 runs |
+
+**Universe uplift (Nifty50 vs 100, ZScore rolling): +0.700**
+**Remaining geographic effect (vs mean): −0.468 (i.e. India multi-market mean < Nifty 50 control)**
+
+### ⚠️ CRITICAL CAVEAT
+Control experiment used **4 statistical selectors only** (no ML/LSTM/GNN).
+Original India multi-market result used **8 selectors including LSTM, GNN, Transformer**.
+Fair comparison requires running NSE Nifty 50 with full 8-selector ensemble.
+The ML selectors hang on the cluster due to TF import on CUDA-less node.
+
+### Scenario Determination
+**SCENARIO A: Universe Quality Dominates — CONFIRMED ON BOTH METHODS (June 1, 2026)**
+- NSE Nifty 50 Rolling ZScore:   **+0.752 ± 0.361** (threshold ≥ 0.70: ✅)
+- NSE Nifty 50 Expanding ZScore: **+1.064 ± 0.502** (threshold ≥ 0.70: ✅)
+- Universe uplift (rolling):   +0.700 Sharpe vs Nifty 100
+- Universe uplift (expanding): +1.473 Sharpe vs Nifty 100
+- Method effect within Nifty 50: +0.312 (expanding > rolling)
+- Geographic effect (multi-mkt mean vs control): **−0.468** — control beats multi-mkt mean
+- New thesis narrative: **"Universe Selection Dominates Methodology and Geography"**
+- Transparency report written: `TRANSPARENCY_REPORT.md`
+- All results: `results/nse_nifty50/` (rolling) and `results/nse_nifty50_expanding/` (expanding)
 
 ---
 

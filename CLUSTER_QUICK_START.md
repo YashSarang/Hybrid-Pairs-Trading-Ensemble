@@ -18,7 +18,7 @@ cd /users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble
 
 # Create virtual environment
 python -m venv .venv
-source .venv/bin/activate
+source .venv/Scripts/bin/activate
 
 # Install dependencies
 pip install -r requirements.txt

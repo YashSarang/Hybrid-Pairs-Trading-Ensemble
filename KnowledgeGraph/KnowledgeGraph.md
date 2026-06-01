@@ -6,13 +6,14 @@
 
 ---
 
-## 📋 THESIS STATUS — ROUND 3 CRITIQUE COMPLETE (2026-06-09)
+## 📋 THESIS STATUS — ROUND 4 CRITIQUE COMPLETE (2026-06-09)
 
 ### Peer Review Summary
-- **Round 3 critique date:** 2026-06-09
-- **Open issues:** 26 total — 5 FATAL, 9 MAJOR, 7 MODERATE, 5 MINOR
-- **Journal acceptance estimates:** JFM: 35% | QF: 50%
-- **Recommendation:** Reject with Invitation to Resubmit
+- **Round 4 critique date:** 2026-06-09
+- **Open issues:** 29 total — 7 FATAL, 8 MAJOR, 8 MODERATE, 6 MINOR
+- **Journal acceptance estimates:** JFM: 20% | QF: 35%
+- **Recommendation:** Reject — desk-rejectable on abstract alone (non-existent VAE selector, wrong US ZScore figure)
+- **Root cause of Round 4 downgrade:** Round 3 patches applied sentence-by-sentence without document-wide coherence review. New FATAL introduced: abstract now lists Variational Autoencoders as a selector that doesn't exist in methodology.
 
 ### Primary Finding (Statistically Significant)
 **NSE Nifty 50, statistical-only (ZScore, rolling, 4 selectors):**
@@ -35,15 +36,52 @@
 
 ---
 
-## 🔥 PRIORITISED FIX LIST (26 Open Issues)
+## 🔥 PRIORITISED FIX LIST — ROUND 4 (29 Open Issues)
 
-### FATAL — Fix First (5)
+### FATAL — Fix All Before Anything Else (7)
 
-1. **Report US ZScore result in Chapter 4** — folds [−0.335, +2.147, +0.626, +0.656], mean +0.774. File: `results/us/wfv_4folds_20260529_025102.json`. `signal_model` field missing from JSON caused mislabelling as 'unknown'.
-2. **Fix 'no survivorship bias' claim in Section 3.2.1** — replace with honest look-ahead bias disclosure.
-3. **Fix Chapter 2 Sections 2.4–2.5** — remove '16.2x geographic alpha', 'RQ3: YES, 16.2x multiplier'. Replace with universe quality narrative.
-4. **Remove Chapter 4 Tier 1/2/3 deployment table** (Sections 4.5.1–4.5.2).
-5. **Recalculate 'geography 1.7x methodology'** using honest means and period-matched baseline.
+1. **Abstract: remove Variational Autoencoders and copula** — replace selector description with '4 statistical (Correlation, Distance, Cointegration, Combined) + 3 ML (LSTM autoencoder, Transformer, GNN), 7 total active selectors'
+2. **Abstract: fix US ZScore** — change -0.297 to +0.774 (exploratory, n=1, regime-contingent). Revise 'India >> Brazil > UK > US' hierarchy accordingly.
+3. **Global: replace ALL '8-selector/4 ML selectors'** — missed in Round 3. Locations: abstract (3), Ch2 (4), Ch4 Table 4.1.2, Ch5 (2). Replace with '7 active selectors / 3 ML selectors (CNNSelector disabled)'.
+4. **Global: remove 16x multiplier / +0.840 as headline** — Ch3 Sec 3.6.7/3.6.8/3.6.9, Ch4 Sec 4.3.1/4.3.3/4.7, Ch5 Sec 5.1.1/5.2/5.6. Replace with +0.284 mean / 5.5x honest multiplier / CPU range +0.353–+0.484.
+5. **Ch5 Sec 5.1.1 + 5.2: remove '1.7x geographic > methodology'** — Ch4 Sec 4.2.2 already has the correction; propagate it to Ch5.
+6. **Ch5 Sec 5.1.1 heading + 5.1.2 + 5.6: remove 'geographic alpha is LARGE and REAL'** — replace with universe quality narrative throughout Ch5.
+7. **ML overfitting: add training diagnostics** — add loss curves for one representative fold, OR explicitly frame ML as exploratory negative finding (statistically-only = +0.752, ensemble = +0.284, conclusion: ML adds noise on 12-month windows).
+
+### MAJOR — Fix After FATAL (8)
+
+8. **Selector ablation table** — run Nifty 50 4-fold rolling: statistical-only vs ML-only vs combined. This is the thesis's core methodological claim and is currently untested.
+9. **Ch2 Sec 2.2.3: fix 192 model runs** — correct: 7×4×4=112. Update runtime claim.
+10. **Ch5 Sec 5.5.3: remove fund launch recommendation** — replace with research prerequisites for commercialisation.
+11. **Ch4 Table 4.1.2: '8 selectors' → '7 active selectors (CNNSelector disabled)'**
+12. **Add US ZScore (+0.774, n=1, exploratory) to Table 4.2.1 and Appendix A Table A.1**
+13. **Replace 'proves/proving' with 'suggests/is consistent with'** throughout abstract, Ch4, Ch5.
+14. **16.4 bps → 16.28 bps in Ch2 (Sec 2.3.1, 2.3.3, 2.5) and Ch4 (Sec 4.1.3, 4.3.1, 4.5.3)**
+15. **Ch2: add '4-fold for multi-market / 6-fold for NSE baseline'** clarification in Sec 2.1.3, 2.2.3, 2.4, 2.5.
+
+### MODERATE (8)
+
+16. Explain or remove 'results/ou' and 'results/unknown' artefacts in STATISTICAL_ANALYSIS.md
+17. Ch4 Sec 4.7: replace +0.840/16x with +0.284 mean in chapter conclusions
+18. Ch5 Sec 5.3.2 + 5.5.1: replace '+0.840' future targets with CPU-deterministic +0.353–+0.484
+19. Ch2 Sec 2.3.3: cross-ref 'Section 4.3' → 'Section 4.3.4'
+20. Ch3 References: Gatev 1999 → 2006
+21. Ch5 RQ2: add note that gross Sharpe threshold is configuration-dependent (+0.60 rolling vs +0.90 general)
+22. Ch4 lines 501-506: delete integration notes / TODO comments
+23. STATISTICAL_ANALYSIS.md: remove 'results/unknown' duplicate of 'US/unknown'; relabel as 'US/ZScore (n=1 valid, 2 failed)'
+
+### MINOR (6)
+
+24. Ch3 Sec 3.6.6: rephrase 'production deployment' → 'for reproducibility in future research'
+25. Ch5 Appendix B Table B.1: add Bonferroni-corrected p=0.640 row
+26. Add 'Nath & Brooks (2015)' to reference list (cited Ch2 Sec 2.3.3)
+27. Add 'Bhootra & Hur (2013)' to reference list (cited Ch4 Sec 4.3.1)
+28. Ch5 Sec 5.2: 'Gatev 1999' → 'Gatev 2006'
+29. Add NSE Nifty 50 Rolling OU control (+0.147, n=1) to Table 4.2.1
+
+---
+
+**If items 1–7 (FATAL) + 8 (ablation) + 7 (ML diagnostics) resolved → JFM: 50%, QF: 65%**
 
 ### MAJOR — Fix After FATAL (9 — note: original critique listed 9 MAJOR; items 6–11 are the first 6)
 

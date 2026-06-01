@@ -31,7 +31,7 @@ Pairs trading is a market-neutral investment strategy that profits when two hist
 
 This thesis asks: **Where should investors look for pairs trading opportunities today?** Instead of tweaking algorithms on the same tired markets, we test whether **changing geography** matters more than **changing methodology**.
 
-We built a "hybrid ensemble" system that combines 8 different ways of finding good pairs (from simple correlation math to advanced neural networks), then tested it on stock markets in India, the United States, Brazil, and the United Kingdom from 2014-2025. We carefully accounted for real-world trading costs—a critical detail many academic papers ignore.
+We built a "hybrid ensemble" system that combines 8 different ways of finding good pairs (from simple correlation math to advanced neural networks), then tested it on stock markets in India, the United States, Brazil, and the United Kingdom from 2016-2025 (data collection) / 2021-2024 (out-of-sample testing). We carefully accounted for real-world trading costs—a critical detail many academic papers ignore.
 
 **Key Result:** The NSE Nifty 50 universe achieves +0.752 Sharpe (rolling, deterministic control), confirming universe quality as the primary driver. In the best multi-market run, performance reaches +0.840 — also driven by the same Nifty 50 universe quality, not geographic diversification per se. The Nifty 50 universe produces a +0.700 Sharpe uplift over the Nifty 100 baseline — a universe quality effect that accounts for the majority of the observed performance differential. Meanwhile, the exact same system **lost money** in the United States (-0.297 Sharpe).
 
@@ -125,7 +125,7 @@ We tested the same pairs trading system on stock markets in India, the United St
 
 "Pairs trading"—betting on the price relationship between two similar stocks (like Coca-Cola and Pepsi)—used to generate double-digit returns for hedge funds in the 1980s-90s. But by the 2010s, it had stopped working in the US and Europe, likely because computers got faster and markets became more efficient.
 
-Sarang's thesis tested whether the strategy still works in emerging markets. He built a system combining traditional statistics with modern machine learning, then ran it on stock markets in India, the United States, Brazil, and the United Kingdom from 2014-2025.
+Sarang's thesis tested whether the strategy still works in emerging markets. He built a system combining traditional statistics with modern machine learning, then ran it on stock markets in India, the United States, Brazil, and the United Kingdom from 2016-2025 (data collection) / 2021-2024 (out-of-sample testing).
 
 **The result?** The exact same system that **lost money** in the US produced dramatically better returns when applied to India's Nifty 50 index (+0.752 Sharpe rolling, best run +0.840). "It's not about having a better algorithm," Sarang explains. "It's about trading in the right market with the right universe. India's Nifty 50 blue-chip concentration creates inefficiencies that have disappeared in developed economies — and even within India, the Nifty 50 dramatically outperforms the broader Nifty 100."
 

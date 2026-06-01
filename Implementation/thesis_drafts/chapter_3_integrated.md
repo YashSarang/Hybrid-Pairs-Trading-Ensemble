@@ -69,7 +69,7 @@ The NSE baseline validation addresses three research questions:
 - Sufficient cross-sectional dispersion for pair formation
 
 **Data Filters:**
-- Complete price history: 2016-2025 (no survivorship bias)
+- Complete price history: 2016-2025. **Note on survivorship bias:** The data filter selects stocks with continuous trading history through 2025, introducing mild survivorship bias (stocks delisted, merged, or dropped from the index during 2016-2025 are excluded). Additionally, current-period index constituent lists are used rather than point-in-time historical constituent data, introducing look-ahead bias into universe construction. Both effects likely inflate performance estimates relative to a live deployment. Point-in-time constituent data replication is left for future work.
 - Minimum trading volume: >₹10 crore daily avg
 - Excludes stocks with >5 consecutive missing days
 
@@ -102,11 +102,13 @@ The NSE baseline validation addresses three research questions:
 3. **CointegrationSelector**: Lowest ADF p-value on spread residuals
 4. **CombinedCriteriaSelector**: Weighted composite (0.3×Corr + 0.3×Dist + 0.4×Coint)
 
-**ML Selectors (4):**
+**ML Selectors (3; CNNSelector disabled):**
 5. **LSTMSelector**: Bidirectional LSTM on price/volume sequences (60-day lookback)
 6. **TransformerSelector**: Multi-head attention (4 heads, 2 layers)
 7. **GNNSelector**: Graph Convolutional Network (correlation-weighted edges)
-8. **CNNSelector**: 1D CNN on spread time series (disabled due to data requirements)
+8. **CNNSelector**: 1D CNN on spread time series (disabled due to sequence length constraints)
+
+As CNNSelector is disabled, the active ensemble contains 7 selectors: 4 statistical (Correlation, Distance, Cointegration, Combined) and 3 ML (LSTM, Transformer, GNN).
 
 **Configuration:**
 - All selectors train on identical train/test splits
@@ -118,7 +120,7 @@ The NSE baseline validation addresses three research questions:
 **Method:** Weighted ensemble score
 - Each selector ranks pairs 1-595
 - Ensemble score = Σ(selector_score × selector_weight)
-- Weights: Equal (1/8 for 8 selectors)
+- Weights: Equal (1/7 for 7 active selectors; CNNSelector disabled due to sequence length constraints)
 
 **Top-K Selection:**
 - Select 10 pairs with highest ensemble scores
@@ -192,7 +194,7 @@ The NSE baseline validation addresses three research questions:
 2. **High Transaction Costs**
    - Indian market costs (16.4 bps) > US markets (2-5 bps)
    - Cost drag (-0.526) exceeds gross returns (+0.108)
-   - **Implication:** Profitability threshold requires Gross Sharpe > +0.60
+   - **Implication:** Profitability threshold requires Gross Sharpe > +0.60 *(This threshold applies to the expanding window configuration with ~0.526 cost drag. Under rolling window configuration with lower turnover, the effective threshold is approximately Gross Sharpe > +0.10.)*
 
 3. **Excessive Turnover**
    - Expanding windows select 183 trades/year
@@ -257,7 +259,7 @@ This sensitivity analysis addresses the research question: *Does shorter, more r
 
 All other parameters held constant:
 - Universe: NSE Nifty 100 (35 tickers with complete coverage)
-- Selectors: 8-member ensemble (statistical + ML)
+- Selectors: 7-selector ensemble (statistical + ML; CNNSelector disabled due to sequence length constraints)
 - Signals: ZScoreThreshold + OUThreshold (lookback = 126 days)
 - Top-K selection: 10 pairs per fold
 - Transaction costs: Indian market rates (16.4 bps per round-trip)
@@ -460,7 +462,7 @@ Despite the 113% improvement, rolling's +0.052 Sharpe is economically insignific
 
 1. **Transaction cost threshold**: At 16.4 bps/trade and 48.8 trades/year, rolling incurs ~8.0 bps annual drag. Gross Sharpe must exceed +0.10 to achieve Net Sharpe > +0.05. The NSE universe produces gross Sharpe of only +0.108 (Table 3.6.2), leaving minimal margin.
 
-2. **Signal weakness**: The ZScore + OU signals, even with 8-selector ensemble optimization, generate weak gross returns (mean Gross Sharpe +0.108 across 6 folds). This suggests that:
+2. **Signal weakness**: The ZScore + OU signals, even with 7-selector ensemble optimization (CNNSelector disabled due to sequence length constraints), generate weak gross returns (mean Gross Sharpe +0.108 across 6 folds). This suggests that:
    - NSE Nifty 100 correlations are not sufficiently persistent for profitable mean-reversion
    - Or, cross-sectional dispersion is too low to generate tradable spreads after transaction costs
 

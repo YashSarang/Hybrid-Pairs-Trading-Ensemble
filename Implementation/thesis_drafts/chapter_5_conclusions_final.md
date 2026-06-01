@@ -18,7 +18,7 @@ Chapter 4 demonstrated that multi-market India (Nifty 50 + ZScore) achieves **+0
 
 **Key Insight:**
 - Even with optimized methodology (rolling windows), NSE barely profitable (+0.052 Sharpe)
-- India dominates with SAME costs (16.4 bps), SAME methodology (rolling), but DIFFERENT universe (Nifty 50 vs 100)
+- India dominates with SAME costs (16.28 bps), SAME methodology (rolling), but DIFFERENT universe (Nifty 50 vs 100)
 - Geographic diversification improvement (+0.788) is **1.7x larger** than methodology improvement (+0.461)
 
 **Implication:** Pairs trading research should prioritize market selection over algorithm tuning.
@@ -74,7 +74,7 @@ The 8-selector ensemble (4 statistical + 4 ML) successfully generated trades in 
 
 ---
 
-**RQ2: What is the profitability threshold for pairs trading under Indian transaction costs (16.4 bps)?**
+**RQ2: What is the profitability threshold for pairs trading under Indian transaction costs (16.28 bps)?**
 
 **Answer:** **Gross Sharpe > +0.90 required for Net Sharpe > +0.80.**
 
@@ -88,7 +88,7 @@ The 8-selector ensemble (4 statistical + 4 ML) successfully generated trades in 
 - At 1,096 trades/6 years (NSE expanding): Cost drag ≈ -0.526 Sharpe
 - At 123 trades/4 years (India): Cost drag ≈ -0.067 Sharpe
 
-**Conclusion:** 16.4 bps costs are manageable IF gross signals are strong (Sharpe > +0.90) AND turnover is controlled (<50 trades/year).
+**Conclusion:** 16.28 bps costs are manageable IF gross signals are strong (Sharpe > +0.90) AND turnover is controlled (<50 trades/year).
 
 ---
 
@@ -134,7 +134,7 @@ The 8-selector ensemble (4 statistical + 4 ML) successfully generated trades in 
 
 ### Chapter 1: Problem Statement
 - Traditional pairs trading relies on single selectors (correlation, cointegration)
-- Emerging markets (NSE) have high transaction costs (16.4 bps)
+- Emerging markets (NSE) have high transaction costs (16.28 bps)
 - Question: Can ensemble methods overcome these limitations?
 
 ### Chapter 2: Literature & Methodology
@@ -229,10 +229,13 @@ Note: The following observations are based on historical backtest results (4 fol
 - **Mitigation:** Use CPU-only or fix GPU seeds (CUDA env vars)
 
 **5. Transaction Cost Assumptions**
-- Flat costs: NSE 16.4 bps, US 2.7 bps, etc.
+- Flat costs: NSE 16.28 bps, US 2.7 bps, etc.
 - Reality: Volume-dependent slippage, intraday spreads
 - May underestimate impact at scale
 - **Mitigation:** Test with realistic cost curves (volume × spread models)
+
+**6. OU Strategy Execution**
+- **OU strategy execution:** Across all markets, the OU signal model produced exactly zero trades in 3 of 4 folds (fold-level Sharpe = 0.000), with non-zero performance only in fold 4. This pattern is consistent across India, Brazil, and UK results. The OU CIs reported in STATISTICAL_ANALYSIS.md are therefore based on n=1 effective observation per market, not n=4. OU results should be treated as single-fold observations, not as evidence of consistent strategy performance.
 
 ---
 
@@ -412,15 +415,15 @@ This thesis documents that the NSE Nifty 50 universe achieves +0.752 Sharpe (rol
 
 | Rank | Market | Signal | Methodology | Net Sharpe | Trades | Cost (bps) |
 |------|--------|--------|-------------|------------|--------|------------|
-| 1 | 🇮🇳 India (Nifty 50) | ZScore | Rolling | **+0.840** | 123 | 16.4 |
-| 2 | 🇧🇷 Brazil | OU | Rolling | +0.321 | 32 | 8.4 |
-| 3 | 🇮🇳 India (Nifty 50) | OU | Rolling | +0.200 | 26 | 16.4 |
-| 4 | 🇮🇳 NSE (Nifty 100) | ZScore | **Rolling** | **+0.052** | 293 | 16.4 |
-| 5 | 🇧🇷 Brazil | ZScore | Rolling | -0.225 | 115 | 8.4 |
-| 6 | 🇬🇧 UK | ZScore | Rolling | -0.245 | 111 | 8.0 |
-| 7 | 🇺🇸 US | OU | Rolling | -0.254 | 39 | 2.7 |
-| 8 | 🇬🇧 UK | OU | Rolling | -0.405 | 42 | 8.0 |
-| 9 | 🇮🇳 NSE (Nifty 100) | ZScore | **Expanding** | **-0.409** | 1,096 | 16.4 |
+| 1 | IN India (Nifty 50) | ZScore | Rolling | **+0.840** | 123 | 16.28 |
+| 2 | BR Brazil | OU | Rolling | +0.321 | 32 | 8.4 |
+| 3 | IN India (Nifty 50) | OU | Rolling | +0.200 | 26 | 16.28 |
+| 4 | IN NSE (Nifty 100) | ZScore | **Rolling** | **+0.052** | 293 | 16.28 |
+| 5 | BR Brazil | ZScore | Rolling | -0.225 | 115 | 8.4 |
+| 6 | GB UK | ZScore | Rolling | -0.245 | 111 | 8.0 |
+| 7 | US | OU | Rolling | -0.254 | 39 | 2.7 |
+| 8 | GB UK | OU | Rolling | -0.405 | 42 | 8.0 |
+| 9 | IN NSE (Nifty 100) | ZScore | **Expanding** | **-0.409** | 1,096 | 16.28 |
 
 **Top 3 are ALL multi-market. NSE rolling is #4 (marginally positive). NSE expanding is DEAD LAST.**
 

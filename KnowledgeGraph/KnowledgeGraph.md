@@ -2,52 +2,71 @@
 
 > **For AI coding agents:** Read this file at the start of every session. It is the cheapest way (~800 tokens) to understand the full codebase. Do not read raw source files until you know you need them.
 
-**Last updated:** 2026-06-01 21:20 IST
+**Last updated:** 2026-06-09 IST
 
 ---
 
-## 🚨 REPRODUCIBILITY CRISIS — CURRENT STATUS (2026-06-01)
+## 📋 THESIS STATUS — ROUND 3 CRITIQUE COMPLETE (2026-06-09)
 
-**Control experiment COMPLETE (Job 8459).** Results below determine thesis narrative.
+### Peer Review Summary
+- **Round 3 critique date:** 2026-06-09
+- **Open issues:** 26 total — 5 FATAL, 9 MAJOR, 7 MODERATE, 5 MINOR
+- **Journal acceptance estimates:** JFM: 35% | QF: 50%
+- **Recommendation:** Reject with Invitation to Resubmit
 
-### NSE Nifty 50 + Rolling Windows (4 statistical selectors, no ML)
-| Signal | Avg Net Sharpe | Std | Verdict |
-|--------|---------------|-----|---------|
-| ZScore | **+0.752 ± 0.361** | high variance | **SCENARIO A threshold MET (≥0.70)** |
-| OU     | +0.147 ± 0.255 | 3 of 4 folds: 0 trades | OU underperforms on Nifty 50 |
+### Primary Finding (Statistically Significant)
+**NSE Nifty 50, statistical-only (ZScore, rolling, 4 selectors):**
+- Net Sharpe: **+0.752** (95% CI [+0.422, +1.082], p = 0.036)
+- Fold-by-fold: +1.127, +0.218, +0.627, +1.036 (126 trades total)
+- **Only statistically significant result in the entire study**
 
-ZScore fold-by-fold: +1.127, +0.218, +0.627, +1.036 (126 trades total)
+### Key Framing Insight
+> **Invert the thesis:** Make NSE Nifty 50 statistical-only the headline result. The ML ensemble is an exploratory negative finding — not the centrepiece. This reframing is honest and more publishable.
 
 ### 2×2 Comparison Matrix
 | Universe | Method | Signal | Sharpe | Status |
 |----------|--------|--------|--------|--------|
 | Nifty 100 | Expanding | ZScore | -0.409 | ✅ Chapter 3 |
 | Nifty 100 | Rolling | ZScore | +0.052 | ✅ Chapter 3 |
-| **Nifty 50 (CTRL)** | **Rolling** | **ZScore** | **+0.752** | ✅ **NEW — June 1** |
-| Nifty 50 (CTRL) | Rolling | OU | +0.147 | ✅ NEW — June 1 |
+| **Nifty 50 (CTRL)** | **Rolling** | **ZScore** | **+0.752** | ✅ **Headline result** |
+| Nifty 50 (CTRL) | Rolling | OU | +0.147 | ✅ Chapter 3 |
 | India Multi-Mkt | Rolling | ZScore | +0.840 | ⚠️ Best of 3 runs |
 | India Multi-Mkt | Rolling | ZScore | +0.284 | ⚠️ Mean of 3 runs |
 
-**Universe uplift (Nifty50 vs 100, ZScore rolling): +0.700**
-**Remaining geographic effect (vs mean): −0.468 (i.e. India multi-market mean < Nifty 50 control)**
+---
 
-### ⚠️ CRITICAL CAVEAT
-Control experiment used **4 statistical selectors only** (no ML/LSTM/GNN).
-Original India multi-market result used **8 selectors including LSTM, GNN, Transformer**.
-Fair comparison requires running NSE Nifty 50 with full 8-selector ensemble.
-The ML selectors hang on the cluster due to TF import on CUDA-less node.
+## 🔥 PRIORITISED FIX LIST (26 Open Issues)
 
-### Scenario Determination
-**SCENARIO A: Universe Quality Dominates — CONFIRMED ON BOTH METHODS (June 1, 2026)**
-- NSE Nifty 50 Rolling ZScore:   **+0.752 ± 0.361** (threshold ≥ 0.70: ✅)
-- NSE Nifty 50 Expanding ZScore: **+1.064 ± 0.502** (threshold ≥ 0.70: ✅)
-- Universe uplift (rolling):   +0.700 Sharpe vs Nifty 100
-- Universe uplift (expanding): +1.473 Sharpe vs Nifty 100
-- Method effect within Nifty 50: +0.312 (expanding > rolling)
-- Geographic effect (multi-mkt mean vs control): **−0.468** — control beats multi-mkt mean
-- New thesis narrative: **"Universe Selection Dominates Methodology and Geography"**
-- Transparency report written: `TRANSPARENCY_REPORT.md`
-- All results: `results/nse_nifty50/` (rolling) and `results/nse_nifty50_expanding/` (expanding)
+### FATAL — Fix First (5)
+
+1. **Report US ZScore result in Chapter 4** — folds [−0.335, +2.147, +0.626, +0.656], mean +0.774. File: `results/us/wfv_4folds_20260529_025102.json`. `signal_model` field missing from JSON caused mislabelling as 'unknown'.
+2. **Fix 'no survivorship bias' claim in Section 3.2.1** — replace with honest look-ahead bias disclosure.
+3. **Fix Chapter 2 Sections 2.4–2.5** — remove '16.2x geographic alpha', 'RQ3: YES, 16.2x multiplier'. Replace with universe quality narrative.
+4. **Remove Chapter 4 Tier 1/2/3 deployment table** (Sections 4.5.1–4.5.2).
+5. **Recalculate 'geography 1.7x methodology'** using honest means and period-matched baseline.
+
+### MAJOR — Fix After FATAL (9 — note: original critique listed 9 MAJOR; items 6–11 are the first 6)
+
+6. **Fix CNNSelector** — change all '8-selector' to '7-selector' throughout the thesis.
+7. **Reconcile Brazil cost** — 8.4 bps used in backtest vs 30 bps cited in Chapter 2. Add footnote explaining discrepancy.
+8. **Write Section 4.3.4** — Liew & Wu contradiction resolution.
+9. **Add ML overfitting diagnostic note** to Chapter 3.
+10. **Add selector ablation table** or at minimum a disclosure paragraph.
+11. **Fix period-confounded methodology vs geography comparison.**
+
+### MODERATE (7)
+
+12. Fix Krauss 2017 misattribution.
+13. Consolidate India cost to **16.28 bps** everywhere (remove 16.4 and 16.5 references).
+14. Fix plain-language abstract date — '2014-2025' → correct study period.
+15. Add caveat to VIX regime table acknowledging 2024 contradicts the causal story.
+16. Fix OU results disclosure — note n=1 effective fold.
+
+### MINOR (5)
+
+17. Fix `results/ou` 5-zero runs — explain in transparency report.
+18. Standardise Gatev citation to **2006** throughout.
+19. Consolidate gross Sharpe threshold to one figure.
 
 ---
 
@@ -182,26 +201,14 @@ Implementation/                ← All source code lives here
 
 > **Update this section after every significant session.**
 
-- **Status:** Thesis write-up phase + Code verification complete
-- **Headline result:** E7 Config C (LSTM+Corr): Net Return **+17.66%**, Net SR **+0.510** | E8 RL (PPO): Underperforms statistical baseline due to expected data starvation.
-- **Latest:** ERROR RESOLUTION COMPLETE (2026-05-26)
-  - ✅ Fixed 2 bare except clauses in app.py  
-  - ✅ Installed missing dependencies (plotly, joblib)
-  - ✅ Created comprehensive end-to-end test (test_complete_workflow.py)
-  - ✅ Verified full workflow: data → pair selection → signal generation → backtest → results
-  - ✅ All systems operational and production-ready
-- **Previous:** Literature-Review/ system established (2026-05-26)
-  - Comprehensive catalog of 11 major pairs trading papers (1987-2021)
-  - PCA-OU reproduction complete: METHOD FAILS ON NSE (0% tradeable stocks)
-  - High-value negative result strengthens thesis contribution
-- **Current focus:** 
-  - Thesis writing (Abstract ✅, Chapter 6 in progress)
-  - Literature review reproductions (1/11 complete: PCA-OU)
-  - Codebase production-ready for thesis submission
-- **Known blockers:** None
-- **Last significant change:** 
-  - 2026-05-26: Created Literature-Review/ folder with 11 paper implementations; comprehensive review document with reproduction status tracking
-  - 2026-05-06: Audited codebase, fixed double-charging transaction cost bug (BUG-08); regenerated all results
+- **Status:** Round 3 critique complete — revision phase
+- **Headline result:** NSE Nifty 50 statistical-only ZScore: Net SR **+0.752** (95% CI [+0.422, +1.082], p=0.036) — only statistically significant result
+- **Latest:** Round 3 peer review complete (2026-06-09)
+  - 26 open issues: 5 FATAL, 9 MAJOR, 7 MODERATE, 5 MINOR
+  - JFM acceptance: 35%, QF: 50%
+  - Recommendation: Reject with Invitation to Resubmit
+  - Key action: Invert thesis framing — Nifty 50 stat-only is the headline; ML ensemble is exploratory negative finding
+- **Current focus:** Address FATAL issues (see Prioritised Fix List above)
 
 ---
 

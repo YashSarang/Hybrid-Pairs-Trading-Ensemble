@@ -10,7 +10,7 @@ This chapter surveys three interconnected research streams that underpin our hyb
 
 3. **Market Efficiency in Emerging Markets** (Section 2.3): Examines why developing economies like India may offer persistent arbitrage opportunities [Bekaert & Harvey, 2002; Nath & Brooks, 2015].
 
-Our contribution sits at the intersection: we apply ensemble learning principles to pairs trading, then validate across emerging and developed markets to test the geographic alpha hypothesis.
+Our contribution sits at the intersection: we apply ensemble learning principles to pairs trading, then validate across emerging and developed markets to test the universe quality effect hypothesis.
 
 ---
 
@@ -83,7 +83,8 @@ ML methods relax these assumptions, learning **non-linear, time-varying, regime-
 
 #### **Deep Learning Approaches**
 
-**LSTM Autoencoders for Pair Selection** (Krauss, 2017):
+**LSTM Autoencoders for Pair Selection:**
+Kim & Kim (2019) introduced LSTM autoencoders for pair selection via reconstruction error thresholding. The approach was adapted from the broader deep learning for financial time series literature (Krauss et al., 2017 used deep learning for return prediction and stock ranking on the S&P 500, not pair selection per se).
 - Train LSTM autoencoder on historical price series
 - Pairs with low reconstruction error → similar latent dynamics → good pair candidates
 - Advantage: Captures **temporal dependencies** (lag structures) that correlation misses
@@ -326,7 +327,7 @@ India literature suggests profitability exists but is:
 Profitability hierarchy: **India >> Brazil > UK > US**. This aligns with market efficiency ordering (India least efficient, US most efficient) but contradicts liquidity-based explanations (US has 100x India's liquidity but worse pairs trading returns).
 
 **Hypothesis Tested in Chapter 4:**  
-Geographic alpha is driven by **structural factors** (universe concentration, sectoral homogeneity, retail participation) not just market maturity.
+Universe quality effect is driven by **structural factors** (universe concentration, sectoral homogeneity, retail participation) not just market maturity.
 
 ---
 
@@ -340,7 +341,7 @@ Our thesis addresses four research gaps:
 Most papers test one market (Nath 2015: India only; Krauss 2017: US only). Exception: Bowen 2010 (US + Europe) but no emerging markets.
 
 **Our Contribution:**  
-Identical framework across 4 continents → isolates **market effect** from **method effect**. Chapter 4 shows 16.2x India/NSE spread using same selectors/signals.
+Identical framework across 4 continents → isolates **market effect** from **method effect**. Chapter 4 shows universe quality (Nifty 50 vs Nifty 100) effect using same selectors/signals.
 
 ---
 
@@ -357,7 +358,7 @@ Zhang & Ma (2012) only work combining multiple selectors, but limited to 3 stati
 ### Gap 3: Realistic Transaction Costs
 
 **Existing Work:**  
-Gatev (2006) uses 25 bps, Nath (2015) uses 50 bps. Actual Indian costs: brokerage (5 bps) + STT (10 bps) + stamp duty (1.5 bps) = 16.5 bps.
+Gatev (2006) uses 25 bps, Nath (2015) uses 50 bps. Actual Indian costs: brokerage (5 bps) + STT (10 bps) + stamp duty (1.5 bps) + exchange/SEBI fees (0.33 bps) + slippage (2.0 bps per side × 0.5 round-trip allocation) = **16.28 bps** per trade (see Chapter 3, Table 3.5.1 for full breakdown).
 
 **Our Contribution:**  
 Use actual NSE cost structure → shows rolling NSE barely profitable (+0.052) vs prior literature claims of 6-9% annual returns.
@@ -386,7 +387,7 @@ Distance methods (1980s) → Cointegration (2000s) → Machine Learning (2010s) 
 Diversity improves robustness (Polikar 2006, Zhang 2012) → **We extend to 8 selectors (4 statistical + 4 ML)**
 
 **Market Efficiency:**  
-Emerging markets offer persistent opportunities (Bekaert 2002, Nath 2015) → **We quantify geographic alpha: India 16x better than NSE**
+Emerging markets offer persistent opportunities (Bekaert 2002, Nath 2015) → **We quantify the NSE Nifty 50 +0.700 Sharpe uplift over Nifty 100**
 
 **Our Unique Position:**  
 First work to combine:
@@ -399,7 +400,7 @@ First work to combine:
 **Research Questions Revisited:**
 - **RQ1 (Ensemble NSE):** Chapter 3 tests if 8 selectors overcome NSE limitations → Answer: Partial success (+0.052 rolling) but insufficient
 - **RQ2 (Cost Threshold):** Chapter 3/4 establish gross Sharpe > +0.90 needed for net > +0.80 under 16.4 bps
-- **RQ3 (Geographic Alpha):** Chapter 4 tests if market selection > methodology → Answer: **YES, 16.2x multiplier proves dominance**
+- **RQ3 (Universe Quality):** Does universe selection (Nifty 50 vs Nifty 100) produce larger Sharpe improvement than methodology optimization (rolling vs expanding windows)? → Chapter 4 Answer: **YES — Nifty 50 universe quality produces +0.700 Sharpe uplift (rolling baseline: +0.752 vs +0.052) vs methodology improvement of +0.461 Sharpe, with the universe quality result being the only finding statistically distinguishable from zero (95% CI [+0.422, +1.082], p=0.036).**
 
 ---
 

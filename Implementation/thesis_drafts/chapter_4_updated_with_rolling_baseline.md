@@ -116,9 +116,9 @@ The 0.556 Sharpe gap between the mean (+0.284) and best run (+0.840) is attribut
 
 **Comparison:**
 - **Methodology improvement (Expanding → Rolling):** +0.461 Sharpe (+113%)
-- **Geographic improvement (Rolling NSE → India):** +0.788 Sharpe (+1,515%)
+- **Geographic improvement (Rolling NSE → India multi-market mean):** +0.232 Sharpe (Nifty 100 rolling +0.052 → India multi-market mean +0.284)
 
-**India's advantage is 1.7x larger than the entire methodology optimization.**
+Under honest period-matched arithmetic: methodology improvement (expanding → rolling, same 2020-2025 period) = +0.461 Sharpe. Geographic diversification improvement (NSE rolling 2021-2024 mean = −0.084 → India multi-market mean = +0.284) = +0.368 Sharpe. **Methodology improvement marginally exceeds geographic improvement under period-matched honest means.** The earlier claim that geography was 1.7x more impactful than methodology was computed using the cherry-picked India best run (+0.840) against the full-period NSE baseline (+0.052) — not comparable periods. The Nifty 50 universe quality effect (+0.700 Sharpe uplift, statistically significant) remains the dominant finding regardless of this correction.
 
 > **Scope of this finding:** The universe quality effect documented here is specific to NSE (Nifty 50 vs Nifty 100, 2021-2024). Whether analogous effects exist in other markets (e.g., S&P 50 vs S&P 500, FTSE 50 vs FTSE 100) is an open empirical question. Cross-market replication of the universe quality experiment is left for future work.
 
@@ -250,21 +250,46 @@ The 0.556 Sharpe gap between the mean (+0.284) and best run (+0.840) is attribut
 
 ---
 
+### 4.3.4 Reconciling the Liew & Wu (2013) Contradiction
+
+Liew & Wu (2013) found that smaller-cap NSE stocks (Nifty 100 mid-cap component) produced higher pairs trading returns than large-cap Nifty 50 stocks in their 2003-2012 sample. This directly contradicts the primary finding of this thesis: that Nifty 50 achieves +0.752 Sharpe vs Nifty 100 rolling +0.052 Sharpe (a +0.700 Sharpe uplift for large-caps).
+
+Three explanations reconcile this discrepancy:
+
+**1. Sample Period Effect (2003-2012 vs 2021-2024):** Liew & Wu's sample pre-dates the algorithmic trading penetration of Indian equities. The NSE introduced co-location facilities in 2012 and algorithmic order flow reached ~50% of NSE volumes by 2016 (NSE Annual Report, 2017). Algorithmic arbitrage has disproportionately eroded mean-reversion opportunities in mid-cap and small-cap stocks (higher idiosyncratic volatility, less liquid pairs), while blue-chip Nifty 50 pairs may retain co-integration more robustly due to common sectoral exposure.
+
+**2. Universe Construction:** Liew & Wu used a broader universe including Nifty 100 mid-caps. The Nifty 100 results in this thesis (−0.409 expanding, +0.052 rolling) suggest the mid-cap component specifically is unprofitable under the 2021-2024 regime — consistent with the algorithmic arbitrage hypothesis above.
+
+**3. Signal Methodology:** Liew & Wu used distance-based pairs selection with a fixed 12-month formation period. This thesis uses ensemble selection across 7 methods with 126-day rolling windows. Under distance-only selection, mid-cap stocks may outperform; under cointegration-weighted ensemble selection, large-caps may be more reliably cointegrated.
+
+This thesis does not claim Nifty 50 universally outperforms Nifty 100. The finding is specific to the 2021-2024 regime under ensemble methodology. Replication of Liew & Wu (2013) using point-in-time data across multiple post-2015 regimes would be required to establish which result is regime-specific.
+
+---
+
 ## Section 4.4: Market-by-Market Deep Dive
 
 ### 4.4.1 United States (S&P 500)
 
 **Results:**
-- ZScore: No result (data issue?)
-- OU: -0.254 Sharpe (39 trades)
+- ZScore: **+0.774 mean net Sharpe** (single run; fold results: [−0.335, +2.147, +0.626, +0.656])
+- OU: −0.085 mean Sharpe (3 runs; best run: 0.000, 39 trades)
 
-**Analysis:**
-- US has LOWEST transaction costs (2.7 bps) but still fails
-- Hypothesis: Efficient market hypothesis holds → pairs too weak
-- US pairs trading studies (Gatev 1999) used 1960s-1990s data → edge eroded
-- Modern HFT dominance (60% of volume) → mean-reversion arbitraged away
+> **Data transparency note:** The ZScore US run was mislabelled as 'unknown' in the automated transparency report because the `signal_model` field was absent from the JSON output. The run has been confirmed as ZScore via fold-level metrics inspection. Because only one run completed, no bootstrap CI is computed; this result is treated as exploratory.
 
-**Conclusion:** US is NOT a viable pairs trading market post-2010.
+**Fold-level analysis (US ZScore):**
+
+| Fold | Year | Sharpe | Regime |
+|------|------|--------|--------|
+| 1 | 2021 | −0.335 | Bull market (trending, low vol) |
+| 2 | 2022 | **+2.147** | Bear market (high vol, mean-reversion) |
+| 3 | 2023 | +0.626 | Recovery |
+| 4 | 2024 | +0.656 | Moderate growth |
+
+**Key observation:** Fold 2 (2022, bear market) drives performance (+2.147 Sharpe). Fold 1 (2021, bull market) is negative (−0.335), suggesting US ZScore profits from mean-reversion during high-volatility regimes but underperforms in trending markets. This regime-dependency means the single-run aggregate (+0.774) should not be interpreted as reliable without replication across multiple GPU runs.
+
+**Updated US context:** With the ZScore result recovered, US produces one positive signal (ZScore: +0.774 exploratory) and one negative signal (OU: −0.085 mean). The US ZScore result is regime-contingent and exploratory (n=1); it does not overturn the structural conclusion that US mean-reversion is weak, but it does suggest that high-volatility years (2022-style) may create temporary exploitable dislocations.
+
+**Conclusion:** US pairs trading is not reliably profitable under the tested methodology. The ZScore 2022 fold (+2.147) warrants further investigation under deterministic multi-run replication.
 
 ---
 
@@ -273,6 +298,8 @@ The 0.556 Sharpe gap between the mean (+0.284) and best run (+0.840) is attribut
 **Results:**
 - OU: **+0.321 Sharpe ★** (32 trades)
 - ZScore: -0.225 Sharpe (115 trades)
+
+**Transaction Costs:** Brazil transaction costs are modelled at **8.4 bps** (0.5 bps brokerage + 7.6 bps CBLC settlement + 0.3 bps exchange fees). (Note: Chapter 2 Section 2.3.4 cites Brazilian transaction costs of ~30 bps from the broker-fee-inclusive literature estimate. The 8.4 bps figure used here reflects exchange-level costs only (0.5 bps brokerage + 7.6 bps CBLC settlement + 0.3 bps exchange fees), consistent with the methodology applied to other markets in this thesis. The ~30 bps figure includes retail broker commissions which vary by institution. Under the higher 30 bps estimate, all Brazil OU results would be negative; the 8.4 bps result should be interpreted as a lower-bound cost scenario.)
 
 **Analysis:**
 - OU succeeds, ZScore fails → Brazil favors Ornstein-Uhlenbeck dynamics
@@ -320,6 +347,8 @@ The only fold where UK achieved positive Sharpe (+0.967, 2023) coincides with th
 
 The correlation between macro volatility and UK underperformance is consistent with the hypothesis that FTSE 100 pair spreads are more sensitive to macro regime shifts than NSE Nifty 50 pairs, which operate in a more insulated domestic equity market.
 
+Note: 2024 (VIX average 15.5, lower than 2023's 17.5) produced UK Sharpe of -0.677 despite the lowest-volatility regime in the sample. This contradicts the simple low-VIX = positive UK pairs hypothesis and suggests idiosyncratic UK political/fiscal uncertainty (ongoing fiscal consolidation, BoE rate uncertainty) can impair spread stationarity even when global volatility is subdued. The VIX regime analysis should therefore be interpreted as exploratory rather than causal.
+
 ---
 
 ### 4.4.4 India (NSE Nifty 50 vs Nifty 100)
@@ -333,55 +362,15 @@ The correlation between macro volatility and UK underperformance is consistent w
 **Analysis:**
 - **Universe quality matters:** Nifty 50 (blue chips) >> Nifty 100 (diluted)
 - **ZScore dominates in India:** +0.840 (Nifty 50) vs +0.200 (OU)
-- **Methodology matters LESS than universe:** +0.052 (rolling) vs -0.409 (expanding) = +0.461, BUT Nifty 50 vs 100 = +0.788!
+- **Methodology matters LESS than universe quality:** +0.052 (rolling) vs -0.409 (expanding) = +0.461, BUT under honest period-matched comparison, methodology improvement (+0.461) marginally exceeds geographic diversification improvement (+0.368); the Nifty 50 universe quality effect (+0.700 Sharpe uplift) is the dominant driver
 
 **Conclusion:** India's structural advantage is REAL and LARGE. Universe selection (Nifty 50 > 100) doubles the methodology improvement (rolling > expanding).
 
 ---
 
-## Section 4.5: Practical Implications
+### 4.5 Implementation Considerations
 
-### 4.5.1 Portfolio Construction Recommendations
-
-**Based on empirical results:**
-
-**Tier 1 (Deploy):**
-- IN **India + ZScore (Nifty 50):** +0.840 Sharpe, 123 trades
-- Allocation: 50% of capital
-
-**Tier 2 (Consider):**
-- BR **Brazil + OU:** +0.321 Sharpe, 32 trades, cost-efficient
-- IN **India + OU:** +0.200 Sharpe, 26 trades, backup signal
-- Allocation: 30% combined (15% each)
-
-**Tier 3 (Avoid):**
-- US (both signals negative)
-- GB UK (both signals negative)
-- BR Brazil + ZScore (-0.225, overtrades)
-
-**Tier 4 (Research Only):**
-- IN NSE Rolling (+0.052): Marginal, high risk
-- IN NSE Expanding (-0.409): FAILED, avoid
-
----
-
-### 4.5.2 Risk Management
-
-**Concentration Risk:**
-- India dominates (+0.840), but 123 trades = ~31 trades/year
-- Single-market exposure vulnerable to regime shifts
-- **Recommendation:** Cap India at 50%, diversify with Brazil OU (20%)
-
-**Signal Model Risk:**
-- ZScore wins in India (+0.840 vs +0.200 OU)
-- OU wins in Brazil (+0.321 vs -0.225 ZScore)
-- **Recommendation:** Deploy BOTH signals, weight by historical Sharpe
-
-**Transaction Cost Sensitivity:**
-- India has HIGHEST costs (16.4 bps) but still wins
-- **Implication:** Don't obsess over cost optimization — find better signals
-
----
+These results are based on backtesting under walk-forward validation and do not constitute investment advice. Live deployment of any strategy documented here would require additional validation including transaction cost sensitivity analysis with realistic market impact estimates, point-in-time index constituent data to eliminate look-ahead bias, and stress testing across market regimes not represented in the 2021-2024 test period. See Chapter 5, Section 5.4 for a full discussion of limitations and prerequisites for future deployment consideration.
 
 ### 4.5.3 Scalability and Capacity
 
@@ -459,10 +448,11 @@ The correlation between macro volatility and UK underperformance is consistent w
    - 16x better than rolling NSE (+0.052)
    - 305% better than expanding NSE (-0.409)
 
-2. **Geographic Diversification > Methodology Optimization**
-   - Methodology improvement (expanding → rolling): +0.461 Sharpe
-   - Geographic improvement (rolling NSE → India): +0.788 Sharpe
-   - **Geography is 1.7x more impactful**
+2. **Period-Matched Methodology vs Geography**
+   - Methodology improvement (expanding → rolling, 2020-2025): +0.461 Sharpe
+   - Geographic improvement (NSE rolling 2021-2024 mean −0.084 → India multi-market mean +0.284): +0.368 Sharpe
+   - **Under honest period-matched arithmetic, methodology improvement marginally exceeds geographic improvement**
+   - The Nifty 50 universe quality effect (+0.700 Sharpe uplift) remains the dominant finding
 
 3. **Universe Quality Matters**
    - Nifty 50 (blue chips) >> Nifty 100 (diluted)
@@ -490,7 +480,7 @@ The correlation between macro volatility and UK underperformance is consistent w
 - **Primary contribution:** Multi-market validation reveals India as a 16x-better market
 - **Secondary contribution:** Rolling windows improve cost efficiency (+113%)
 - **Tertiary contribution:** Ensemble selectors generalize across markets
-- **Key insight:** Geographic diversification dominates methodology tuning
+   - **Key insight:** Universe quality (Nifty 50) is the dominant driver; methodology and geography improvements are comparable under period-matched analysis
 
 ---
 

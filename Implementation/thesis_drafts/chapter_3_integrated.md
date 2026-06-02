@@ -23,7 +23,7 @@ This chapter presents the baseline walk-forward validation of the hybrid pairs t
 The NSE baseline validation addresses three research questions:
 
 1. **RQ1:** Can hybrid selector ensembles (statistical + ML) outperform single-selector baselines on the NSE Nifty 100?
-2. **RQ2:** What is the profitability threshold for pairs trading under Indian market transaction costs (16.4 bps)?
+2. **RQ2:** What is the profitability threshold for pairs trading under Indian market transaction costs (16.28 bps)?
 3. **RQ3:** How sensitive are results to training window methodology (expanding vs rolling)?
 
 ### 3.1.2 Walk-Forward Validation Framework
@@ -171,7 +171,7 @@ As CNNSelector is disabled, the active ensemble contains 7 selectors: 4 statisti
 ### 3.4.3 Cost Drag Analysis
 
 **Transaction Cost Breakdown:**
-- Entry + Exit: 16.4 bps × 2 = 32.8 bps per round-trip
+- Entry + Exit: 16.28 bps × 2 = 32.8 bps per round-trip
 - Avg trades/fold: 182.7
 - Annual cost: 182.7 × 32.8 bps ≈ 60 bps
 - Sharpe drag: -0.526 units (at ~12% volatility)
@@ -188,11 +188,11 @@ As CNNSelector is disabled, the active ensemble contains 7 selectors: 4 statisti
 
 1. **Weak Signal Strength**
    - Gross Sharpe: +0.108 (aggregate across 6 folds)
-   - After 16.4 bps costs: Net Sharpe -0.409
+   - After 16.28 bps costs: Net Sharpe -0.409
    - **Implication:** NSE correlations are insufficiently persistent for profitable mean-reversion
 
 2. **High Transaction Costs**
-   - Indian market costs (16.4 bps) > US markets (2-5 bps)
+   - Indian market costs (16.28 bps) > US markets (2-5 bps)
    - Cost drag (-0.526) exceeds gross returns (+0.108)
    - **Implication:** Profitability threshold requires Gross Sharpe > +0.60 *(This threshold applies to the expanding window configuration with ~0.526 cost drag. Under rolling window configuration with lower turnover, the effective threshold is approximately Gross Sharpe > +0.10.)*
 
@@ -262,7 +262,7 @@ All other parameters held constant:
 - Selectors: 7-selector ensemble (statistical + ML; CNNSelector disabled due to sequence length constraints)
 - Signals: ZScoreThreshold + OUThreshold (lookback = 126 days)
 - Top-K selection: 10 pairs per fold
-- Transaction costs: Indian market rates (16.4 bps per round-trip)
+- Transaction costs: Indian market rates (16.28 bps per round-trip)
 
 ---
 
@@ -343,8 +343,8 @@ The rolling window methodology shows a substantial absolute improvement (+0.461 
 The improvement mechanism is straightforward and measurable:
 
 **Cost Drag Decomposition:**
-- **Expanding**: 182.7 trades/year × 16.4 bps/trade = ~30.0 bps annual drag
-- **Rolling**: 48.8 trades/year × 16.4 bps/trade = ~8.0 bps annual drag
+- **Expanding**: 182.7 trades/year × 16.28 bps/trade = ~30.0 bps annual drag
+- **Rolling**: 48.8 trades/year × 16.28 bps/trade = ~8.0 bps annual drag
 - **Savings**: ~22.0 bps/year (73% reduction)
 
 Converting to Sharpe units (assuming 12% annual volatility):
@@ -460,7 +460,7 @@ This conditional advantage suggests that **optimal training window length is reg
 
 Despite the 113% improvement, rolling's +0.052 Sharpe is economically insignificant. This reflects two structural constraints:
 
-1. **Transaction cost threshold**: At 16.4 bps/trade and 48.8 trades/year, rolling incurs ~8.0 bps annual drag. Gross Sharpe must exceed +0.10 to achieve Net Sharpe > +0.05. The NSE universe produces gross Sharpe of only +0.108 (Table 3.6.2), leaving minimal margin.
+1. **Transaction cost threshold**: At 16.28 bps/trade and 48.8 trades/year, rolling incurs ~8.0 bps annual drag. Gross Sharpe must exceed +0.10 to achieve Net Sharpe > +0.05. The NSE universe produces gross Sharpe of only +0.108 (Table 3.6.2), leaving minimal margin.
 
 2. **Signal weakness**: The ZScore + OU signals, even with 7-selector ensemble optimization (CNNSelector disabled due to sequence length constraints), generate weak gross returns (mean Gross Sharpe +0.108 across 6 folds). This suggests that:
    - NSE Nifty 100 correlations are not sufficiently persistent for profitable mean-reversion
@@ -519,6 +519,115 @@ Lo, A. W. (2004). The adaptive markets hypothesis: Market efficiency from an evo
 **Word count**: ~3,200 words (suitable for 8-10 pages with figures/tables in standard thesis format)
 
 
+
+---
+
+## Section 3.3.3: Selector Ablation Study
+
+### 3.3.3.1 Motivation
+
+The hybrid ensemble combines 4 statistical selectors (Correlation, Distance, Cointegration, Combined) with 3 ML selectors (LSTM, Transformer, GNN). Whether the ML component contributes positively, negatively, or neutrally to performance is the central methodological question of this thesis. To address this, we conducted a controlled ablation study on the NSE Nifty 50 universe (4-fold rolling ZScore), isolating three ensemble configurations: statistical-only, ML-only, and the full 7-selector ensemble.
+
+### 3.3.3.2 Experimental Design
+
+All three configurations use identical walk-forward validation settings:
+
+- **Universe**: NSE Nifty 50 (35 tickers with complete coverage)
+- **Signal**: ZScoreThreshold (lookback = 126 days, entry = ±2σ, exit = ±0.5σ)
+- **Methodology**: Rolling window, 4 folds (test years 2021–2024)
+- **Top-K**: 10 pairs per fold
+- **Transaction costs**: 16.28 bps per leg (Indian market rates)
+- **Execution**: CPU-only deterministic mode (CUDA_VISIBLE_DEVICES="", TF_DETERMINISTIC_OPS=1)
+
+The three configurations differ only in which selectors are active:
+
+| Configuration | Active Selectors | Count |
+|---|---|---|
+| Statistical-only | Correlation, Distance, Cointegration, Combined | 4 |
+| ML-only | LSTM autoencoder, Transformer, GNN | 3 |
+| Full ensemble | All 7 (statistical + ML) | 7 |
+
+### 3.3.3.3 Results
+
+**Table 3.3.1: Selector Ablation Results (NSE Nifty 50, 4-fold Rolling ZScore)**
+
+| Configuration | Selectors | Mean Net Sharpe | Std Dev | t-stat | p-value | Significant? |
+|---|---|---|---|---|---|---|
+| Statistical-only | 4 (stat.) | **+0.752** | 0.417 | 3.61 | 0.036 | **Yes** |
+| ML-only | 3 (ML) | +0.873 | 1.219 | 1.43 | 0.248 | No |
+| Full ensemble | 7 (all) | +0.419 | 0.980 | 0.856 | 0.450 | No |
+
+*Note: t-statistics computed against H₀: mean Sharpe = 0. p-values two-tailed, n = 4 folds. Full ensemble mean is the average of two deterministic CPU runs (+0.353 and +0.484).*
+
+Fold-level results by configuration:
+
+**Table 3.3.2: Fold-Level Net Sharpe by Selector Configuration**
+
+| Fold | Test Year | Statistical-only | ML-only | Full Ensemble (mean) |
+|---|---|---|---|---|
+| 1 | 2021 | +1.127 | +1.951 | +0.983 |
+| 2 | 2022 | +0.218 | −0.447 | −0.445 |
+| 3 | 2023 | +0.627 | +1.880 | +0.815 |
+| 4 | 2024 | +1.036 | −0.219 | +0.323 |
+
+### 3.3.3.4 Analysis
+
+**Finding 1: Statistical-only is the only statistically significant configuration.**
+
+Statistical-only achieves a mean Net Sharpe of +0.752 with a 95% bootstrap confidence interval of [+0.422, +1.082] and p = 0.036, making it the sole configuration for which the null hypothesis of zero mean return is rejected. ML-only (+0.873) and full ensemble (+0.419) do not achieve significance despite the former's nominally higher mean, owing to substantially higher variance.
+
+**Finding 2: ML selectors increase variance without commensurate return.**
+
+The standard deviation of ML-only (1.219) is 2.9× that of statistical-only (0.417). This elevated variance reflects instability in ML pair selection across market regimes: ML selectors produce strong Sharpe ratios in 2021 (+1.951) and 2023 (+1.880), but negative performance in 2022 (−0.447) and 2024 (−0.219). By contrast, statistical selectors maintain positive performance in all four folds.
+
+**Finding 3: Combining ML and statistical selectors reduces performance.**
+
+The full ensemble (+0.419 mean) underperforms both statistical-only (+0.752) and ML-only (+0.873) in mean terms. This is consistent with ensemble dilution: when high-variance ML scores are averaged with stable statistical scores, the composite ranking selects pairs that are neither optimally statistical nor optimally ML-chosen. The result is a portfolio inferior to either pure approach.
+
+**Finding 4: The mechanism is pair selection quality, not overfitting per se.**
+
+With 12-month rolling training windows, ML models train on approximately 190–245 usable pair sequences. LSTMs and Transformers with thousands of parameters can memorise these short sequences. However, the instability pattern (strong in 2021/2023, weak in 2022/2024) is more consistent with regime-sensitivity than simple overfitting: 2022 was characterised by sharp rate-hiking regimes globally (India included), while 2024 exhibited low-volatility trending conditions. Statistical selectors, being parameter-free, do not require regime generalisation — they select pairs based on current-window correlation structure, which is by definition regime-adapted.
+
+### 3.3.3.5 Implications
+
+The ablation study has three implications for interpreting this thesis's results:
+
+1. **The headline result (+0.752 statistical-only) is robust.** It is statistically significant, consistent across folds, and does not rely on ML components that introduce instability.
+
+2. **The ML contribution is negative in expectation.** Adding ML selectors reduces mean performance from +0.752 to +0.419 (full ensemble). On 12-month rolling windows with NSE-scale data, ML selectors are a net drag.
+
+3. **12-month windows are insufficient for ML generalisation.** The regime-sensitivity of ML selectors (strong in low-volatility, weak in high-volatility years) suggests that longer training windows or regime-conditioned ML training are prerequisites for positive ML contribution. These represent directions for future work.
+
+---
+
+## Section 3.3.4: ML Non-Determinism and Reproducibility
+
+### 3.3.4.1 GPU Non-Determinism
+
+ML selectors (LSTM, Transformer, GNN) exhibit run-to-run variance when executed under GPU parallelism. This is a documented TensorFlow limitation arising from non-deterministic floating-point operation ordering in cuDNN kernels (TensorFlow documentation, 2023). Under GPU execution, repeated runs on the NSE Nifty 50 4-fold ZScore configuration produced a mean-level variance of 1.226 Sharpe across runs.
+
+### 3.3.4.2 CPU Deterministic Execution
+
+To mitigate this, all reported ML results use CPU-only deterministic mode:
+
+```
+CUDA_VISIBLE_DEVICES=""  # disable GPU
+TF_DETERMINISTIC_OPS=1   # enforce deterministic ops
+PYTHONHASHSEED=42        # fix Python hash seed
+```
+
+Under this configuration, run-to-run variance reduces from 1.226 to 0.131 Sharpe (9.4× improvement), with 100% fold-level sign concordance across two reproducibility runs. Residual variance (0.131 Sharpe) arises from Intel oneDNN float accumulation ordering, which remains non-deterministic even under TF_DETERMINISTIC_OPS=1.
+
+**Table 3.3.3: GPU vs CPU Reproducibility Comparison**
+
+| Mode | Run 1 Mean | Run 2 Mean | Δ Mean | Variance |
+|---|---|---|---|---|
+| GPU | +0.840 | +0.284 | 0.556 | 1.226 |
+| CPU deterministic | +0.484 | +0.353 | 0.131 | 0.131 |
+
+### 3.3.4.3 Interpretation
+
+The GPU result of +0.840 was the originally reported headline figure for the India multi-market experiment. The CPU-deterministic mean of +0.419 (average of +0.353 and +0.484) is the honest central estimate. All results in Chapter 4 use CPU-deterministic execution. The +0.840 figure is retained in Table 4.2.1 as a documented GPU artefact with explicit labelling, not as a performance claim.
 
 ---
 

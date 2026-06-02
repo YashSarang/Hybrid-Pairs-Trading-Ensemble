@@ -160,7 +160,7 @@ The 7-selector ensemble (4 statistical + 3 ML; CNNSelector disabled) successfull
 - **Primary contribution:** Universe quality dominates — Nifty 50 statistical advantage (only statistically significant finding, p=0.036)
 - **Secondary contribution:** Rolling windows improve cost efficiency but remain insignificant
 - **Tertiary contribution:** Ensemble selectors generalize across markets
-- **Key insight:** Geographic diversification dominates methodology tuning
+- **Key insight:** Under honest period-matched arithmetic, methodology improvement (+0.461 Sharpe, expanding to rolling) exceeds the geographic premium (+0.368 Sharpe, Nifty 50 mean vs period-matched Nifty 100). The originally reported 1.7x geographic advantage was computed from a cherry-picked best GPU run and a non-period-matched baseline; it does not hold under honest arithmetic. The Nifty 50 universe quality effect (+0.700 Sharpe uplift) is the dominant finding.
 
 ---
 
@@ -330,8 +330,9 @@ Note: The following observations are based on historical backtest results (4 fol
 - Develop microeconomic model (retail dominance → mean-reversion amplification)
 - Publish in top-tier journal (*Journal of Financial Markets*, *JFE*)
 
-**4. Commercialization**
-- Commercialisation would require: (1) replication on 2026+ live out-of-sample data, (2) point-in-time index constituent lists (eliminating look-ahead bias documented in Section 3.2.1), (3) live paper trading for 12+ months, and (4) statistical significance maintained at alpha=0.05 across multiple independent test periods.
+**4. Commercialisation Prerequisites**
+
+Commercialisation of these findings requires, at minimum: (i) point-in-time constituent lists to eliminate look-ahead bias; (ii) live execution infrastructure with sub-5 bps slippage; (iii) out-of-sample validation beyond the study period; (iv) regulatory compliance review for the relevant jurisdiction.
 
 ---
 
@@ -339,7 +340,7 @@ Note: The following observations are based on historical backtest results (4 fol
 
 ### The Core Finding
 
-**This thesis demonstrates that geographic diversification dominates methodology optimization in pairs trading.**
+**This thesis demonstrates that universe selection quality dominates methodology optimization in pairs trading.**
 
 NSE pairs trading fails (-0.409 Sharpe expanding) or barely survives (+0.052 Sharpe rolling). Multi-market India thrives (+0.284 mean Sharpe (3-run mean; best single run +0.840; CPU-deterministic range +0.353–+0.484)), achieving 5.5x better performance (honest 3-run mean; best-run multiplier 16x) with the SAME costs, SAME methodology, but DIFFERENT market structure (Nifty 50 universe quality).
 
@@ -396,7 +397,7 @@ The answer is: **Yes, but only in the RIGHT emerging markets.**
 
 NSE is the wrong market. India (Nifty 50) is the right market. The ensemble framework is robust and generalizable, but **it cannot create alpha where none exists**. It can only **amplify existing mean-reversion opportunities**.
 
-This thesis documents that the NSE Nifty 50 universe achieves +0.752 Sharpe (rolling, 95% CI [+0.422, +1.082]) under statistical-only selectors — a +0.700 uplift over the Nifty 100 baseline that exceeds any methodology or geographic effect measured. The primary open question is whether this universe quality premium generalises cross-market: testing S&P 50 vs S&P 500 and FTSE 50 vs FTSE 100 with identical methodology would establish whether blue-chip concentration is a universal driver of pairs trading alpha or a feature specific to the structure of Indian equity markets.
+This thesis documents that the NSE Nifty 50 universe achieves +0.752 Sharpe (rolling, 95% CI [+0.422, +1.082], p=0.036) under statistical-only selectors — a +0.700 uplift over the Nifty 100 baseline that exceeds any methodology or geographic effect measured. The primary open question is whether this universe quality premium generalises cross-market: replicating the Nifty 50 vs Nifty 100 experiment on S&P 50 vs S&P 500 and FTSE 50 vs FTSE 100 using identical 7-selector ensemble methodology and 4-fold walk-forward validation would establish whether blue-chip concentration is a universal driver of pairs trading alpha or a feature specific to the structure of Indian equity markets in the 2021–2024 regime.
 
 ---
 
@@ -442,6 +443,8 @@ This thesis documents that the NSE Nifty 50 universe achieves +0.752 Sharpe (rol
 | **Significance** | **NOT significant** (α = 0.05) |
 
 **Interpretation:** Rolling improvement is large (+113%) but not statistically significant due to small sample size (n=6) and high variance.
+
+> **Multiple Comparisons Note:** When correcting for multiple comparisons (Bonferroni correction across all tested market/signal combinations), the corrected p-value for the primary finding (NSE Nifty 50 statistical-only, p=0.036) is p_corrected = 0.036 × 26 = 0.936, indicating that the primary finding does not survive strict multiple testing correction. The result should be interpreted as an exploratory finding requiring out-of-sample replication.
 
 ---
 

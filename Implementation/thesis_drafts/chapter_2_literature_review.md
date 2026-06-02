@@ -251,7 +251,7 @@ We limit to 7 active selectors (manageable complexity; CNNSelector disabled due 
 If markets are perfectly efficient, arbitrageurs cannot profit → no incentive to arbitrage → mispricings persist. **Equilibrium:** Bounded efficiency where transaction costs and risk create profit opportunities.
 
 **Implication:**  
-Pairs trading profitability in India (+0.840 Sharpe) suggests:
+Pairs trading profitability in India (Nifty 50: +0.752 Sharpe, statistical-only, 95% CI [+0.422, +1.082], p=0.036) suggests:
 1. Indian markets are **semi-strong form inefficient** (public information not fully reflected in prices)
 2. Transaction costs (16.28 bps) are non-trivial, maintaining arbitrage equilibrium
 3. Risk (regime shifts, structural breaks) deters arbitrage capital, preserving opportunities
@@ -292,7 +292,7 @@ Pairs trading profitability in India (+0.840 Sharpe) suggests:
 **Liew & Wu (2013):** Profitability Drivers
 - Pairs from **same sector** (financials-financials, energy-energy) more profitable than cross-sector
 - **Smaller market cap** stocks (Nifty 100 positions 51-100) more profitable than large-cap (Nifty 50)
-- **Contradicts our Chapter 4 finding** that Nifty 50 (+0.840) >> Nifty 100 (+0.052) — we investigate why in Section 4.3.4
+- **Contradicts our Chapter 4 finding** that Nifty 50 (+0.752 Sharpe, statistical-only) >> Nifty 100 (+0.052) — we investigate why in Section 4.3.4
 
 **Triantafyllopoulos & Montana (2011):** Regime Switching
 - Indian pairs exhibit **regime dependency**: mean-reverting in 2005-2007 bull market, divergent in 2008 crisis

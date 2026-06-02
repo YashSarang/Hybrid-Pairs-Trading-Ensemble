@@ -113,6 +113,8 @@ Chapter 3 Section 3.6 demonstrated that rolling-window methodology improves NSE 
 
 The 0.556 Sharpe gap between the mean (+0.284) and best run (+0.840) is attributable to ML selector non-determinism under GPU execution, documented in Chapter 3 Section 3.3.2. The three India ZScore GPU runs produced means of +0.398, −0.386, and +0.840, a spread of 1.226 Sharpe — consistent with TensorFlow floating-point non-determinism. Under CPU-only deterministic execution (CUDA_VISIBLE_DEVICES="", TF_DETERMINISTIC_OPS=1), two reproducibility runs produce +0.353 and +0.484 (difference: 0.131 Sharpe, 4/4 fold sign concordance). The mean multi-market result is therefore best interpreted as the CPU-deterministic range (+0.353 to +0.484), not the GPU best-run (+0.840).
 
+> **Non-determinism bridge note:** The disparity between the originally reported +0.840 Sharpe (GPU run 1) and the CPU-deterministic mean of +0.419 (runs: +0.353, +0.484) is attributable to ML selector non-determinism documented in Chapter 3 Section 3.3.4. GPU floating-point non-determinism produces run-to-run variance of 1.226 Sharpe. All subsequent analysis uses the CPU-deterministic range of +0.353–+0.484 as the honest central estimate for the full ensemble.
+
 ---
 
 **2. Universe Quality > Geographic Diversification > Methodology Tuning**
@@ -367,7 +369,7 @@ Note: 2024 (VIX average 15.5, lower than 2023's 17.5) produced UK Sharpe of -0.6
 - **ZScore dominates in India:** +0.840 (Nifty 50) vs +0.200 (OU)
 - **Methodology matters LESS than universe quality:** +0.052 (rolling) vs -0.409 (expanding) = +0.461, BUT under honest period-matched comparison, methodology improvement (+0.461) marginally exceeds geographic diversification improvement (+0.368); the Nifty 50 universe quality effect (+0.700 Sharpe uplift) is the dominant driver
 
-**Conclusion:** India's structural advantage is REAL and LARGE. Universe selection (Nifty 50 > 100) doubles the methodology improvement (rolling > expanding).
+**Conclusion:** India's structural advantage is consistent with universe quality effects. Universe selection (Nifty 50 > 100) is the dominant driver — the Nifty 50 universe quality effect (+0.700 Sharpe uplift) exceeds the methodology improvement (rolling > expanding, +0.461 Sharpe) under honest period-matched arithmetic.
 
 ---
 

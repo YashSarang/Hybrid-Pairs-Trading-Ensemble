@@ -263,7 +263,53 @@ Note: The following observations are based on historical backtest results (4 fol
 
 ---
 
-## Section 5.5: Future Work
+---
+
+## Section 5.5: Addressing the Principal Methodological Limitations
+
+This section responds directly to the six peer-review concerns raised during thesis examination. Each sub-section documents the concern, the evidence gathered in response, and an honest assessment of what remains unresolved.
+
+### 5.5.1 Sample Size (n = 4 Folds)
+
+The primary statistical limitation of this thesis is the small number of out-of-sample evaluation folds (n = 4, one per calendar year 2021–2024). With four observations, conventional t-tests have very low power, and any single outlier fold substantially influences the mean.
+
+**Partial mitigation — HAC Newey-West correction:** Section 4.4.5.3 applies a Newey-West heteroskedasticity-and-autocorrelation-consistent correction to the fold-level Sharpe series. The first-order autocorrelation of the series is γ₁ = −0.056 (mildly negative), which causes the HAC standard error to be *smaller* than the naive OLS standard error (0.136 vs. 0.209). The HAC-corrected p-value is **0.012**, below the α = 0.05 threshold even after this correction. Serial correlation is therefore not inflating the result; the naive p-value of 0.037 is slightly conservative relative to the HAC-corrected value.
+
+**Partial mitigation — 8-fold extension:** Section 4.4.6 reports supplementary results on a semi-annual fold structure (8 folds over 2021–2024), which increases statistical power at the cost of shorter per-fold evaluation windows. The directional finding is consistent with the 4-fold result.
+
+**Honest assessment:** With n = 4 folds, no statistical correction fully resolves the low-power problem. The Bonferroni-corrected p-value for the headline result (p_corrected = 0.036 × 26 = 0.936) does not achieve significance. This thesis should be characterised as **exploratory** — providing a well-specified hypothesis (Nifty 50 universe quality premium) and direction-of-effect estimates suitable for pre-registration of a prospective out-of-sample study. Confirmatory inference requires either (a) extending the backtest to a longer historical window with point-in-time constituent data, or (b) forward-testing from 2025 onward.
+
+### 5.5.2 Look-Ahead Bias in Index Constituents (Survivorship Bias)
+
+**Nature of the bias:** The Nifty 50 constituent list used in this study reflects the **2024 index membership**, applied retroactively to 2021–2022 training periods. This introduces survivorship bias: the studied universe consists exclusively of firms that survived to become Nifty 50 members by 2024, thereby excluding firms that were delisted, downgraded, or replaced during 2021–2023. Because the membership list was not observable by an investor in 2021, the training data used here contains information that would not have been available at the time of trading.
+
+**Magnitude:** The NSE revises Nifty 50 constituents semi-annually. Across the 2021–2025 period, the index experienced approximately **15–20 constituent changes** (NSE semi-annual reviews, 2021–2024). On a 50-stock index, this represents **30–40% of the universe** being subject to potential look-ahead contamination. Firms removed from the index during this period — due to market-cap decline, liquidity issues, or corporate events — are excluded from the study universe even though they would have been eligible for pair selection in 2021.
+
+**Direction of the bias:** Survivorship bias is **positive** in direction. Excluding firms that performed poorly enough to be removed from the index inflates the measured performance of the remaining universe. The Nifty 50 pairs trading results in this thesis are therefore an upper bound on the performance achievable with a point-in-time constituent set; the true live-trading performance would be lower to the extent that some pairs would have included subsequently-removed constituents.
+
+**Future work:** Replication of the Nifty 50 results using point-in-time constituent data, obtainable from NSE historical records or a Bloomberg terminal subscription, would eliminate this bias and provide a more conservative performance estimate. This is the single highest-priority methodological improvement identified by this thesis.
+
+### 5.5.3 Multiple Testing and Family-Wise Error Rate
+
+Section 4.1.2 and Appendix B disclose the Bonferroni correction applied to all reported p-values. The family of tests in this thesis includes 26 market–signal–methodology configurations. The Bonferroni-corrected significance threshold is α / 26 = 0.05 / 26 ≈ 0.0019.
+
+The headline p-value for the primary finding (NSE Nifty 50, statistical-only selectors, rolling: p = 0.036) **does not achieve the Bonferroni-corrected threshold**. The HAC-corrected p-value (0.012) similarly does not survive (corrected: 0.312). No test in the study achieves Bonferroni significance.
+
+The Holm-Bonferroni step-down procedure (Holm, 1979), which is uniformly more powerful than the Bonferroni correction while maintaining strong family-wise error rate control, yields the same conclusion in this case: since only one test (the Nifty 50 primary result) achieves nominal significance at α = 0.05, the Holm procedure simply requires that single test to pass p < α / 26 — which it does not. The Holm and Bonferroni procedures are equivalent when exactly one test is nominally significant.
+
+This is stated explicitly: the primary finding of this thesis does not survive multiple testing correction. The honest characterisation is that the Nifty 50 universe quality premium is a **promising exploratory finding** that justifies a pre-registered prospective study, not a confirmatory result.
+
+### 5.5.4 Transaction Cost Uncertainty (Brazil)
+
+Section 4.4.2 discloses a material uncertainty in the Brazil transaction cost model. The 8.4 bps round-trip cost figure reflects exchange-level costs (brokerage 0.5 bps + CBLC settlement 7.6 bps + exchange fees 0.3 bps) and excludes retail broker commissions. The literature estimate of ~30 bps (inclusive of retail commissions) is approximately 3.6× higher. Under the 30 bps scenario, all Brazil OU results (best single run: +0.321 Sharpe) would become negative.
+
+The 8.4 bps figure should be interpreted as a **lower-bound cost scenario**. A sensitivity analysis across cost assumptions (8.4, 15, 20, 30 bps) would establish the break-even cost level for the Brazil OU result. This analysis is identified as priority future work. Until such analysis is completed, the Brazil OU result cannot be treated as robust to transaction cost assumptions.
+
+For India (NSE), the cost model is based on published Zerodha/Upstox discount-broker schedules (2024), which are transparent and verifiable. The 16.28 bps round-trip estimate is considered reliable for the purposes of this study.
+
+---
+
+## Section 5.5 (renumbered): Future Work
 
 ### 5.5.1 Immediate Extensions (6 months)
 

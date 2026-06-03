@@ -1,0 +1,22 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1780495606.305234 2065896 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+I0000 00:00:1780495606.307837 2065896 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1780495609.439095 2065896 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+I0000 00:00:1780495609.439488 2065896 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+Traceback (most recent call last):
+  File "/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experimental-ablation/scripts/run_multi_market_wfv.py", line 398, in <module>
+    main()
+    ~~~~^^
+  File "/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experimental-ablation/scripts/run_multi_market_wfv.py", line 395, in main
+    run_walk_forward(args.market, args.selectors, args.n_folds, args.signal_model)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experimental-ablation/scripts/run_multi_market_wfv.py", line 320, in run_walk_forward
+    result = run_fold(
+        fold_idx, train_start, train_end, test_start, test_end,
+        prices, config, selector_names, signal_model
+    )
+  File "/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experimental-ablation/scripts/run_multi_market_wfv.py", line 147, in run_fold
+    selector_weights = config['selectors']['weights']
+                       ~~~~~~^^^^^^^^^^^^^
+KeyError: 'selectors'

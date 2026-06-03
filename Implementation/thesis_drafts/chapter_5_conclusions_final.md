@@ -287,23 +287,24 @@ The analysis uses the 2024 Nifty 50 constituent list applied retroactively acros
 
 **Direction and impact:** The survivorship bias acts uniformly in a positive direction: the tested universe over-represents firms with stable, predictable price dynamics (characteristics that promote cointegration) and under-represents firms that experienced structural breaks, mergers, or delisting. Both effects inflate measured pair cointegration quality and overstate realised Sharpe ratios.
 
-**Quantitative bound:** Under the assumption that removed constituents would perform approximately 20% worse than remaining constituents (a conservative estimate based on the known performance differential between index survivors and demoted stocks in the literature — cf. Elton, Gruber and Blake 1996 on survivorship bias magnitude), and given that the affected universe proportion is 36–44%, the survivorship-adjusted Sharpe ratio would be approximately:
-
-Sharpe_adjusted ≈ Sharpe_reported × (1 − 0.40 × 0.20) = Sharpe_reported × 0.92
-
-For the primary 4-fold result: +0.752 × 0.92 ≈ +0.692. For the 8-fold mean: +0.242 × 0.92 ≈ +0.223. Under this conservative bound, the primary finding remains directionally positive but the 4-fold statistical significance (p = 0.036) may weaken marginally under a bias-corrected estimate.
+**Magnitude and direction:** The survivorship bias acts uniformly in a positive direction: the tested universe over-represents firms with stable, predictable price dynamics (characteristics that promote cointegration) and under-represents firms that experienced structural breaks, mergers, or delisting. Both effects inflate measured pair cointegration quality and overstate realised Sharpe ratios. A valid quantitative correction requires running the strategy on the point-in-time constituent history, which is identified as a priority future data acquisition task. No numerical adjustment is applied here, as any such adjustment would require assumptions about the performance differential between surviving and delisted firms that are not supported by the available data.
 
 **Remediation:** Future work should obtain historical point-in-time Nifty 50 constituent files from NSE's index archive or a commercial data provider (Bloomberg, Refinitiv). Re-running the strategy on the point-in-time universe would provide an unbiased estimate of historical performance. This is identified as the highest-priority data acquisition task for subsequent research.
 
 ### 5.5.3 Multiple Testing and Family-Wise Error Rate
 
-Section 4.1.2 and Appendix B disclose the Bonferroni correction applied to all reported p-values. The family of tests in this thesis includes 26 market–signal–methodology configurations. The Bonferroni-corrected significance threshold is α / 26 = 0.05 / 26 ≈ 0.0019.
+The study tests 26 market/signal/selector combinations. Strict Bonferroni correction yields p_corrected = 0.036 × 26 = 0.936 for the primary finding, which does not survive family-wise error rate control. However, the Bonferroni correction is overly conservative when tests are correlated, as they are here: market results are correlated through shared macroeconomic conditions, and signal model results are correlated through shared pair selection.
 
-The headline p-value for the primary finding (NSE Nifty 50, statistical-only selectors, rolling: p = 0.036) **does not achieve the Bonferroni-corrected threshold**. The HAC-corrected p-value (0.012) similarly does not survive (corrected: 0.312). No test in the study achieves Bonferroni significance.
+The Benjamini-Hochberg (BH) False Discovery Rate procedure is more appropriate for this setting. Under BH with q = 0.05 and 26 tests, a finding survives if its rank-ordered p-value satisfies p_(k) ≤ k × q / m. The primary NSE Nifty 50 finding (p = 0.036) would need to be the single most significant result across all 26 tests and satisfy p ≤ 0.05 / 26 × 1 = 0.0019 to survive BH correction — which it does not (0.036 > 0.0019). The 8-fold extension (p = 0.473) does not survive under any correction.
 
-The Holm-Bonferroni step-down procedure (Holm, 1979), which is uniformly more powerful than the Bonferroni correction while maintaining strong family-wise error rate control, yields the same conclusion in this case: since only one test (the Nifty 50 primary result) achieves nominal significance at α = 0.05, the Holm procedure simply requires that single test to pass p < α / 26 — which it does not. The Holm and Bonferroni procedures are equivalent when exactly one test is nominally significant.
+The honest interpretation is: **this study contains no result that survives standard multiple-testing correction.** All findings should be treated as exploratory and hypothesis-generating, requiring out-of-sample replication before conclusions can be generalised.
 
-This is stated explicitly: the primary finding of this thesis does not survive multiple testing correction. The honest characterisation is that the Nifty 50 universe quality premium is a **promising exploratory finding** that justifies a pre-registered prospective study, not a confirmatory result.
+The primary contribution is therefore not a statistically confirmed trading signal, but rather:
+1. A methodology for decomposing universe quality, geographic, and methodological alpha contributions
+2. A documented observation that NSE Nifty 50 blue-chip concentration is associated with higher measured pairs trading Sharpe ratios in the 2021–2024 window
+3. A framework and codebase for replicating this analysis with longer samples and point-in-time constituent data
+
+The venue implication is noted: JFM requires results that survive multiple-testing correction. Emerging Markets Review and Quantitative Finance are more appropriate venues for exploratory methodology papers with this sample size.
 
 ### 5.5.4 Transaction Cost Uncertainty (Brazil)
 
@@ -315,9 +316,9 @@ For India (NSE), the cost model is based on published Zerodha/Upstox discount-br
 
 ---
 
-## Section 5.5 (renumbered): Future Work
+## Section 5.6: Future Work
 
-### 5.5.1 Immediate Extensions (6 months)
+### 5.6.1 Immediate Extensions (6 months)
 
 **1. India Deep-Dive**
 - Test Nifty 50 vs 100 vs BSE Sensex 30 (ultra-liquid)
@@ -336,7 +337,7 @@ For India (NSE), the cost model is based on published Zerodha/Upstox discount-br
 
 ---
 
-### 5.5.2 Medium-Term Research (1-2 years)
+### 5.6.2 Medium-Term Research (1-2 years)
 
 **1. Alternative Signal Models**
 - Kalman filter (dynamic hedge ratios)
@@ -364,7 +365,7 @@ For India (NSE), the cost model is based on published Zerodha/Upstox discount-br
 
 ---
 
-### 5.5.3 Long-Term Vision (3-5 years)
+### 5.6.3 Long-Term Vision (3-5 years)
 
 **1. Real-Time Deployment & Paper Trading**
 - Build production system with live NSE/Nifty 50 feeds
@@ -402,7 +403,7 @@ This cross-market replication is identified as the single highest-value extensio
 
 ---
 
-## Section 5.6: Final Remarks
+## Section 5.7: Final Remarks
 
 ### The Core Finding
 

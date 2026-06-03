@@ -43,20 +43,6 @@ For researchers: The death of pairs trading in developed markets is real. The fu
 
 ---
 
-## Thesis Committee Recommendation
-
-**Submission Venue:** Journal of Financial Markets (Elsevier)  
-**Target Date:** July 15, 2026  
-**Acceptance Likelihood:** 70-75% (strong empirical contribution, rigorous validation, novel multi-market insight)
-
-**Parallel Submission:** NeurIPS 2026 Workshop on Machine Learning in Finance (October 20, 2026 deadline, 60-65% acceptance)
-
-**Backup Venue:** Quantitative Finance (Taylor & Francis, November 2026 if JFM rejects, 65-70% acceptance)
-
-**Overall Success Probability:** >90% publication within 12 months (at least one venue accepts)
-
----
-
 ## Executive Summary (One-Paragraph Version)
 
 This thesis demonstrates that universe selection quality is the primary determinant of pairs trading profitability in Indian equity markets. Using a hybrid ensemble of 7 active selectors (statistical + machine learning) validated across 4 markets (India, US, Brazil, UK) with 4-fold walk-forward testing (2021-2025), we find that NSE Nifty 50 achieves net Sharpe +0.752 (rolling, statistical-only, 95% CI [+0.422, +1.082], p=0.036) — the only statistically significant result — representing a +0.700 Sharpe uplift vs the Nifty 100 baseline (+0.052). Multi-market India (Nifty 50, full ensemble) achieves mean +0.284 across 3 runs (CPU-deterministic range +0.353–+0.484; best GPU run: +0.840), consistent with the universe quality effect. Rolling-window training improves NSE Nifty 100 by 113%, but this gain is entirely cost-driven (73% fewer trades) and statistically non-significant after Bonferroni correction (p_corrected = 0.640). When correcting for all tested market/signal combinations, the primary Nifty 50 finding does not survive strict multiple-testing correction (p_corrected = 0.036 × 26 = 0.936) and should be treated as an exploratory result requiring out-of-sample replication.

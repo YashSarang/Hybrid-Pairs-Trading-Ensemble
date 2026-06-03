@@ -300,6 +300,12 @@ This thesis does not claim Nifty 50 universally outperforms Nifty 100. The findi
 
 ---
 
+#### 4.4.1a Fold Concentration Note
+
+The US ZScore mean net Sharpe (+0.774, n=1 exploratory run) is dominated by fold 2 (2022: +2.147 net Sharpe). Without fold 2, the mean of remaining folds is +0.316. Fold 2 spans the 2022 US equity bear market, a period of abnormal volatility and pair dislocation. The +2.147 estimate is not independently replicated and should be treated as a regime-specific observation rather than a representative strategy return. The conservative US estimate (excluding fold 2) is +0.316, which is consistent with near-zero profitability after transaction costs. US results are treated as exploratory throughout this analysis.
+
+---
+
 ### 4.4.2 Brazil (B3 Ibovespa)
 
 **Results:**
@@ -428,9 +434,7 @@ A standard critique of walk-forward validation is that fold-level Sharpe ratios 
 | Naive OLS | 0.209 | 3.60 | 0.037 |
 | **HAC Newey-West** | **0.136** | **5.52** | **0.012** |
 
-The first-order autocorrelation of the fold Sharpe series is **γ₁ = −0.056**, indicating mild **negative** serial autocorrelation (fold results alternate rather than trend). This is consistent with the empirical pattern in Table 4.4.5.1, where Fold 1 (strong) is followed by Fold 2 (weak), Fold 3 (moderate), and Fold 4 (strong). Negative autocorrelation has a counter-intuitive effect on the Newey-West correction: it **reduces** the HAC standard error relative to the naive estimator (0.136 vs. 0.209), thereby **strengthening** the statistical result. The corrected p-value of **0.012** is below the standard α = 0.05 threshold and below the pre-registered α = 0.025 (Bonferroni-halved) threshold for the primary India hypothesis.
-
-This result directly addresses the serial correlation concern: the Newey-West correction has been applied, and the correction moves in the direction of increased rather than decreased significance, because fold performance is negatively autocorrelated. The inference is therefore not inflated by serial correlation; if anything, naive inference is conservative relative to the HAC-corrected result.
+The first-order autocorrelation of the fold Sharpe series is **γ₁ = −0.056**, indicating mild **negative** serial autocorrelation (fold results alternate rather than trend). HAC Newey-West correction was applied to account for potential serial correlation between walk-forward fold outcomes. In the 4-fold window, the negative autocorrelation structure causes the HAC standard error to be smaller than the naive OLS estimator (0.136 vs. 0.209), producing a HAC t-statistic of 5.52 vs. naive 3.60; HAC p-values are reported alongside naive p-values and results are not materially different. Note that in the 8-fold extension (Section 4.4.7), HAC yields t = 0.825 vs. naive t = 0.758, where the HAC result is marginally weaker due to the positive serial correlation structure of the longer series. The direction of the HAC correction depends on the autocorrelation sign of the specific fold series and should not be assumed to uniformly strengthen inference.
 
 **Important caveat:** The Bonferroni correction for multiple comparisons across all 26 tested configurations yields a corrected p-value of p × 26 = 0.036 × 26 = 0.936 for the headline result (NSE Nifty 50, statistical-only selectors). The primary finding **does not survive** strict multiple testing correction. The HAC result (p = 0.012, corrected: 0.012 × 26 = 0.312) similarly does not survive at α = 0.05. The results should therefore be interpreted as **exploratory**, warranting out-of-sample replication rather than confirmatory inference.
 
@@ -599,6 +603,59 @@ Several features of the tail risk profile are consistent with a well-functioning
 
 ---
 
+### Section 4.4.9: Transaction Cost Sensitivity Analysis — Brazil
+
+The original Brazil analysis reported results at 8.43 basis points round-trip transaction cost. This figure reflects partial cost accounting (brokerage and basic fees only) and does not include the full itemised costs specified in the study's Brazil configuration. The complete cost model yields 15.93 bps, and empirical literature on Brazilian equity pairs trading suggests realistic institutional costs of 22–30 bps including market impact.
+
+#### 4.4.9.1 Brazil Cost Itemisation
+
+| Cost Component | Basis Points | Notes |
+|---|---|---|
+| Brokerage (both legs) | 5.00 | 2.5 bps per leg |
+| Bovespa exchange fee | 0.30 | |
+| Settlement | 0.25 | |
+| IOF tax (financial operations) | 0.38 | Tax on equity transactions |
+| Slippage (both legs) | 10.00 | 5.0 bps per leg |
+| **Total (config model)** | **15.93 bps** | |
+| Market impact (institutional) | +6 to +14 bps | Literature estimate |
+| **Total (literature estimate)** | **~22–30 bps** | |
+
+#### 4.4.9.2 Net Sharpe Sensitivity
+
+The corrected cost sensitivity uses separate drag-per-bps estimates for the best OU run and mean OU run. For the best run: gross = +0.334, net = +0.321 at 8.43 bps → drag_per_bps = 0.013/8.43 = 0.00154 Sharpe/bps. For the mean of three OU runs: mean gross ≈ +0.111, mean net ≈ +0.107 at 8.43 bps → drag_per_bps = 0.004/8.43 = 0.000474 Sharpe/bps. Sensitivities:
+
+- Best run: net_sharpe(bps) = 0.334 − 0.00154 × bps
+- Mean run: net_sharpe(bps) = 0.111 − 0.000474 × bps
+
+| Cost Scenario | Total bps | Net Sharpe (best OU) | Net Sharpe (mean OU) | Profitable? |
+|---|---|---|---|---|
+| Reported (partial) | 8.4 bps | +0.321 | +0.107 | Marginally |
+| Config model | 15.9 bps | +0.310 | +0.100 | Marginally |
+| Literature low | 22.0 bps | +0.300 | +0.090 | Marginally |
+| Literature high | 30.0 bps | +0.288 | +0.082 | Marginally |
+
+#### 4.4.9.3 Implications
+
+The corrected arithmetic reveals an important finding: Brazil OU cost sensitivity is very low for both the best run and the mean run. The drag per basis point is only 0.00154 (best) and 0.000474 (mean), meaning even a tripling of costs from 8.4 bps to 30 bps reduces the best-run net Sharpe from +0.321 to only +0.288, and the mean from +0.107 to +0.082.
+
+**This is actually a worse finding than the previous analysis implied.** The reason cost sensitivity is so low is that the gross-to-net spread is already very thin: the best run has gross Sharpe +0.334 versus net +0.321 — a difference of only 0.013 Sharpe units at 8.43 bps. The strategy has almost no gross alpha; it operates near breakeven regardless of the cost level assumed. Cost insensitivity in this context reflects a near-absence of gross strategy returns, not a robustness property.
+
+This finding has two implications for the paper's cross-market comparison:
+1. Brazil OU should not be presented as cost-robust. The strategy's marginal profitability is structural, not cost-driven. At any realistic cost level, the mean OU result (+0.082 to +0.107) is near-zero and non-significant.
+2. The India advantage is reinforced by a different mechanism than previously stated: NSE Nifty 50 achieves substantially higher gross alpha (+0.752 net Sharpe at 16.28 bps), providing genuine economic margin above cost. Brazil's near-breakeven gross alpha means the strategy is entirely dependent on the lowest-cost execution assumptions remaining stable.
+
+---
+
+### Section 4.4.10: Factor Attribution — Fama-French Alpha (Acknowledgement)
+
+Formal Fama-French factor attribution requires a daily or monthly return time series from the backtest period (2021–2024). The current walk-forward validation infrastructure stores only fold-level summary metrics (Sharpe, MaxDrawdown, Turnover) and does not retain per-bar P&L series. Approximating monthly returns as (Sharpe_fold / 12) × σ_constant is not a valid input to a factor regression: it produces constant within-fold returns that mechanically inflate the alpha t-statistic regardless of the factor loadings, yielding a circular rather than empirical result.
+
+Theoretically, market beta for a long-short pairs strategy is approximately zero by construction: each pair consists of matched long and short positions of equal notional value. Systematic market exposure cancels at the portfolio level. Empirical confirmation of this property requires actual daily P&L data.
+
+This section is identified as requiring a codebase modification to persist per-fold pnl_net series (available in BacktestResult.pnl_net) before factor attribution can be conducted. This is documented as a methodological limitation and future work item.
+
+---
+
 ### 4.5 Implementation Considerations
 
 These results are based on backtesting under walk-forward validation and do not constitute investment advice. Live deployment of any strategy documented here would require additional validation including transaction cost sensitivity analysis with realistic market impact estimates, point-in-time index constituent data to eliminate look-ahead bias, and stress testing across market regimes not represented in the 2021-2024 test period. See Chapter 5, Section 5.4 for a full discussion of limitations and prerequisites for future deployment consideration.
@@ -721,78 +778,4 @@ These results are based on backtesting under walk-forward validation and do not 
 
 **[End of Chapter 4 — Updated with Rolling NSE Baseline]**
 
----
 
----
-
-### Section 4.4.9: Transaction Cost Sensitivity Analysis — Brazil
-
-The original Brazil analysis reported results at 8.43 basis points round-trip transaction cost. This figure reflects partial cost accounting (brokerage and basic fees only) and does not include the full itemised costs specified in the study's Brazil configuration. The complete cost model yields 15.93 bps, and empirical literature on Brazilian equity pairs trading suggests realistic institutional costs of 22–30 bps including market impact.
-
-#### 4.4.9.1 Brazil Cost Itemisation
-
-| Cost Component | Basis Points | Notes |
-|---|---|---|
-| Brokerage (both legs) | 5.00 | 2.5 bps per leg |
-| Bovespa exchange fee | 0.30 | |
-| Settlement | 0.25 | |
-| IOF tax (financial operations) | 0.38 | Tax on equity transactions |
-| Slippage (both legs) | 10.00 | 5.0 bps per leg |
-| **Total (config model)** | **15.93 bps** | |
-| Market impact (institutional) | +6 to +14 bps | Literature estimate |
-| **Total (literature estimate)** | **~22–30 bps** | |
-
-#### 4.4.9.2 Net Sharpe Sensitivity
-
-Using the best Brazil OU run (gross Sharpe +0.334, net +0.321 at 8.43 bps), cost drag is estimated at 0.0406 Sharpe units per basis point. Extrapolating:
-
-| Cost Scenario | Total bps | Net Sharpe (best OU) | Net Sharpe (mean OU) | Profitable? |
-|---|---|---|---|---|
-| Reported (partial) | 8.4 bps | +0.321 | +0.107 | Marginally |
-| Config model | 16.4 bps | +0.000 | −0.216 | **No** |
-| Literature low | 22.0 bps | −0.236 | −0.444 | **No** |
-| Literature high | 30.0 bps | −0.568 | −0.768 | **No** |
-
-#### 4.4.9.3 Implications
-
-Brazil OU pairs trading at realistic transaction costs is unprofitable. The marginally positive results reported in the primary analysis (+0.107 mean, +0.321 best run) are an artefact of understated costs. Under the config model's own cost specification (15.93 bps), the best OU run breaks even; the mean is negative. Under literature-grade costs (~22–30 bps), all Brazil results are materially negative.
-
-This finding has two implications for the paper's cross-market comparison:
-1. Brazil should not be presented as a viable strategy deployment market. The primary analysis correctly treats Brazil as exploratory (non-significant, n=3 runs), but the cost sensitivity analysis confirms this conclusion more strongly.
-2. The India advantage is reinforced: NSE Nifty 50 at 16.4 bps achieves +0.752 Sharpe (4-fold) and +0.242 Sharpe (8-fold), while Brazil at equivalent costs achieves approximately 0.000 to −0.216. Universe quality, not cost differential, explains India's relative performance.
-
----
-
-### Section 4.4.10: Factor Attribution — Fama-French Alpha Decomposition
-
-For a market-neutral long-short pairs strategy, market beta is approximately zero by construction: each pair consists of one long and one short position of equal notional value, cancelling systematic market exposure. Factor attribution via the Fama-French three-factor model is nonetheless conducted to confirm this theoretical property empirically and to test for residual size (SMB) or value (HML) exposure.
-
-#### 4.4.10.1 Data and Methodology
-
-India-specific Fama-French factor series are not available from the Kenneth French Data Library (HTTP 404 for Indian factors as of June 2026). As a proxy, Emerging Markets three-factor monthly data (Mkt-RF, SMB, HML) is used, which is appropriate given India's approximately 15–20% weighting in standard EM indices. Monthly strategy returns are approximated from fold-level Sharpe ratios using: r_t ≈ (Sharpe / 12) × σ, where σ = 5% annualised (observed strategy volatility). This approximation introduces measurement error; results should be interpreted as directional proxies.
-
-#### 4.4.10.2 Regression Results
-
-| Parameter | 4-fold (2021–2024) | 8-fold (2017–2024) |
-|---|---|---|
-| **Alpha (annualised)** | **+9.84% p.a.** | **+1.52% p.a.** |
-| Alpha t-statistic | 9.01 | 1.01 |
-| Alpha p-value | < 0.001 | 0.332 |
-| Market beta (Mkt-RF) | +0.032 | −0.014 |
-| SMB beta | +0.125 | +0.081 |
-| HML beta | −0.011 | +0.023 |
-| R² | < 5% | 3.9% |
-
-#### 4.4.10.3 Interpretation
-
-Four observations follow from these results:
-
-1. **Market neutrality confirmed:** Market beta is +0.032 (4-fold) and −0.014 (8-fold), both economically and statistically indistinguishable from zero. The long-short pair construction successfully hedges systematic market exposure.
-
-2. **Factor model explains almost nothing (R² < 5%):** Fama-French factors account for less than 5% of strategy return variance. The strategy's returns are largely idiosyncratic — driven by pair-specific mean-reversion dynamics, not systematic risk premia. This supports the Sharpe ratio as an adequate single-factor performance measure for this strategy type.
-
-3. **Positive alpha under the 4-fold window (+9.84%, p < 0.001):** This large and statistically significant alpha estimate reflects the strategy's outperformance relative to systematic EM factor returns during 2021–2024. However, given the approximated return series, this figure should be treated as directional evidence rather than a precise estimate.
-
-4. **Alpha not significant under the 8-fold window (+1.52%, p = 0.332):** Consistent with the 8-fold Sharpe finding (p = 0.473), factor-adjusted alpha is also insignificant over the extended window. This further confirms that the strategy's apparent profitability in the 4-fold window is regime-conditional.
-
-**Caveat:** All results above use approximated monthly returns and EM proxy factors. India-specific FF factor series (e.g., Agarwalla, Jacob and Varma, IIMA Working Paper, 2017) would provide more precise attribution but require institutional data access. Future work should replicate this analysis with point-in-time Indian FF factors and daily P&L data.

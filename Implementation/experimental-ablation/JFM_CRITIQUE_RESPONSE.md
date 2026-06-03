@@ -22,7 +22,7 @@
 | 5 | Walk-forward folds are not independent (serial correlation) | **Addressed** | §4.4.4 |
 | 6 | No risk-adjusted attribution beyond Sharpe ratio | **Partially Addressed** | §4.4.4 |
 | 7 | Factor attribution (Fama-French alpha) absent | **Addressed (Proxy)** | §4.4.10, §5.5 |
-| 8 | CVaR / Expected Shortfall not reported | **Acknowledged / Outstanding** | §5.5 |
+| 8 | CVaR / Expected Shortfall not reported | **Partially Addressed** | §4.4.8, §5.5 |
 | 9 | No cross-market universe quality test (e.g., S&P 100 vs. S&P 500) | **Acknowledged (Future Work)** | §5.6 |
 | 10 | Survivorship bias: no point-in-time constituent data | **Addressed (Quantified)** | §5.5.2 |
 | 11 | Transaction cost calibration (8.4 bps vs. literature ~30 bps) | **Addressed** | §4.4.9, §5.5 |
@@ -191,9 +191,11 @@ A natural test of the "universe quality dominates methodology" hypothesis is to 
 
 ### Outstanding Item 4: Survivorship Bias — Point-in-Time Constituent Data
 
-**Status: Addressed (Quantified)**
+**Status: Acknowledged (Quantitative adjustment removed — Future Work)**
 
-The analysis uses current Nifty 50 constituents rather than point-in-time index membership data. This introduces survivorship bias. Over the 2016–2024 window, 36–44% of the current Nifty 50 universe is estimated to differ from the 2016 membership (18–22 constituent changes across 8 years of semi-annual reviews). Under the conservative assumption that removed constituents underperform survivors by ~20% (cf. Elton, Gruber and Blake 1996), the survivorship-adjusted Sharpe bound is: +0.752 × 0.92 ≈ +0.692 (4-fold primary result) and +0.242 × 0.92 ≈ +0.223 (8-fold mean). The primary finding remains directionally positive under this conservative adjustment, though the statistical significance (p = 0.036) may weaken marginally under bias correction. This quantitative analysis is reported in **Section 5.5.2**. Point-in-time constituent data remains the highest-priority data acquisition task for subsequent research.
+The analysis uses current Nifty 50 constituents rather than point-in-time index membership data. This introduces survivorship bias. Over the 2016–2024 window, NSE records indicate approximately 18–22 constituent changes, implying that 36–44% of the current Nifty 50 universe differs from the 2016 membership. Each removed stock was likely performing below index criteria at the time of removal, creating a positive selection bias in the backtested universe.
+
+A previous version of this response reported a survivorship-adjusted Sharpe bound using the formula Sharpe_adjusted ≈ Sharpe_reported × 0.92. This numerical adjustment has been removed from the manuscript (Section 5.5.2) because it requires assumptions about the performance differential between surviving and delisted firms that are not supported by the available data. The direction of the bias is known (positive, inflating measured Sharpe ratios), but any quantitative correction would be speculative without point-in-time constituent data. A valid correction requires running the strategy on the historical index membership, which is identified as the highest-priority data acquisition task for subsequent research. Point-in-time constituent data is available from NSE's index archive or commercial providers (Bloomberg, Refinitiv).
 
 ---
 

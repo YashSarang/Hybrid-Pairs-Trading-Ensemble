@@ -16,6 +16,8 @@ The Round 1 revisions added five new sections and addressed several peripheral c
 
 ### Fatal Flaw 1: No Statistically Significant Result After Multiple Testing Correction
 
+> **Update:** m_eff = 13.42 (eigenvalue correction); Bonferroni p = 0.491, not 0.936. Result still does not survive. Required fix remains: pre-register single hypothesis or obtain longer sample.
+
 **The flaw:** The paper self-reports that its headline finding does not survive Bonferroni correction: p_corrected = 0.036 × 26 = 0.936. The 8-fold extension — correctly identified as the more reliable window — yields p = 0.473 (HAC: p = 0.436), which is not significant under any correction. The paper therefore contains zero statistically significant findings after appropriate multiple-testing adjustment.
 
 **Why it matters to JFM:** JFM requires that empirical claims be supported by results that survive correction for multiple comparisons. A paper that openly states its headline result has p_corrected = 0.936 is a paper that openly states it cannot reject the null hypothesis. Honest reporting of this fact is appreciated but does not change the editorial decision: the result is not significant and cannot be presented as a contribution to the literature.

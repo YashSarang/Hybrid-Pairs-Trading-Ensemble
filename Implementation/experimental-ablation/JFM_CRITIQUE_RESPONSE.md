@@ -15,7 +15,7 @@
 
 | # | Reviewer Concern | Status | Manuscript Section |
 |---|---|---|---|
-| 1 | Data period too short (4 years vs. JFM standard ~20 years) | **Partially Addressed** | §4.4.6, §5.5 |
+| 1 | Data period too short (4 years vs. JFM standard ~20 years) | **Partially Addressed** (m_eff = 13.42 independent tests; Bonferroni p = 0.036 × 13.42 = 0.491; BH-FDR threshold 0.00373; primary finding does not survive. Directional consistency: 4/4 positive folds, exact sign test p = 0.0625.) | §4.4.6, §5.5 |
 | 2 | Title claim "Universe Quality Dominates Methodology" is untested | **Addressed** | §4.4.5 |
 | 3 | Nifty 50 is a thin universe; concentration risk unquantified | **Partially Addressed** | §4.4.4, §5.5 |
 | 4 | No benchmark comparison provided | **Addressed** | §4.4.4 |

@@ -293,18 +293,21 @@ The analysis uses the 2024 Nifty 50 constituent list applied retroactively acros
 
 ### 5.5.3 Multiple Testing and Family-Wise Error Rate
 
-The study tests 26 market/signal/selector combinations. Strict Bonferroni correction yields p_corrected = 0.036 × 26 = 0.936 for the primary finding, which does not survive family-wise error rate control. However, the Bonferroni correction is overly conservative when tests are correlated, as they are here: market results are correlated through shared macroeconomic conditions, and signal model results are correlated through shared pair selection.
+The study evaluates 27 market/signal/selector combinations (4-fold runs). Strict Bonferroni correction, which assumes all tests are independent, yields p_corrected = 0.0366 × 27 = 0.988 for the primary finding. However, the tests are correlated: market results share macroeconomic conditions across the 2021–2024 period, and signal model results share pair selection logic.
 
-The Benjamini-Hochberg (BH) False Discovery Rate procedure is more appropriate for this setting. Under BH with q = 0.05 and 26 tests, a finding survives if its rank-ordered p-value satisfies p_(k) ≤ k × q / m. The primary NSE Nifty 50 finding (p = 0.036) would need to be the single most significant result across all 26 tests and satisfy p ≤ 0.05 / 26 × 1 = 0.0019 to survive BH correction — which it does not (0.036 > 0.0019). The 8-fold extension (p = 0.473) does not survive under any correction.
+The effective number of independent tests, computed via eigenvalue decomposition of the inter-run fold-level correlation matrix (Nyholt 2004; Li and Ji 2005), is m_eff = 13.42. Under this correction:
 
-The honest interpretation is: **this study contains no result that survives standard multiple-testing correction.** All findings should be treated as exploratory and hypothesis-generating, requiring out-of-sample replication before conclusions can be generalised.
+- Bonferroni-corrected p (primary finding): 0.0366 × 13.42 = **0.491** — does not achieve significance
+- BH-FDR threshold at rank k=1: p ≤ k × 0.05 / 13.42 = 0.00373 — primary finding (p = 0.0366) does not meet this threshold
+- 8-fold extension (p = 0.473): does not survive under any correction
 
-The primary contribution is therefore not a statistically confirmed trading signal, but rather:
-1. A methodology for decomposing universe quality, geographic, and methodological alpha contributions
-2. A documented observation that NSE Nifty 50 blue-chip concentration is associated with higher measured pairs trading Sharpe ratios in the 2021–2024 window
-3. A framework and codebase for replicating this analysis with longer samples and point-in-time constituent data
+The primary result therefore does not survive multiple-testing correction even under the more lenient m_eff-adjusted framework.
 
-The venue implication is noted: JFM requires results that survive multiple-testing correction. Emerging Markets Review and Quantitative Finance are more appropriate venues for exploratory methodology papers with this sample size.
+A complementary directional consistency test provides supplementary evidence: the rolling NSE Nifty 50 ZScore result produces positive net Sharpe in all 4 folds ([+1.127, +0.218, +0.627, +1.036]). Under the null hypothesis of no strategy edge (equal probability of positive/negative Sharpe per fold), the probability of observing 4/4 positive folds is (0.5)^4 = 0.0625. This directional consistency is suggestive but does not constitute formal significance.
+
+The honest interpretation is: **this study contains no result that survives standard multiple-testing correction.** All findings should be treated as exploratory and hypothesis-generating. The primary contribution is a well-specified hypothesis (NSE Nifty 50 universe quality premium) with consistent directional evidence across 4 independent out-of-sample folds, suitable for pre-registration of a prospective confirmatory study.
+
+The venue implication is noted: JFM requires statistically confirmed results. Emerging Markets Review and Quantitative Finance are appropriate venues for exploratory methodology papers with this sample size and multiple-testing profile.
 
 ### 5.5.4 Transaction Cost Uncertainty (Brazil)
 

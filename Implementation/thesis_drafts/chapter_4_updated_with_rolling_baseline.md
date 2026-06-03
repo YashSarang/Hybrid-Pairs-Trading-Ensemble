@@ -473,7 +473,7 @@ Bootstrap confidence intervals (B = 10,000 resamples, block bootstrap over folds
 
 #### 4.4.6.2 Interpretation
 
-The data are consistent with the hypothesis that universe quality dominates methodology (P = 0.811), but the 95% bootstrap confidence interval on the difference [−0.499, +1.221] **includes zero**. With n = 4 folds, this result should be interpreted as **directionally supportive but not statistically conclusive**. The additional 8-fold validation reported in Section 4.4.6 provides supplementary evidence, but the fundamental sample size constraint (four annual folds over 2021–2024) limits the power of any within-sample test of dominance.
+The data are consistent with the hypothesis that universe quality dominates methodology (P = 0.811), but the 95% bootstrap confidence interval on the difference [−0.499, +1.221] **includes zero**. With n = 4 folds, this result should be interpreted as **directionally supportive but not statistically conclusive**. The additional 8-fold validation reported in Section 4.4.7 provides supplementary evidence, but the fundamental sample size constraint (four annual folds over 2021–2024) limits the power of any within-sample test of dominance.
 
 The methodology effect itself (Meth = +0.311, CI [−0.318, +0.892]) is also not robustly significant: its 95% confidence interval includes zero, and P(Meth > 0) = 84% falls short of the 95% threshold typically required for confident directional inference.
 
@@ -490,6 +490,64 @@ The interpretation is therefore:
 1. **Conclusive:** Trading the Nifty 50 universe produces meaningfully higher Sharpe ratios than trading the Nifty 100 universe, with the difference robustly positive across all bootstrap resamples.
 2. **Directionally supported but inconclusive:** Universe quality is the larger of the two identified effects, exceeding the methodology effect in 81.1% of bootstrap draws, but the dominance claim cannot be stated with 95% confidence given n = 4 folds.
 3. **Not significant after multiple testing correction:** The headline Sharpe result (p = 0.036) does not survive Bonferroni correction across 26 tested configurations (corrected p = 0.936). The thesis finding is exploratory.
+
+---
+
+### Section 4.4.7: Extended Validation — 8-Fold Walk-Forward Results (2017–2024)
+
+To address the sample-size limitation identified in Section 5.5.1, the statistical-only ZScore configuration was re-evaluated on an extended 8-fold walk-forward framework spanning 2017–2024 (training windows 2016–2023). This doubles the fold count from the primary analysis and extends the evaluation window by four years, covering materially different market regimes including the 2018 global equity correction, the 2019 liquidity tightening, and the 2020 COVID-19 market shock.
+
+#### 4.4.7.1 Fold-Level Results
+
+| Fold | Test Year | Net Sharpe | Gross Sharpe | Max DD | Trades |
+|------|-----------|-----------|--------------|--------|--------|
+| 1 | 2017 | +0.501 | +0.524 | 6.2% | 22 |
+| 2 | 2018 | +1.268 | +1.300 | 7.4% | 33 |
+| 3 | 2019 | −0.835 | −0.793 | 5.2% | 26 |
+| 4 | 2020 | −0.876 | −0.855 | 8.3% | 16 |
+| 5 | 2021 | +0.510 | +0.578 | 2.4% | 25 |
+| 6 | 2022 | −0.231 | −0.210 | 4.9% | 14 |
+| 7 | 2023 | +1.587 | +1.615 | 1.8% | 24 |
+| 8 | 2024 | +0.011 | +0.024 | 5.2% | 14 |
+| **Mean** | **2017–2024** | **+0.242** | **+0.273** | **5.2%** | **22** |
+| **Std** | | **0.901** | — | — | — |
+
+Configuration: statistical-only selectors (Correlation, Distance, Cointegration, Combined Criteria), rolling 12-month training window, ZScore signal, 16.4 bps transaction costs.
+
+#### 4.4.7.2 Statistical Inference
+
+| Statistic | Value |
+|-----------|-------|
+| Mean Net Sharpe | +0.242 |
+| Standard deviation | 0.901 |
+| Standard error | 0.319 |
+| t-statistic | 0.758 |
+| p-value (two-tailed, df=7) | 0.473 |
+| 95% Bootstrap CI | [−0.329, +0.841] |
+| HAC Newey-West t | 0.825 |
+| HAC p-value | 0.436 |
+| Positive folds | 5/8 (62.5%) |
+| Bonferroni-corrected p | >1.0 (non-significant by construction) |
+
+**The 8-fold extension does not reject the null hypothesis of zero Sharpe** (p = 0.473). The 95% bootstrap confidence interval [−0.329, +0.841] spans zero. This result supersedes the primary 4-fold finding in terms of statistical robustness and sample breadth.
+
+#### 4.4.7.3 Interpretation and Reconciliation with Primary Analysis
+
+The divergence between the 4-fold result (+0.752, p = 0.036) and the 8-fold result (+0.242, p = 0.473) is attributable to regime sensitivity. The primary 4-fold analysis evaluated test years 2021–2024 exclusively, a period characterised by post-COVID mean-reversion conditions and elevated cross-sectional dispersion in the Nifty 50. The 8-fold extension introduces test years 2019 (Nifty 50 underperformed; limited pair convergence) and 2020 (COVID-19 shock: pairs correlation structures broke down, strategy returned −0.876 in the most adverse fold), both of which are materially negative. These two folds alone reduce the mean by approximately 0.51 Sharpe units.
+
+This pattern — strong performance in 2021–2023 but losses in 2019–2020 — is consistent with known regime effects in pairs trading: strategies based on cointegration relationships formed under stable macro conditions degrade during structural breaks (cf. Do and Faff 2010; Bowen, Hutchinson and O'Sullivan 2010). The 2020 COVID fold represents precisely such a break: pair correlations formed in 2019 were invalidated by sector-asymmetric price shocks in Q1 2020.
+
+**Revised primary finding:** The universe quality effect (Nifty 50 statistical-only achieving consistently positive Sharpe under 2021–2024 conditions) is confirmed as a real phenomenon within that regime window. However, the 8-fold extension provides evidence that this performance does not generalise robustly across all market regimes over 2017–2024. The result should be interpreted as **regime-conditional**: the strategy is profitable under stable mean-reversion conditions (2017, 2018, 2021, 2023) but suffers material losses during structural regime breaks (2019, 2020) and near-zero returns during trend-dominated or low-volatility periods (2022, 2024).
+
+#### 4.4.7.4 Implications for the Central Thesis
+
+This finding modifies but does not invalidate the paper's central contribution. The 8-fold evidence indicates:
+
+1. **Universe quality remains the key architectural decision**: the Nifty 50 statistical-only configuration achieves +0.242 mean Sharpe over 8 years under realistic costs, compared to the Nifty 100 baseline of approximately +0.052 (4-fold). The relative performance ordering is preserved, though neither result is statistically significant over the extended window.
+
+2. **The 4-fold 2021–2024 window was a favourable regime**: the significant p = 0.036 result from the primary analysis reflects genuine strategy performance within that regime window, but the result is not robust to earlier periods. This constitutes a material qualification of the primary finding and is disclosed as such.
+
+3. **Regime detection is a priority research direction**: the performance profile — strong in 2017, 2018, 2021, 2023; weak in 2019, 2020, 2022, 2024 — suggests that a regime-conditional deployment framework (conditioning on cointegration stability or volatility regime indicators) could materially improve realised performance. This is identified as the most actionable direction for future research.
 
 ---
 

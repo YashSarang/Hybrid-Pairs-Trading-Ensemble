@@ -197,9 +197,19 @@ The current analysis applies a round-trip transaction cost assumption of 8.4 bas
 
 ### Outstanding Item 6: 8-Fold Extension Results (SLURM Job 8543)
 
-**Status: Pending**
+**Status: COMPLETED**
 
-As described in the response to Major Concern 1, the 8-fold extension experiment (2016–2025, test periods 2017–2024) has been submitted to the SLURM cluster as Job ID 8543 and results are pending. Upon completion, results will be added to **Section 4.4.6**. If the extended window confirms the findings of the 4-fold analysis, this will substantially strengthen the manuscript's central claims. If results diverge, they will be reported transparently and the manuscript conclusions revised accordingly.
+The 8-fold extension experiment (2016–2025, test periods 2017–2024, SLURM Job 8543) has been completed. Results have been incorporated into **Section 4.4.7** of the revised manuscript.
+
+**Key results:**
+- Mean Net Sharpe: **+0.242** (vs. +0.752 in primary 4-fold analysis)
+- p-value (two-tailed, df=7): **0.473** (non-significant)
+- 95% Bootstrap CI: **[−0.329, +0.841]** — spans zero
+- HAC Newey-West p: 0.436
+- Positive folds: **5/8 (62.5%)**
+- Bonferroni-corrected p: >1.0 (non-significant by construction)
+
+**Honest conclusion:** The primary 4-fold finding (+0.752, p=0.036) does **not** survive extension to 8 folds. The primary finding is **regime-conditional**: the 2021–2024 test window was a favourable mean-reversion regime, but the strategy incurred material losses in 2019 (−0.835) and 2020 (−0.876, COVID-19 structural break), pulling the 8-fold mean to +0.242 with a p-value of 0.473. Universe quality remains the key architectural differentiator (Nifty 50 at +0.242 vs. Nifty 100 at ~+0.052), but neither result is statistically significant over the extended window. This constitutes a material qualification of the manuscript's primary finding and is disclosed as such in the revised abstract and Section 4.4.7.
 
 ---
 

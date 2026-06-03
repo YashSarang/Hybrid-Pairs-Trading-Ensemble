@@ -1,0 +1,109 @@
+# Brazil Market Configuration  
+# Bovespa (IBOV) top 35 stocks by market cap
+
+market:
+  name: "Brazil"
+  code: "IBOV"
+  currency: "BRL"
+  timezone: "America/Sao_Paulo"
+
+universe:
+  # Top 35 Bovespa stocks by market cap (as of 2025)
+  # Yahoo Finance ticker format: {ticker}.SA
+  tickers:
+    - "PETR4.SA"    # Petrobras PN
+    - "VALE3.SA"    # Vale ON
+    - "ITUB4.SA"    # Itaú Unibanco PN
+    - "BBDC4.SA"    # Bradesco PN
+    - "ABEV3.SA"    # Ambev ON
+    - "B3SA3.SA"    # B3 ON
+    - "WEGE3.SA"    # WEG ON
+    - "RENT3.SA"    # Localiza ON
+    - "SUZB3.SA"    # Suzano ON
+    - "RDOR3.SA"    # Rede D'Or ON
+    - "RAIL3.SA"    # Rumo ON
+    - "JBSS3.SA"    # JBS ON
+    - "ELET3.SA"    # Eletrobras ON
+    - "ELET6.SA"    # Eletrobras PNB
+    - "BBAS3.SA"    # Banco do Brasil ON
+    - "SANB11.SA"   # Santander Brasil units
+    - "CMIG4.SA"    # Cemig PN
+    - "VIVT3.SA"    # Telefonica Brasil ON
+    - "LREN3.SA"    # Lojas Renner ON
+    - "MGLU3.SA"    # Magazine Luiza ON
+    - "RADL3.SA"    # Raia Drogasil ON
+    - "PCAR3.SA"    # Grupo Carrefour Brasil ON
+    - "ENGI11.SA"   # Energisa units
+    - "GGBR4.SA"    # Gerdau PN
+    - "CSNA3.SA"    # CSN ON
+    - "USIM5.SA"    # Usiminas PNA
+    - "CSAN3.SA"    # Cosan ON
+    - "CPLE6.SA"    # Copel PNB
+    - "BRFS3.SA"    # BRF ON
+    - "EMBR3.SA"    # Embraer ON
+    - "CCRO3.SA"    # CCR ON
+    - "KLBN11.SA"   # Klabin units
+    - "CYRE3.SA"    # Cyrela ON
+    - "MRFG3.SA"    # Marfrig ON
+    - "BEEF3.SA"    # Minerva ON
+
+  sectors:
+    Finance: ["ITUB4.SA", "BBDC4.SA", "B3SA3.SA", "BBAS3.SA", "SANB11.SA"]
+    Energy: ["PETR4.SA", "ELET3.SA", "ELET6.SA", "ENGI11.SA", "CPLE6.SA"]
+    Materials: ["VALE3.SA", "SUZB3.SA", "GGBR4.SA", "CSNA3.SA", "USIM5.SA", "KLBN11.SA"]
+    Consumer: ["ABEV3.SA", "LREN3.SA", "MGLU3.SA", "RADL3.SA", "PCAR3.SA"]
+    Industrials: ["WEGE3.SA", "RAIL3.SA", "EMBR3.SA", "CCRO3.SA"]
+    Telecom: ["VIVT3.SA"]
+    Healthcare: ["RDOR3.SA"]
+    Food: ["JBSS3.SA", "BRFS3.SA", "MRFG3.SA", "BEEF3.SA"]
+    Real_Estate: ["CYRE3.SA"]
+    Transport: ["RENT3.SA"]
+    Misc: ["CSAN3.SA", "CMIG4.SA"]
+
+data:
+  start_date: "2020-01-01"
+  end_date: "2025-05-01"
+  frequency: "1d"
+  source: "yfinance"
+  cache_dir: "experimental-ablation/data/brazil"
+
+costs:
+  # Brazil (B3) transaction cost model
+  brokerage_bps: 2.5
+  bovespa_fee_bps: 0.3
+  settlement_bps: 0.25
+  iof_bps: 0.38           # IOF tax (financials operations)
+  slippage_bps: 10.0       # Higher due to lower liquidity
+  market_impact_bps: 0.0     # no extra market impact
+  # Total round-trip: ~30 bps
+
+backtest:
+  initial_capital: 5000000   # 5M BRL (~1M USD at 5:1 rate)
+  max_concurrent_pairs: 10
+  per_trade_notional: 250000  # 250K BRL per leg
+  hold_period_days: 20
+
+selectors:
+  weights:
+    correlation: 0.15
+    distance: 0.10
+    cointegration: 0.10
+    combined: 0.05
+    ml: 0.15
+    lstm: 0.25
+    transformer: 0.10
+    gnn: 0.10
+
+signals:
+  weights:
+    zscore: 0.30
+    ou: 0.30
+    kalman: 0.25
+    ml: 0.15
+
+walk_forward:
+  n_folds: 6
+  train_months: 12
+  test_months: 6
+
+random_seed: 42

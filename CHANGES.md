@@ -1,7 +1,22 @@
 # CHANGES.md — Project Changelog
 
 **Project:** Hybrid Pairs Trading Ensemble  
-**Last Updated:** 2026-05-26
+**Last Updated:** 2026-06-03
+
+---
+
+## June 3, 2026 — 16-Fold Long-Run Validation Complete
+
+- SLURM 8653: NSE Nifty50 16-fold (2005–2024) complete. Mean Sharpe = +0.101, p = 0.651.
+- SLURM 8654: NSE Nifty100 16-fold (2005–2024) complete. Mean Sharpe = +0.162, p = 0.449.
+- Paired test (Nifty50 vs Nifty100): mean diff = -0.061, Wilcoxon p = 0.860. Universe quality hypothesis not supported at 20-year horizon.
+- 4-fold result (+0.752, p=0.036) confirmed as regime artefact (2021–2024 favourable mean-reversion environment).
+- Section 4.4.11 placeholder remains — needs to be filled with above numbers.
+- Pre-registration framework added (§5.5.4), regime-conditionality as quaternary contribution (§5.1.1).
+- All Round 2 structural errors fixed. FF section removed. CVaR recomputed from correct period. Brazil arithmetic corrected.
+- Recommended venue: Emerging Markets Review.
+
+---
 
 ---
 

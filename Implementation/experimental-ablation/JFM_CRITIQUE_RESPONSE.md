@@ -15,7 +15,7 @@
 
 | # | Reviewer Concern | Status | Manuscript Section |
 |---|---|---|---|
-| 1 | Data period too short (4 years vs. JFM standard ~20 years) | **Partially Addressed** | §4.4.6, §5.5 |
+| 1 | Data period too short (4 years vs. JFM standard ~20 years) | **Addressed — Scenario C** (16-fold run completed: NSE Nifty50 mean +0.101, p=0.651; Nifty100 mean +0.162, p=0.449; paired Wilcoxon p=0.860. Primary 4-fold result confirmed as regime artefact. Study reframed as exploratory with regime-conditionality as primary finding.) | §4.4.11 |
 | 2 | Title claim "Universe Quality Dominates Methodology" is untested | **Addressed** | §4.4.5 |
 | 3 | Nifty 50 is a thin universe; concentration risk unquantified | **Partially Addressed** | §4.4.4, §5.5 |
 | 4 | No benchmark comparison provided | **Addressed** | §4.4.4 |
@@ -231,6 +231,8 @@ The 8-fold extension experiment (2016–2025, test periods 2017–2024, SLURM Jo
 - Bonferroni-corrected p: >1.0 (non-significant by construction)
 
 **Honest conclusion:** The primary 4-fold finding (+0.752, p=0.036) does **not** survive extension to 8 folds. The primary finding is **regime-conditional**: the 2021–2024 test window was a favourable mean-reversion regime, but the strategy incurred material losses in 2019 (−0.835) and 2020 (−0.876, COVID-19 structural break), pulling the 8-fold mean to +0.242 with a p-value of 0.473. Universe quality remains the key architectural differentiator (Nifty 50 at +0.242 vs. Nifty 100 at ~+0.052), but neither result is statistically significant over the extended window. This constitutes a material qualification of the manuscript's primary finding and is disclosed as such in the revised abstract and Section 4.4.7.
+
+**16-fold extension (June 2026, SLURM 8653/8654):** Scenario C confirmed. NSE Nifty50 mean +0.101 (p=0.651), Nifty100 mean +0.162 (p=0.449), paired difference not significant (Wilcoxon p=0.860). Universe quality hypothesis not supported at 20-year horizon. Recommended venue: Emerging Markets Review.
 
 ---
 

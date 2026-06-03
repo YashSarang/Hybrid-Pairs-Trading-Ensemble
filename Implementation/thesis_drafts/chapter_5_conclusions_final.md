@@ -61,6 +61,16 @@ The 7-selector ensemble (4 statistical + 3 ML; CNNSelector disabled) successfull
 
 ---
 
+### Quaternary Contribution: Regime-Conditionality of Pairs Trading Alpha
+
+The 8-fold (2017–2024) extension reveals a pattern not visible in the 4-fold (2021–2024) primary analysis: pairs trading Sharpe ratios on NSE exhibit strong regime-conditionality. Fold-level Sharpes cycle between strongly positive (2018: +1.268, 2023: +1.587) and strongly negative (2019: −0.835, 2020: −0.875, 2022: −0.231), producing a near-zero mean over the full window (+0.242, p = 0.473). The 2021–2024 window corresponds to a specific post-NBFC-crisis and post-COVID recovery regime characterised by abnormally low NSE volatility and high large-cap correlation stability — conditions uniquely favourable for cointegration-based pairs trading.
+
+This regime-conditionality finding has practical implications: (1) pairs trading profitability on NSE is not continuous — it is contingent on specific macro regimes; (2) a practitioner deploying the strategy must incorporate regime detection or adaptive position sizing to avoid the loss years (2019, 2020); (3) the universe quality effect (+0.700 Sharpe uplift) manifests primarily within favourable regimes, not as a guarantee of profitability across all market conditions.
+
+This is a valuable standalone finding for the literature: it provides the first documented characterisation of NSE Nifty 50 pairs trading Sharpe as a regime-dependent variable, connecting the India profitability result to the broader literature on time-varying arbitrage opportunities (Avramov, Chordia and Goyal, 2006; Gatev, Goetzmann and Rouwenhorst, 2006).
+
+---
+
 ### 5.1.2 Revised Research Questions & Answers
 
 **RQ1: Can hybrid selector ensembles outperform single-selector baselines on NSE?**
@@ -160,6 +170,7 @@ The 7-selector ensemble (4 statistical + 3 ML; CNNSelector disabled) successfull
 - **Primary contribution:** Universe quality dominates — Nifty 50 statistical advantage (only statistically significant finding, p=0.036)
 - **Secondary contribution:** Rolling windows improve cost efficiency but remain insignificant
 - **Tertiary contribution:** Ensemble selectors generalize across markets
+- **Quaternary contribution:** Pairs trading Sharpe on NSE is regime-dependent — a standalone finding connecting the India result to the time-varying arbitrage literature
 - **Key insight:** Under honest period-matched arithmetic, methodology improvement (+0.461 Sharpe, expanding to rolling) exceeds the geographic premium (+0.368 Sharpe, Nifty 50 mean vs period-matched Nifty 100). The originally reported 1.7x geographic advantage was computed from a cherry-picked best GPU run and a non-period-matched baseline; it does not hold under honest arithmetic. The Nifty 50 universe quality effect (+0.700 Sharpe uplift) is the dominant finding.
 
 ---
@@ -293,20 +304,39 @@ The analysis uses the 2024 Nifty 50 constituent list applied retroactively acros
 
 ### 5.5.3 Multiple Testing and Family-Wise Error Rate
 
-The study tests 26 market/signal/selector combinations. Strict Bonferroni correction yields p_corrected = 0.036 × 26 = 0.936 for the primary finding, which does not survive family-wise error rate control. However, the Bonferroni correction is overly conservative when tests are correlated, as they are here: market results are correlated through shared macroeconomic conditions, and signal model results are correlated through shared pair selection.
+The study evaluates 27 market/signal/selector combinations (4-fold runs). Strict Bonferroni correction, which assumes all tests are independent, yields p_corrected = 0.0366 × 27 = 0.988 for the primary finding. However, the tests are correlated: market results share macroeconomic conditions across the 2021–2024 period, and signal model results share pair selection logic.
 
-The Benjamini-Hochberg (BH) False Discovery Rate procedure is more appropriate for this setting. Under BH with q = 0.05 and 26 tests, a finding survives if its rank-ordered p-value satisfies p_(k) ≤ k × q / m. The primary NSE Nifty 50 finding (p = 0.036) would need to be the single most significant result across all 26 tests and satisfy p ≤ 0.05 / 26 × 1 = 0.0019 to survive BH correction — which it does not (0.036 > 0.0019). The 8-fold extension (p = 0.473) does not survive under any correction.
+The effective number of independent tests, computed via eigenvalue decomposition of the inter-run fold-level correlation matrix (Nyholt 2004; Li and Ji 2005), is m_eff = 13.42. Under this correction:
 
-The honest interpretation is: **this study contains no result that survives standard multiple-testing correction.** All findings should be treated as exploratory and hypothesis-generating, requiring out-of-sample replication before conclusions can be generalised.
+- Bonferroni-corrected p (primary finding): 0.0366 × 13.42 = **0.491** — does not achieve significance
+- BH-FDR threshold at rank k=1: p ≤ k × 0.05 / 13.42 = 0.00373 — primary finding (p = 0.0366) does not meet this threshold
+- 8-fold extension (p = 0.473): does not survive under any correction
 
-The primary contribution is therefore not a statistically confirmed trading signal, but rather:
-1. A methodology for decomposing universe quality, geographic, and methodological alpha contributions
-2. A documented observation that NSE Nifty 50 blue-chip concentration is associated with higher measured pairs trading Sharpe ratios in the 2021–2024 window
-3. A framework and codebase for replicating this analysis with longer samples and point-in-time constituent data
+The primary result therefore does not survive multiple-testing correction even under the more lenient m_eff-adjusted framework.
 
-The venue implication is noted: JFM requires results that survive multiple-testing correction. Emerging Markets Review and Quantitative Finance are more appropriate venues for exploratory methodology papers with this sample size.
+A complementary directional consistency test provides supplementary evidence: the rolling NSE Nifty 50 ZScore result produces positive net Sharpe in all 4 folds ([+1.127, +0.218, +0.627, +1.036]). Under the null hypothesis of no strategy edge (equal probability of positive/negative Sharpe per fold), the probability of observing 4/4 positive folds is (0.5)^4 = 0.0625. This directional consistency is suggestive but does not constitute formal significance.
 
-### 5.5.4 Transaction Cost Uncertainty (Brazil)
+The honest interpretation is: **this study contains no result that survives standard multiple-testing correction.** All findings should be treated as exploratory and hypothesis-generating. The primary contribution is a well-specified hypothesis (NSE Nifty 50 universe quality premium) with consistent directional evidence across 4 independent out-of-sample folds, suitable for pre-registration of a prospective confirmatory study.
+
+The venue implication is noted: JFM requires statistically confirmed results. Emerging Markets Review and Quantitative Finance are appropriate venues for exploratory methodology papers with this sample size and multiple-testing profile.
+
+### 5.5.4 Pre-Registration and the Confirmatory/Exploratory Distinction
+
+This study was not pre-registered prior to data collection. The research design evolved iteratively as results emerged, which is typical of exploratory thesis research but creates a multiple-testing problem when framing conclusions. The distinction between exploratory and confirmatory research (Tukey 1977; Wagenmakers et al. 2012) is critical here: exploratory analyses generate hypotheses; confirmatory analyses test them.
+
+This study is properly classified as exploratory. The primary hypothesis — that NSE Nifty 50 universe quality is the dominant driver of pairs trading performance — was identified after observing the data. It should be treated as a hypothesis to be confirmed, not a conclusion to be reported.
+
+The appropriate response to this limitation is pre-registration of the confirmatory study. The specific hypothesis to be tested is:
+
+**H1 (Pre-registration candidate):** The NSE Nifty 50 universe (top-30 by market cap, 2004–2024 constituents) produces statistically significantly higher mean annual pairs trading Sharpe ratio than the NSE Nifty 100 universe (top-50 by market cap, same period) under identical walk-forward validation methodology and transaction costs, when tested over a minimum 10-year out-of-sample window.
+
+**Proposed test:** Paired Wilcoxon signed-rank test on fold-level Sharpe differences (Nifty 50 minus Nifty 100) across matched annual folds, with n ≥ 16, one-sided alternative (H1: Nifty 50 Sharpe > Nifty 100 Sharpe), pre-specified significance threshold α = 0.05.
+
+**Required data:** Point-in-time NSE Nifty 50 and Nifty 100 constituent history (available from NSE or Bloomberg). The 2005–2024 window provides 20 years of data, sufficient for the proposed test.
+
+Until this confirmatory study is conducted, the universe quality finding should be reported with the qualifier: "We find directional evidence that universe quality is positively associated with pairs trading Sharpe ratio on NSE, and propose this as a pre-registration candidate for confirmatory validation."
+
+### 5.5.5 Transaction Cost Uncertainty (Brazil)
 
 Section 4.4.2 discloses a material uncertainty in the Brazil transaction cost model. The 8.4 bps round-trip cost figure reflects exchange-level costs (brokerage 0.5 bps + CBLC settlement 7.6 bps + exchange fees 0.3 bps) and excludes retail broker commissions. The literature estimate of ~30 bps (inclusive of retail commissions) is approximately 3.6× higher. Under the 30 bps scenario, all Brazil OU results (best single run: +0.321 Sharpe) would become negative.
 

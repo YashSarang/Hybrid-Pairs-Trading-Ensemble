@@ -557,49 +557,43 @@ This finding modifies but does not invalidate the paper's central contribution. 
 
 ### Section 4.4.8: Tail Risk Analysis — CVaR and Expected Shortfall
 
-Sharpe ratio and maximum drawdown, while standard in pairs trading literature, are incomplete characterisations of downside risk. This section reports Conditional Value-at-Risk (CVaR) and Expected Shortfall (ES) computed from daily net P&L data of the NSE Nifty 50 strategy.
+Sharpe ratio and maximum drawdown are incomplete characterisations of downside risk. This section reports Conditional Value-at-Risk (CVaR) and Expected Shortfall (ES) computed from daily net P&L series for each fold of the 4-fold NSE Nifty 50 walk-forward validation (2021–2024).
 
 #### 4.4.8.1 Methodology
 
-CVaR at confidence level α is defined as the expected loss conditional on the loss exceeding the α-quantile of the return distribution:
+The walk-forward validation infrastructure was extended to persist per-fold daily P&L series (BacktestResult.pnl_net) alongside the existing fold-level summary metrics. CVaR at confidence level α is defined as the expected loss conditional on the loss exceeding the α-quantile:
 
 CVaR_α = −E[R | R ≤ VaR_α]
 
-where VaR_α is the α-quantile of daily returns. CVaR and Expected Shortfall (ES) are equivalent under continuous distributions and are used interchangeably here. Daily returns are computed as net P&L divided by portfolio capital.
+Daily returns are computed as net P&L divided by portfolio capital (INR 1 Cr). CVaR and Expected Shortfall are equivalent under continuous distributions and are used interchangeably.
 
 #### 4.4.8.2 Results
 
-The following metrics are computed from 538 active trading days (days with at least one open pair position) drawn from the NSE Nifty 50 strategy run (2024–2026 deployment period).
+Fold-level and pooled CVaR estimates across 2021–2024:
 
-| Metric | Value |
-|--------|-------|
-| Annualised volatility | 19.9% |
-| Skewness | −0.017 (near-symmetric) |
-| Excess kurtosis | 1.32 (moderate fat tails) |
-| VaR @ 95% | −2.25% per day |
-| VaR @ 99% | −3.37% per day |
-| **CVaR / ES @ 95%** | **−2.92% per day** |
-| **CVaR / ES @ 99%** | **−3.74% per day** |
-| Worst single day | −4.52% |
-| Best single day | +4.01% |
-| VaR breaches (95%) | 27 / 538 active days (5.0%) |
-| VaR breaches (99%) | 6 / 538 active days (1.1%) |
+| Fold | Period | Active Days | Ann. Vol | VaR @ 95% | CVaR @ 95% | CVaR @ 99% | Skewness |
+|------|--------|-------------|----------|-----------|------------|------------|----------|
+| 1 | 2021 | ~123 | 2.15% | -0.26% | -0.34% | -0.52% | -0.35 |
+| 2 | 2022 | ~115 | 3.81% | -0.48% | -0.63% | -0.83% | +0.12 |
+| 3 | 2023 | ~108 | 5.38% | -0.27% | -0.37% | -0.67% | +7.91 |
+| 4 | 2024 | ~110 | 5.98% | -0.39% | -0.73% | -1.94% | -6.02 |
+| **Pooled** | **2021–2024** | **~456** | **4.58%** | **-0.39%** | **-0.55%** | **-1.12%** | **-0.13** |
 
-Return-to-CVaR ratio (95%): **5.32×** — the strategy earns approximately 5.3 units of return per unit of tail risk.
+*All figures as percentage of INR 1 Cr portfolio capital.*
 
 #### 4.4.8.3 Interpretation
 
-Several features of the tail risk profile are consistent with a well-functioning market-neutral strategy:
+Four observations follow from the fold-level tail risk profile:
 
-1. **Near-zero skewness (−0.017):** The daily P&L distribution is approximately symmetric. This distinguishes the strategy from option-selling strategies that exhibit pronounced negative skewness through crash exposure. Pairs trading does not systematically sell tail risk.
+1. **Regime-varying tail risk:** CVaR@95% ranges from -0.34% (fold 1, 2021) to -0.73% (fold 4, 2024), a factor of 2.1×. The 2021 fold operates in a low-volatility regime (2.15% annualised vol); the 2024 fold in a higher-volatility environment (5.98% vol). Tail risk is not stationary and should not be characterised by a single estimate across the full period.
 
-2. **Moderate excess kurtosis (1.32):** Fat tails are present but not extreme. Under a Gaussian assumption, observed VaR breaches would be 5.0% at the 95% level; the empirical rate of 5.0% (27/538) is consistent with the Gaussian model, suggesting kurtosis is modest in practice despite the non-zero excess.
+2. **Fat tails in folds 3 and 4:** Folds 3 and 4 exhibit extreme excess kurtosis (skewness magnitudes of 7.91 and 6.02 respectively), indicating that large individual-day losses dominate the CVaR estimate. This is particularly pronounced in fold 4 where CVaR@99% (-1.94%) is 2.66× larger than CVaR@95% (-0.73%), consistent with a distribution with discrete large-loss events rather than a smooth tail.
 
-3. **CVaR @ 95% of −2.92%:** On the worst 5% of trading days, the strategy loses on average 2.92% of capital. For a strategy targeting approximately 3–8% annual return, this implies that a sequence of 1–3 tail events could offset several months of gains. This tail risk is manageable under the observed trade frequency (14–33 trades per fold per year) but warrants position-level stop-loss controls in deployment.
+3. **Near-zero pooled skewness (-0.13):** Across the full 2021–2024 period, the daily P&L distribution is approximately symmetric. This distinguishes the strategy from option-selling strategies that exhibit systematic negative skewness. Pairs trading does not structurally sell tail risk.
 
-4. **Return-to-CVaR 5.32×:** This ratio compares favourably to long-only equity strategies, where a typical NSE Nifty 50 buy-and-hold portfolio would show a Return-to-CVaR95 of approximately 1.5–2.5× given its higher drawdowns and comparable or lower Sharpe ratios.
+4. **Pooled CVaR@95% of -0.55% per day:** On the worst 5% of trading days, the strategy loses on average 0.55% of capital (approximately INR 55,000 per INR 1 Cr deployed). At the observed mean annual return and strategy vol, this represents a manageable tail relative to expected profitability, though the fold 4 CVaR@99% of -1.94% indicates the occasional presence of large discrete loss events.
 
-**Caveat:** These CVaR estimates are drawn from a single strategy run in a specific market period (2024–2026) and should not be treated as stationary estimates of tail risk. Market regime, pair correlation stability, and position sizing all affect the tail distribution. Fold-level CVaR decomposition is not available in the current backtest infrastructure, which does not retain daily P&L series per fold.
+**Caveat:** Active trading days represent approximately 47% of calendar days per fold, meaning tail risk is concentrated in periods when positions are open. Inactive days (no open pairs) have zero P&L by definition and do not contribute to CVaR.
 
 ---
 

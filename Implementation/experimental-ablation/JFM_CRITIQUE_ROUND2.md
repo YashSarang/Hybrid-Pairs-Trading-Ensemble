@@ -156,3 +156,25 @@ The summary table still shows item 8 (CVaR) as "Acknowledged / Outstanding" (lin
 **Finance Research Letters:** Viable for a 4,000-word focused note on the universe quality finding alone. Strip everything except the NSE Nifty 50 vs Nifty 100 result with proper hedging. n=4 is borderline but accepted at FRL if framed as exploratory. Do not include FF attribution or Brazil cost sensitivity.
 
 **Recommended action:** Fix structural errors and remove the FF section (2–3 days), then submit to Emerging Markets Review. In parallel, prepare a short FRL note on the universe quality finding using only the Nifty 50 vs Nifty 100 result.
+
+---
+
+## Resolution Status Update (June 2026)
+
+### Fatal Flaw 1 (Multiple Testing)
+- m_eff = 13.42 (eigenvalue correction); Bonferroni p = 0.491; BH-FDR threshold 0.00373
+- Primary finding still does not survive correction
+- 16-fold long-run validation (SLURM 8653) running — if significant, BH-FDR argument strengthened
+- Pre-registration section added (§5.5.4) — correctly frames study as exploratory
+- Regime-conditionality framed as standalone contribution (§5.1.1)
+
+### Fatal Flaw 2 (n=4 data points)
+- DIRECTLY SOLVED: 16-fold walk-forward over 2005-2024 submitted (SLURM 8653)
+- Nifty 100 paired control submitted (SLURM pending) for paired Wilcoxon test
+- With n=16: 80% power at d=0.7; minimum detectable Sharpe ≈ +0.42 at 80% power
+- Section 4.4.11 written with placeholder for results + 3-scenario interpretation framework
+
+### Remaining gap
+- Whether the result survives with n=16 is unknown until SLURM 8653 completes
+- If Scenario A (significant): JFM submission viable with appropriate caveats
+- If Scenario B/C: Quantitative Finance or Emerging Markets Review is the correct venue

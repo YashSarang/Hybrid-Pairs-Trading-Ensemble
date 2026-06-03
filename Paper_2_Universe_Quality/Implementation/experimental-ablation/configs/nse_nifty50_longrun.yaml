@@ -1,0 +1,96 @@
+# NSE Nifty 50 Long-Run Configuration (2004-2024)
+# 20-year validation window — addresses JFM sample-size requirement
+# 31 tickers with data from 2003 (excludes TATAMOTORS/COALINDIA/POWERGRID for data continuity)
+
+market:
+  name: "NSE_Nifty50_LongRun"
+  code: "NSE"
+  currency: "INR"
+  timezone: "Asia/Kolkata"
+
+universe:
+  tickers:
+    - "RELIANCE.NS"
+    - "TCS.NS"
+    - "HDFCBANK.NS"
+    - "INFY.NS"
+    - "ICICIBANK.NS"
+    - "HINDUNILVR.NS"
+    - "ITC.NS"
+    - "SBIN.NS"
+    - "BHARTIARTL.NS"
+    - "KOTAKBANK.NS"
+    - "LT.NS"
+    - "AXISBANK.NS"
+    - "ASIANPAINT.NS"
+    - "MARUTI.NS"
+    - "HCLTECH.NS"
+    - "WIPRO.NS"
+    - "ULTRACEMCO.NS"
+    - "SUNPHARMA.NS"
+    - "NESTLEIND.NS"
+    - "TITAN.NS"
+    - "BAJFINANCE.NS"
+    - "ONGC.NS"
+    - "M&M.NS"
+    - "TATASTEEL.NS"
+    - "ADANIENT.NS"
+    - "IOC.NS"
+    - "BPCL.NS"
+    - "GRASIM.NS"
+    - "HINDALCO.NS"
+    - "JSWSTEEL.NS"
+    - "NTPC.NS"
+
+  sectors:
+    IT: ["TCS.NS", "INFY.NS", "HCLTECH.NS", "WIPRO.NS"]
+    Banking: ["HDFCBANK.NS", "ICICIBANK.NS", "SBIN.NS", "AXISBANK.NS", "KOTAKBANK.NS"]
+    Energy: ["RELIANCE.NS", "ONGC.NS", "IOC.NS", "BPCL.NS"]
+    Auto: ["MARUTI.NS", "M&M.NS"]
+    Pharma: ["SUNPHARMA.NS"]
+    FMCG: ["HINDUNILVR.NS", "ITC.NS", "NESTLEIND.NS", "TITAN.NS"]
+    Infra: ["LT.NS", "NTPC.NS"]
+    Metals: ["TATASTEEL.NS", "HINDALCO.NS", "JSWSTEEL.NS"]
+    Finance: ["BAJFINANCE.NS"]
+    Misc: ["BHARTIARTL.NS", "ASIANPAINT.NS", "ULTRACEMCO.NS", "ADANIENT.NS", "GRASIM.NS"]
+
+data:
+  start_date: "2004-01-01"
+  end_date: "2024-12-31"
+  frequency: "1d"
+  source: "yfinance"
+  cache_dir: "experimental-ablation/data/nse_nifty50_longrun"
+
+costs:
+  brokerage_bps: 3.0
+  exchange_bps: 0.345
+  sebi_bps: 0.01
+  stt_bps: 10.0
+  gst_rate: 0.18
+  stamp_bps: 1.0
+  slippage_bps: 2.0
+
+backtest:
+  initial_capital: 10000000
+  max_concurrent_pairs: 10
+  per_trade_notional: 500000
+  hold_period_days: 20
+
+walk_forward:
+  n_folds: 16
+  train_months: 12
+  test_months: 12
+  type: rolling
+
+random_seed: 42
+
+selectors:
+  weights:
+    correlation: 0.25
+    distance: 0.25
+    cointegration: 0.25
+    combined: 0.25
+
+signals:
+  weights:
+    zscore: 1.0

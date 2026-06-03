@@ -1,0 +1,14 @@
+streamlit
+numpy
+pandas
+plotly
+scikit-learn
+xgboost
+statsmodels
+tensorflow[and-cuda]
+yfinance
+pytest
+joblib
+stable-baselines3
+gymnasium
+torch

@@ -1,0 +1,102 @@
+# United States Market Configuration
+# S&P 100 top 35 stocks by market cap
+
+market:
+  name: "United States"
+  code: "US"
+  currency: "USD"
+  timezone: "America/New_York"
+
+universe:
+  # Top 35 S&P 100 stocks by market cap (as of 2025)
+  tickers:
+    - "AAPL"    # Apple
+    - "MSFT"    # Microsoft
+    - "GOOGL"   # Alphabet Class A
+    - "AMZN"    # Amazon
+    - "NVDA"    # NVIDIA
+    - "META"    # Meta Platforms
+    - "TSLA"    # Tesla
+    - "BRK-B"   # Berkshire Hathaway B
+    - "V"       # Visa
+    - "UNH"     # UnitedHealth
+    - "JNJ"     # Johnson & Johnson
+    - "WMT"     # Walmart
+    - "JPM"     # JPMorgan Chase
+    - "MA"      # Mastercard
+    - "PG"      # Procter & Gamble
+    - "XOM"     # Exxon Mobil
+    - "HD"      # Home Depot
+    - "CVX"     # Chevron
+    - "LLY"     # Eli Lilly
+    - "ABBV"    # AbbVie
+    - "MRK"     # Merck
+    - "KO"      # Coca-Cola
+    - "PEP"     # PepsiCo
+    - "AVGO"    # Broadcom
+    - "COST"    # Costco
+    - "ADBE"    # Adobe
+    - "TMO"     # Thermo Fisher
+    - "MCD"     # McDonald's
+    - "CSCO"    # Cisco
+    - "ACN"     # Accenture
+    - "ORCL"    # Oracle
+    - "ABT"     # Abbott Labs
+    - "NKE"     # Nike
+    - "QCOM"    # Qualcomm
+    - "TXN"     # Texas Instruments
+
+  sectors:
+    Technology: ["AAPL", "MSFT", "GOOGL", "NVDA", "META", "ADBE", "CSCO", "ORCL", "QCOM", "TXN", "AVGO"]
+    Finance: ["V", "MA", "JPM", "BRK-B"]
+    Healthcare: ["UNH", "JNJ", "LLY", "ABBV", "MRK", "TMO", "ABT"]
+    Consumer: ["AMZN", "WMT", "HD", "COST", "MCD", "NKE", "PG", "KO", "PEP"]
+    Energy: ["XOM", "CVX"]
+    Auto: ["TSLA"]
+    Services: ["ACN"]
+
+data:
+  start_date: "2020-01-01"
+  end_date: "2025-05-01"
+  frequency: "1d"
+  source: "yfinance"
+  cache_dir: "experimental-ablation/data/us"
+
+costs:
+  # US institutional transaction cost model
+  brokerage_bps: 0.5       # Institutional rate (Interactive Brokers / others)
+  sec_fee_bps: 0.23        # SEC Section 31 fee (sell side only)
+  finra_taf_bps: 0.013     # FINRA Trading Activity Fee
+  slippage_bps: 2.0
+  # Total round-trip: ~5 bps
+
+backtest:
+  initial_capital: 1000000   # 1M USD
+  max_concurrent_pairs: 10
+  per_trade_notional: 50000  # 50K per leg
+  hold_period_days: 20
+
+selectors:
+  weights:
+    correlation: 0.15
+    distance: 0.10
+    cointegration: 0.10
+    combined: 0.05
+    ml: 0.15
+    lstm: 0.25
+    transformer: 0.10
+    gnn: 0.10
+
+signals:
+  weights:
+    zscore: 0.30
+    ou: 0.30
+    kalman: 0.25
+    ml: 0.15
+
+walk_forward:
+  n_folds: 6
+  train_months: 12
+  test_months: 6
+
+random_seed: 42

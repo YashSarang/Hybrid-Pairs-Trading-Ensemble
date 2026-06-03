@@ -1,0 +1,30 @@
+RESEARCH PLAN: Target Venues for Hybrid Pairs Trading Ensemble Paper
+
+SEARCH STRATEGY:
+1. Top Finance Conferences (Quant Finance, Computational Finance)
+2. Top AI/ML Conferences with Finance Applications
+3. Top Finance/Economics Journals
+4. Interdisciplinary Venues (AI + Finance)
+
+CRITERIA:
+- Acceptance rate (<30% preferred for prestige)
+- Impact factor / H-index
+- Deadlines in 2026
+- Fit with paper's contributions (ML ensemble + financial markets)
+
+PAPER STRENGTHS:
+✅ Novel multi-market validation (India 16x better)
+✅ ML ensemble (4 statistical + 4 ML selectors)
+✅ Rigorous WFV with 6 folds
+✅ Statistical honesty (non-significant p=0.32 reported)
+✅ Geographic alpha discovery
+
+PAPER WEAKNESSES:
+⚠️ Short sample period (2020-2025, 6 years)
+⚠️ Small universe (27-35 tickers per market)
+⚠️ ML non-determinism acknowledged
+⚠️ Limited signal model coverage (2 models)
+
+TARGET TIMELINE:
+- Submission target: Q3 2026 (Sep-Nov)
+- Preparation time needed: 2-3 months

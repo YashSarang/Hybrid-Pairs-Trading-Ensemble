@@ -1,0 +1,534 @@
+
+============================================================
+Multi-Market WFV: NSE_NIFTY100_LONGRUN
+============================================================
+Universe: 47 tickers
+Period: 2004-01-01 to 2024-12-30
+Selectors: correlation, distance, cointegration, combined
+Folds: 16
+============================================================
+
+
+============================================================
+FOLD 1
+Train: 2004-01-01 to 2004-12-31
+Test:  2005-01-01 to 2005-12-31
+============================================================
+
+Train shape: (262, 47)
+Test shape:  (250, 47)
+
+Candidate pairs: 1081
+
+Training correlation... ✅ 171 pairs scored
+Training distance... ✅ 0 pairs scored
+Training cointegration... ✅ 397 pairs scored
+Training combined... ✅ 211 pairs scored
+
+Ensembling 4 selectors...
+Selected pairs: 10 (target 10)
+
+
+Backtesting 10 pairs on test period...
+
+========================================
+FOLD 1 RESULTS
+========================================
+Net Sharpe:   0.484
+Gross Sharpe: 0.486
+Max DD:       15.5%
+Total Trades: 19
+========================================
+
+
+============================================================
+FOLD 2
+Train: 2005-01-01 to 2005-12-31
+Test:  2006-01-01 to 2006-12-31
+============================================================
+
+Train shape: (250, 47)
+Test shape:  (247, 47)
+
+Candidate pairs: 1081
+
+Training correlation... ✅ 0 pairs scored
+Training distance... ✅ 0 pairs scored
+Training cointegration... ✅ 354 pairs scored
+Training combined... ✅ 254 pairs scored
+
+Ensembling 4 selectors...
+Selected pairs: 10 (target 10)
+
+
+Backtesting 10 pairs on test period...
+
+========================================
+FOLD 2 RESULTS
+========================================
+Net Sharpe:   0.432
+Gross Sharpe: 0.450
+Max DD:       3.9%
+Total Trades: 18
+========================================
+
+
+============================================================
+FOLD 3
+Train: 2006-01-01 to 2006-12-31
+Test:  2007-01-01 to 2007-12-31
+============================================================
+
+Train shape: (247, 47)
+Test shape:  (248, 47)
+
+Candidate pairs: 1081
+
+Training correlation... ✅ 0 pairs scored
+Training distance... ✅ 0 pairs scored
+Training cointegration... ✅ 71 pairs scored
+Training combined... ✅ 59 pairs scored
+
+Ensembling 4 selectors...
+Selected pairs: 10 (target 10)
+
+
+Backtesting 10 pairs on test period...
+
+========================================
+FOLD 3 RESULTS
+========================================
+Net Sharpe:   1.067
+Gross Sharpe: 1.115
+Max DD:       3.4%
+Total Trades: 38
+========================================
+
+
+============================================================
+FOLD 4
+Train: 2007-01-01 to 2007-12-31
+Test:  2008-01-01 to 2008-12-31
+============================================================
+
+Train shape: (248, 47)
+Test shape:  (246, 47)
+
+Candidate pairs: 1081
+
+Training correlation... ✅ 0 pairs scored
+Training distance... ✅ 0 pairs scored
+Training cointegration... ✅ 131 pairs scored
+Training combined... ✅ 79 pairs scored
+
+Ensembling 4 selectors...
+Selected pairs: 10 (target 10)
+
+
+Backtesting 10 pairs on test period...
+
+========================================
+FOLD 4 RESULTS
+========================================
+Net Sharpe:   -0.651
+Gross Sharpe: -0.639
+Max DD:       6.4%
+Total Trades: 12
+========================================
+
+
+============================================================
+FOLD 5
+Train: 2008-01-01 to 2008-12-31
+Test:  2009-01-01 to 2009-12-31
+============================================================
+
+Train shape: (246, 47)
+Test shape:  (243, 47)
+
+Candidate pairs: 1081
+
+Training correlation... ✅ 0 pairs scored
+Training distance... ✅ 0 pairs scored
+Training cointegration... ✅ 204 pairs scored
+Training combined... ✅ 132 pairs scored
+
+Ensembling 4 selectors...
+Selected pairs: 10 (target 10)
+
+
+Backtesting 10 pairs on test period...
+
+========================================
+FOLD 5 RESULTS
+========================================
+Net Sharpe:   -0.201
+Gross Sharpe: -0.181
+Max DD:       3.0%
+Total Trades: 13
+========================================
+
+
+============================================================
+FOLD 6
+Train: 2009-01-01 to 2009-12-31
+Test:  2010-01-01 to 2010-12-31
+============================================================
+
+Train shape: (243, 47)
+Test shape:  (251, 47)
+
+Candidate pairs: 1081
+
+Training correlation... ✅ 0 pairs scored
+Training distance... ✅ 0 pairs scored
+Training cointegration... ✅ 151 pairs scored
+Training combined... ✅ 71 pairs scored
+
+Ensembling 4 selectors...
+Selected pairs: 10 (target 10)
+
+
+Backtesting 10 pairs on test period...
+
+========================================
+FOLD 6 RESULTS
+========================================
+Net Sharpe:   1.542
+Gross Sharpe: 1.613
+Max DD:       1.8%
+Total Trades: 37
+========================================
+
+
+============================================================
+FOLD 7
+Train: 2010-01-01 to 2010-12-31
+Test:  2011-01-01 to 2011-12-31
+============================================================
+
+Train shape: (251, 47)
+Test shape:  (246, 47)
+
+Candidate pairs: 1081
+
+Training correlation... ✅ 0 pairs scored
+Training distance... ✅ 0 pairs scored
+Training cointegration... ✅ 18 pairs scored
+Training combined... ✅ 12 pairs scored
+
+Ensembling 4 selectors...
+Selected pairs: 10 (target 10)
+
+
+Backtesting 10 pairs on test period...
+
+========================================
+FOLD 7 RESULTS
+========================================
+Net Sharpe:   -1.073
+Gross Sharpe: -1.047
+Max DD:       15.3%
+Total Trades: 37
+========================================
+
+
+============================================================
+FOLD 8
+Train: 2011-01-01 to 2011-12-31
+Test:  2012-01-01 to 2012-12-31
+============================================================
+
+Train shape: (246, 47)
+Test shape:  (245, 47)
+
+Candidate pairs: 1081
+
+Training correlation... ✅ 0 pairs scored
+Training distance... ✅ 0 pairs scored
+Training cointegration... ✅ 102 pairs scored
+Training combined... ✅ 69 pairs scored
+
+Ensembling 4 selectors...
+Selected pairs: 10 (target 10)
+
+
+Backtesting 10 pairs on test period...
+
+========================================
+FOLD 8 RESULTS
+========================================
+Net Sharpe:   -0.760
+Gross Sharpe: -0.711
+Max DD:       2.7%
+Total Trades: 18
+========================================
+
+
+============================================================
+FOLD 9
+Train: 2012-01-01 to 2012-12-31
+Test:  2013-01-01 to 2013-12-31
+============================================================
+
+Train shape: (245, 47)
+Test shape:  (248, 47)
+
+Candidate pairs: 1081
+
+Training correlation... ✅ 0 pairs scored
+Training distance... ✅ 0 pairs scored
+Training cointegration... ✅ 69 pairs scored
+Training combined... ✅ 47 pairs scored
+
+Ensembling 4 selectors...
+Selected pairs: 10 (target 10)
+
+
+Backtesting 10 pairs on test period...
+
+========================================
+FOLD 9 RESULTS
+========================================
+Net Sharpe:   0.603
+Gross Sharpe: 0.643
+Max DD:       3.1%
+Total Trades: 28
+========================================
+
+
+============================================================
+FOLD 10
+Train: 2013-01-01 to 2013-12-31
+Test:  2014-01-01 to 2014-12-31
+============================================================
+
+Train shape: (248, 47)
+Test shape:  (244, 47)
+
+Candidate pairs: 1081
+
+Training correlation... ✅ 0 pairs scored
+Training distance... ✅ 0 pairs scored
+Training cointegration... ✅ 75 pairs scored
+Training combined... ✅ 51 pairs scored
+
+Ensembling 4 selectors...
+Selected pairs: 10 (target 10)
+
+
+Backtesting 10 pairs on test period...
+
+========================================
+FOLD 10 RESULTS
+========================================
+Net Sharpe:   -0.784
+Gross Sharpe: -0.749
+Max DD:       3.5%
+Total Trades: 21
+========================================
+
+
+============================================================
+FOLD 11
+Train: 2014-01-01 to 2014-12-31
+Test:  2015-01-01 to 2015-12-31
+============================================================
+
+Train shape: (244, 47)
+Test shape:  (246, 47)
+
+Candidate pairs: 1081
+
+Training correlation... ✅ 0 pairs scored
+Training distance... ✅ 0 pairs scored
+Training cointegration... ✅ 65 pairs scored
+Training combined... ✅ 21 pairs scored
+
+Ensembling 4 selectors...
+Selected pairs: 10 (target 10)
+
+
+Backtesting 10 pairs on test period...
+
+========================================
+FOLD 11 RESULTS
+========================================
+Net Sharpe:   -0.555
+Gross Sharpe: -0.511
+Max DD:       2.9%
+Total Trades: 23
+========================================
+
+
+============================================================
+FOLD 12
+Train: 2015-01-01 to 2015-12-31
+Test:  2016-01-01 to 2016-12-31
+============================================================
+
+Train shape: (246, 47)
+Test shape:  (246, 47)
+
+Candidate pairs: 1081
+
+Training correlation... ✅ 0 pairs scored
+Training distance... ✅ 0 pairs scored
+Training cointegration... ✅ 180 pairs scored
+Training combined... ✅ 136 pairs scored
+
+Ensembling 4 selectors...
+Selected pairs: 10 (target 10)
+
+
+Backtesting 10 pairs on test period...
+
+========================================
+FOLD 12 RESULTS
+========================================
+Net Sharpe:   0.821
+Gross Sharpe: 0.869
+Max DD:       1.4%
+Total Trades: 30
+========================================
+
+
+============================================================
+FOLD 13
+Train: 2016-01-01 to 2016-12-31
+Test:  2017-01-01 to 2017-12-31
+============================================================
+
+Train shape: (246, 47)
+Test shape:  (248, 47)
+
+Candidate pairs: 1081
+
+Training correlation... ✅ 0 pairs scored
+Training distance... ✅ 0 pairs scored
+Training cointegration... ✅ 99 pairs scored
+Training combined... ✅ 83 pairs scored
+
+Ensembling 4 selectors...
+Selected pairs: 10 (target 10)
+
+
+Backtesting 10 pairs on test period...
+
+========================================
+FOLD 13 RESULTS
+========================================
+Net Sharpe:   0.457
+Gross Sharpe: 0.494
+Max DD:       1.9%
+Total Trades: 23
+========================================
+
+
+============================================================
+FOLD 14
+Train: 2017-01-01 to 2017-12-31
+Test:  2018-01-01 to 2018-12-31
+============================================================
+
+Train shape: (248, 47)
+Test shape:  (246, 47)
+
+Candidate pairs: 1081
+
+Training correlation... ✅ 0 pairs scored
+Training distance... ✅ 0 pairs scored
+Training cointegration... ✅ 113 pairs scored
+Training combined... ✅ 76 pairs scored
+
+Ensembling 4 selectors...
+Selected pairs: 10 (target 10)
+
+
+Backtesting 10 pairs on test period...
+
+========================================
+FOLD 14 RESULTS
+========================================
+Net Sharpe:   -0.400
+Gross Sharpe: -0.336
+Max DD:       1.7%
+Total Trades: 28
+========================================
+
+
+============================================================
+FOLD 15
+Train: 2018-01-01 to 2018-12-31
+Test:  2019-01-01 to 2019-12-31
+============================================================
+
+Train shape: (246, 47)
+Test shape:  (243, 47)
+
+Candidate pairs: 1081
+
+Training correlation... ✅ 0 pairs scored
+Training distance... ✅ 0 pairs scored
+Training cointegration... ✅ 46 pairs scored
+Training combined... ✅ 38 pairs scored
+
+Ensembling 4 selectors...
+Selected pairs: 10 (target 10)
+
+
+Backtesting 10 pairs on test period...
+
+========================================
+FOLD 15 RESULTS
+========================================
+Net Sharpe:   1.554
+Gross Sharpe: 1.593
+Max DD:       1.3%
+Total Trades: 19
+========================================
+
+
+============================================================
+FOLD 16
+Train: 2019-01-01 to 2019-12-31
+Test:  2020-01-01 to 2020-12-31
+============================================================
+
+Train shape: (243, 47)
+Test shape:  (251, 47)
+
+Candidate pairs: 1081
+
+Training correlation... ✅ 0 pairs scored
+Training distance... ✅ 0 pairs scored
+Training cointegration... ✅ 55 pairs scored
+Training combined... ✅ 53 pairs scored
+
+Ensembling 4 selectors...
+Selected pairs: 10 (target 10)
+
+
+Backtesting 10 pairs on test period...
+
+========================================
+FOLD 16 RESULTS
+========================================
+Net Sharpe:   0.058
+Gross Sharpe: 0.091
+Max DD:       3.5%
+Total Trades: 12
+========================================
+
+
+============================================================
+SUMMARY: NSE_NIFTY100_LONGRUN
+============================================================
+Avg Net Sharpe:   0.162 ± 0.808
+Avg Gross Sharpe: 0.199
+Cost Drag:        0.037
+Transaction Cost: 16.4 bps
+
+💾 Saved: /users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experimental-ablation/results/nse_nifty100_longrun/wfv_16folds_zscore_20260603_210953.json
+============================================================
+

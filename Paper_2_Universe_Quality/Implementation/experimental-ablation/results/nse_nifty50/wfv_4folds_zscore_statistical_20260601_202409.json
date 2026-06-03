@@ -1,0 +1,46 @@
+{
+  "experiment": "nse_nifty50_rolling_zscore_statistical_only",
+  "timestamp": "2026-06-01T20:24:09.622070",
+  "config": {
+    "market": "NSE_Nifty50",
+    "signal": "zscore",
+    "selectors": [
+      "Correlation",
+      "Distance",
+      "Cointegration",
+      "Combined"
+    ],
+    "n_folds": 4
+  },
+  "results": {
+    "avg_sharpe": 0.0,
+    "total_trades": 333,
+    "folds": [
+      {
+        "fold": 1,
+        "sharpe": 0.0,
+        "return": 0.0,
+        "n_trades": 96
+      },
+      {
+        "fold": 2,
+        "sharpe": 0.0,
+        "return": 0.0,
+        "n_trades": 64
+      },
+      {
+        "fold": 3,
+        "sharpe": 0.0,
+        "return": 0.0,
+        "n_trades": 96
+      },
+      {
+        "fold": 4,
+        "sharpe": 0.0,
+        "return": 0.0,
+        "n_trades": 77
+      }
+    ]
+  },
+  "runtime_seconds": 125.26163
+}

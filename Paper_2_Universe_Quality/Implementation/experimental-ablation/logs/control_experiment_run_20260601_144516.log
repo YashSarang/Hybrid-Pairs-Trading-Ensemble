@@ -1,0 +1,12 @@
+===================================
+NSE NIFTY 50 CONTROL EXPERIMENT
+===================================
+
+Purpose: Test if Nifty 50 outperforms Nifty 100 on SAME exchange (NSE)
+This isolates universe quality from geographic effects
+
+Step 1: Fetch NSE Nifty 50 data...
+Traceback (most recent call last):
+  File "D:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\experimental-ablation\scripts\fetch_market_data.py", line 17, in <module>
+    import yaml
+ModuleNotFoundError: No module named 'yaml'

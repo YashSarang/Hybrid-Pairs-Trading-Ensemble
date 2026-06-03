@@ -1,0 +1,127 @@
+{
+  "experiment": "E5_benchmark_comparison",
+  "wfv_file": "walk_forward_20260402_230753.json",
+  "mode": "stat_only",
+  "s2": "ou_only",
+  "oos_start": "2020-01-01",
+  "oos_end": "2025-12-31",
+  "strategy": {
+    "gross": {
+      "label": "Strategy (Gross)",
+      "total_ret": 40.46,
+      "cagr": 3.99,
+      "vol_ann": 6.39,
+      "sharpe": 0.624,
+      "max_dd": -12.57,
+      "calmar": 0.317,
+      "n_days": 2191,
+      "n_years": 8.69
+    },
+    "net": {
+      "label": "Strategy (Net)",
+      "total_ret": 23.18,
+      "cagr": 2.43,
+      "vol_ann": 6.75,
+      "sharpe": 0.359,
+      "max_dd": -13.42,
+      "calmar": 0.181,
+      "n_days": 2191,
+      "n_years": 8.69
+    }
+  },
+  "benchmarks": {
+    "Nifty 50": {
+      "benchmark_metrics": {
+        "label": "Nifty 50",
+        "total_ret": 112.92,
+        "cagr": 13.69,
+        "vol_ann": 18.25,
+        "sharpe": 0.75,
+        "max_dd": -38.44,
+        "calmar": 0.356,
+        "n_days": 1484,
+        "n_years": 5.89
+      },
+      "gross_vs_benchmark": {
+        "vs_benchmark": "Nifty 50",
+        "beta": 0.0667,
+        "alpha_ann_pct": 4.87,
+        "correlation": 0.157,
+        "active_return_ann_pct": -7.1,
+        "tracking_error_ann_pct": 18.68,
+        "information_ratio": -0.38
+      },
+      "net_vs_benchmark": {
+        "vs_benchmark": "Nifty 50",
+        "beta": 0.0713,
+        "alpha_ann_pct": 2.58,
+        "correlation": 0.1586,
+        "active_return_ann_pct": -9.34,
+        "tracking_error_ann_pct": 18.79,
+        "information_ratio": -0.497
+      }
+    },
+    "Nifty Bank": {
+      "benchmark_metrics": {
+        "label": "Nifty Bank",
+        "total_ret": 84.32,
+        "cagr": 10.95,
+        "vol_ann": 24.32,
+        "sharpe": 0.45,
+        "max_dd": -47.86,
+        "calmar": 0.229,
+        "n_days": 1483,
+        "n_years": 5.88
+      },
+      "gross_vs_benchmark": {
+        "vs_benchmark": "Nifty Bank",
+        "beta": 0.0575,
+        "alpha_ann_pct": 5.14,
+        "correlation": 0.1803,
+        "active_return_ann_pct": -4.66,
+        "tracking_error_ann_pct": 24.16,
+        "information_ratio": -0.193
+      },
+      "net_vs_benchmark": {
+        "vs_benchmark": "Nifty Bank",
+        "beta": 0.0608,
+        "alpha_ann_pct": 2.87,
+        "correlation": 0.1802,
+        "active_return_ann_pct": -6.89,
+        "tracking_error_ann_pct": 24.23,
+        "information_ratio": -0.284
+      }
+    },
+    "Nifty IT": {
+      "benchmark_metrics": {
+        "label": "Nifty IT",
+        "total_ret": 141.69,
+        "cagr": 16.18,
+        "vol_ann": 23.35,
+        "sharpe": 0.693,
+        "max_dd": -33.35,
+        "calmar": 0.485,
+        "n_days": 1483,
+        "n_years": 5.88
+      },
+      "gross_vs_benchmark": {
+        "vs_benchmark": "Nifty IT",
+        "beta": 0.0082,
+        "alpha_ann_pct": 5.61,
+        "correlation": 0.0246,
+        "active_return_ann_pct": -9.26,
+        "tracking_error_ann_pct": 24.42,
+        "information_ratio": -0.379
+      },
+      "net_vs_benchmark": {
+        "vs_benchmark": "Nifty IT",
+        "beta": 0.0101,
+        "alpha_ann_pct": 3.35,
+        "correlation": 0.0288,
+        "active_return_ann_pct": -11.5,
+        "tracking_error_ann_pct": 24.52,
+        "information_ratio": -0.469
+      }
+    }
+  }
+}

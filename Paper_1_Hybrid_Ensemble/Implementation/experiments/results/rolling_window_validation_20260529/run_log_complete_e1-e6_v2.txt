@@ -1,0 +1,339 @@
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/attr_value.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/tensor.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/resource_handle.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/tensor_shape.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/types.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/full_type.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/function.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/node_def.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/op_def.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/graph.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/graph_debug_info.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/versions.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/protobuf/config.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at xla/tsl/protobuf/coordination_config.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/cost_graph.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/step_stats.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/allocation_description.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/tensor_description.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/protobuf/cluster.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/protobuf/debug.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\keras\src\export\tf2onnx_lib.py:8: FutureWarning: In the future `np.object` will be defined as the corresponding NumPy scalar.
+  if not hasattr(np, "object"):
+16:36:01 [INFO] ======================================================================
+16:36:01 [INFO] ROLLING-WINDOW WALK-FORWARD VALIDATION
+16:36:01 [INFO] Methodology: Fixed 12-month training windows
+16:36:01 [INFO] Signal Parameters: lookback=126 (both ZScore and OU)
+16:36:01 [INFO] ======================================================================
+16:36:01 [INFO] \n📥 Loading NSE Nifty 100 data...
+Loading data from cache: data_cache/daily_prices.parquet
+C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\core\data.py:162: PerformanceWarning: indexing past lexsort depth may impact performance.
+  if col in data.columns:
+C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\core\data.py:163: PerformanceWarning: indexing past lexsort depth may impact performance.
+  s = data[col]
+16:36:01 [INFO] ✓ Loaded 35 tickers, 2557 days
+16:36:01 [INFO] 
+🔧 Building ensemble selectors...
+16:36:01 [INFO] ✓ 8 selectors ready
+16:36:01 [INFO] 
+======================================================================
+16:36:01 [INFO] FOLD 1: 2020-01-01 to 2020-12-31
+16:36:01 [INFO]   Train: 2019-01-01 to 2019-12-31
+16:36:01 [INFO] ======================================================================
+16:36:01 [INFO] Train: 365 bars, Test: 366 bars
+16:36:01 [INFO]   Generated 595 candidate pairs
+16:36:01 [INFO]   Running Correlation selector...
+16:36:01 [INFO]     ✓ 595 pairs scored
+16:36:01 [INFO]   Running Distance selector...
+16:36:01 [INFO]     ✓ 595 pairs scored
+16:36:01 [INFO]   Running Cointegration selector...
+16:36:05 [INFO]     ✓ 595 pairs scored
+16:36:05 [INFO]   Running Combined selector...
+16:36:09 [INFO]     ✓ 595 pairs scored
+16:36:09 [INFO]   Running ML selector...
+16:36:09 [INFO]     ✓ 595 pairs scored
+16:36:09 [INFO]   Running LSTM selector...
+16:36:12 [INFO] [LSTMSelector] 35700 sequences, class dist: {0: 18428, 1: 17272}
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\keras\src\layers\rnn\bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+16:37:03 [INFO] [LSTMSelector] Training complete.
+16:37:04 [INFO]     ✓ 595 pairs scored
+16:37:04 [INFO]   Running Transformer selector...
+16:37:06 [INFO] [TransformerSelector] 35700 sequences, class dist: {0: 18428, 1: 17272}
+16:38:51 [INFO] [TransformerSelector] Training complete.
+16:38:53 [INFO]     ✓ 595 pairs scored
+16:38:53 [INFO]   Running GNN selector...
+16:38:54 [INFO] [GNNSelector] Training on 5 snapshots, N=35 stocks.
+16:40:04 [INFO] [GNNSelector] Training complete.
+16:40:04 [INFO]     ✓ 595 pairs scored
+16:40:04 [INFO]   Selected 10 pairs in 242.4s
+16:40:04 [INFO]   Top 5: ['ONGC-COALINDIA', 'M&M-ONGC', 'TATASTEEL-JSWSTEEL', 'HINDUNILVR-NESTLEIND', 'MARUTI-BAJAJ-AUTO']
+16:40:04 [INFO] 
+========================================
+16:40:04 [INFO] FOLD 1 RESULTS
+16:40:04 [INFO] ========================================
+16:40:04 [INFO] Net Sharpe:   0.096
+16:40:04 [INFO] Gross Sharpe: 0.136
+16:40:04 [INFO] Max DD:       26.8%
+16:40:04 [INFO] Total Trades: 47
+16:40:04 [INFO] Cost Drag:    -0.041 Sharpe units
+16:40:04 [INFO] ========================================
+
+16:40:04 [INFO] 
+======================================================================
+16:40:04 [INFO] FOLD 2: 2021-01-01 to 2021-12-31
+16:40:04 [INFO]   Train: 2020-01-01 to 2020-12-31
+16:40:04 [INFO] ======================================================================
+16:40:04 [INFO] Train: 366 bars, Test: 365 bars
+16:40:04 [INFO]   Generated 595 candidate pairs
+16:40:04 [INFO]   Running Correlation selector...
+16:40:04 [INFO]     ✓ 595 pairs scored
+16:40:04 [INFO]   Running Distance selector...
+16:40:04 [INFO]     ✓ 595 pairs scored
+16:40:04 [INFO]   Running Cointegration selector...
+16:40:08 [INFO]     ✓ 595 pairs scored
+16:40:08 [INFO]   Running Combined selector...
+16:40:12 [INFO]     ✓ 595 pairs scored
+16:40:12 [INFO]   Running ML selector...
+16:40:12 [INFO]     ✓ 595 pairs scored
+16:40:12 [INFO]   Running LSTM selector...
+16:40:14 [INFO] [LSTMSelector] 35700 sequences, class dist: {0: 19149, 1: 16551}
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\keras\src\layers\rnn\bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+16:40:58 [INFO] [LSTMSelector] Training complete.
+16:41:00 [INFO]     ✓ 595 pairs scored
+16:41:00 [INFO]   Running Transformer selector...
+16:41:02 [INFO] [TransformerSelector] 35700 sequences, class dist: {0: 19149, 1: 16551}
+16:42:53 [INFO] [TransformerSelector] Training complete.
+16:42:54 [INFO]     ✓ 595 pairs scored
+16:42:54 [INFO]   Running GNN selector...
+16:42:55 [INFO] [GNNSelector] Training on 5 snapshots, N=35 stocks.
+16:44:05 [INFO] [GNNSelector] Training complete.
+16:44:05 [INFO]     ✓ 595 pairs scored
+16:44:05 [INFO]   Selected 10 pairs in 240.9s
+16:44:05 [INFO]   Top 5: ['TECHM-JSWSTEEL', 'INFY-WIPRO', 'ICICIBANK-AXISBANK', 'WIPRO-HCLTECH', 'HDFCBANK-AXISBANK']
+16:44:05 [INFO] 
+========================================
+16:44:05 [INFO] FOLD 2 RESULTS
+16:44:05 [INFO] ========================================
+16:44:05 [INFO] Net Sharpe:   0.572
+16:44:05 [INFO] Gross Sharpe: 0.636
+16:44:05 [INFO] Max DD:       7.3%
+16:44:05 [INFO] Total Trades: 53
+16:44:05 [INFO] Cost Drag:    -0.064 Sharpe units
+16:44:05 [INFO] ========================================
+
+16:44:05 [INFO] 
+======================================================================
+16:44:05 [INFO] FOLD 3: 2022-01-01 to 2022-12-31
+16:44:05 [INFO]   Train: 2021-01-01 to 2021-12-31
+16:44:05 [INFO] ======================================================================
+16:44:05 [INFO] Train: 365 bars, Test: 365 bars
+16:44:05 [INFO]   Generated 595 candidate pairs
+16:44:05 [INFO]   Running Correlation selector...
+16:44:05 [INFO]     ✓ 595 pairs scored
+16:44:05 [INFO]   Running Distance selector...
+16:44:05 [INFO]     ✓ 595 pairs scored
+16:44:05 [INFO]   Running Cointegration selector...
+16:44:08 [INFO]     ✓ 595 pairs scored
+16:44:08 [INFO]   Running Combined selector...
+16:44:13 [INFO]     ✓ 595 pairs scored
+16:44:13 [INFO]   Running ML selector...
+16:44:13 [INFO]     ✓ 595 pairs scored
+16:44:13 [INFO]   Running LSTM selector...
+16:44:15 [INFO] [LSTMSelector] 35700 sequences, class dist: {0: 20889, 1: 14811}
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\keras\src\layers\rnn\bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+16:45:03 [INFO] [LSTMSelector] Training complete.
+16:45:04 [INFO]     ✓ 595 pairs scored
+16:45:04 [INFO]   Running Transformer selector...
+16:45:06 [INFO] [TransformerSelector] 35700 sequences, class dist: {0: 20889, 1: 14811}
+16:47:01 [INFO] [TransformerSelector] Training complete.
+16:47:03 [INFO]     ✓ 595 pairs scored
+16:47:03 [INFO]   Running GNN selector...
+16:47:04 [INFO] [GNNSelector] Training on 5 snapshots, N=35 stocks.
+16:48:13 [INFO] [GNNSelector] Training complete.
+16:48:13 [INFO]     ✓ 595 pairs scored
+16:48:13 [INFO]   Selected 10 pairs in 248.3s
+16:48:13 [INFO]   Top 5: ['ULTRACEMCO-ACC', 'BAJAJ-AUTO-HEROMOTOCO', 'INFY-TECHM', 'WIPRO-HCLTECH', 'TCS-HCLTECH']
+16:48:13 [INFO] 
+========================================
+16:48:13 [INFO] FOLD 3 RESULTS
+16:48:13 [INFO] ========================================
+16:48:13 [INFO] Net Sharpe:   0.847
+16:48:13 [INFO] Gross Sharpe: 0.916
+16:48:13 [INFO] Max DD:       6.2%
+16:48:13 [INFO] Total Trades: 54
+16:48:13 [INFO] Cost Drag:    -0.070 Sharpe units
+16:48:13 [INFO] ========================================
+
+16:48:13 [INFO] 
+======================================================================
+16:48:13 [INFO] FOLD 4: 2023-01-01 to 2023-12-31
+16:48:13 [INFO]   Train: 2022-01-01 to 2022-12-31
+16:48:13 [INFO] ======================================================================
+16:48:13 [INFO] Train: 365 bars, Test: 365 bars
+16:48:13 [INFO]   Generated 595 candidate pairs
+16:48:13 [INFO]   Running Correlation selector...
+16:48:13 [INFO]     ✓ 595 pairs scored
+16:48:13 [INFO]   Running Distance selector...
+16:48:13 [INFO]     ✓ 595 pairs scored
+16:48:13 [INFO]   Running Cointegration selector...
+16:48:17 [INFO]     ✓ 595 pairs scored
+16:48:17 [INFO]   Running Combined selector...
+16:48:21 [INFO]     ✓ 595 pairs scored
+16:48:21 [INFO]   Running ML selector...
+16:48:21 [INFO]     ✓ 595 pairs scored
+16:48:21 [INFO]   Running LSTM selector...
+16:48:23 [INFO] [LSTMSelector] 35700 sequences, class dist: {0: 18680, 1: 17020}
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\keras\src\layers\rnn\bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+16:49:10 [INFO] [LSTMSelector] Training complete.
+16:49:12 [INFO]     ✓ 595 pairs scored
+16:49:12 [INFO]   Running Transformer selector...
+16:49:14 [INFO] [TransformerSelector] 35700 sequences, class dist: {0: 18680, 1: 17020}
+16:51:21 [INFO] [TransformerSelector] Training complete.
+16:51:22 [INFO]     ✓ 595 pairs scored
+16:51:22 [INFO]   Running GNN selector...
+16:51:23 [INFO] [GNNSelector] Training on 5 snapshots, N=35 stocks.
+16:52:35 [INFO] [GNNSelector] Training complete.
+16:52:35 [INFO]     ✓ 595 pairs scored
+16:52:35 [INFO]   Selected 10 pairs in 261.9s
+16:52:35 [INFO]   Top 5: ['ITC-COALINDIA', 'TATASTEEL-HINDALCO', 'HDFCBANK-SBIN', 'SBIN-AXISBANK', 'ICICIBANK-SBIN']
+16:52:35 [INFO] 
+========================================
+16:52:35 [INFO] FOLD 4 RESULTS
+16:52:35 [INFO] ========================================
+16:52:35 [INFO] Net Sharpe:   -0.485
+16:52:35 [INFO] Gross Sharpe: -0.432
+16:52:35 [INFO] Max DD:       18.0%
+16:52:35 [INFO] Total Trades: 48
+16:52:35 [INFO] Cost Drag:    -0.053 Sharpe units
+16:52:35 [INFO] ========================================
+
+16:52:35 [INFO] 
+======================================================================
+16:52:35 [INFO] FOLD 5: 2024-01-01 to 2024-12-31
+16:52:35 [INFO]   Train: 2023-01-01 to 2023-12-31
+16:52:35 [INFO] ======================================================================
+16:52:35 [INFO] Train: 365 bars, Test: 366 bars
+16:52:35 [INFO]   Generated 595 candidate pairs
+16:52:35 [INFO]   Running Correlation selector...
+16:52:35 [INFO]     ✓ 595 pairs scored
+16:52:35 [INFO]   Running Distance selector...
+16:52:35 [INFO]     ✓ 595 pairs scored
+16:52:35 [INFO]   Running Cointegration selector...
+16:52:39 [INFO]     ✓ 595 pairs scored
+16:52:39 [INFO]   Running Combined selector...
+16:52:43 [INFO]     ✓ 595 pairs scored
+16:52:43 [INFO]   Running ML selector...
+16:52:43 [INFO]     ✓ 595 pairs scored
+16:52:43 [INFO]   Running LSTM selector...
+16:52:45 [INFO] [LSTMSelector] 35700 sequences, class dist: {0: 17752, 1: 17948}
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\keras\src\layers\rnn\bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+16:53:38 [INFO] [LSTMSelector] Training complete.
+16:53:40 [INFO]     ✓ 595 pairs scored
+16:53:40 [INFO]   Running Transformer selector...
+16:53:42 [INFO] [TransformerSelector] 35700 sequences, class dist: {0: 17752, 1: 17948}
+16:55:38 [INFO] [TransformerSelector] Training complete.
+16:55:40 [INFO]     ✓ 595 pairs scored
+16:55:40 [INFO]   Running GNN selector...
+16:55:41 [INFO] [GNNSelector] Training on 5 snapshots, N=35 stocks.
+16:56:50 [INFO] [GNNSelector] Training complete.
+16:56:50 [INFO]     ✓ 595 pairs scored
+16:56:50 [INFO]   Selected 10 pairs in 254.9s
+16:56:50 [INFO]   Top 5: ['INDUSINDBK-M&M', 'INFY-TATASTEEL', 'BAJAJ-AUTO-HEROMOTOCO', 'IOC-BPCL', 'SUNPHARMA-TATASTEEL']
+16:56:50 [INFO] 
+========================================
+16:56:50 [INFO] FOLD 5 RESULTS
+16:56:50 [INFO] ========================================
+16:56:50 [INFO] Net Sharpe:   -1.270
+16:56:50 [INFO] Gross Sharpe: -1.216
+16:56:50 [INFO] Max DD:       20.0%
+16:56:50 [INFO] Total Trades: 48
+16:56:50 [INFO] Cost Drag:    -0.054 Sharpe units
+16:56:50 [INFO] ========================================
+
+16:56:50 [INFO] 
+======================================================================
+16:56:50 [INFO] FOLD 6: 2025-01-01 to 2025-12-31
+16:56:50 [INFO]   Train: 2024-01-01 to 2024-12-31
+16:56:50 [INFO] ======================================================================
+16:56:50 [INFO] Train: 366 bars, Test: 365 bars
+16:56:50 [INFO]   Generated 595 candidate pairs
+16:56:50 [INFO]   Running Correlation selector...
+16:56:50 [INFO]     ✓ 595 pairs scored
+16:56:50 [INFO]   Running Distance selector...
+16:56:50 [INFO]     ✓ 595 pairs scored
+16:56:50 [INFO]   Running Cointegration selector...
+16:56:54 [INFO]     ✓ 595 pairs scored
+16:56:54 [INFO]   Running Combined selector...
+16:56:59 [INFO]     ✓ 595 pairs scored
+16:56:59 [INFO]   Running ML selector...
+16:56:59 [INFO]     ✓ 595 pairs scored
+16:56:59 [INFO]   Running LSTM selector...
+16:57:01 [INFO] [LSTMSelector] 35700 sequences, class dist: {0: 18885, 1: 16815}
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\keras\src\layers\rnn\bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+16:57:59 [INFO] [LSTMSelector] Training complete.
+16:58:00 [INFO]     ✓ 595 pairs scored
+16:58:00 [INFO]   Running Transformer selector...
+16:58:02 [INFO] [TransformerSelector] 35700 sequences, class dist: {0: 18885, 1: 16815}
+16:59:56 [INFO] [TransformerSelector] Training complete.
+16:59:57 [INFO]     ✓ 595 pairs scored
+16:59:57 [INFO]   Running GNN selector...
+16:59:58 [INFO] [GNNSelector] Training on 5 snapshots, N=35 stocks.
+17:01:06 [INFO] [GNNSelector] Training complete.
+17:01:06 [INFO]     ✓ 595 pairs scored
+17:01:06 [INFO]   Selected 10 pairs in 256.0s
+17:01:06 [INFO]   Top 5: ['HCLTECH-TECHM', 'HCLTECH-DIVISLAB', 'INFY-TECHM', 'ICICIBANK-TECHM', 'TECHM-DIVISLAB']
+17:01:06 [INFO] 
+========================================
+17:01:06 [INFO] FOLD 6 RESULTS
+17:01:06 [INFO] ========================================
+17:01:06 [INFO] Net Sharpe:   0.552
+17:01:06 [INFO] Gross Sharpe: 0.611
+17:01:06 [INFO] Max DD:       8.0%
+17:01:06 [INFO] Total Trades: 43
+17:01:06 [INFO] Cost Drag:    -0.059 Sharpe units
+17:01:06 [INFO] ========================================
+
+17:01:06 [INFO] 
+======================================================================
+17:01:06 [INFO] AGGREGATE RESULTS (All Folds)
+17:01:06 [INFO] ======================================================================
+17:01:06 [INFO] Avg Net Sharpe:   +0.052 ± 0.799
+17:01:06 [INFO] Avg Gross Sharpe: +0.108
+17:01:06 [INFO] Total Trades:     293
+17:01:06 [INFO] Avg Trades/Fold:  49
+17:01:06 [INFO] Positive Folds:   4/6
+17:01:06 [INFO] ======================================================================
+17:01:06 [INFO] 
+✅ Results saved to: C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\experiments\results\rolling_window_validation_20260529\walk_forward_rolling_20260529_170106.json
+17:01:06 [INFO] 
+Comparison instructions:
+17:01:06 [INFO]   - Original expanding-window: experiments/results/walk_forward_20260506_104613.json
+17:01:06 [INFO]   - New rolling-window:        C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\experiments\results\rolling_window_validation_20260529\walk_forward_rolling_20260529_170106.json
+17:01:06 [INFO] 
+Next: Compare methodologies and decide which to use in thesis Chapter 3

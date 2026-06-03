@@ -1,0 +1,218 @@
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/attr_value.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/tensor.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/resource_handle.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/tensor_shape.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/types.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/full_type.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/function.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/node_def.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/op_def.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/graph.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/graph_debug_info.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/versions.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/protobuf/config.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at xla/tsl/protobuf/coordination_config.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/cost_graph.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/step_stats.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/allocation_description.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/tensor_description.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/protobuf/cluster.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/protobuf/debug.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+
+============================================================
+Multi-Market WFV: INDIA
+============================================================
+Universe: 34 tickers
+Period: 2020-01-01 to 2025-04-30
+Selectors: correlation, distance, cointegration, combined, ml, lstm, transformer, gnn
+Folds: 4
+============================================================
+
+
+============================================================
+FOLD 1
+Train: 2020-01-01 to 2020-12-31
+Test:  2021-01-01 to 2021-12-31
+============================================================
+
+Train shape: (251, 34)
+Test shape:  (248, 34)
+
+Candidate pairs: 561
+
+Training correlation... ✅ 0 pairs scored
+Training distance... ✅ 0 pairs scored
+Training cointegration... ✅ 0 pairs scored
+Training combined... ✅ 0 pairs scored
+Training ml... ✅ 0 pairs scored
+Training lstm... [LSTMSelector] TensorFlow unavailable; will return neutral scores.
+✅ 0 pairs scored
+Training transformer... [TransformerSelector] TensorFlow unavailable; will return neutral scores.
+✅ 0 pairs scored
+Training gnn... [GNNSelector] TensorFlow unavailable; will return neutral scores.
+✅ 0 pairs scored
+
+Ensembling 8 selectors...
+Selected pairs: 10 (target 10)
+
+
+Backtesting 10 pairs on test period...
+
+========================================
+FOLD 1 RESULTS
+========================================
+Net Sharpe:   0.552
+Gross Sharpe: 0.662
+Max DD:       2.2%
+Total Trades: 59
+========================================
+
+
+============================================================
+FOLD 2
+Train: 2021-01-01 to 2021-12-31
+Test:  2022-01-01 to 2022-12-31
+============================================================
+
+Train shape: (248, 34)
+Test shape:  (248, 34)
+
+Candidate pairs: 561
+
+Training correlation... ✅ 0 pairs scored
+Training distance... ✅ 0 pairs scored
+Training cointegration... ✅ 0 pairs scored
+Training combined... ✅ 0 pairs scored
+Training ml... ✅ 0 pairs scored
+Training lstm... [LSTMSelector] TensorFlow unavailable; will return neutral scores.
+✅ 0 pairs scored
+Training transformer... [TransformerSelector] TensorFlow unavailable; will return neutral scores.
+✅ 0 pairs scored
+Training gnn... [GNNSelector] TensorFlow unavailable; will return neutral scores.
+✅ 0 pairs scored
+
+Ensembling 8 selectors...
+Selected pairs: 10 (target 10)
+
+
+Backtesting 10 pairs on test period...
+
+========================================
+FOLD 2 RESULTS
+========================================
+Net Sharpe:   0.169
+Gross Sharpe: 0.279
+Max DD:       2.5%
+Total Trades: 61
+========================================
+
+
+============================================================
+FOLD 3
+Train: 2022-01-01 to 2022-12-31
+Test:  2023-01-01 to 2023-12-31
+============================================================
+
+Train shape: (248, 34)
+Test shape:  (245, 34)
+
+Candidate pairs: 561
+
+Training correlation... ✅ 0 pairs scored
+Training distance... ✅ 0 pairs scored
+Training cointegration... ✅ 0 pairs scored
+Training combined... ✅ 0 pairs scored
+Training ml... ✅ 0 pairs scored
+Training lstm... [LSTMSelector] TensorFlow unavailable; will return neutral scores.
+✅ 0 pairs scored
+Training transformer... [TransformerSelector] TensorFlow unavailable; will return neutral scores.
+✅ 0 pairs scored
+Training gnn... [GNNSelector] TensorFlow unavailable; will return neutral scores.
+✅ 0 pairs scored
+
+Ensembling 8 selectors...
+Selected pairs: 10 (target 10)
+
+
+Backtesting 10 pairs on test period...
+
+========================================
+FOLD 3 RESULTS
+========================================
+Net Sharpe:   -0.079
+Gross Sharpe: 0.012
+Max DD:       4.3%
+Total Trades: 62
+========================================
+
+
+============================================================
+FOLD 4
+Train: 2023-01-01 to 2023-12-31
+Test:  2024-01-01 to 2025-04-30
+============================================================
+
+Train shape: (245, 34)
+Test shape:  (327, 34)
+
+Candidate pairs: 561
+
+Training correlation... ✅ 0 pairs scored
+Training distance... ✅ 0 pairs scored
+Training cointegration... ✅ 0 pairs scored
+Training combined... ✅ 0 pairs scored
+Training ml... ✅ 0 pairs scored
+Training lstm... [LSTMSelector] TensorFlow unavailable; will return neutral scores.
+✅ 0 pairs scored
+Training transformer... [TransformerSelector] TensorFlow unavailable; will return neutral scores.
+✅ 0 pairs scored
+Training gnn... [GNNSelector] TensorFlow unavailable; will return neutral scores.
+✅ 0 pairs scored
+
+Ensembling 8 selectors...
+Selected pairs: 10 (target 10)
+
+
+Backtesting 10 pairs on test period...
+
+========================================
+FOLD 4 RESULTS
+========================================
+Net Sharpe:   0.952
+Gross Sharpe: 1.070
+Max DD:       3.8%
+Total Trades: 107
+========================================
+
+
+============================================================
+SUMMARY: INDIA
+============================================================
+Avg Net Sharpe:   0.398 ± 0.391
+Avg Gross Sharpe: 0.506
+Cost Drag:        0.107
+Transaction Cost: 16.4 bps
+
+💾 Saved: C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\experimental-ablation\results\india\wfv_4folds_zscore_20260529_070512.json
+============================================================
+

@@ -1,0 +1,11 @@
+============================================================
+NSE NIFTY 50 CONTROL EXPERIMENT (Direct Python)
+============================================================
+
+Purpose: Isolate universe quality from geographic effects
+Comparing: NSE Nifty 50 vs NSE Nifty 100 vs India Multi-Market
+
+Traceback (most recent call last):
+  File "D:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\experimental-ablation\run_control_experiment_direct.py", line 25, in <module>
+    import pandas as pd
+ModuleNotFoundError: No module named 'pandas'

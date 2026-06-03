@@ -1,0 +1,78 @@
+#!/usr/bin/expect -f
+# ssh_upload_and_submit.exp
+# Automates SSH password entry for uploading files and submitting SLURM job
+
+set timeout 120
+set password "yash.sarang"
+set host "yash.sarang@kalpana.minds.iitb.ac.in"
+set local_dir "/d/Code/Hybrid-Pairs-Trading-Ensemble/Implementation/experimental-ablation"
+set remote_dir "/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experimental-ablation"
+
+# Upload Python script
+puts "\n=== Uploading run_control_experiment_cached.py ==="
+spawn scp $local_dir/run_control_experiment_cached.py $host:$remote_dir/
+expect {
+    "password:" {
+        send "$password\r"
+        exp_continue
+    }
+    "100%" {
+        puts "✓ Upload complete"
+    }
+    timeout {
+        puts "✗ Upload timed out"
+        exit 1
+    }
+}
+
+# Upload SLURM script
+puts "\n=== Uploading slurm_control_experiment_cached.sh ==="
+spawn scp $local_dir/slurm_control_experiment_cached.sh $host:$remote_dir/
+expect {
+    "password:" {
+        send "$password\r"
+        exp_continue
+    }
+    "100%" {
+        puts "✓ Upload complete"
+    }
+    timeout {
+        puts "✗ Upload timed out"
+        exit 1
+    }
+}
+
+# SSH and submit job
+puts "\n=== Submitting SLURM job ==="
+spawn ssh $host
+expect {
+    "password:" {
+        send "$password\r"
+        exp_continue
+    }
+    "$ " {
+        send "cd $remote_dir\r"
+        expect "$ "
+        
+        send "sbatch slurm_control_experiment_cached.sh\r"
+        expect {
+            "Submitted batch job" {
+                puts "\n✓ Job submitted successfully"
+            }
+            timeout {
+                puts "\n✗ Job submission timed out"
+            }
+        }
+        
+        send "squeue -u yash.sarang -o \"%.10i %.12j %.8T %.10M %.10L %.6D %.20R\"\r"
+        expect "$ "
+        
+        send "exit\r"
+    }
+    timeout {
+        puts "✗ SSH connection timed out"
+        exit 1
+    }
+}
+
+puts "\n=== Done ==="

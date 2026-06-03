@@ -1,0 +1,26 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1778033818.949649   62608 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1778033823.042051   62608 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+07:47:09  INFO      ================================================================
+07:47:09  INFO      Walk-Forward Validation  |  mode=custom({"LSTM":1,"Correlation":1,"Distance":0,"Cointegration":0,"Co)  |  s2=rl_only  |  top_k=10
+07:47:09  INFO      S1 weights: {'LSTM': 1, 'Correlation': 1}
+07:47:09  INFO      Folds: ['Fold1_2020', 'Fold2_2021', 'Fold3_2022', 'Fold4_2023', 'Fold5_2024', 'Fold6_2025']
+07:47:09  INFO      min_hold_bars=30  capital=1,000,000
+07:47:09  INFO      ================================================================
+07:47:09  INFO      [Data] Fetching full 10-year daily prices ...
+/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/core/data.py:136: PerformanceWarning: indexing past lexsort depth may impact performance.
+  if col in data.columns:
+/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/core/data.py:137: PerformanceWarning: indexing past lexsort depth may impact performance.
+  s = data[col]
+07:47:09  INFO        35 tickers x 3742 bars  (2016-01-01 -> 2026-03-30)
+07:47:09  INFO        --- Fold1_2020 | Train 2016-01-01 -> 2019-12-31 | Test 2020-01-01 -> 2020-12-31 ---
+07:47:13  INFO      [LSTMSelector] 671755 sequences, class dist: {0: 335187, 1: 336568}
+07:47:13  INFO      [LSTMSelector] Subsampled to 50000 sequences.
+/users/student/pg/pg24/yash.sarang/miniconda3/envs/pairs_trading/lib/python3.10/site-packages/keras/src/layers/rnn/bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+07:48:12  INFO      [LSTMSelector] Training complete.
+07:48:15  INFO          Pairs selected (10): ['JSWSTEEL-HINDALCO', 'HDFCBANK-KOTAKBANK', 'BAJAJ-AUTO-HEROMOTOCO', 'MARUTI-M&M', 'MARUTI-HEROMOTOCO'] ...
+/users/student/pg/pg24/yash.sarang/miniconda3/envs/pairs_trading/lib/python3.10/site-packages/stable_baselines3/common/on_policy_algorithm.py:150: UserWarning: You are trying to run PPO on the GPU, but it is primarily intended to run on the CPU when not using a CNN policy (you are using ActorCriticPolicy which should be a MlpPolicy). See https://github.com/DLR-RM/stable-baselines3/issues/1245 for more info. You can pass `device='cpu'` or `export CUDA_VISIBLE_DEVICES=` to force using the CPU.Note: The model will train, but the GPU utilization will be poor and the training might take longer than on CPU.
+  warnings.warn(
+/var/spool/slurmd/job05533/slurm_script: line 29: 62608 Floating point exception(core dumped) python experiments/walk_forward.py --s1-weights '{"LSTM":1,"Correlation":1,"Distance":0,"Cointegration":0,"Combined":0,"ML":0,"Transformer":0,"GNN":0}' --s2 rl_only --top-k 10

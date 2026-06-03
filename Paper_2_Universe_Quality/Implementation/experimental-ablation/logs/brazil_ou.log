@@ -1,0 +1,314 @@
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/attr_value.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/tensor.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/resource_handle.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/tensor_shape.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/types.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/full_type.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/function.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/node_def.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/op_def.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/graph.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/graph_debug_info.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/versions.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/protobuf/config.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at xla/tsl/protobuf/coordination_config.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/cost_graph.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/step_stats.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/allocation_description.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/framework/tensor_description.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/protobuf/cluster.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\google\protobuf\runtime_version.py:98: UserWarning: Protobuf gencode version 5.28.3 is exactly one major version older than the runtime version 6.31.1 at tensorflow/core/protobuf/debug.proto. Please update the gencode to avoid compatibility violations in the next runtime release.
+  warnings.warn(
+C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\keras\src\export\tf2onnx_lib.py:8: FutureWarning: In the future `np.object` will be defined as the corresponding NumPy scalar.
+  if not hasattr(np, "object"):
+
+============================================================
+Multi-Market WFV: BRAZIL
+============================================================
+Universe: 27 tickers
+Period: 2020-01-02 to 2025-04-30
+Selectors: correlation, distance, cointegration, combined, ml, lstm, transformer, gnn
+Folds: 4
+============================================================
+
+
+============================================================
+FOLD 1
+Train: 2020-01-01 to 2020-12-31
+Test:  2021-01-01 to 2021-12-31
+============================================================
+
+Train shape: (248, 27)
+Test shape:  (247, 27)
+
+Candidate pairs: 351
+
+Training correlation... ✅ 0 pairs scored
+Training distance... ✅ 0 pairs scored
+Training cointegration... C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\core\selectors_statistical.py:108: CollinearityWarning: y0 and y1 are (almost) perfectly colinear.Cointegration test is not reliable in this case.
+  score, pval, _ = coint(window[p.a], window[p.b])
+C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\core\selectors_statistical.py:108: CollinearityWarning: y0 and y1 are (almost) perfectly colinear.Cointegration test is not reliable in this case.
+  score, pval, _ = coint(window[p.a], window[p.b])
+C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\core\selectors_statistical.py:108: CollinearityWarning: y0 and y1 are (almost) perfectly colinear.Cointegration test is not reliable in this case.
+  score, pval, _ = coint(window[p.a], window[p.b])
+C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\core\selectors_statistical.py:108: CollinearityWarning: y0 and y1 are (almost) perfectly colinear.Cointegration test is not reliable in this case.
+  score, pval, _ = coint(window[p.a], window[p.b])
+C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\core\selectors_statistical.py:108: CollinearityWarning: y0 and y1 are (almost) perfectly colinear.Cointegration test is not reliable in this case.
+  score, pval, _ = coint(window[p.a], window[p.b])
+C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\core\selectors_statistical.py:108: CollinearityWarning: y0 and y1 are (almost) perfectly colinear.Cointegration test is not reliable in this case.
+  score, pval, _ = coint(window[p.a], window[p.b])
+C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\core\selectors_statistical.py:108: CollinearityWarning: y0 and y1 are (almost) perfectly colinear.Cointegration test is not reliable in this case.
+  score, pval, _ = coint(window[p.a], window[p.b])
+C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\core\selectors_statistical.py:108: CollinearityWarning: y0 and y1 are (almost) perfectly colinear.Cointegration test is not reliable in this case.
+  score, pval, _ = coint(window[p.a], window[p.b])
+C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\core\selectors_statistical.py:108: CollinearityWarning: y0 and y1 are (almost) perfectly colinear.Cointegration test is not reliable in this case.
+  score, pval, _ = coint(window[p.a], window[p.b])
+C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\core\selectors_statistical.py:108: CollinearityWarning: y0 and y1 are (almost) perfectly colinear.Cointegration test is not reliable in this case.
+  score, pval, _ = coint(window[p.a], window[p.b])
+C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\core\selectors_statistical.py:108: CollinearityWarning: y0 and y1 are (almost) perfectly colinear.Cointegration test is not reliable in this case.
+  score, pval, _ = coint(window[p.a], window[p.b])
+C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\core\selectors_statistical.py:108: CollinearityWarning: y0 and y1 are (almost) perfectly colinear.Cointegration test is not reliable in this case.
+  score, pval, _ = coint(window[p.a], window[p.b])
+C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\core\selectors_statistical.py:108: CollinearityWarning: y0 and y1 are (almost) perfectly colinear.Cointegration test is not reliable in this case.
+  score, pval, _ = coint(window[p.a], window[p.b])
+C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\core\selectors_statistical.py:108: CollinearityWarning: y0 and y1 are (almost) perfectly colinear.Cointegration test is not reliable in this case.
+  score, pval, _ = coint(window[p.a], window[p.b])
+C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\core\selectors_statistical.py:108: CollinearityWarning: y0 and y1 are (almost) perfectly colinear.Cointegration test is not reliable in this case.
+  score, pval, _ = coint(window[p.a], window[p.b])
+C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\core\selectors_statistical.py:108: CollinearityWarning: y0 and y1 are (almost) perfectly colinear.Cointegration test is not reliable in this case.
+  score, pval, _ = coint(window[p.a], window[p.b])
+C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\core\selectors_statistical.py:108: CollinearityWarning: y0 and y1 are (almost) perfectly colinear.Cointegration test is not reliable in this case.
+  score, pval, _ = coint(window[p.a], window[p.b])
+✅ 41 pairs scored
+Training combined... C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\core\selectors_statistical.py:157: CollinearityWarning: y0 and y1 are (almost) perfectly colinear.Cointegration test is not reliable in this case.
+  _, pval, _ = coint(a, b)
+C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\core\selectors_statistical.py:157: CollinearityWarning: y0 and y1 are (almost) perfectly colinear.Cointegration test is not reliable in this case.
+  _, pval, _ = coint(a, b)
+C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\core\selectors_statistical.py:157: CollinearityWarning: y0 and y1 are (almost) perfectly colinear.Cointegration test is not reliable in this case.
+  _, pval, _ = coint(a, b)
+C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\core\selectors_statistical.py:157: CollinearityWarning: y0 and y1 are (almost) perfectly colinear.Cointegration test is not reliable in this case.
+  _, pval, _ = coint(a, b)
+C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\core\selectors_statistical.py:157: CollinearityWarning: y0 and y1 are (almost) perfectly colinear.Cointegration test is not reliable in this case.
+  _, pval, _ = coint(a, b)
+C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\core\selectors_statistical.py:157: CollinearityWarning: y0 and y1 are (almost) perfectly colinear.Cointegration test is not reliable in this case.
+  _, pval, _ = coint(a, b)
+C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\core\selectors_statistical.py:157: CollinearityWarning: y0 and y1 are (almost) perfectly colinear.Cointegration test is not reliable in this case.
+  _, pval, _ = coint(a, b)
+C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\core\selectors_statistical.py:157: CollinearityWarning: y0 and y1 are (almost) perfectly colinear.Cointegration test is not reliable in this case.
+  _, pval, _ = coint(a, b)
+C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\core\selectors_statistical.py:157: CollinearityWarning: y0 and y1 are (almost) perfectly colinear.Cointegration test is not reliable in this case.
+  _, pval, _ = coint(a, b)
+C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\core\selectors_statistical.py:157: CollinearityWarning: y0 and y1 are (almost) perfectly colinear.Cointegration test is not reliable in this case.
+  _, pval, _ = coint(a, b)
+C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\core\selectors_statistical.py:157: CollinearityWarning: y0 and y1 are (almost) perfectly colinear.Cointegration test is not reliable in this case.
+  _, pval, _ = coint(a, b)
+C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\core\selectors_statistical.py:157: CollinearityWarning: y0 and y1 are (almost) perfectly colinear.Cointegration test is not reliable in this case.
+  _, pval, _ = coint(a, b)
+C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\core\selectors_statistical.py:157: CollinearityWarning: y0 and y1 are (almost) perfectly colinear.Cointegration test is not reliable in this case.
+  _, pval, _ = coint(a, b)
+C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\core\selectors_statistical.py:157: CollinearityWarning: y0 and y1 are (almost) perfectly colinear.Cointegration test is not reliable in this case.
+  _, pval, _ = coint(a, b)
+C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\core\selectors_statistical.py:157: CollinearityWarning: y0 and y1 are (almost) perfectly colinear.Cointegration test is not reliable in this case.
+  _, pval, _ = coint(a, b)
+C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\core\selectors_statistical.py:157: CollinearityWarning: y0 and y1 are (almost) perfectly colinear.Cointegration test is not reliable in this case.
+  _, pval, _ = coint(a, b)
+C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\core\selectors_statistical.py:157: CollinearityWarning: y0 and y1 are (almost) perfectly colinear.Cointegration test is not reliable in this case.
+  _, pval, _ = coint(a, b)
+✅ 20 pairs scored
+Training ml... ✅ 0 pairs scored
+Training lstm... C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\keras\src\layers\rnn\bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+✅ 325 pairs scored
+Training transformer... ✅ 325 pairs scored
+Training gnn... C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\core\selectors_ml.py:874: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  rets = prices[cols].pct_change().dropna()
+C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\core\selectors_ml.py:890: FutureWarning: The default fill_method='pad' in Series.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  rj = fwd[cols[j]].pct_change().dropna().values
+C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\core\selectors_ml.py:889: FutureWarning: The default fill_method='pad' in Series.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  ri = fwd[cols[i]].pct_change().dropna().values
+C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\core\selectors_ml.py:874: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  rets = prices[cols].pct_change().dropna()
+C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\core\selectors_ml.py:890: FutureWarning: The default fill_method='pad' in Series.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  rj = fwd[cols[j]].pct_change().dropna().values
+C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\core\selectors_ml.py:889: FutureWarning: The default fill_method='pad' in Series.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  ri = fwd[cols[i]].pct_change().dropna().values
+C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\core\selectors_ml.py:874: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  rets = prices[cols].pct_change().dropna()
+C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\core\selectors_ml.py:890: FutureWarning: The default fill_method='pad' in Series.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  rj = fwd[cols[j]].pct_change().dropna().values
+C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\core\selectors_ml.py:889: FutureWarning: The default fill_method='pad' in Series.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  ri = fwd[cols[i]].pct_change().dropna().values
+C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\core\selectors_ml.py:874: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  rets = prices[cols].pct_change().dropna()
+C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\core\selectors_ml.py:890: FutureWarning: The default fill_method='pad' in Series.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  rj = fwd[cols[j]].pct_change().dropna().values
+C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\core\selectors_ml.py:889: FutureWarning: The default fill_method='pad' in Series.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  ri = fwd[cols[i]].pct_change().dropna().values
+C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\core\selectors_ml.py:874: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  rets = prices[cols].pct_change().dropna()
+C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\core\selectors_ml.py:890: FutureWarning: The default fill_method='pad' in Series.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  rj = fwd[cols[j]].pct_change().dropna().values
+C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\core\selectors_ml.py:889: FutureWarning: The default fill_method='pad' in Series.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  ri = fwd[cols[i]].pct_change().dropna().values
+✅ 0 pairs scored
+
+Ensembling 8 selectors...
+Selected pairs: 10 (target 10)
+
+
+Backtesting 10 pairs on test period...
+
+========================================
+FOLD 1 RESULTS
+========================================
+Net Sharpe:   0.000
+Gross Sharpe: 0.000
+Max DD:       0.0%
+Total Trades: 0
+========================================
+
+
+============================================================
+FOLD 2
+Train: 2021-01-01 to 2021-12-31
+Test:  2022-01-01 to 2022-12-31
+============================================================
+
+Train shape: (247, 27)
+Test shape:  (250, 27)
+
+Candidate pairs: 351
+
+Training correlation... ✅ 0 pairs scored
+Training distance... ✅ 0 pairs scored
+Training cointegration... ✅ 9 pairs scored
+Training combined... ✅ 6 pairs scored
+Training ml... ✅ 0 pairs scored
+Training lstm... C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\keras\src\layers\rnn\bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+✅ 351 pairs scored
+Training transformer... ✅ 351 pairs scored
+Training gnn... ✅ 351 pairs scored
+
+Ensembling 8 selectors...
+Selected pairs: 10 (target 10)
+
+
+Backtesting 10 pairs on test period...
+
+========================================
+FOLD 2 RESULTS
+========================================
+Net Sharpe:   0.000
+Gross Sharpe: 0.000
+Max DD:       0.0%
+Total Trades: 0
+========================================
+
+
+============================================================
+FOLD 3
+Train: 2022-01-01 to 2022-12-31
+Test:  2023-01-01 to 2023-12-31
+============================================================
+
+Train shape: (250, 27)
+Test shape:  (248, 27)
+
+Candidate pairs: 351
+
+Training correlation... ✅ 0 pairs scored
+Training distance... ✅ 0 pairs scored
+Training cointegration... ✅ 13 pairs scored
+Training combined... ✅ 11 pairs scored
+Training ml... ✅ 0 pairs scored
+Training lstm... C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\keras\src\layers\rnn\bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+✅ 351 pairs scored
+Training transformer... ✅ 351 pairs scored
+Training gnn... ✅ 351 pairs scored
+
+Ensembling 8 selectors...
+Selected pairs: 10 (target 10)
+
+
+Backtesting 10 pairs on test period...
+
+========================================
+FOLD 3 RESULTS
+========================================
+Net Sharpe:   0.000
+Gross Sharpe: 0.000
+Max DD:       0.0%
+Total Trades: 0
+========================================
+
+
+============================================================
+FOLD 4
+Train: 2023-01-01 to 2023-12-31
+Test:  2024-01-01 to 2025-04-30
+============================================================
+
+Train shape: (248, 27)
+Test shape:  (332, 27)
+
+Candidate pairs: 351
+
+Training correlation... ✅ 0 pairs scored
+Training distance... ✅ 0 pairs scored
+Training cointegration... ✅ 5 pairs scored
+Training combined... ✅ 4 pairs scored
+Training ml... ✅ 0 pairs scored
+Training lstm... C:\Users\yashs\AppData\Roaming\Python\Python313\site-packages\keras\src\layers\rnn\bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+✅ 351 pairs scored
+Training transformer... ✅ 351 pairs scored
+Training gnn... ✅ 351 pairs scored
+
+Ensembling 8 selectors...
+Selected pairs: 10 (target 10)
+
+
+Backtesting 10 pairs on test period...
+
+========================================
+FOLD 4 RESULTS
+========================================
+Net Sharpe:   0.000
+Gross Sharpe: 0.000
+Max DD:       0.0%
+Total Trades: 0
+========================================
+
+
+============================================================
+SUMMARY: BRAZIL
+============================================================
+Avg Net Sharpe:   0.000 ± 0.000
+Avg Gross Sharpe: 0.000
+Cost Drag:        0.000
+Transaction Cost: 8.4 bps
+
+💾 Saved: C:\Code\Hybrid-Pairs-Trading-Ensemble\Implementation\experimental-ablation\results\brazil\wfv_4folds_ou_20260529_074037.json
+============================================================
+

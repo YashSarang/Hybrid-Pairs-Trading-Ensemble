@@ -1,0 +1,144 @@
+{
+  "NSE Nifty 100 Expanding": {
+    "label": "Nifty 100 Expanding",
+    "color": "#d62728",
+    "mean": -0.409,
+    "std": 0.0,
+    "se": 0.0,
+    "ci_lo": -0.409,
+    "ci_hi": -0.409,
+    "n_folds": 1,
+    "folds": [
+      -0.409
+    ],
+    "run_means_not_fold_sharpes": false
+  },
+  "NSE Nifty 100 Rolling": {
+    "label": "Nifty 100 Rolling",
+    "color": "#ff7f0e",
+    "mean": 0.052,
+    "std": 0.0,
+    "se": 0.0,
+    "ci_lo": 0.052,
+    "ci_hi": 0.052,
+    "n_folds": 1,
+    "folds": [
+      0.052
+    ],
+    "run_means_not_fold_sharpes": false
+  },
+  "NSE Nifty 50 Rolling": {
+    "label": "Nifty 50 Rolling (Control)",
+    "color": "#2ca02c",
+    "mean": 0.752,
+    "std": 0.417,
+    "se": 0.209,
+    "ci_lo": 0.422,
+    "ci_hi": 1.082,
+    "n_folds": 4,
+    "folds": [
+      1.127,
+      0.218,
+      0.627,
+      1.036
+    ],
+    "run_means_not_fold_sharpes": false
+  },
+  "NSE Nifty 50 Expanding": {
+    "label": "Nifty 50 Expanding (Control)",
+    "color": "#1f77b4",
+    "mean": 1.063,
+    "std": 0.58,
+    "se": 0.29,
+    "ci_lo": 0.512,
+    "ci_hi": 1.447,
+    "n_folds": 4,
+    "folds": [
+      1.127,
+      0.233,
+      1.347,
+      1.547
+    ],
+    "run_means_not_fold_sharpes": false
+  },
+  "India ZScore (mean)": {
+    "label": "India ZScore (3-run mean)",
+    "color": "#9467bd",
+    "mean": 0.284,
+    "std": 0.621,
+    "se": 0.358,
+    "ci_lo": -0.386,
+    "ci_hi": 0.84,
+    "n_folds": 3,
+    "folds": [
+      0.398,
+      -0.386,
+      0.84
+    ],
+    "run_means_not_fold_sharpes": true
+  },
+  "India ZScore (best)": {
+    "label": "India ZScore (best run)",
+    "color": "#8c564b",
+    "mean": 0.84,
+    "std": 0.864,
+    "se": 0.432,
+    "ci_lo": 0.15,
+    "ci_hi": 1.648,
+    "n_folds": 4,
+    "folds": [
+      0.604,
+      -0.08,
+      1.996,
+      0.84
+    ],
+    "run_means_not_fold_sharpes": false
+  },
+  "Brazil OU (mean)": {
+    "label": "Brazil OU (3-run mean)",
+    "color": "#e377c2",
+    "mean": 0.107,
+    "std": 0.185,
+    "se": 0.107,
+    "ci_lo": 0.0,
+    "ci_hi": 0.321,
+    "n_folds": 3,
+    "folds": [
+      0.0,
+      0.0,
+      0.321
+    ],
+    "run_means_not_fold_sharpes": true
+  },
+  "UK ZScore (mean)": {
+    "label": "UK ZScore (2-run mean)",
+    "color": "#7f7f7f",
+    "mean": 0.01,
+    "std": 0.361,
+    "se": 0.255,
+    "ci_lo": -0.245,
+    "ci_hi": 0.265,
+    "n_folds": 2,
+    "folds": [
+      0.265,
+      -0.245
+    ],
+    "run_means_not_fold_sharpes": true
+  },
+  "US OU (mean)": {
+    "label": "US OU (3-run mean)",
+    "color": "#bcbd22",
+    "mean": -0.085,
+    "std": 0.147,
+    "se": 0.085,
+    "ci_lo": -0.254,
+    "ci_hi": 0.0,
+    "n_folds": 3,
+    "folds": [
+      0.0,
+      0.0,
+      -0.254
+    ],
+    "run_means_not_fold_sharpes": true
+  }
+}

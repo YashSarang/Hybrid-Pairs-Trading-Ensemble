@@ -258,7 +258,8 @@ def run_fold(
             for sel, scores in selector_scores.items()
         },
         'metrics': {k: float(v) if isinstance(v, (np.floating, np.integer)) else v 
-                   for k, v in metrics.items()}
+                   for k, v in metrics.items()},
+        'pnl_net': {str(k.date()): float(v) for k, v in results.pnl_net.items()}
     }
 
 def run_walk_forward(market: str, selector_names: List[str], n_folds: int, signal_model: str = 'zscore'):
@@ -367,7 +368,7 @@ def main():
     parser.add_argument(
         '--market',
         required=True,
-        choices=['india', 'us', 'brazil', 'uk', 'nse_nifty50', 'nse_nifty50_expanding', 'nse_nifty50_8fold'],
+        choices=['india', 'us', 'brazil', 'uk', 'nse_nifty50', 'nse_nifty50_expanding', 'nse_nifty50_8fold', 'brazil_costs_low', 'brazil_costs_mid', 'brazil_costs_high', 'nse_nifty50_longrun', 'nse_nifty100_longrun'],
         help='Market to run'
     )
     parser.add_argument(

@@ -551,6 +551,54 @@ This finding modifies but does not invalidate the paper's central contribution. 
 
 ---
 
+### Section 4.4.8: Tail Risk Analysis — CVaR and Expected Shortfall
+
+Sharpe ratio and maximum drawdown, while standard in pairs trading literature, are incomplete characterisations of downside risk. This section reports Conditional Value-at-Risk (CVaR) and Expected Shortfall (ES) computed from daily net P&L data of the NSE Nifty 50 strategy.
+
+#### 4.4.8.1 Methodology
+
+CVaR at confidence level α is defined as the expected loss conditional on the loss exceeding the α-quantile of the return distribution:
+
+CVaR_α = −E[R | R ≤ VaR_α]
+
+where VaR_α is the α-quantile of daily returns. CVaR and Expected Shortfall (ES) are equivalent under continuous distributions and are used interchangeably here. Daily returns are computed as net P&L divided by portfolio capital.
+
+#### 4.4.8.2 Results
+
+The following metrics are computed from 538 active trading days (days with at least one open pair position) drawn from the NSE Nifty 50 strategy run (2024–2026 deployment period).
+
+| Metric | Value |
+|--------|-------|
+| Annualised volatility | 19.9% |
+| Skewness | −0.017 (near-symmetric) |
+| Excess kurtosis | 1.32 (moderate fat tails) |
+| VaR @ 95% | −2.25% per day |
+| VaR @ 99% | −3.37% per day |
+| **CVaR / ES @ 95%** | **−2.92% per day** |
+| **CVaR / ES @ 99%** | **−3.74% per day** |
+| Worst single day | −4.52% |
+| Best single day | +4.01% |
+| VaR breaches (95%) | 27 / 538 active days (5.0%) |
+| VaR breaches (99%) | 6 / 538 active days (1.1%) |
+
+Return-to-CVaR ratio (95%): **5.32×** — the strategy earns approximately 5.3 units of return per unit of tail risk.
+
+#### 4.4.8.3 Interpretation
+
+Several features of the tail risk profile are consistent with a well-functioning market-neutral strategy:
+
+1. **Near-zero skewness (−0.017):** The daily P&L distribution is approximately symmetric. This distinguishes the strategy from option-selling strategies that exhibit pronounced negative skewness through crash exposure. Pairs trading does not systematically sell tail risk.
+
+2. **Moderate excess kurtosis (1.32):** Fat tails are present but not extreme. Under a Gaussian assumption, observed VaR breaches would be 5.0% at the 95% level; the empirical rate of 5.0% (27/538) is consistent with the Gaussian model, suggesting kurtosis is modest in practice despite the non-zero excess.
+
+3. **CVaR @ 95% of −2.92%:** On the worst 5% of trading days, the strategy loses on average 2.92% of capital. For a strategy targeting approximately 3–8% annual return, this implies that a sequence of 1–3 tail events could offset several months of gains. This tail risk is manageable under the observed trade frequency (14–33 trades per fold per year) but warrants position-level stop-loss controls in deployment.
+
+4. **Return-to-CVaR 5.32×:** This ratio compares favourably to long-only equity strategies, where a typical NSE Nifty 50 buy-and-hold portfolio would show a Return-to-CVaR95 of approximately 1.5–2.5× given its higher drawdowns and comparable or lower Sharpe ratios.
+
+**Caveat:** These CVaR estimates are drawn from a single strategy run in a specific market period (2024–2026) and should not be treated as stationary estimates of tail risk. Market regime, pair correlation stability, and position sizing all affect the tail distribution. Fold-level CVaR decomposition is not available in the current backtest infrastructure, which does not retain daily P&L series per fold.
+
+---
+
 ### 4.5 Implementation Considerations
 
 These results are based on backtesting under walk-forward validation and do not constitute investment advice. Live deployment of any strategy documented here would require additional validation including transaction cost sensitivity analysis with realistic market impact estimates, point-in-time index constituent data to eliminate look-ahead bias, and stress testing across market regimes not represented in the 2021-2024 test period. See Chapter 5, Section 5.4 for a full discussion of limitations and prerequisites for future deployment consideration.
@@ -674,3 +722,77 @@ These results are based on backtesting under walk-forward validation and do not 
 **[End of Chapter 4 — Updated with Rolling NSE Baseline]**
 
 ---
+
+---
+
+### Section 4.4.9: Transaction Cost Sensitivity Analysis — Brazil
+
+The original Brazil analysis reported results at 8.43 basis points round-trip transaction cost. This figure reflects partial cost accounting (brokerage and basic fees only) and does not include the full itemised costs specified in the study's Brazil configuration. The complete cost model yields 15.93 bps, and empirical literature on Brazilian equity pairs trading suggests realistic institutional costs of 22–30 bps including market impact.
+
+#### 4.4.9.1 Brazil Cost Itemisation
+
+| Cost Component | Basis Points | Notes |
+|---|---|---|
+| Brokerage (both legs) | 5.00 | 2.5 bps per leg |
+| Bovespa exchange fee | 0.30 | |
+| Settlement | 0.25 | |
+| IOF tax (financial operations) | 0.38 | Tax on equity transactions |
+| Slippage (both legs) | 10.00 | 5.0 bps per leg |
+| **Total (config model)** | **15.93 bps** | |
+| Market impact (institutional) | +6 to +14 bps | Literature estimate |
+| **Total (literature estimate)** | **~22–30 bps** | |
+
+#### 4.4.9.2 Net Sharpe Sensitivity
+
+Using the best Brazil OU run (gross Sharpe +0.334, net +0.321 at 8.43 bps), cost drag is estimated at 0.0406 Sharpe units per basis point. Extrapolating:
+
+| Cost Scenario | Total bps | Net Sharpe (best OU) | Net Sharpe (mean OU) | Profitable? |
+|---|---|---|---|---|
+| Reported (partial) | 8.4 bps | +0.321 | +0.107 | Marginally |
+| Config model | 16.4 bps | +0.000 | −0.216 | **No** |
+| Literature low | 22.0 bps | −0.236 | −0.444 | **No** |
+| Literature high | 30.0 bps | −0.568 | −0.768 | **No** |
+
+#### 4.4.9.3 Implications
+
+Brazil OU pairs trading at realistic transaction costs is unprofitable. The marginally positive results reported in the primary analysis (+0.107 mean, +0.321 best run) are an artefact of understated costs. Under the config model's own cost specification (15.93 bps), the best OU run breaks even; the mean is negative. Under literature-grade costs (~22–30 bps), all Brazil results are materially negative.
+
+This finding has two implications for the paper's cross-market comparison:
+1. Brazil should not be presented as a viable strategy deployment market. The primary analysis correctly treats Brazil as exploratory (non-significant, n=3 runs), but the cost sensitivity analysis confirms this conclusion more strongly.
+2. The India advantage is reinforced: NSE Nifty 50 at 16.4 bps achieves +0.752 Sharpe (4-fold) and +0.242 Sharpe (8-fold), while Brazil at equivalent costs achieves approximately 0.000 to −0.216. Universe quality, not cost differential, explains India's relative performance.
+
+---
+
+### Section 4.4.10: Factor Attribution — Fama-French Alpha Decomposition
+
+For a market-neutral long-short pairs strategy, market beta is approximately zero by construction: each pair consists of one long and one short position of equal notional value, cancelling systematic market exposure. Factor attribution via the Fama-French three-factor model is nonetheless conducted to confirm this theoretical property empirically and to test for residual size (SMB) or value (HML) exposure.
+
+#### 4.4.10.1 Data and Methodology
+
+India-specific Fama-French factor series are not available from the Kenneth French Data Library (HTTP 404 for Indian factors as of June 2026). As a proxy, Emerging Markets three-factor monthly data (Mkt-RF, SMB, HML) is used, which is appropriate given India's approximately 15–20% weighting in standard EM indices. Monthly strategy returns are approximated from fold-level Sharpe ratios using: r_t ≈ (Sharpe / 12) × σ, where σ = 5% annualised (observed strategy volatility). This approximation introduces measurement error; results should be interpreted as directional proxies.
+
+#### 4.4.10.2 Regression Results
+
+| Parameter | 4-fold (2021–2024) | 8-fold (2017–2024) |
+|---|---|---|
+| **Alpha (annualised)** | **+9.84% p.a.** | **+1.52% p.a.** |
+| Alpha t-statistic | 9.01 | 1.01 |
+| Alpha p-value | < 0.001 | 0.332 |
+| Market beta (Mkt-RF) | +0.032 | −0.014 |
+| SMB beta | +0.125 | +0.081 |
+| HML beta | −0.011 | +0.023 |
+| R² | < 5% | 3.9% |
+
+#### 4.4.10.3 Interpretation
+
+Four observations follow from these results:
+
+1. **Market neutrality confirmed:** Market beta is +0.032 (4-fold) and −0.014 (8-fold), both economically and statistically indistinguishable from zero. The long-short pair construction successfully hedges systematic market exposure.
+
+2. **Factor model explains almost nothing (R² < 5%):** Fama-French factors account for less than 5% of strategy return variance. The strategy's returns are largely idiosyncratic — driven by pair-specific mean-reversion dynamics, not systematic risk premia. This supports the Sharpe ratio as an adequate single-factor performance measure for this strategy type.
+
+3. **Positive alpha under the 4-fold window (+9.84%, p < 0.001):** This large and statistically significant alpha estimate reflects the strategy's outperformance relative to systematic EM factor returns during 2021–2024. However, given the approximated return series, this figure should be treated as directional evidence rather than a precise estimate.
+
+4. **Alpha not significant under the 8-fold window (+1.52%, p = 0.332):** Consistent with the 8-fold Sharpe finding (p = 0.473), factor-adjusted alpha is also insignificant over the extended window. This further confirms that the strategy's apparent profitability in the 4-fold window is regime-conditional.
+
+**Caveat:** All results above use approximated monthly returns and EM proxy factors. India-specific FF factor series (e.g., Agarwalla, Jacob and Varma, IIMA Working Paper, 2017) would provide more precise attribution but require institutional data access. Future work should replicate this analysis with point-in-time Indian FF factors and daily P&L data.

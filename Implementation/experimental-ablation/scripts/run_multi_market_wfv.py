@@ -276,17 +276,42 @@ def run_walk_forward(market: str, selector_names: List[str], n_folds: int, signa
     print(f"Folds: {n_folds}")
     print(f"{'='*60}\n")
     
-    # WFV fold definitions (from config)
+    # WFV fold definitions - generated dynamically from config dates and n_folds
     wfv_cfg = config['walk_forward']
-    # Walk-forward folds (1-year train, 1-year test, rolling)
-    # Matches thesis structure: each fold tests on a full calendar year
-    # Note: 2024 test truncated to available data (2024-01-01 to 2025-04-30)
-    folds = [
-        (1, "2020-01-01", "2020-12-31", "2021-01-01", "2021-12-31"),
-        (2, "2021-01-01", "2021-12-31", "2022-01-01", "2022-12-31"),
-        (3, "2022-01-01", "2022-12-31", "2023-01-01", "2023-12-31"),
-        (4, "2023-01-01", "2023-12-31", "2024-01-01", "2025-04-30"),  # 16 months (limited by data)
-    ][:n_folds]
+    wfv_type = wfv_cfg.get('type', 'rolling')
+    train_months = wfv_cfg.get('train_months', 12)
+    data_start = pd.Timestamp(config['data']['start_date'])
+    data_end   = pd.Timestamp(config['data']['end_date'])
+    from dateutil.relativedelta import relativedelta as rdelta
+
+    if wfv_type == 'expanding':
+        folds = []
+        for i in range(n_folds):
+            train_start = data_start
+            train_end   = data_start + rdelta(months=train_months*(i+1)) - pd.Timedelta(days=1)
+            test_start  = train_end  + pd.Timedelta(days=1)
+            test_end    = min(test_start + rdelta(months=12) - pd.Timedelta(days=1), data_end)
+            if test_start > data_end:
+                break
+            folds.append((i+1,
+                          train_start.strftime('%Y-%m-%d'),
+                          train_end.strftime('%Y-%m-%d'),
+                          test_start.strftime('%Y-%m-%d'),
+                          test_end.strftime('%Y-%m-%d')))
+    else:
+        folds = []
+        for i in range(n_folds):
+            train_start = data_start + rdelta(months=12*i)
+            train_end   = train_start + rdelta(months=train_months) - pd.Timedelta(days=1)
+            test_start  = train_end   + pd.Timedelta(days=1)
+            test_end    = min(test_start + rdelta(months=12) - pd.Timedelta(days=1), data_end)
+            if test_start > data_end:
+                break
+            folds.append((i+1,
+                          train_start.strftime('%Y-%m-%d'),
+                          train_end.strftime('%Y-%m-%d'),
+                          test_start.strftime('%Y-%m-%d'),
+                          test_end.strftime('%Y-%m-%d')))
     
     fold_results = []
     
@@ -342,7 +367,7 @@ def main():
     parser.add_argument(
         '--market',
         required=True,
-        choices=['india', 'us', 'brazil', 'uk'],
+        choices=['india', 'us', 'brazil', 'uk', 'nse_nifty50', 'nse_nifty50_expanding', 'nse_nifty50_8fold'],
         help='Market to run'
     )
     parser.add_argument(

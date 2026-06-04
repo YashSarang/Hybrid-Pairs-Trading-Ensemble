@@ -1,5 +1,5 @@
 # Hybrid Pairs Trading — Paper 1 Knowledge Graph
-*Last updated: 2026-06-04 | Universe: 89 NSE Nifty100 | Costs: 16.28 bps | CPU-only ML*
+*Last updated: 2026-06-05 | Universe: 89 NSE Nifty100 | Costs: 16.28 bps | CPU-only ML*
 
 ---
 
@@ -31,13 +31,13 @@
 
 | Exp | Name | Status | Key Result |
 |-----|------|--------|-----------|
-| E1 | WFV Baseline (stat_only) | COMPLETE job 8701 | Net SR 0.480, CAGR 3.30%, MaxDD 12.72% |
+| E1 | Freq Comparison (daily vs hourly) | SUBMITTED job 8737 | PENDING |
 | E2 | Hold Period Sweep | NOT RERUN (old result locked) | min_hold=30 days |
-| E3 | Ablation (3 modes) | RUNNING job 8704 | PENDING |
+| E3 | Ablation (3 modes) | SUBMITTED job 8734 (prev 8704 CANCELLED: wrong universe) | PENDING |
 | E4 | Walk-Forward Validation | COMPLETE jobs 8693-8699 | stat_only SR 0.480 / full SR 0.653 |
 | E5 | Benchmark vs Nifty50 | COMPLETE job 8699 | Strategy SR 0.550 vs Nifty50 SR 0.720 |
-| E6 | Significance Tests | PARTIAL — stat_only only | p=0.086 bootstrap, p=0.097 NW (10% sig, not 5%) |
-| E7 | Weighted Ensemble | NOT RUN on 89-ticker universe | — |
+| E6 | Significance Tests | SUBMITTED job 8735 (all 3 modes) | stat_only p=0.086 (prior run); stat_ml/full PENDING |
+| E7 | Weighted Ensemble | SUBMITTED job 8736 (3 configs) | PENDING |
 | E8 | RL Signal | BLOCKED — gymnasium not on Kalpana | — |
 
 ---
@@ -146,14 +146,16 @@ Paper_1_Hybrid_Ensemble/
 
 ## PENDING REVISIONS (ordered by priority)
 
-1. **E3 job 8704** — pull results once COMPLETE; validate 3-mode ablation output
-2. **E6** — rerun for stat_ml and full modes (currently stat_only only)
-3. **E1** — confirm: does E1 = WFV baseline (done) or freq_comparison.py (not run)?
-4. **Chapter rewrites** — all 5 chapters + abstract need number updates (old 35-ticker universe)
-5. **Ch5 cost fix** — Section 5.1.1 uses 6 bps brokerage (legacy); align to 0 bps (16.28 bps total)
-6. **Literature-Review README** — update ablation numbers with 89-ticker results once E3 done
-7. **Streamlit LR pages** — implement STREAMLIT_ENHANCEMENT_PLAN.md
-8. **E7** — weighted ensemble on 89-ticker universe
+1. **Jobs running on Kalpana** — E3(8734), E6(8735), E7(8736), E1(8737). Pull results when complete.
+   - E3 ~8h (3 modes: stat_only/stat_ml/full ablation)
+   - E6 ~6h (3 modes significance tests)
+   - E7 ~8h (3 weighted configs: E7-A stat_ml weighted, E7-B full weighted, E7-C stat_only+ou_only)
+   - E1 ~4h (freq comparison daily vs hourly)
+2. **After results arrive** — update Ch4 §4.5/§4.7 [[PLACEHOLDER]] with E3/E7 numbers
+3. **Chapter rewrites** — all 5 chapters + abstract need number updates once E3/E7 results in
+4. **Ch5 cost fix** — Section 5.1.1 uses 6 bps brokerage (legacy); align to 0 bps (16.28 bps total)
+5. **Literature-Review README** — update ablation numbers once E3 done
+6. **Streamlit LR pages** — implement STREAMLIT_ENHANCEMENT_PLAN.md (low priority)
 
 ---
 

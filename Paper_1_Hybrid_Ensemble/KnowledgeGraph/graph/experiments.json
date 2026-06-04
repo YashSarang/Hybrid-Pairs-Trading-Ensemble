@@ -9,22 +9,36 @@
   },
   "experiments": {
     "E1": {
-      "status": "COMPLETE job 8701",
-      "net_SR": 0.48,
-      "CAGR_pct": 3.3,
-      "MaxDD_pct": 12.72
+      "name": "Frequency Comparison (daily vs hourly)",
+      "script": "Implementation/experiments/freq_comparison.py",
+      "slurm": "Implementation/experiments/slurm/e1_paper1_freq.sh",
+      "status": "SUBMITTED",
+      "job_ids": {
+        "8737": "RUNNING"
+      },
+      "estimated_runtime": "4h",
+      "results": "PENDING"
     },
     "E2": {
       "status": "NOT RERUN",
       "optimalHold": 30
     },
     "E3": {
-      "status": "RUNNING job 8704 \u2014 results pending",
+      "name": "Component Ablation",
+      "script": "Implementation/experiments/ablation.py",
+      "slurm": "Implementation/experiments/slurm/e3_paper1_ablation.sh",
+      "status": "SUBMITTED",
+      "job_ids": {
+        "8704": "CANCELLED (wrong universe, code had 35-ticker NSE_UNIVERSE bug)",
+        "8734": "RUNNING"
+      },
       "modes": [
         "stat_only",
         "stat_ml",
         "full"
-      ]
+      ],
+      "estimated_runtime": "8h",
+      "results": "PENDING"
     },
     "E4": {
       "status": "COMPLETE jobs 8693-8699",
@@ -51,20 +65,58 @@
       "nifty50_MaxDD": 38.44
     },
     "E6": {
-      "status": "COMPLETE stat_only only \u2014 stat_ml/full pending",
-      "bootstrap_CI_95": [
-        -0.209,
-        1.154
+      "name": "Statistical Significance Tests",
+      "script": "Implementation/experiments/significance_tests.py",
+      "slurm": "Implementation/experiments/slurm/e6_paper1_significance.sh",
+      "status": "SUBMITTED",
+      "job_ids": {
+        "prior": "stat_only only (p=0.086)",
+        "8735": "RUNNING (all 3 modes)"
+      },
+      "modes": [
+        "stat_only",
+        "stat_ml",
+        "full"
       ],
-      "p_bootstrap": 0.086,
-      "newey_west_p": 0.097,
-      "verdict": "10% sig, not 5%"
+      "prior_result": {
+        "mode": "stat_only",
+        "s2": "ou_only",
+        "bootstrap_p": 0.086,
+        "newey_west_p": 0.097,
+        "ci_95": [
+          -0.209,
+          1.154
+        ],
+        "verdict": "Marginally significant at 10%, NOT 5%"
+      },
+      "estimated_runtime": "6h",
+      "results": "PENDING for stat_ml/full"
     },
     "E7": {
-      "status": "NOT RUN on 89-ticker universe"
+      "name": "Weighted Ensemble",
+      "script": "Implementation/experiments/walk_forward.py",
+      "slurm": "Implementation/experiments/slurm/e7_paper1_weighted.sh",
+      "status": "SUBMITTED",
+      "job_ids": {
+        "8736": "RUNNING"
+      },
+      "configs": {
+        "E7-A": "Weighted S1 (Corr=2.0, others=1.0) + OU-only S2 -- stat_ml",
+        "E7-B": "Weighted S1 (LSTM=3.0, Corr=2.0, others=1.0) + OU-only S2 -- full",
+        "E7-C": "stat_only + OU-only S2 (replication check)"
+      },
+      "estimated_runtime": "8h",
+      "results": "PENDING"
     },
     "E8": {
       "status": "NOT RUN \u2014 gymnasium missing on Kalpana"
     }
+  },
+  "last_updated": "2026-06-05",
+  "active_jobs": {
+    "E3": "8734",
+    "E6": "8735",
+    "E7": "8736",
+    "E1": "8737"
   }
 }

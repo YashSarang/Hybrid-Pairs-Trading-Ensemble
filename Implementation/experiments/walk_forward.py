@@ -4,7 +4,7 @@ experiments/walk_forward.py
 Experiment E4 — Expanding-Window Walk-Forward Validation
 ----------------------------------------------------------
 Replaces the single in-sample backtest with a rigorous out-of-sample
-evaluation across 6 non-overlapping annual test folds (2020-2025).
+evaluation across 6 non-overlapping test folds (2018-2024).
 
 WHY THIS IS CRITICAL FOR THE THESIS
 -------------------------------------
@@ -21,12 +21,12 @@ evaluates on the NEXT calendar year.  The training window grows by one
 year per fold — this is the academic standard for financial time-series
 (expanding > rolling because more data generally improves model quality).
 
-    Fold 1:  Train 2016–2019  |  Test 2020
-    Fold 2:  Train 2016–2020  |  Test 2021
-    Fold 3:  Train 2016–2021  |  Test 2022
-    Fold 4:  Train 2016–2022  |  Test 2023
-    Fold 5:  Train 2016–2023  |  Test 2024
-    Fold 6:  Train 2016–2024  |  Test 2025
+    Fold 1:  Train 2015–2017  |  Test 2018
+    Fold 2:  Train 2015–2018  |  Test 2019
+    Fold 3:  Train 2015–2019  |  Test 2020
+    Fold 4:  Train 2015–2020  |  Test 2021
+    Fold 5:  Train 2015–2021  |  Test 2022
+    Fold 6:  Train 2015–2022  |  Test 2023-2024
 
 OOS EVALUATION DESIGN (no look-ahead bias)
 -------------------------------------------
@@ -160,12 +160,12 @@ _S2_PRESETS = {
 # ---------------------------------------------------------------------------
 
 FOLDS = [
-    {"name": "Fold1_2020", "test_start": "2020-01-01", "test_end": "2020-12-31"},
-    {"name": "Fold2_2021", "test_start": "2021-01-01", "test_end": "2021-12-31"},
-    {"name": "Fold3_2022", "test_start": "2022-01-01", "test_end": "2022-12-31"},
-    {"name": "Fold4_2023", "test_start": "2023-01-01", "test_end": "2023-12-31"},
-    {"name": "Fold5_2024", "test_start": "2024-01-01", "test_end": "2024-12-31"},
-    {"name": "Fold6_2025", "test_start": "2025-01-01", "test_end": "2025-12-31"},
+    {"name": "Fold1_2018", "test_start": "2018-01-01", "test_end": "2018-12-31"},
+    {"name": "Fold2_2019", "test_start": "2019-01-01", "test_end": "2019-12-31"},
+    {"name": "Fold3_2020", "test_start": "2020-01-01", "test_end": "2020-12-31"},
+    {"name": "Fold4_2021", "test_start": "2021-01-01", "test_end": "2021-12-31"},
+    {"name": "Fold5_2022", "test_start": "2022-01-01", "test_end": "2022-12-31"},
+    {"name": "Fold6_2023-2024", "test_start": "2023-01-01", "test_end": "2024-12-31"},
 ]
 
 

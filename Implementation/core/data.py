@@ -112,12 +112,12 @@ class YFinanceNSESource(DataSource):
                 (df.index >= pd.Timestamp(cfg.start)) &
                 (df.index <= pd.Timestamp(cfg.end))
             ]
-            want = set(tickers)
+            want = set(universe)
             have = set(df.columns)
             missing = want - have
             if missing:
                 print(f"WARNING: {len(missing)} tickers not in parquet: {missing}")
-            df = df[[t for t in tickers if t in df.columns]]
+            df = df[[t for t in universe if t in df.columns]]
             df = df.dropna(how="all").ffill(limit=3)
             return df
         cache_file = "data_cache/daily_prices.parquet" if cfg.freq == "1D" else "data_cache/hourly_prices.parquet"

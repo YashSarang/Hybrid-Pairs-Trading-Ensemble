@@ -82,8 +82,8 @@ FREQ_COMPARISON_END   = "2026-03-31"  # overridden at runtime to yesterday
 
 # Main experiments (walk-forward validation, ablation, etc.).
 # 10-year window on daily data — maximum yfinance coverage for Nifty stocks.
-MAIN_START = "2016-01-01"
-MAIN_END   = "2026-03-31"
+MAIN_START = "2015-01-01"
+MAIN_END   = "2024-12-31"
 
 # ---------------------------------------------------------------------------
 # Ensemble Weights

@@ -100,7 +100,6 @@ from core.backtest import BacktestConfig, IndianCosts, _apply_min_hold
 from core.data import DataConfig, YFinanceNSESource
 from core.ensemble import ensemble_pair_scores, ensemble_signals
 from core.entry import KalmanHedge, MLSignal, OUThreshold, ZScoreThreshold
-from core.entry_rl import RLSignal
 from core.selectors import (
     CombinedCriteriaSelector,
     CointegrationSelector,
@@ -334,7 +333,7 @@ def _signals_for_pair(
         "OU":     OUThreshold(),
         "Kalman": KalmanHedge(),
         "ML":     MLSignal(),
-        "RL":     RLSignal(),
+        "RL":     __import__("importlib").import_module("core.entry_rl").RLSignal()  # lazy: gymnasium optional
     }
 
     idx_full = a_full.index.intersection(b_full.index)

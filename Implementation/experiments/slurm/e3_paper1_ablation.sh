@@ -24,13 +24,13 @@ export TF_DETERMINISTIC_OPS=1
 export TF_CPP_MIN_LOG_LEVEL=2
 export PYTHONHASHSEED=42
 
-echo "[E3] single-selector ablation"
+echo "[E3] ablation stat_only"
 python Implementation/experiments/ablation.py \
-    --mode single_selectors --s2 ou_only
-echo "[E3] stat ensemble ablation"
+    --mode stat_only --s2 ou_only
+echo "[E3] ablation stat_ml"
 python Implementation/experiments/ablation.py \
-    --mode stat_ensemble --s2 ou_only
-echo "[E3] full hybrid ablation (CPU ML)"
+    --mode stat_ml --s2 ou_only
+echo "[E3] ablation full (CPU ML)"
 python Implementation/experiments/ablation.py \
-    --mode full_hybrid --s2 ou_only
+    --mode full --s2 ou_only
 echo "[E3] DONE"

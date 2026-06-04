@@ -1,0 +1,341 @@
+2026-06-04 06:45:15,584 INFO Cache already exists: /users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/data/nse_nifty100/prices_2015-01-01_2024-12-31.parquet
+2026-06-04 06:45:15,663 INFO   Shape: (2466, 89), dates: 2015-01-01 → 2024-12-30
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1780535718.545739 2176485 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+I0000 00:00:1780535718.548495 2176485 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1780535723.125151 2176485 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+I0000 00:00:1780535723.126440 2176485 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+E0000 00:00:1780535725.446231 2176485 cuda_platform.cc:52] failed call to cuInit: INTERNAL: CUDA error: Failed call to cuInit: CUDA_ERROR_NO_DEVICE: no CUDA-capable device is detected
+06:45:26  INFO      ================================================================
+06:45:26  INFO      Walk-Forward Validation  |  mode=full  |  s2=ou_only  |  top_k=10
+06:45:26  INFO      S1 weights: {'Correlation': 1.0, 'Distance': 1.0, 'Cointegration': 1.0, 'Combined': 1.0, 'ML': 1.0, 'LSTM': 1.0, 'Transformer': 1.0, 'GNN': 1.0}
+06:45:26  INFO      Folds: ['Fold1_2018', 'Fold2_2019', 'Fold3_2020', 'Fold4_2021', 'Fold5_2022', 'Fold6_2023-2024']
+06:45:26  INFO      min_hold_bars=30  capital=1,000,000
+06:45:26  INFO      ================================================================
+06:45:26  INFO      [Data] Fetching full 10-year daily prices ...
+06:45:26  INFO        35 tickers x 2466 bars  (2015-01-01 -> 2024-12-30)
+06:45:26  INFO        --- Fold1_2018 | Train 2015-01-01 -> 2017-12-31 | Test 2018-01-01 -> 2018-12-31 ---
+06:45:55  INFO      [MLSelector.fit] y class counts: {0: 323, 1: 272}
+06:46:22  INFO      [LSTMSelector] 242760 sequences, class dist: {0: 126776, 1: 115984}
+06:46:22  INFO      [LSTMSelector] Subsampled to 50000 sequences.
+/users/student/pg/pg24/yash.sarang/miniconda3/lib/python3.13/site-packages/keras/src/layers/rnn/bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+06:49:23  INFO      [LSTMSelector] Training complete.
+E0000 00:00:1780535964.785816 2176485 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+06:49:36  INFO      [TransformerSelector] 242760 sequences, class dist: {0: 126776, 1: 115984}
+06:49:37  INFO      [TransformerSelector] Subsampled to 50000 sequences.
+06:51:40  INFO      [TransformerSelector] Training complete.
+E0000 00:00:1780536101.830451 2176485 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+06:51:43  INFO      [GNNSelector] Training on 8 snapshots, N=35 stocks.
+06:53:20  INFO      [GNNSelector] Training complete.
+06:53:20  INFO          Pairs selected (10): ['MARUTI-HINDUNILVR', 'JSWSTEEL-HINDALCO', 'HDFCBANK-INDUSINDBK', 'TATASTEEL-JSWSTEEL', 'HEROMOTOCO-EICHERMOT'] ...
+06:53:20  INFO          OOS => Gross Sharpe=0.265  Net Sharpe=0.208  Net Ret=1.75%  Trades/yr=59  [sel=474.5s bt=0.1s]
+06:53:20  INFO        --- Fold2_2019 | Train 2015-01-01 -> 2018-12-31 | Test 2019-01-01 -> 2019-12-31 ---
+06:53:50  INFO      [MLSelector.fit] y class counts: {0: 240, 1: 355}
+06:54:23  INFO      [LSTMSelector] 389130 sequences, class dist: {0: 198719, 1: 190411}
+06:54:23  INFO      [LSTMSelector] Subsampled to 50000 sequences.
+/users/student/pg/pg24/yash.sarang/miniconda3/lib/python3.13/site-packages/keras/src/layers/rnn/bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+06:57:13  INFO      [LSTMSelector] Training complete.
+E0000 00:00:1780536434.988430 2176485 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+06:57:25  INFO      [TransformerSelector] 389130 sequences, class dist: {0: 198719, 1: 190411}
+06:57:25  INFO      [TransformerSelector] Subsampled to 50000 sequences.
+06:59:29  INFO      [TransformerSelector] Training complete.
+E0000 00:00:1780536570.525691 2176485 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+06:59:32  INFO      [GNNSelector] Training on 8 snapshots, N=35 stocks.
+07:01:08  INFO      [GNNSelector] Training complete.
+07:01:08  INFO          Pairs selected (10): ['HINDUNILVR-NESTLEIND', 'TCS-INFY', 'NESTLEIND-BRITANNIA', 'IOC-BPCL', 'INFY-RELIANCE'] ...
+07:01:08  INFO          OOS => Gross Sharpe=0.788  Net Sharpe=0.714  Net Ret=5.29%  Trades/yr=68  [sel=468.0s bt=0.1s]
+07:01:08  INFO        --- Fold3_2020 | Train 2015-01-01 -> 2019-12-31 | Test 2020-01-01 -> 2020-12-31 ---
+07:01:38  INFO      [MLSelector.fit] y class counts: {0: 328, 1: 267}
+07:02:14  INFO      [LSTMSelector] 533715 sequences, class dist: {0: 266946, 1: 266769}
+07:02:14  INFO      [LSTMSelector] Subsampled to 50000 sequences.
+/users/student/pg/pg24/yash.sarang/miniconda3/lib/python3.13/site-packages/keras/src/layers/rnn/bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+07:05:00  INFO      [LSTMSelector] Training complete.
+E0000 00:00:1780536902.186274 2176485 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+07:05:14  INFO      [TransformerSelector] 533715 sequences, class dist: {0: 266946, 1: 266769}
+07:05:14  INFO      [TransformerSelector] Subsampled to 50000 sequences.
+07:07:09  INFO      [TransformerSelector] Training complete.
+E0000 00:00:1780537030.603807 2176485 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+07:07:12  INFO      [GNNSelector] Training on 8 snapshots, N=35 stocks.
+07:08:49  INFO      [GNNSelector] Training complete.
+07:08:49  INFO          Pairs selected (10): ['TATASTEEL-JSWSTEEL', 'ONGC-COALINDIA', 'HDFCBANK-KOTAKBANK', 'HINDUNILVR-NESTLEIND', 'ONGC-IOC'] ...
+07:08:49  INFO          OOS => Gross Sharpe=0.177  Net Sharpe=0.099  Net Ret=1.02%  Trades/yr=99  [sel=460.5s bt=0.1s]
+07:08:49  INFO        --- Fold4_2021 | Train 2015-01-01 -> 2020-12-31 | Test 2021-01-01 -> 2021-12-31 ---
+07:09:21  INFO      [MLSelector.fit] y class counts: {0: 318, 1: 277}
+07:10:00  INFO      [LSTMSelector] 683060 sequences, class dist: {0: 338645, 1: 344415}
+07:10:00  INFO      [LSTMSelector] Subsampled to 50000 sequences.
+/users/student/pg/pg24/yash.sarang/miniconda3/lib/python3.13/site-packages/keras/src/layers/rnn/bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+07:13:12  INFO      [LSTMSelector] Training complete.
+E0000 00:00:1780537394.352729 2176485 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+07:13:30  INFO      [TransformerSelector] 683060 sequences, class dist: {0: 338645, 1: 344415}
+07:13:30  INFO      [TransformerSelector] Subsampled to 50000 sequences.
+07:15:29  INFO      [TransformerSelector] Training complete.
+E0000 00:00:1780537531.239883 2176485 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+07:15:33  INFO      [GNNSelector] Training on 8 snapshots, N=35 stocks.
+07:17:21  INFO      [GNNSelector] Training complete.
+07:17:21  INFO          Pairs selected (10): ['AXISBANK-INDUSINDBK', 'SBIN-AXISBANK', 'INFY-HCLTECH', 'TECHM-JSWSTEEL', 'INFY-WIPRO'] ...
+07:17:21  INFO          OOS => Gross Sharpe=1.922  Net Sharpe=1.838  Net Ret=14.44%  Trades/yr=79  [sel=512.4s bt=0.1s]
+07:17:21  INFO        --- Fold5_2022 | Train 2015-01-01 -> 2021-12-31 | Test 2022-01-01 -> 2022-12-31 ---
+07:18:01  INFO      [MLSelector.fit] y class counts: {0: 245, 1: 350}
+07:18:45  INFO      [LSTMSelector] 830620 sequences, class dist: {0: 410671, 1: 419949}
+07:18:45  INFO      [LSTMSelector] Subsampled to 50000 sequences.
+/users/student/pg/pg24/yash.sarang/miniconda3/lib/python3.13/site-packages/keras/src/layers/rnn/bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+07:20:23  INFO      [LSTMSelector] Training complete.
+E0000 00:00:1780537825.353244 2176485 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+07:20:37  INFO      [TransformerSelector] 830620 sequences, class dist: {0: 410671, 1: 419949}
+07:20:38  INFO      [TransformerSelector] Subsampled to 50000 sequences.
+07:21:52  INFO      [TransformerSelector] Training complete.
+E0000 00:00:1780537914.678182 2176485 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+07:21:56  INFO      [GNNSelector] Training on 8 snapshots, N=35 stocks.
+07:23:40  INFO      [GNNSelector] Training complete.
+07:23:40  INFO          Pairs selected (10): ['WIPRO-SUNPHARMA', 'ICICIBANK-SBIN', 'ONGC-IOC', 'ULTRACEMCO-ACC', 'SBIN-IOC'] ...
+07:23:40  INFO          OOS => Gross Sharpe=-0.736  Net Sharpe=-0.796  Net Ret=-6.53%  Trades/yr=61  [sel=378.9s bt=0.1s]
+07:23:40  INFO        --- Fold6_2023-2024 | Train 2015-01-01 -> 2022-12-31 | Test 2023-01-01 -> 2024-12-31 ---
+07:24:22  INFO      [MLSelector.fit] y class counts: {0: 238, 1: 357}
+07:25:17  INFO      [LSTMSelector] 978180 sequences, class dist: {0: 484837, 1: 493343}
+07:25:18  INFO      [LSTMSelector] Subsampled to 50000 sequences.
+/users/student/pg/pg24/yash.sarang/miniconda3/lib/python3.13/site-packages/keras/src/layers/rnn/bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+07:27:59  INFO      [LSTMSelector] Training complete.
+E0000 00:00:1780538281.177921 2176485 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+07:28:12  INFO      [TransformerSelector] 978180 sequences, class dist: {0: 484837, 1: 493343}
+07:28:13  INFO      [TransformerSelector] Subsampled to 50000 sequences.
+07:30:02  INFO      [TransformerSelector] Training complete.
+E0000 00:00:1780538403.909925 2176485 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+07:30:05  INFO      [GNNSelector] Training on 8 snapshots, N=35 stocks.
+07:31:47  INFO      [GNNSelector] Training complete.
+07:31:47  INFO          Pairs selected (10): ['WIPRO-TECHM', 'M&M-ITC', 'TCS-TECHM', 'ITC-COALINDIA', 'M&M-EICHERMOT'] ...
+07:31:48  INFO          OOS => Gross Sharpe=0.625  Net Sharpe=0.561  Net Ret=4.33%  Trades/yr=62  [sel=487.4s bt=0.1s]
+07:31:48  INFO      All folds done in 2782s
+07:31:48  INFO      Results saved -> /users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/results/walk_forward_20260604_073148.json
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1780538513.433550 2193632 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+I0000 00:00:1780538513.435262 2193632 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1780538517.874676 2193632 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+I0000 00:00:1780538517.875612 2193632 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+E0000 00:00:1780538519.432788 2193632 cuda_platform.cc:52] failed call to cuInit: INTERNAL: CUDA error: Failed call to cuInit: CUDA_ERROR_NO_DEVICE: no CUDA-capable device is detected
+07:31:59  INFO      ================================================================
+07:31:59  INFO      Walk-Forward Validation  |  mode=full  |  s2=ou_only  |  top_k=10
+07:31:59  INFO      S1 weights: {'Correlation': 1.0, 'Distance': 1.0, 'Cointegration': 1.0, 'Combined': 1.0, 'ML': 1.0, 'LSTM': 1.0, 'Transformer': 1.0, 'GNN': 1.0}
+07:31:59  INFO      Folds: ['Fold1_2018', 'Fold2_2019', 'Fold3_2020', 'Fold4_2021', 'Fold5_2022', 'Fold6_2023-2024']
+07:31:59  INFO      min_hold_bars=30  capital=1,000,000
+07:31:59  INFO      ================================================================
+07:31:59  INFO      [Data] Fetching full 10-year daily prices ...
+07:31:59  INFO        35 tickers x 2466 bars  (2015-01-01 -> 2024-12-30)
+07:31:59  INFO        --- Fold1_2018 | Train 2015-01-01 -> 2017-12-31 | Test 2018-01-01 -> 2018-12-31 ---
+07:32:34  INFO      [MLSelector.fit] y class counts: {0: 323, 1: 272}
+07:33:03  INFO      [LSTMSelector] 242760 sequences, class dist: {0: 126776, 1: 115984}
+07:33:04  INFO      [LSTMSelector] Subsampled to 50000 sequences.
+/users/student/pg/pg24/yash.sarang/miniconda3/lib/python3.13/site-packages/keras/src/layers/rnn/bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+07:35:53  INFO      [LSTMSelector] Training complete.
+E0000 00:00:1780538755.006127 2193632 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+07:36:03  INFO      [TransformerSelector] 242760 sequences, class dist: {0: 126776, 1: 115984}
+07:36:03  INFO      [TransformerSelector] Subsampled to 50000 sequences.
+07:37:38  INFO      [TransformerSelector] Training complete.
+E0000 00:00:1780538860.605312 2193632 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+07:37:42  INFO      [GNNSelector] Training on 8 snapshots, N=35 stocks.
+07:39:24  INFO      [GNNSelector] Training complete.
+07:39:24  INFO          Pairs selected (10): ['MARUTI-HINDUNILVR', 'JSWSTEEL-HINDALCO', 'HDFCBANK-INDUSINDBK', 'INDUSINDBK-EICHERMOT', 'TATASTEEL-JSWSTEEL'] ...
+07:39:24  INFO          OOS => Gross Sharpe=0.653  Net Sharpe=0.595  Net Ret=5.05%  Trades/yr=60  [sel=444.6s bt=0.1s]
+07:39:24  INFO        --- Fold2_2019 | Train 2015-01-01 -> 2018-12-31 | Test 2019-01-01 -> 2019-12-31 ---
+07:39:58  INFO      [MLSelector.fit] y class counts: {0: 240, 1: 355}
+07:40:33  INFO      [LSTMSelector] 389130 sequences, class dist: {0: 198719, 1: 190411}
+07:40:33  INFO      [LSTMSelector] Subsampled to 50000 sequences.
+/users/student/pg/pg24/yash.sarang/miniconda3/lib/python3.13/site-packages/keras/src/layers/rnn/bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+07:43:21  INFO      [LSTMSelector] Training complete.
+E0000 00:00:1780539202.962135 2193632 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+07:43:33  INFO      [TransformerSelector] 389130 sequences, class dist: {0: 198719, 1: 190411}
+07:43:33  INFO      [TransformerSelector] Subsampled to 50000 sequences.
+07:44:03  INFO      [TransformerSelector] Training complete.
+E0000 00:00:1780539244.658139 2193632 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+07:44:06  INFO      [GNNSelector] Training on 8 snapshots, N=35 stocks.
+07:45:46  INFO      [GNNSelector] Training complete.
+07:45:46  INFO          Pairs selected (10): ['TCS-INFY', 'HINDUNILVR-NESTLEIND', 'NESTLEIND-BRITANNIA', 'IOC-BPCL', 'INFY-RELIANCE'] ...
+07:45:46  INFO          OOS => Gross Sharpe=0.381  Net Sharpe=0.302  Net Ret=2.08%  Trades/yr=67  [sel=382.1s bt=0.1s]
+07:45:46  INFO        --- Fold3_2020 | Train 2015-01-01 -> 2019-12-31 | Test 2020-01-01 -> 2020-12-31 ---
+07:46:17  INFO      [MLSelector.fit] y class counts: {0: 328, 1: 267}
+07:46:58  INFO      [LSTMSelector] 533715 sequences, class dist: {0: 266946, 1: 266769}
+07:46:58  INFO      [LSTMSelector] Subsampled to 50000 sequences.
+/users/student/pg/pg24/yash.sarang/miniconda3/lib/python3.13/site-packages/keras/src/layers/rnn/bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+07:50:18  INFO      [LSTMSelector] Training complete.
+E0000 00:00:1780539620.117735 2193632 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+07:50:35  INFO      [TransformerSelector] 533715 sequences, class dist: {0: 266946, 1: 266769}
+07:50:35  INFO      [TransformerSelector] Subsampled to 50000 sequences.
+07:52:17  INFO      [TransformerSelector] Training complete.
+E0000 00:00:1780539738.483955 2193632 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+07:52:20  INFO      [GNNSelector] Training on 8 snapshots, N=35 stocks.
+07:53:58  INFO      [GNNSelector] Training complete.
+07:53:58  INFO          Pairs selected (10): ['TATASTEEL-JSWSTEEL', 'ONGC-COALINDIA', 'HDFCBANK-KOTAKBANK', 'HINDUNILVR-NESTLEIND', 'ONGC-IOC'] ...
+07:53:58  INFO          OOS => Gross Sharpe=0.536  Net Sharpe=0.455  Net Ret=4.35%  Trades/yr=95  [sel=492.2s bt=0.1s]
+07:53:58  INFO        --- Fold4_2021 | Train 2015-01-01 -> 2020-12-31 | Test 2021-01-01 -> 2021-12-31 ---
+07:54:34  INFO      [MLSelector.fit] y class counts: {0: 318, 1: 277}
+07:55:19  INFO      [LSTMSelector] 683060 sequences, class dist: {0: 338645, 1: 344415}
+07:55:19  INFO      [LSTMSelector] Subsampled to 50000 sequences.
+/users/student/pg/pg24/yash.sarang/miniconda3/lib/python3.13/site-packages/keras/src/layers/rnn/bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+07:56:51  INFO      [LSTMSelector] Training complete.
+E0000 00:00:1780540013.084575 2193632 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+07:57:09  INFO      [TransformerSelector] 683060 sequences, class dist: {0: 338645, 1: 344415}
+07:57:09  INFO      [TransformerSelector] Subsampled to 50000 sequences.
+07:58:30  INFO      [TransformerSelector] Training complete.
+E0000 00:00:1780540112.093123 2193632 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+07:58:34  INFO      [GNNSelector] Training on 8 snapshots, N=35 stocks.
+08:00:17  INFO      [GNNSelector] Training complete.
+08:00:17  INFO          Pairs selected (10): ['AXISBANK-INDUSINDBK', 'INFY-HCLTECH', 'SBIN-AXISBANK', 'TECHM-JSWSTEEL', 'INFY-WIPRO'] ...
+08:00:17  INFO          OOS => Gross Sharpe=2.122  Net Sharpe=2.034  Net Ret=14.88%  Trades/yr=75  [sel=378.6s bt=0.1s]
+08:00:17  INFO        --- Fold5_2022 | Train 2015-01-01 -> 2021-12-31 | Test 2022-01-01 -> 2022-12-31 ---
+08:00:51  INFO      [MLSelector.fit] y class counts: {0: 245, 1: 350}
+08:01:36  INFO      [LSTMSelector] 830620 sequences, class dist: {0: 410671, 1: 419949}
+08:01:37  INFO      [LSTMSelector] Subsampled to 50000 sequences.
+/users/student/pg/pg24/yash.sarang/miniconda3/lib/python3.13/site-packages/keras/src/layers/rnn/bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+08:04:59  INFO      [LSTMSelector] Training complete.
+E0000 00:00:1780540501.220377 2193632 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+08:05:17  INFO      [TransformerSelector] 830620 sequences, class dist: {0: 410671, 1: 419949}
+08:05:18  INFO      [TransformerSelector] Subsampled to 50000 sequences.
+08:06:52  INFO      [TransformerSelector] Training complete.
+E0000 00:00:1780540614.397098 2193632 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+08:06:56  INFO      [GNNSelector] Training on 8 snapshots, N=35 stocks.
+08:08:42  INFO      [GNNSelector] Training complete.
+08:08:42  INFO          Pairs selected (10): ['WIPRO-SUNPHARMA', 'ICICIBANK-SBIN', 'ONGC-IOC', 'ULTRACEMCO-ACC', 'SBIN-IOC'] ...
+08:08:42  INFO          OOS => Gross Sharpe=-0.736  Net Sharpe=-0.796  Net Ret=-6.53%  Trades/yr=61  [sel=504.6s bt=0.1s]
+08:08:42  INFO        --- Fold6_2023-2024 | Train 2015-01-01 -> 2022-12-31 | Test 2023-01-01 -> 2024-12-31 ---
+08:09:20  INFO      [MLSelector.fit] y class counts: {0: 238, 1: 357}
+08:10:12  INFO      [LSTMSelector] 978180 sequences, class dist: {0: 484837, 1: 493343}
+08:10:12  INFO      [LSTMSelector] Subsampled to 50000 sequences.
+/users/student/pg/pg24/yash.sarang/miniconda3/lib/python3.13/site-packages/keras/src/layers/rnn/bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+08:13:34  INFO      [LSTMSelector] Training complete.
+E0000 00:00:1780541016.385029 2193632 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+08:13:53  INFO      [TransformerSelector] 978180 sequences, class dist: {0: 484837, 1: 493343}
+08:13:53  INFO      [TransformerSelector] Subsampled to 50000 sequences.
+08:15:01  INFO      [TransformerSelector] Training complete.
+E0000 00:00:1780541103.387530 2193632 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+08:15:05  INFO      [GNNSelector] Training on 8 snapshots, N=35 stocks.
+08:16:51  INFO      [GNNSelector] Training complete.
+08:16:51  INFO          Pairs selected (10): ['WIPRO-TECHM', 'M&M-ITC', 'ITC-COALINDIA', 'TCS-TECHM', 'M&M-EICHERMOT'] ...
+08:16:52  INFO          OOS => Gross Sharpe=0.625  Net Sharpe=0.561  Net Ret=4.33%  Trades/yr=62  [sel=489.7s bt=0.1s]
+08:16:52  INFO      All folds done in 2692s
+08:16:52  INFO      Results saved -> /users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/results/walk_forward_20260604_081652.json
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1780541216.845610 2211988 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+I0000 00:00:1780541216.847426 2211988 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1780541220.188003 2211988 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+I0000 00:00:1780541220.188365 2211988 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+E0000 00:00:1780541221.441058 2211988 cuda_platform.cc:52] failed call to cuInit: INTERNAL: CUDA error: Failed call to cuInit: CUDA_ERROR_NO_DEVICE: no CUDA-capable device is detected
+08:17:01  INFO      ================================================================
+08:17:01  INFO      Walk-Forward Validation  |  mode=full  |  s2=ou_only  |  top_k=10
+08:17:01  INFO      S1 weights: {'Correlation': 1.0, 'Distance': 1.0, 'Cointegration': 1.0, 'Combined': 1.0, 'ML': 1.0, 'LSTM': 1.0, 'Transformer': 1.0, 'GNN': 1.0}
+08:17:01  INFO      Folds: ['Fold1_2018', 'Fold2_2019', 'Fold3_2020', 'Fold4_2021', 'Fold5_2022', 'Fold6_2023-2024']
+08:17:01  INFO      min_hold_bars=30  capital=1,000,000
+08:17:01  INFO      ================================================================
+08:17:01  INFO      [Data] Fetching full 10-year daily prices ...
+08:17:01  INFO        35 tickers x 2466 bars  (2015-01-01 -> 2024-12-30)
+08:17:01  INFO        --- Fold1_2018 | Train 2015-01-01 -> 2017-12-31 | Test 2018-01-01 -> 2018-12-31 ---
+08:17:31  INFO      [MLSelector.fit] y class counts: {0: 323, 1: 272}
+08:17:58  INFO      [LSTMSelector] 242760 sequences, class dist: {0: 126776, 1: 115984}
+08:17:58  INFO      [LSTMSelector] Subsampled to 50000 sequences.
+/users/student/pg/pg24/yash.sarang/miniconda3/lib/python3.13/site-packages/keras/src/layers/rnn/bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+08:21:12  INFO      [LSTMSelector] Training complete.
+E0000 00:00:1780541474.281356 2211988 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+08:21:26  INFO      [TransformerSelector] 242760 sequences, class dist: {0: 126776, 1: 115984}
+08:21:26  INFO      [TransformerSelector] Subsampled to 50000 sequences.
+08:23:01  INFO      [TransformerSelector] Training complete.
+E0000 00:00:1780541583.110148 2211988 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+08:23:04  INFO      [GNNSelector] Training on 8 snapshots, N=35 stocks.
+08:24:49  INFO      [GNNSelector] Training complete.
+08:24:49  INFO          Pairs selected (10): ['JSWSTEEL-HINDALCO', 'MARUTI-HINDUNILVR', 'HDFCBANK-INDUSINDBK', 'TATASTEEL-JSWSTEEL', 'INDUSINDBK-EICHERMOT'] ...
+08:24:49  INFO          OOS => Gross Sharpe=0.653  Net Sharpe=0.595  Net Ret=5.05%  Trades/yr=60  [sel=467.7s bt=0.1s]
+08:24:49  INFO        --- Fold2_2019 | Train 2015-01-01 -> 2018-12-31 | Test 2019-01-01 -> 2019-12-31 ---
+08:25:17  INFO      [MLSelector.fit] y class counts: {0: 240, 1: 355}
+08:25:49  INFO      [LSTMSelector] 389130 sequences, class dist: {0: 198719, 1: 190411}
+08:25:50  INFO      [LSTMSelector] Subsampled to 50000 sequences.
+/users/student/pg/pg24/yash.sarang/miniconda3/lib/python3.13/site-packages/keras/src/layers/rnn/bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+08:29:00  INFO      [LSTMSelector] Training complete.
+E0000 00:00:1780541942.513995 2211988 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+08:29:17  INFO      [TransformerSelector] 389130 sequences, class dist: {0: 198719, 1: 190411}
+08:29:18  INFO      [TransformerSelector] Subsampled to 50000 sequences.
+08:31:31  INFO      [TransformerSelector] Training complete.
+E0000 00:00:1780542092.445414 2211988 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+08:31:34  INFO      [GNNSelector] Training on 8 snapshots, N=35 stocks.
+08:33:13  INFO      [GNNSelector] Training complete.
+08:33:13  INFO          Pairs selected (10): ['TCS-INFY', 'HINDUNILVR-NESTLEIND', 'NESTLEIND-BRITANNIA', 'IOC-BPCL', 'INFY-RELIANCE'] ...
+08:33:13  INFO          OOS => Gross Sharpe=0.381  Net Sharpe=0.302  Net Ret=2.08%  Trades/yr=67  [sel=503.7s bt=0.1s]
+08:33:13  INFO        --- Fold3_2020 | Train 2015-01-01 -> 2019-12-31 | Test 2020-01-01 -> 2020-12-31 ---
+08:33:43  INFO      [MLSelector.fit] y class counts: {0: 328, 1: 267}
+08:34:23  INFO      [LSTMSelector] 533715 sequences, class dist: {0: 266946, 1: 266769}
+08:34:24  INFO      [LSTMSelector] Subsampled to 50000 sequences.
+/users/student/pg/pg24/yash.sarang/miniconda3/lib/python3.13/site-packages/keras/src/layers/rnn/bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+08:37:44  INFO      [LSTMSelector] Training complete.
+E0000 00:00:1780542466.312648 2211988 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+08:37:58  INFO      [TransformerSelector] 533715 sequences, class dist: {0: 266946, 1: 266769}
+08:37:59  INFO      [TransformerSelector] Subsampled to 50000 sequences.
+08:39:26  INFO      [TransformerSelector] Training complete.
+E0000 00:00:1780542568.215905 2211988 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+08:39:29  INFO      [GNNSelector] Training on 8 snapshots, N=35 stocks.
+08:41:10  INFO      [GNNSelector] Training complete.
+08:41:10  INFO          Pairs selected (10): ['TATASTEEL-JSWSTEEL', 'ONGC-COALINDIA', 'HINDUNILVR-NESTLEIND', 'HDFCBANK-KOTAKBANK', 'ONGC-IOC'] ...
+08:41:11  INFO          OOS => Gross Sharpe=0.177  Net Sharpe=0.099  Net Ret=1.02%  Trades/yr=99  [sel=477.6s bt=0.1s]
+08:41:11  INFO        --- Fold4_2021 | Train 2015-01-01 -> 2020-12-31 | Test 2021-01-01 -> 2021-12-31 ---
+08:41:47  INFO      [MLSelector.fit] y class counts: {0: 318, 1: 277}
+08:42:32  INFO      [LSTMSelector] 683060 sequences, class dist: {0: 338645, 1: 344415}
+08:42:32  INFO      [LSTMSelector] Subsampled to 50000 sequences.
+/users/student/pg/pg24/yash.sarang/miniconda3/lib/python3.13/site-packages/keras/src/layers/rnn/bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+08:44:24  INFO      [LSTMSelector] Training complete.
+E0000 00:00:1780542865.826255 2211988 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+08:44:41  INFO      [TransformerSelector] 683060 sequences, class dist: {0: 338645, 1: 344415}
+08:44:42  INFO      [TransformerSelector] Subsampled to 50000 sequences.
+08:47:00  INFO      [TransformerSelector] Training complete.
+E0000 00:00:1780543022.108429 2211988 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+08:47:03  INFO      [GNNSelector] Training on 8 snapshots, N=35 stocks.
+08:48:44  INFO      [GNNSelector] Training complete.
+08:48:44  INFO          Pairs selected (10): ['AXISBANK-INDUSINDBK', 'SBIN-AXISBANK', 'INFY-HCLTECH', 'TECHM-JSWSTEEL', 'ICICIBANK-AXISBANK'] ...
+08:48:44  INFO          OOS => Gross Sharpe=2.216  Net Sharpe=2.135  Net Ret=17.10%  Trades/yr=78  [sel=453.8s bt=0.1s]
+08:48:44  INFO        --- Fold5_2022 | Train 2015-01-01 -> 2021-12-31 | Test 2022-01-01 -> 2022-12-31 ---
+08:49:20  INFO      [MLSelector.fit] y class counts: {0: 245, 1: 350}
+08:50:10  INFO      [LSTMSelector] 830620 sequences, class dist: {0: 410671, 1: 419949}
+08:50:11  INFO      [LSTMSelector] Subsampled to 50000 sequences.
+/users/student/pg/pg24/yash.sarang/miniconda3/lib/python3.13/site-packages/keras/src/layers/rnn/bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+08:52:21  INFO      [LSTMSelector] Training complete.
+E0000 00:00:1780543343.140983 2211988 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+08:52:39  INFO      [TransformerSelector] 830620 sequences, class dist: {0: 410671, 1: 419949}
+08:52:39  INFO      [TransformerSelector] Subsampled to 50000 sequences.
+08:54:15  INFO      [TransformerSelector] Training complete.
+E0000 00:00:1780543456.957048 2211988 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+08:54:18  INFO      [GNNSelector] Training on 8 snapshots, N=35 stocks.
+08:56:02  INFO      [GNNSelector] Training complete.
+08:56:02  INFO          Pairs selected (10): ['WIPRO-SUNPHARMA', 'ICICIBANK-SBIN', 'ONGC-IOC', 'ULTRACEMCO-ACC', 'INFY-WIPRO'] ...
+08:56:02  INFO          OOS => Gross Sharpe=-0.736  Net Sharpe=-0.796  Net Ret=-6.53%  Trades/yr=61  [sel=438.0s bt=0.1s]
+08:56:02  INFO        --- Fold6_2023-2024 | Train 2015-01-01 -> 2022-12-31 | Test 2023-01-01 -> 2024-12-31 ---
+08:56:40  INFO      [MLSelector.fit] y class counts: {0: 238, 1: 357}
+08:57:32  INFO      [LSTMSelector] 978180 sequences, class dist: {0: 484837, 1: 493343}
+08:57:32  INFO      [LSTMSelector] Subsampled to 50000 sequences.
+/users/student/pg/pg24/yash.sarang/miniconda3/lib/python3.13/site-packages/keras/src/layers/rnn/bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+08:59:56  INFO      [LSTMSelector] Training complete.
+E0000 00:00:1780543798.133831 2211988 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+09:00:15  INFO      [TransformerSelector] 978180 sequences, class dist: {0: 484837, 1: 493343}
+09:00:15  INFO      [TransformerSelector] Subsampled to 50000 sequences.
+09:01:57  INFO      [TransformerSelector] Training complete.
+E0000 00:00:1780543919.593278 2211988 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+09:02:01  INFO      [GNNSelector] Training on 8 snapshots, N=35 stocks.
+09:03:43  INFO      [GNNSelector] Training complete.
+09:03:43  INFO          Pairs selected (10): ['WIPRO-TECHM', 'M&M-ITC', 'TCS-TECHM', 'ITC-COALINDIA', 'M&M-EICHERMOT'] ...
+09:03:43  INFO          OOS => Gross Sharpe=0.625  Net Sharpe=0.561  Net Ret=4.33%  Trades/yr=62  [sel=460.8s bt=0.1s]
+09:03:43  INFO      All folds done in 2802s
+09:03:43  INFO      Results saved -> /users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/results/walk_forward_20260604_090343.json

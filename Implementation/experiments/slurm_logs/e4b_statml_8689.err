@@ -1,0 +1,140 @@
+2026-06-04 06:44:34,996 INFO Cache already exists: /users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/data/nse_nifty100/prices_2015-01-01_2024-12-31.parquet
+2026-06-04 06:44:35,133 INFO   Shape: (2466, 89), dates: 2015-01-01 → 2024-12-30
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1780535688.674501 2176371 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+I0000 00:00:1780535688.686110 2176371 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1780535706.040019 2176371 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+I0000 00:00:1780535706.041957 2176371 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+E0000 00:00:1780535714.443266 2176371 cuda_platform.cc:52] failed call to cuInit: INTERNAL: CUDA error: Failed call to cuInit: CUDA_ERROR_NO_DEVICE: no CUDA-capable device is detected
+06:45:14  INFO      ================================================================
+06:45:14  INFO      Walk-Forward Validation  |  mode=stat_ml  |  s2=ou_only  |  top_k=10
+06:45:14  INFO      S1 weights: {'Correlation': 1.0, 'Distance': 1.0, 'Cointegration': 1.0, 'Combined': 1.0, 'ML': 1.0}
+06:45:14  INFO      Folds: ['Fold1_2018', 'Fold2_2019', 'Fold3_2020', 'Fold4_2021', 'Fold5_2022', 'Fold6_2023-2024']
+06:45:14  INFO      min_hold_bars=30  capital=1,000,000
+06:45:14  INFO      ================================================================
+06:45:14  INFO      [Data] Fetching full 10-year daily prices ...
+06:45:14  INFO        35 tickers x 2466 bars  (2015-01-01 -> 2024-12-30)
+06:45:14  INFO        --- Fold1_2018 | Train 2015-01-01 -> 2017-12-31 | Test 2018-01-01 -> 2018-12-31 ---
+06:45:35  INFO      [MLSelector.fit] y class counts: {0: 323, 1: 272}
+06:45:54  INFO          Pairs selected (10): ['HDFCBANK-INDUSINDBK', 'MARUTI-HINDUNILVR', 'JSWSTEEL-HINDALCO', 'TATASTEEL-JSWSTEEL', 'INDUSINDBK-EICHERMOT'] ...
+Traceback (most recent call last):
+  File "/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/walk_forward.py", line 732, in <module>
+    main()
+    ~~~~^^
+  File "/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/walk_forward.py", line 678, in main
+    result = run_fold(
+        prices=prices,
+    ...<8 lines>...
+        ppy=PERIODS_PER_YEAR["1D"],
+    )
+  File "/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/walk_forward.py", line 435, in run_fold
+    sig = _signals_for_pair(a_train, b_train, a_full, b_full, s2_weights)
+  File "/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/walk_forward.py", line 336, in _signals_for_pair
+    "RL":     __import__("importlib").import_module("core.entry_rl").RLSignal()  # lazy: gymnasium optional
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/users/student/pg/pg24/yash.sarang/miniconda3/lib/python3.13/importlib/__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 1023, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/core/entry_rl.py", line 43, in <module>
+    class PairsTradingEnv(gym.Env):
+                          ^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'Env'
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1780535756.799529 2176623 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+I0000 00:00:1780535756.800284 2176623 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1780535761.733867 2176623 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+I0000 00:00:1780535761.734492 2176623 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+E0000 00:00:1780535762.035763 2176623 cuda_platform.cc:52] failed call to cuInit: INTERNAL: CUDA error: Failed call to cuInit: CUDA_ERROR_NO_DEVICE: no CUDA-capable device is detected
+06:46:02  INFO      ================================================================
+06:46:02  INFO      Walk-Forward Validation  |  mode=stat_ml  |  s2=ou_only  |  top_k=10
+06:46:02  INFO      S1 weights: {'Correlation': 1.0, 'Distance': 1.0, 'Cointegration': 1.0, 'Combined': 1.0, 'ML': 1.0}
+06:46:02  INFO      Folds: ['Fold1_2018', 'Fold2_2019', 'Fold3_2020', 'Fold4_2021', 'Fold5_2022', 'Fold6_2023-2024']
+06:46:02  INFO      min_hold_bars=30  capital=1,000,000
+06:46:02  INFO      ================================================================
+06:46:02  INFO      [Data] Fetching full 10-year daily prices ...
+06:46:02  INFO        35 tickers x 2466 bars  (2015-01-01 -> 2024-12-30)
+06:46:02  INFO        --- Fold1_2018 | Train 2015-01-01 -> 2017-12-31 | Test 2018-01-01 -> 2018-12-31 ---
+06:46:18  INFO      [MLSelector.fit] y class counts: {0: 323, 1: 272}
+06:46:37  INFO          Pairs selected (10): ['HDFCBANK-INDUSINDBK', 'MARUTI-HINDUNILVR', 'JSWSTEEL-HINDALCO', 'TATASTEEL-JSWSTEEL', 'INDUSINDBK-EICHERMOT'] ...
+Traceback (most recent call last):
+  File "/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/walk_forward.py", line 732, in <module>
+    main()
+    ~~~~^^
+  File "/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/walk_forward.py", line 678, in main
+    result = run_fold(
+        prices=prices,
+    ...<8 lines>...
+        ppy=PERIODS_PER_YEAR["1D"],
+    )
+  File "/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/walk_forward.py", line 435, in run_fold
+    sig = _signals_for_pair(a_train, b_train, a_full, b_full, s2_weights)
+  File "/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/walk_forward.py", line 336, in _signals_for_pair
+    "RL":     __import__("importlib").import_module("core.entry_rl").RLSignal()  # lazy: gymnasium optional
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/users/student/pg/pg24/yash.sarang/miniconda3/lib/python3.13/importlib/__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 1023, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/core/entry_rl.py", line 43, in <module>
+    class PairsTradingEnv(gym.Env):
+                          ^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'Env'
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1780535806.634685 2176834 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+I0000 00:00:1780535806.638509 2176834 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1780535809.559222 2176834 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+I0000 00:00:1780535809.560161 2176834 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+E0000 00:00:1780535811.057909 2176834 cuda_platform.cc:52] failed call to cuInit: INTERNAL: CUDA error: Failed call to cuInit: CUDA_ERROR_NO_DEVICE: no CUDA-capable device is detected
+06:46:51  INFO      ================================================================
+06:46:51  INFO      Walk-Forward Validation  |  mode=stat_ml  |  s2=ou_only  |  top_k=10
+06:46:51  INFO      S1 weights: {'Correlation': 1.0, 'Distance': 1.0, 'Cointegration': 1.0, 'Combined': 1.0, 'ML': 1.0}
+06:46:51  INFO      Folds: ['Fold1_2018', 'Fold2_2019', 'Fold3_2020', 'Fold4_2021', 'Fold5_2022', 'Fold6_2023-2024']
+06:46:51  INFO      min_hold_bars=30  capital=1,000,000
+06:46:51  INFO      ================================================================
+06:46:51  INFO      [Data] Fetching full 10-year daily prices ...
+06:46:51  INFO        35 tickers x 2466 bars  (2015-01-01 -> 2024-12-30)
+06:46:51  INFO        --- Fold1_2018 | Train 2015-01-01 -> 2017-12-31 | Test 2018-01-01 -> 2018-12-31 ---
+06:47:14  INFO      [MLSelector.fit] y class counts: {0: 323, 1: 272}
+06:47:34  INFO          Pairs selected (10): ['HDFCBANK-INDUSINDBK', 'MARUTI-HINDUNILVR', 'JSWSTEEL-HINDALCO', 'TATASTEEL-JSWSTEEL', 'INDUSINDBK-EICHERMOT'] ...
+Traceback (most recent call last):
+  File "/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/walk_forward.py", line 732, in <module>
+    main()
+    ~~~~^^
+  File "/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/walk_forward.py", line 678, in main
+    result = run_fold(
+        prices=prices,
+    ...<8 lines>...
+        ppy=PERIODS_PER_YEAR["1D"],
+    )
+  File "/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/walk_forward.py", line 435, in run_fold
+    sig = _signals_for_pair(a_train, b_train, a_full, b_full, s2_weights)
+  File "/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/walk_forward.py", line 336, in _signals_for_pair
+    "RL":     __import__("importlib").import_module("core.entry_rl").RLSignal()  # lazy: gymnasium optional
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/users/student/pg/pg24/yash.sarang/miniconda3/lib/python3.13/importlib/__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 1023, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/core/entry_rl.py", line 43, in <module>
+    class PairsTradingEnv(gym.Env):
+                          ^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'Env'

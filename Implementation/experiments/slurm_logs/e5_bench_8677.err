@@ -1,0 +1,9 @@
+2026-06-04 06:04:18,584 INFO Cache already exists: /users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/data/nse_nifty100/prices_2015-01-01_2024-12-31.parquet
+2026-06-04 06:04:18,636 INFO   Shape: (2466, 89), dates: 2015-01-01 → 2024-12-30
+06:04:19  INFO      Loading WFV result: walk_forward_20260402_230753.json
+06:04:19  INFO      OOS period: 2020-01-01 to 2025-12-31  (2192 bars)
+06:04:19  INFO      Strategy: mode='stat_only', s2='ou_only'
+06:04:19  INFO      Fetching Nifty 50 (^NSEI) ...
+06:04:20  INFO      Fetching Nifty Bank (^NSEBANK) ...
+06:04:21  INFO      Fetching Nifty IT (^CNXIT) ...
+06:04:21  INFO      Results saved → benchmark_20260604_060421.json

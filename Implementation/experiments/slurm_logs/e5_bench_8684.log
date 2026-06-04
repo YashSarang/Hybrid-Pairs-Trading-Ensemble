@@ -1,0 +1,44 @@
+[E5] Benchmark comparison vs Nifty50/100 buy-and-hold
+
+========================================================================
+  E5 Benchmark Comparison
+  WFV: walk_forward_20260402_230753.json  |  mode=stat_only  |  s2=ou_only
+  OOS period: 2020-01-01 to 2025-12-31
+========================================================================
+Metric                               Gross         Net
+------------------------------------------------------
+  Total Return (%)                   40.46       31.82
+  CAGR (%)                            3.99        3.23
+  Ann. Vol (%)                        6.39        6.56
+  Sharpe Ratio                       0.624       0.492
+  Max Drawdown (%)                  -12.57      -12.99
+  Calmar Ratio                       0.317       0.249
+
+  vs Nifty 50:
+    Benchmark CAGR:             13.69%
+    Benchmark Sharpe:           0.750
+    Benchmark Max DD:          -38.44%
+    Beta  (Net vs Bench):      0.0690
+    Alpha (Net, Ann.):           3.77%
+    Correlation (Net):         0.1579
+    Info Ratio (Net):          -0.437
+
+  vs Nifty Bank:
+    Benchmark CAGR:             10.95%
+    Benchmark Sharpe:           0.450
+    Benchmark Max DD:          -47.86%
+    Beta  (Net vs Bench):      0.0591
+    Alpha (Net, Ann.):           4.04%
+    Correlation (Net):         0.1803
+    Info Ratio (Net):          -0.237
+
+  vs Nifty IT:
+    Benchmark CAGR:             16.18%
+    Benchmark Sharpe:           0.693
+    Benchmark Max DD:          -33.35%
+    Beta  (Net vs Bench):      0.0091
+    Alpha (Net, Ann.):           4.52%
+    Correlation (Net):         0.0266
+    Info Ratio (Net):          -0.423
+
+[E5] DONE

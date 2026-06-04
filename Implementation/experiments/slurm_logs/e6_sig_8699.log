@@ -1,0 +1,35 @@
+[E6] Statistical significance — 10k bootstrap
+
+========================================================================
+  E6 Statistical Significance Tests
+  WFV: walk_forward_20260604_065229.json  |  mode=stat_only  |  s2=ou_only
+========================================================================
+
+  Test 1: Block Bootstrap Sharpe CI (block_size=30, B=10000)
+                                       Gross         Net
+  ------------------------------------------------------
+  Observed Sharpe                     0.5393       0.468
+  95% CI Lower                       -0.1348     -0.2089
+  95% CI Upper                        1.2251      1.1544
+  p(SR <= 0)                          0.0572      0.0857
+  Sig. at 5% (CI > 0)                  False       False
+
+  Test 2: Newey-West HAC t-test (lags=8)
+                                       Gross         Net
+  ------------------------------------------------------
+  t-statistic                         1.5014      1.3001
+  p-value (one-sided)                 0.0666      0.0968
+  Sig. at 5%                           False       False
+  Ann. Return (%)                      3.683        3.24
+  Sharpe                              0.5393       0.468
+
+  Test 3: Multiple Comparison — Bonferroni (5 S2 configs)
+  Config                   p_raw    p_Bonf    Sig 5%
+  --------------------------------------------------
+  ZScore_only                0.5       1.0     False
+  OU_only                 0.0968     0.484     False
+  Kalman_only                0.5       1.0     False
+  ML_only                   0.99       1.0     False
+  S2_Ensemble                0.5       1.0     False
+
+[E6] DONE

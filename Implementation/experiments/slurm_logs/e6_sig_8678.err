@@ -1,0 +1,7 @@
+2026-06-04 06:04:22,625 INFO Cache already exists: /users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/data/nse_nifty100/prices_2015-01-01_2024-12-31.parquet
+2026-06-04 06:04:22,660 INFO   Shape: (2466, 89), dates: 2015-01-01 → 2024-12-30
+06:04:23  INFO      WFV result: walk_forward_20260402_230753.json
+06:04:23  INFO      OOS daily returns: 2191 bars (2020-01-02 to 2025-12-31)
+06:04:23  INFO      Bootstrap Sharpe CI (n_boot=10000, block=30) ...
+06:04:25  INFO      Newey-West HAC t-test ...
+06:04:25  INFO      Results saved to significance_20260604_060425.json

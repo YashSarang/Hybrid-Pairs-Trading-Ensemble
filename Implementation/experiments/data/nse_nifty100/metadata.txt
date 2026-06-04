@@ -1,0 +1,7 @@
+Generated: 2026-06-04T00:33:34.080037Z
+Period: 2015-01-01 to 2024-12-31
+Tickers requested: 94
+Tickers retained: 89
+Tickers dropped (< 1250 days): ['LTIM.NS', 'TATAMOTORS.NS', 'BERGERPAINTS.NS', 'VODAFONEIDEA.NS', 'ADANITRANS.NS']
+Trading days: 2466
+Field: Adj Close (auto_adjust=True)

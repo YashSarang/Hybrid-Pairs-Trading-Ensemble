@@ -1,0 +1,98 @@
+2026-06-04 06:43:10,992 INFO Cache already exists: /users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/data/nse_nifty100/prices_2015-01-01_2024-12-31.parquet
+2026-06-04 06:43:11,636 INFO   Shape: (2466, 89), dates: 2015-01-01 → 2024-12-30
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1780535619.196412 2175978 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+I0000 00:00:1780535619.201233 2175978 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1780535628.162433 2175978 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+I0000 00:00:1780535628.163759 2175978 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+E0000 00:00:1780535634.723905 2175978 cuda_platform.cc:52] failed call to cuInit: INTERNAL: CUDA error: Failed call to cuInit: CUDA_ERROR_NO_DEVICE: no CUDA-capable device is detected
+06:43:55  INFO      ================================================================
+06:43:55  INFO      E3 Ablation  |  mode=stat_only  |  stage=both  |  top_k=10
+06:43:55  INFO      min_hold=30  capital=1,000,000
+06:43:55  INFO      ================================================================
+06:43:55  INFO      [Data] Fetching full 10-year daily prices ...
+06:43:56  INFO        35 tickers x 2466 bars
+06:43:56  INFO      
+--- Running Stage 1 Ablation ---
+06:43:56  INFO        Stage 1 ablation: ['Correlation_only', 'Distance_only', 'Cointegration_only', 'Combined_only', 'S1_Ensemble']
+06:43:56  INFO        [S1] Config: Correlation_only
+06:43:57  INFO          [Correlation_only] 2020 -> Gross SR=-0.955  Net SR=-1.188  pairs=10  t=1.2s
+06:43:58  INFO          [Correlation_only] 2021 -> Gross SR=2.079  Net SR=1.749  pairs=10  t=1.0s
+06:43:59  INFO          [Correlation_only] 2022 -> Gross SR=-0.602  Net SR=-0.857  pairs=10  t=1.0s
+06:44:00  INFO          [Correlation_only] 2023 -> Gross SR=2.933  Net SR=2.542  pairs=10  t=1.0s
+06:44:01  INFO          [Correlation_only] 2024 -> Gross SR=-0.167  Net SR=-0.407  pairs=10  t=1.0s
+Traceback (most recent call last):
+  File "/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/ablation.py", line 726, in <module>
+    main()
+    ~~~~^^
+  File "/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/ablation.py", line 688, in main
+    s1_results = run_stage1_ablation(prices, args.mode, args.top_k, costs)
+  File "/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/ablation.py", line 475, in run_stage1_ablation
+    f"Gross SR={m.get('gross_sharpe','?'):.3f}  "
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: Unknown format code 'f' for object of type 'str'
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1780535643.944343 2176121 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+I0000 00:00:1780535643.944912 2176121 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1780535644.947850 2176121 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+I0000 00:00:1780535644.948172 2176121 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+E0000 00:00:1780535646.475767 2176121 cuda_platform.cc:52] failed call to cuInit: INTERNAL: CUDA error: Failed call to cuInit: CUDA_ERROR_NO_DEVICE: no CUDA-capable device is detected
+06:44:07  INFO      ================================================================
+06:44:07  INFO      E3 Ablation  |  mode=stat_ml  |  stage=both  |  top_k=10
+06:44:07  INFO      min_hold=30  capital=1,000,000
+06:44:07  INFO      ================================================================
+06:44:07  INFO      [Data] Fetching full 10-year daily prices ...
+06:44:08  INFO        35 tickers x 2466 bars
+06:44:08  INFO      
+--- Running Stage 1 Ablation ---
+06:44:08  INFO        Stage 1 ablation: ['Correlation_only', 'Distance_only', 'Cointegration_only', 'Combined_only', 'ML_only', 'S1_Ensemble']
+06:44:08  INFO        [S1] Config: Correlation_only
+06:44:09  INFO          [Correlation_only] 2020 -> Gross SR=-0.955  Net SR=-1.188  pairs=10  t=1.1s
+06:44:10  INFO          [Correlation_only] 2021 -> Gross SR=2.079  Net SR=1.749  pairs=10  t=0.9s
+06:44:11  INFO          [Correlation_only] 2022 -> Gross SR=-0.602  Net SR=-0.857  pairs=10  t=1.0s
+06:44:12  INFO          [Correlation_only] 2023 -> Gross SR=2.933  Net SR=2.542  pairs=10  t=1.0s
+06:44:13  INFO          [Correlation_only] 2024 -> Gross SR=-0.167  Net SR=-0.407  pairs=10  t=1.0s
+Traceback (most recent call last):
+  File "/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/ablation.py", line 726, in <module>
+    main()
+    ~~~~^^
+  File "/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/ablation.py", line 688, in main
+    s1_results = run_stage1_ablation(prices, args.mode, args.top_k, costs)
+  File "/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/ablation.py", line 475, in run_stage1_ablation
+    f"Gross SR={m.get('gross_sharpe','?'):.3f}  "
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: Unknown format code 'f' for object of type 'str'
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1780535655.947219 2176195 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+I0000 00:00:1780535655.947786 2176195 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1780535658.368829 2176195 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+I0000 00:00:1780535658.369156 2176195 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+E0000 00:00:1780535659.061271 2176195 cuda_platform.cc:52] failed call to cuInit: INTERNAL: CUDA error: Failed call to cuInit: CUDA_ERROR_NO_DEVICE: no CUDA-capable device is detected
+06:44:19  INFO      ================================================================
+06:44:19  INFO      E3 Ablation  |  mode=full  |  stage=both  |  top_k=10
+06:44:19  INFO      min_hold=30  capital=1,000,000
+06:44:19  INFO      ================================================================
+06:44:19  INFO      [Data] Fetching full 10-year daily prices ...
+06:44:19  INFO        35 tickers x 2466 bars
+06:44:19  INFO      
+--- Running Stage 1 Ablation ---
+06:44:19  INFO        Stage 1 ablation: ['Correlation_only', 'Distance_only', 'Cointegration_only', 'Combined_only', 'ML_only', 'LSTM_only', 'Transformer_only', 'GNN_only', 'S1_Ensemble']
+06:44:19  INFO        [S1] Config: Correlation_only
+06:44:20  INFO          [Correlation_only] 2020 -> Gross SR=-0.955  Net SR=-1.188  pairs=10  t=0.9s
+06:44:21  INFO          [Correlation_only] 2021 -> Gross SR=2.079  Net SR=1.749  pairs=10  t=0.9s
+06:44:22  INFO          [Correlation_only] 2022 -> Gross SR=-0.602  Net SR=-0.857  pairs=10  t=1.0s
+06:44:23  INFO          [Correlation_only] 2023 -> Gross SR=2.933  Net SR=2.542  pairs=10  t=1.0s
+06:44:24  INFO          [Correlation_only] 2024 -> Gross SR=-0.167  Net SR=-0.407  pairs=10  t=1.0s
+Traceback (most recent call last):
+  File "/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/ablation.py", line 726, in <module>
+    main()
+    ~~~~^^
+  File "/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/ablation.py", line 688, in main
+    s1_results = run_stage1_ablation(prices, args.mode, args.top_k, costs)
+  File "/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/ablation.py", line 475, in run_stage1_ablation
+    f"Gross SR={m.get('gross_sharpe','?'):.3f}  "
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: Unknown format code 'f' for object of type 'str'

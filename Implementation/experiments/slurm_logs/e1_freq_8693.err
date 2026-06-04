@@ -1,0 +1,37 @@
+2026-06-04 06:47:51,118 INFO Cache already exists: /users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/data/nse_nifty100/prices_2015-01-01_2024-12-31.parquet
+2026-06-04 06:47:51,231 INFO   Shape: (2466, 89), dates: 2015-01-01 → 2024-12-30
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1780535881.559044 2177324 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+I0000 00:00:1780535881.569304 2177324 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1780535893.395940 2177324 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+I0000 00:00:1780535893.397097 2177324 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+E0000 00:00:1780535896.777372 2177324 cuda_platform.cc:52] failed call to cuInit: INTERNAL: CUDA error: Failed call to cuInit: CUDA_ERROR_NO_DEVICE: no CUDA-capable device is detected
+06:48:17  INFO      ================================================================
+06:48:17  INFO      Walk-Forward Validation  |  mode=stat_only  |  s2=ou_only  |  top_k=10
+06:48:17  INFO      S1 weights: {'Correlation': 1.0, 'Distance': 1.0, 'Cointegration': 1.0, 'Combined': 1.0}
+06:48:17  INFO      Folds: ['Fold1_2018', 'Fold2_2019', 'Fold3_2020', 'Fold4_2021', 'Fold5_2022', 'Fold6_2023-2024']
+06:48:17  INFO      min_hold_bars=30  capital=1,000,000
+06:48:17  INFO      ================================================================
+06:48:17  INFO      [Data] Fetching full 10-year daily prices ...
+06:48:17  INFO        35 tickers x 2466 bars  (2015-01-01 -> 2024-12-30)
+06:48:17  INFO        --- Fold1_2018 | Train 2015-01-01 -> 2017-12-31 | Test 2018-01-01 -> 2018-12-31 ---
+06:48:27  INFO          Pairs selected (10): ['JSWSTEEL-HINDALCO', 'TATASTEEL-JSWSTEEL', 'INDUSINDBK-EICHERMOT', 'HDFCBANK-INDUSINDBK', 'HDFCBANK-KOTAKBANK'] ...
+06:48:27  INFO          OOS => Gross Sharpe=0.073  Net Sharpe=0.021  Net Ret=0.18%  Trades/yr=53  [sel=10.1s bt=0.1s]
+06:48:27  INFO        --- Fold2_2019 | Train 2015-01-01 -> 2018-12-31 | Test 2019-01-01 -> 2019-12-31 ---
+06:48:37  INFO          Pairs selected (10): ['TCS-INFY', 'HINDUNILVR-NESTLEIND', 'NESTLEIND-BRITANNIA', 'IOC-BPCL', 'ULTRACEMCO-SHREECEM'] ...
+06:48:37  INFO          OOS => Gross Sharpe=0.533  Net Sharpe=0.462  Net Ret=3.37%  Trades/yr=64  [sel=10.0s bt=0.1s]
+06:48:37  INFO        --- Fold3_2020 | Train 2015-01-01 -> 2019-12-31 | Test 2020-01-01 -> 2020-12-31 ---
+06:48:47  INFO          Pairs selected (10): ['TATASTEEL-JSWSTEEL', 'HDFCBANK-KOTAKBANK', 'HINDUNILVR-NESTLEIND', 'ONGC-COALINDIA', 'ONGC-IOC'] ...
+06:48:47  INFO          OOS => Gross Sharpe=0.657  Net Sharpe=0.572  Net Ret=5.00%  Trades/yr=91  [sel=10.1s bt=0.1s]
+06:48:47  INFO        --- Fold4_2021 | Train 2015-01-01 -> 2020-12-31 | Test 2021-01-01 -> 2021-12-31 ---
+06:48:56  INFO          Pairs selected (10): ['INFY-HCLTECH', 'AXISBANK-INDUSINDBK', 'TCS-HCLTECH', 'SBIN-AXISBANK', 'TCS-INFY'] ...
+06:48:56  INFO          OOS => Gross Sharpe=2.061  Net Sharpe=1.972  Net Ret=14.42%  Trades/yr=76  [sel=9.3s bt=0.1s]
+06:48:56  INFO        --- Fold5_2022 | Train 2015-01-01 -> 2021-12-31 | Test 2022-01-01 -> 2022-12-31 ---
+06:49:06  INFO          Pairs selected (10): ['WIPRO-SUNPHARMA', 'INFY-WIPRO', 'TCS-HCLTECH', 'ICICIBANK-SBIN', 'ONGC-IOC'] ...
+06:49:06  INFO          OOS => Gross Sharpe=-0.633  Net Sharpe=-0.707  Net Ret=-5.21%  Trades/yr=67  [sel=9.3s bt=0.1s]
+06:49:06  INFO        --- Fold6_2023-2024 | Train 2015-01-01 -> 2022-12-31 | Test 2023-01-01 -> 2024-12-31 ---
+06:49:16  INFO          Pairs selected (10): ['ITC-COALINDIA', 'WIPRO-TECHM', 'M&M-ITC', 'ICICIBANK-SBIN', 'TCS-TECHM'] ...
+06:49:16  INFO          OOS => Gross Sharpe=0.642  Net Sharpe=0.564  Net Ret=3.75%  Trades/yr=65  [sel=10.1s bt=0.1s]
+06:49:16  INFO      All folds done in 59s
+06:49:16  INFO      Results saved -> /users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/results/walk_forward_20260604_064916.json

@@ -1,5 +1,5 @@
 # Hybrid Pairs Trading — Paper 1 Knowledge Graph
-*Last updated: 2026-06-05 | Universe: 89 NSE Nifty100 | Costs: 16.28 bps | CPU-only ML*
+*Last updated: 2026-06-05 (all experiments complete) | Universe: 89 NSE Nifty100 | Costs: 16.28 bps | CPU-only ML*
 
 ---
 
@@ -31,34 +31,54 @@
 
 | Exp | Name | Status | Key Result |
 |-----|------|--------|-----------|
-| E1 | Freq Comparison (daily vs hourly) | SUBMITTED job 8737 | PENDING |
-| E2 | Hold Period Sweep | NOT RERUN (old result locked) | min_hold=30 days |
-| E3 | Ablation (3 modes) | SUBMITTED job 8734 (prev 8704 CANCELLED: wrong universe) | PENDING |
-| E4 | Walk-Forward Validation | COMPLETE jobs 8693-8699 | stat_only SR 0.480 / full SR 0.653 |
+| E1 | Freq Comparison (stat_only baseline WFV) | COMPLETE job 8737 | mean net SR=0.343 ±1.021 (84-ticker data) |
+| E2 | Hold Period Sweep | LOCKED (old result) | min_hold=30 days optimal |
+| E3 | Ablation (stat_only + stat_ml) | COMPLETE job 8734 | stat_only: Distance SR=0.829 (best single), Ensemble SR=0.256; stat_ml ensemble SR=-0.311 |
+| E4 | Walk-Forward Validation | COMPLETE jobs 8693-8699 | stat_only SR 0.480 / stat_ml SR 0.453 / full SR 0.519 ±0.061 |
 | E5 | Benchmark vs Nifty50 | COMPLETE job 8699 | Strategy SR 0.550 vs Nifty50 SR 0.720 |
-| E6 | Significance Tests | SUBMITTED job 8735 (all 3 modes) | stat_only p=0.086 (prior run); stat_ml/full PENDING |
-| E7 | Weighted Ensemble | SUBMITTED job 8736 (3 configs) | PENDING |
+| E6 | Significance Tests (all 3 modes) | COMPLETE job 8735 | None significant at 5%; full best: p=0.069 boot, p=0.076 NW |
+| E7 | Weighted Ensemble | COMPLETE job 8736 | E7-A(Corr=2.0) SR=0.548; E7-B(LSTM=3.0) SR=-0.121 |
 | E8 | RL Signal | BLOCKED — gymnasium not on Kalpana | — |
 
 ---
 
 ## KEY RESULTS (89-ticker, 16.28 bps, CPU-only)
 
-**E4 Walk-Forward (6 folds, 2018-2024):**
-- stat_only + ou_only: Net SR **0.480**, CAGR 3.30%, MaxDD 12.72%, 473 trades
-- stat_ml + ou_only: Net SR **0.431**
-- full hybrid (best): Net SR **0.653**, CAGR 4.51%, MaxDD 10.43%
-- s2=all (stat_only): Net SR 0.312, MaxDD 19.32% — OU-only clearly superior
+**E4 Walk-Forward (6 folds, 2018-2024, 89-ticker canonical):**
+- stat_only + ou_only: Net SR **0.480** (deterministic x3), CAGR 3.30%, MaxDD 12.72%
+- stat_ml + ou_only: Net SR **0.453** (deterministic x3)
+- full hybrid + ou_only: Net SR **0.519 ±0.061** (6 CPU runs — residual non-determinism)
+- s2=all (stat_only): Net SR 0.340, MaxDD 19.32% — OU-only clearly superior
 
 **E4 Fold breakdown (stat_only ou_only):**
 Fold2018: SR 0.021 | Fold2019: 0.462 | Fold2020: 0.572 | Fold2021: 1.972 | Fold2022: -0.707 | Fold2023-24: 0.564
 Aggregate: Net SR 0.481 ±0.802 | Full OOS: SR 0.480, CAGR 3.30%, MaxDD 12.72%
+
+**E3 Ablation (stat_only mode):**
+- Correlation_only: SR 0.160 | Distance_only: SR **0.829** (best single, std=1.063) | Cointegration_only: SR -0.088 | Combined_only: SR -0.223
+- S1_Ensemble (stat_only): SR 0.256 — **below Distance_only**
+- S2 signal: OU_only SR 0.283 (best) | ZScore SR -0.275 | Kalman SR -0.257 | ML SR -0.405
+
+**E3 Ablation (stat_ml mode):**
+- ML_only selector: SR 0.217 | S1_Ensemble (stat+ML): SR **-0.311** — adding ML hurts
+- S2 signal: OU_only SR 0.060 (drops from 0.283 with different pair selection)
 
 **E5 Benchmark:**
 - Strategy SR 0.550 vs Nifty50 SR 0.720
 - Strategy MaxDD 12.28% vs Nifty50 MaxDD 38.44%
 - Strategy CAGR 3.76% vs Nifty50 CAGR 12.84%
 - Verdict: underperforms on returns, materially lower drawdown (market-neutral)
+
+**E6 Significance (all 3 modes, ou_only — NONE significant at 5%):**
+- stat_only: net SR=0.468 CI=[-0.209,1.154] p_boot=0.086 NW t=1.300 p=0.097 (sig at 10%)
+- stat_ml:   net SR=0.438 CI=[-0.194,1.081] p_boot=0.089 NW t=1.243 p=0.107 (NOT sig at 10%)
+- full:      net SR=0.520 CI=[-0.171,1.213] p_boot=0.069 NW t=1.434 p=0.076 (sig at 10%)
+
+**E7 Weighted Ensemble (84-ticker data — parquet refreshed by E7 script):**
+- E7-A Corr=2.0, stat_ml: mean SR=0.548 (vs equal-weight stat_ml 0.453 — marginal gain)
+- E7-B LSTM=3.0, full:    mean SR=-0.121 (WORSE — LSTM weighting hurts)
+- E7-C stat_only equal:   mean SR=0.343 (lower than E4 0.480 — 84 vs 89 tickers)
+- ⚠ DATA NOTE: E7 parquet refreshed to 84 tickers. E4 canonical (89 tickers) is primary.
 
 **E6 Significance (stat_only ou_only, 1725 obs):**
 - Bootstrap 95% CI: **[-0.209, +1.154]** | p(SR≤0) = **0.086**
@@ -146,16 +166,14 @@ Paper_1_Hybrid_Ensemble/
 
 ## PENDING REVISIONS (ordered by priority)
 
-1. **Jobs running on Kalpana** — E3(8734), E6(8735), E7(8736), E1(8737). Pull results when complete.
-   - E3 ~8h (3 modes: stat_only/stat_ml/full ablation)
-   - E6 ~6h (3 modes significance tests)
-   - E7 ~8h (3 weighted configs: E7-A stat_ml weighted, E7-B full weighted, E7-C stat_only+ou_only)
-   - E1 ~4h (freq comparison daily vs hourly)
-2. **After results arrive** — update Ch4 §4.5/§4.7 [[PLACEHOLDER]] with E3/E7 numbers
-3. **Chapter rewrites** — all 5 chapters + abstract need number updates once E3/E7 results in
-4. **Ch5 cost fix** — Section 5.1.1 uses 6 bps brokerage (legacy); align to 0 bps (16.28 bps total)
-5. **Literature-Review README** — update ablation numbers once E3 done
-6. **Streamlit LR pages** — implement STREAMLIT_ENHANCEMENT_PLAN.md (low priority)
+1. **Write paper** — all experiments complete; no more compute needed
+2. **CPU full-mode non-determinism** — investigate/document; 6 runs gave SR 0.437–0.618 range
+3. **E7 data drift** — E7 script called fetch_paper1_data.py, shrinking parquet 89→84 tickers. Fix: remove fetch from E7 SLURM; restore 89-ticker parquet on Kalpana before any rerun
+4. **Bootstrap CIs for E4 headline numbers** — currently E6 provides CIs for aggregate only; need per-mode CIs
+5. **Chapter rewrites** — Ch4 §4.5/§4.7 need ablation + weighted results filled in
+6. **Ch5 cost fix** — Section 5.1.1 uses 6 bps brokerage (legacy); align to 0 bps (16.28 bps total)
+7. **Abstract final numbers** — all results now available; update
+8. **Flow.md** — update with final results
 
 ---
 

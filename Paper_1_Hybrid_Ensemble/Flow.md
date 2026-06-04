@@ -244,47 +244,46 @@ E1 rerun on 89-ticker universe (job 8737) to confirm this holds under the expand
 
 ---
 
-## 11. Current State (2026-06-05)
+## 11. Current State (2026-06-05) — ALL EXPERIMENTS COMPLETE
 
-### What is complete
-- Full pipeline (selectors, backtest, WFV, significance tests, benchmark) — code stable
-- E4 (WFV all 3 modes) — COMPLETE, results pulled locally
-- E5 (benchmark) — COMPLETE
-- E6 stat_only significance — COMPLETE (prior run)
-- Config.py — 89 tickers, correct costs, all parameters locked
-- Paper structure (chapters 1–5 + abstract) — drafted but numbers need updating
-- KnowledgeGraph — current
+### Experiment Status
+| Exp | Status | Key Result |
+|-----|--------|-----------|
+| E1 | COMPLETE | Net SR=0.343, MaxDD=19.26% (84-ticker post-refresh) |
+| E2 | LOCKED | min_hold=30 days optimal |
+| E3 | COMPLETE | stat_only: Distance SR=0.829 best; Ensemble SR=0.256; stat_ml Ensemble SR=-0.311 |
+| E4 | COMPLETE (CANONICAL) | stat_only SR=0.480 / stat_ml SR=0.453 / full SR=0.519 ±0.061 |
+| E5 | COMPLETE | Strategy SR=0.550, MaxDD=12.28% vs Nifty50 SR=0.720, MaxDD=38.44% |
+| E6 | COMPLETE | None at 5%; full: p_boot=0.069, NW p=0.076 (sig at 10%) |
+| E7 | COMPLETE | Corr=2.0 SR=0.548; LSTM=3.0 SR=-0.121 (catastrophic) |
+| E8 | EXCLUDED | gymnasium not on Kalpana; outside paper scope |
 
-### What is running (Kalpana, 2026-06-05)
-- E3 ablation (job 8734)
-- E6 significance all modes (job 8735)
-- E7 weighted ensemble (job 8736)
-- E1 freq comparison (job 8737)
+### Data Integrity Issue (E7)
+E7 SLURM script ran `fetch_paper1_data.py` which re-fetched and overwrote parquet 89→84 tickers.
+E4 canonical (89 tickers) remains primary. E7 results directionally valid.
 
-### What is blocked
-- **E8 (RL signal):** `gymnasium` not installed on Kalpana. Options: (a) install in venv, (b) run locally, (c) exclude from paper as exploratory
-- **Ch4 §4.5/§4.7:** [[PLACEHOLDER]] pending E3/E7 results
-- **Abstract final numbers:** pending E3/E6/E7
+### What remains
+- Ch4 §4.5/§4.7 placeholders to fill (ablation + weighted ensemble)
+- Abstract final numbers
+- Full CPU non-determinism in full mode (SR 0.437–0.618 across 6 runs) — document
 
 ---
 
 ## 12. Future Work Scope
 
-### Immediate (next session, after jobs complete)
-1. Pull results from Kalpana: `git add -A && git commit && git push` from Kalpana, then `git pull` locally
-2. Parse E3 ablation results — fill Ch4 §4.5 table (single-selector vs ensemble)
-3. Parse E7 results — fill Ch4 §4.7 (weighted ensemble upper bound)
-4. Parse E6 results — update significance section for all 3 modes
-5. Update abstract with final numbers
-6. Update KnowledgeGraph experiments.json with all results
+### Immediate — Paper Writing (all compute done)
+1. Fill Ch4 §4.5 ablation table with E3 results
+2. Fill Ch4 §4.7 weighted ensemble section with E7 results
+3. Update E6 significance section for all 3 modes
+4. Update abstract with final canonical numbers
+5. Document full-mode CPU non-determinism (SR 0.437–0.618) as ML variance caveat
+6. Fix E7 SLURM script — remove fetch_paper1_data.py call
 
-### Short-term (2–3 sessions)
-7. Full chapter revision (Ch1–Ch5): all numbers currently reference old 35-ticker universe or have [[PLACEHOLDER]]
-8. Bootstrap 95% CIs for E4 results (currently just point estimates)
-9. Bonferroni correction across all pairwise comparisons (D20)
-10. Diebold-Mariano pairwise tests (ensemble vs each single selector)
-11. Sensitivity analysis: cost ±5 bps table
-12. E8 decision: install gymnasium on Kalpana or drop RL signal
+### Short-term (paper finalisation)
+7. Bootstrap 95% CIs for E4 headline numbers
+8. Diebold-Mariano pairwise tests (ensemble vs each single selector)
+9. Sensitivity analysis: cost ±5 bps table
+10. Ch5 cost section: fix 6 bps brokerage → 0 bps
 
 ### Medium-term (paper writing)
 13. Structure final paper from chapter drafts — 8,000–10,000 word target (JFM/QF format)
@@ -332,3 +331,8 @@ E1 rerun on 89-ticker universe (job 8737) to confirm this holds under the expand
 | `Paper_1_Hybrid_Ensemble/KnowledgeGraph/graph/experiments.json` | Experiment status graph |
 
 ---
+
+
+## Appendix: Final Results (2026-06-05)
+
+All experiments complete. See KnowledgeGraph.md for canonical result tables.

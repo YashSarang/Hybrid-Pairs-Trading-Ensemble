@@ -1,0 +1,197 @@
+2026-06-04 17:09:49,578 INFO Cache already exists: /users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/data/nse_nifty100/prices_2015-01-01_2024-12-31.parquet
+2026-06-04 17:09:49,641 INFO   Shape: (2466, 89), dates: 2015-01-01 → 2024-12-30
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1780573197.331478 2302092 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+I0000 00:00:1780573197.334423 2302092 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1780573226.902464 2302092 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+I0000 00:00:1780573226.903852 2302092 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+E0000 00:00:1780573236.859625 2302092 cuda_platform.cc:52] failed call to cuInit: INTERNAL: CUDA error: Failed call to cuInit: CUDA_ERROR_NO_DEVICE: no CUDA-capable device is detected
+17:10:41  INFO      ================================================================
+17:10:41  INFO      Walk-Forward Validation  |  mode=custom({"Correlation":2.0,"Distance":1.0,"Cointegration":1.0,"Combi)  |  s2=ou_only  |  top_k=10
+17:10:41  INFO      S1 weights: {'Correlation': 2.0, 'Distance': 1.0, 'Cointegration': 1.0, 'Combined': 1.0, 'ML': 1.0}
+17:10:41  INFO      Folds: ['Fold1_2018', 'Fold2_2019', 'Fold3_2020', 'Fold4_2021', 'Fold5_2022', 'Fold6_2023-2024']
+17:10:41  INFO      min_hold_bars=30  capital=1,000,000
+17:10:41  INFO      ================================================================
+17:10:41  INFO      [Data] Fetching full 10-year daily prices ...
+17:10:41  INFO        84 tickers x 2466 bars  (2015-01-01 -> 2024-12-30)
+17:10:41  INFO        --- Fold1_2018 | Train 2015-01-01 -> 2017-12-31 | Test 2018-01-01 -> 2018-12-31 ---
+/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/core/selectors_statistical.py:108: CollinearityWarning: y0 and y1 are (almost) perfectly colinear.Cointegration test is not reliable in this case.
+  score, pval, _ = coint(window[p.a], window[p.b])
+17:13:34  INFO      [MLSelector.fit] y class counts: {0: 1692, 1: 1629}
+17:15:31  INFO          Pairs selected (10): ['BAJFINANCE-EICHERMOT', 'INDUSINDBK-BAJFINANCE', 'HINDALCO-VEDL', 'ACC-AMBUJACEM', 'HDFCBANK-INDUSINDBK'] ...
+17:15:31  INFO          OOS => Gross Sharpe=-0.657  Net Sharpe=-0.717  Net Ret=-5.41%  Trades/yr=56  [sel=289.6s bt=0.5s]
+17:15:31  INFO        --- Fold2_2019 | Train 2015-01-01 -> 2018-12-31 | Test 2019-01-01 -> 2019-12-31 ---
+17:18:32  INFO      [MLSelector.fit] y class counts: {0: 1772, 1: 1631}
+17:20:51  INFO          Pairs selected (10): ['TCS-INFY', 'IDFCFIRSTB-SIEMENS', 'HINDUNILVR-NESTLEIND', 'BAJFINANCE-ASIANPAINT', 'NESTLEIND-BRITANNIA'] ...
+17:20:51  INFO          OOS => Gross Sharpe=1.440  Net Sharpe=1.367  Net Ret=10.26%  Trades/yr=65  [sel=319.8s bt=0.1s]
+17:20:51  INFO        --- Fold3_2020 | Train 2015-01-01 -> 2019-12-31 | Test 2020-01-01 -> 2020-12-31 ---
+17:23:55  INFO      [MLSelector.fit] y class counts: {0: 2053, 1: 1433}
+17:26:32  INFO          Pairs selected (10): ['TATASTEEL-SAIL', 'HDFCBANK-BAJAJFINSV', 'CANBK-BANKBARODA', 'KOTAKBANK-BAJFINANCE', 'BAJFINANCE-SIEMENS'] ...
+17:26:32  INFO          OOS => Gross Sharpe=2.349  Net Sharpe=2.295  Net Ret=23.10%  Trades/yr=67  [sel=340.8s bt=0.1s]
+17:26:32  INFO        --- Fold4_2021 | Train 2015-01-01 -> 2020-12-31 | Test 2021-01-01 -> 2021-12-31 ---
+17:29:50  INFO      [MLSelector.fit] y class counts: {0: 1664, 1: 1822}
+17:32:49  INFO          Pairs selected (10): ['AXISBANK-INDUSINDBK', 'SBIN-AXISBANK', 'INFY-HCLTECH', 'ICICIBANK-AXISBANK', 'TECHM-JSWSTEEL'] ...
+17:32:49  INFO          OOS => Gross Sharpe=0.162  Net Sharpe=0.094  Net Ret=0.82%  Trades/yr=72  [sel=376.5s bt=0.1s]
+17:32:49  INFO        --- Fold5_2022 | Train 2015-01-01 -> 2021-12-31 | Test 2022-01-01 -> 2022-12-31 ---
+17:36:27  INFO      [MLSelector.fit] y class counts: {0: 1713, 1: 1773}
+17:40:03  INFO          Pairs selected (10): ['ACC-AMBUJACEM', 'BAJFINANCE-BAJAJFINSV', 'TITAN-OBEROIRLTY', 'NATIONALUM-BEL', 'FEDERALBNK-BANKBARODA'] ...
+17:40:03  INFO          OOS => Gross Sharpe=0.336  Net Sharpe=0.289  Net Ret=2.50%  Trades/yr=49  [sel=434.2s bt=0.1s]
+17:40:03  INFO        --- Fold6_2023-2024 | Train 2015-01-01 -> 2022-12-31 | Test 2023-01-01 -> 2024-12-31 ---
+17:43:59  INFO      [MLSelector.fit] y class counts: {0: 1752, 1: 1734}
+17:48:24  INFO          Pairs selected (10): ['ITC-PHOENIXLTD', 'ULTRACEMCO-JKCEMENT', 'WIPRO-MUTHOOTFIN', 'WIPRO-TECHM', 'COALINDIA-BEL'] ...
+17:48:24  INFO          OOS => Gross Sharpe=0.017  Net Sharpe=-0.041  Net Ret=-0.33%  Trades/yr=57  [sel=500.7s bt=0.1s]
+17:48:24  INFO      All folds done in 2263s
+17:48:24  INFO      Results saved -> /users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/results/walk_forward_20260604_174824.json
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1780575522.502584 2308185 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+I0000 00:00:1780575522.504432 2308185 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1780575539.406174 2308185 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+I0000 00:00:1780575539.407094 2308185 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+E0000 00:00:1780575540.784446 2308185 cuda_platform.cc:52] failed call to cuInit: INTERNAL: CUDA error: Failed call to cuInit: CUDA_ERROR_NO_DEVICE: no CUDA-capable device is detected
+17:49:01  INFO      ================================================================
+17:49:01  INFO      Walk-Forward Validation  |  mode=custom({"Correlation":2.0,"Distance":1.0,"Cointegration":1.0,"Combi)  |  s2=ou_only  |  top_k=10
+17:49:01  INFO      S1 weights: {'Correlation': 2.0, 'Distance': 1.0, 'Cointegration': 1.0, 'Combined': 1.0, 'ML': 1.0, 'LSTM': 3.0, 'Transformer': 1.0, 'GNN': 1.0}
+17:49:01  INFO      Folds: ['Fold1_2018', 'Fold2_2019', 'Fold3_2020', 'Fold4_2021', 'Fold5_2022', 'Fold6_2023-2024']
+17:49:01  INFO      min_hold_bars=30  capital=1,000,000
+17:49:01  INFO      ================================================================
+17:49:01  INFO      [Data] Fetching full 10-year daily prices ...
+17:49:01  INFO        84 tickers x 2466 bars  (2015-01-01 -> 2024-12-30)
+17:49:01  INFO        --- Fold1_2018 | Train 2015-01-01 -> 2017-12-31 | Test 2018-01-01 -> 2018-12-31 ---
+/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/core/selectors_statistical.py:108: CollinearityWarning: y0 and y1 are (almost) perfectly colinear.Cointegration test is not reliable in this case.
+  score, pval, _ = coint(window[p.a], window[p.b])
+17:51:55  INFO      [MLSelector.fit] y class counts: {0: 1692, 1: 1629}
+17:54:45  INFO      [LSTMSelector] 1371204 sequences, class dist: {0: 684777, 1: 686427}
+17:54:45  INFO      [LSTMSelector] Subsampled to 50000 sequences.
+/users/student/pg/pg24/yash.sarang/miniconda3/lib/python3.13/site-packages/keras/src/layers/rnn/bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+17:55:46  INFO      [LSTMSelector] Training complete.
+E0000 00:00:1780575956.142639 2308185 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+17:56:50  INFO      [TransformerSelector] 1371204 sequences, class dist: {0: 684777, 1: 686427}
+17:56:51  INFO      [TransformerSelector] Subsampled to 50000 sequences.
+17:58:35  INFO      [TransformerSelector] Training complete.
+E0000 00:00:1780576124.077646 2308185 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+17:58:53  INFO      [GNNSelector] Training on 8 snapshots, N=84 stocks.
+18:09:47  INFO      [GNNSelector] Training complete.
+18:09:47  INFO          Pairs selected (10): ['HDFCBANK-ICICIBANK', 'HDFCBANK-SBIN', 'HDFCBANK-KOTAKBANK', 'HDFCBANK-AXISBANK', 'HDFCBANK-INDUSINDBK'] ...
+18:09:48  INFO          OOS => Gross Sharpe=-0.917  Net Sharpe=-0.937  Net Ret=-20.10%  Trades/yr=54  [sel=1246.4s bt=0.5s]
+18:09:48  INFO        --- Fold2_2019 | Train 2015-01-01 -> 2018-12-31 | Test 2019-01-01 -> 2019-12-31 ---
+18:12:49  INFO      [MLSelector.fit] y class counts: {0: 1772, 1: 1631}
+18:16:09  INFO      [LSTMSelector] 2227017 sequences, class dist: {0: 1133334, 1: 1093683}
+18:16:10  INFO      [LSTMSelector] Subsampled to 50000 sequences.
+/users/student/pg/pg24/yash.sarang/miniconda3/lib/python3.13/site-packages/keras/src/layers/rnn/bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+18:19:04  INFO      [LSTMSelector] Training complete.
+E0000 00:00:1780577353.562045 2308185 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+18:20:15  INFO      [TransformerSelector] 2227017 sequences, class dist: {0: 1133334, 1: 1093683}
+18:20:16  INFO      [TransformerSelector] Subsampled to 50000 sequences.
+18:22:29  INFO      [TransformerSelector] Training complete.
+E0000 00:00:1780577557.828963 2308185 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+18:22:46  INFO      [GNNSelector] Training on 8 snapshots, N=84 stocks.
+18:34:07  INFO      [GNNSelector] Training complete.
+18:34:08  INFO          Pairs selected (10): ['HDFCBANK-ICICIBANK', 'HDFCBANK-SBIN', 'HDFCBANK-KOTAKBANK', 'HDFCBANK-AXISBANK', 'HDFCBANK-INDUSINDBK'] ...
+18:34:08  INFO          OOS => Gross Sharpe=-0.419  Net Sharpe=-0.449  Net Ret=-7.49%  Trades/yr=61  [sel=1460.0s bt=0.1s]
+18:34:08  INFO        --- Fold3_2020 | Train 2015-01-01 -> 2019-12-31 | Test 2020-01-01 -> 2020-12-31 ---
+18:37:17  INFO      [MLSelector.fit] y class counts: {0: 2053, 1: 1433}
+18:40:56  INFO      [LSTMSelector] 3074115 sequences, class dist: {0: 1543473, 1: 1530642}
+18:40:58  INFO      [LSTMSelector] Subsampled to 50000 sequences.
+/users/student/pg/pg24/yash.sarang/miniconda3/lib/python3.13/site-packages/keras/src/layers/rnn/bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+18:43:29  INFO      [LSTMSelector] Training complete.
+E0000 00:00:1780578818.497148 2308185 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+18:44:41  INFO      [TransformerSelector] 3074115 sequences, class dist: {0: 1543473, 1: 1530642}
+18:44:43  INFO      [TransformerSelector] Subsampled to 50000 sequences.
+18:46:56  INFO      [TransformerSelector] Training complete.
+E0000 00:00:1780579024.794608 2308185 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+18:47:13  INFO      [GNNSelector] Training on 8 snapshots, N=84 stocks.
+18:58:38  INFO      [GNNSelector] Training complete.
+18:58:38  INFO          Pairs selected (10): ['HDFCBANK-ICICIBANK', 'HDFCBANK-SBIN', 'HDFCBANK-KOTAKBANK', 'HDFCBANK-AXISBANK', 'HDFCBANK-INDUSINDBK'] ...
+18:58:38  INFO          OOS => Gross Sharpe=0.278  Net Sharpe=0.240  Net Ret=3.63%  Trades/yr=68  [sel=1470.7s bt=0.1s]
+18:58:38  INFO        --- Fold4_2021 | Train 2015-01-01 -> 2020-12-31 | Test 2021-01-01 -> 2021-12-31 ---
+19:02:08  INFO      [MLSelector.fit] y class counts: {0: 1664, 1: 1822}
+19:06:09  INFO      [LSTMSelector] 3949101 sequences, class dist: {0: 1988355, 1: 1960746}
+19:06:10  INFO      [LSTMSelector] Subsampled to 50000 sequences.
+/users/student/pg/pg24/yash.sarang/miniconda3/lib/python3.13/site-packages/keras/src/layers/rnn/bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+19:08:52  INFO      [LSTMSelector] Training complete.
+E0000 00:00:1780580342.890810 2308185 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+19:10:07  INFO      [TransformerSelector] 3949101 sequences, class dist: {0: 1988355, 1: 1960746}
+19:10:08  INFO      [TransformerSelector] Subsampled to 50000 sequences.
+19:11:11  INFO      [TransformerSelector] Training complete.
+E0000 00:00:1780580480.717065 2308185 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+19:11:29  INFO      [GNNSelector] Training on 8 snapshots, N=84 stocks.
+19:22:59  INFO      [GNNSelector] Training complete.
+19:22:59  INFO          Pairs selected (10): ['HDFCBANK-ICICIBANK', 'HDFCBANK-SBIN', 'HDFCBANK-KOTAKBANK', 'HDFCBANK-AXISBANK', 'HDFCBANK-INDUSINDBK'] ...
+19:22:59  INFO          OOS => Gross Sharpe=1.060  Net Sharpe=1.035  Net Ret=17.18%  Trades/yr=50  [sel=1460.5s bt=0.1s]
+19:22:59  INFO        --- Fold5_2022 | Train 2015-01-01 -> 2021-12-31 | Test 2022-01-01 -> 2022-12-31 ---
+19:26:40  INFO      [MLSelector.fit] y class counts: {0: 1713, 1: 1773}
+19:31:13  INFO      [LSTMSelector] 4813629 sequences, class dist: {0: 2432454, 1: 2381175}
+19:31:15  INFO      [LSTMSelector] Subsampled to 50000 sequences.
+/users/student/pg/pg24/yash.sarang/miniconda3/lib/python3.13/site-packages/keras/src/layers/rnn/bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+19:32:51  INFO      [LSTMSelector] Training complete.
+E0000 00:00:1780581782.034007 2308185 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+19:34:08  INFO      [TransformerSelector] 4813629 sequences, class dist: {0: 2432454, 1: 2381175}
+19:34:10  INFO      [TransformerSelector] Subsampled to 50000 sequences.
+19:35:12  INFO      [TransformerSelector] Training complete.
+E0000 00:00:1780581921.893865 2308185 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+19:35:30  INFO      [GNNSelector] Training on 8 snapshots, N=84 stocks.
+19:47:00  INFO      [GNNSelector] Training complete.
+19:47:01  INFO          Pairs selected (10): ['HDFCBANK-ICICIBANK', 'HDFCBANK-SBIN', 'HDFCBANK-KOTAKBANK', 'HDFCBANK-AXISBANK', 'HDFCBANK-INDUSINDBK'] ...
+19:47:01  INFO          OOS => Gross Sharpe=-0.298  Net Sharpe=-0.341  Net Ret=-4.75%  Trades/yr=71  [sel=1441.7s bt=0.1s]
+19:47:01  INFO        --- Fold6_2023-2024 | Train 2015-01-01 -> 2022-12-31 | Test 2023-01-01 -> 2024-12-31 ---
+19:51:09  INFO      [MLSelector.fit] y class counts: {0: 1752, 1: 1734}
+19:56:27  INFO      [LSTMSelector] 5678157 sequences, class dist: {0: 2885015, 1: 2793142}
+19:56:30  INFO      [LSTMSelector] Subsampled to 50000 sequences.
+/users/student/pg/pg24/yash.sarang/miniconda3/lib/python3.13/site-packages/keras/src/layers/rnn/bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+19:59:06  INFO      [LSTMSelector] Training complete.
+E0000 00:00:1780583357.436027 2308185 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+20:00:23  INFO      [TransformerSelector] 5678157 sequences, class dist: {0: 2885015, 1: 2793142}
+20:00:26  INFO      [TransformerSelector] Subsampled to 50000 sequences.
+20:01:22  INFO      [TransformerSelector] Training complete.
+E0000 00:00:1780583492.123708 2308185 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+20:01:41  INFO      [GNNSelector] Training on 8 snapshots, N=84 stocks.
+20:13:08  INFO      [GNNSelector] Training complete.
+20:13:09  INFO          Pairs selected (10): ['HDFCBANK-ICICIBANK', 'HDFCBANK-SBIN', 'HDFCBANK-KOTAKBANK', 'HDFCBANK-AXISBANK', 'HDFCBANK-INDUSINDBK'] ...
+20:13:09  INFO          OOS => Gross Sharpe=-0.245  Net Sharpe=-0.276  Net Ret=-3.55%  Trades/yr=47  [sel=1568.0s bt=0.1s]
+20:13:09  INFO      All folds done in 8648s
+20:13:09  INFO      Results saved -> /users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/results/walk_forward_20260604_201309.json
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1780584209.905674 2335501 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+I0000 00:00:1780584209.907419 2335501 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1780584226.400557 2335501 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+I0000 00:00:1780584226.400988 2335501 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+E0000 00:00:1780584236.741002 2335501 cuda_platform.cc:52] failed call to cuInit: INTERNAL: CUDA error: Failed call to cuInit: CUDA_ERROR_NO_DEVICE: no CUDA-capable device is detected
+20:14:02  INFO      ================================================================
+20:14:02  INFO      Walk-Forward Validation  |  mode=stat_only  |  s2=ou_only  |  top_k=10
+20:14:02  INFO      S1 weights: {'Correlation': 1.0, 'Distance': 1.0, 'Cointegration': 1.0, 'Combined': 1.0}
+20:14:02  INFO      Folds: ['Fold1_2018', 'Fold2_2019', 'Fold3_2020', 'Fold4_2021', 'Fold5_2022', 'Fold6_2023-2024']
+20:14:02  INFO      min_hold_bars=30  capital=1,000,000
+20:14:02  INFO      ================================================================
+20:14:02  INFO      [Data] Fetching full 10-year daily prices ...
+20:14:02  INFO        84 tickers x 2466 bars  (2015-01-01 -> 2024-12-30)
+20:14:02  INFO        --- Fold1_2018 | Train 2015-01-01 -> 2017-12-31 | Test 2018-01-01 -> 2018-12-31 ---
+/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/core/selectors_statistical.py:108: CollinearityWarning: y0 and y1 are (almost) perfectly colinear.Cointegration test is not reliable in this case.
+  score, pval, _ = coint(window[p.a], window[p.b])
+20:16:22  INFO          Pairs selected (10): ['INDUSINDBK-BAJFINANCE', 'BAJFINANCE-EICHERMOT', 'HDFCBANK-MOTHERSON', 'MOTHERSON-HINDUNILVR', 'JSWSTEEL-HINDALCO'] ...
+20:16:22  INFO          OOS => Gross Sharpe=-0.847  Net Sharpe=-0.884  Net Ret=-10.73%  Trades/yr=57  [sel=140.6s bt=0.1s]
+20:16:22  INFO        --- Fold2_2019 | Train 2015-01-01 -> 2018-12-31 | Test 2019-01-01 -> 2019-12-31 ---
+20:18:43  INFO          Pairs selected (10): ['TCS-INFY', 'IDFCFIRSTB-SIEMENS', 'BHARTIARTL-DLF', 'HINDUNILVR-NESTLEIND', 'TORNTPHARM-HAVELLS'] ...
+20:18:44  INFO          OOS => Gross Sharpe=0.261  Net Sharpe=0.198  Net Ret=1.66%  Trades/yr=64  [sel=141.1s bt=0.1s]
+20:18:44  INFO        --- Fold3_2020 | Train 2015-01-01 -> 2019-12-31 | Test 2020-01-01 -> 2020-12-31 ---
+20:21:00  INFO          Pairs selected (10): ['HDFCBANK-BAJAJFINSV', 'TATASTEEL-SAIL', 'KOTAKBANK-BAJFINANCE', 'CANBK-BANKBARODA', 'HDFCBANK-BAJFINANCE'] ...
+20:21:00  INFO          OOS => Gross Sharpe=2.494  Net Sharpe=2.441  Net Ret=27.28%  Trades/yr=74  [sel=136.4s bt=0.1s]
+20:21:00  INFO        --- Fold4_2021 | Train 2015-01-01 -> 2020-12-31 | Test 2021-01-01 -> 2021-12-31 ---
+20:23:21  INFO          Pairs selected (10): ['INFY-HCLTECH', 'INFY-MPHASIS', 'HCLTECH-PERSISTENT', 'AXISBANK-INDUSINDBK', 'TCS-HCLTECH'] ...
+20:23:21  INFO          OOS => Gross Sharpe=-0.080  Net Sharpe=-0.151  Net Ret=-1.25%  Trades/yr=72  [sel=140.8s bt=0.1s]
+20:23:21  INFO        --- Fold5_2022 | Train 2015-01-01 -> 2021-12-31 | Test 2022-01-01 -> 2022-12-31 ---
+20:25:43  INFO          Pairs selected (10): ['ACC-AMBUJACEM', 'WIPRO-SUNPHARMA', 'TITAN-OBEROIRLTY', 'BAJFINANCE-BAJAJFINSV', 'NATIONALUM-BEL'] ...
+20:25:43  INFO          OOS => Gross Sharpe=0.106  Net Sharpe=0.053  Net Ret=0.41%  Trades/yr=51  [sel=141.9s bt=0.1s]
+20:25:43  INFO        --- Fold6_2023-2024 | Train 2015-01-01 -> 2022-12-31 | Test 2023-01-01 -> 2024-12-31 ---
+20:28:02  INFO          Pairs selected (10): ['ITC-PHOENIXLTD', 'ULTRACEMCO-JKCEMENT', 'WIPRO-MUTHOOTFIN', 'COALINDIA-BEL', 'ITC-COALINDIA'] ...
+20:28:02  INFO          OOS => Gross Sharpe=0.449  Net Sharpe=0.402  Net Ret=3.89%  Trades/yr=58  [sel=139.2s bt=0.1s]
+20:28:02  INFO      All folds done in 841s
+20:28:03  INFO      Results saved -> /users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/results/walk_forward_20260604_202802.json

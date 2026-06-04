@@ -1,0 +1,289 @@
+2026-06-04 13:01:51,906 INFO Cache already exists: /users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/data/nse_nifty100/prices_2015-01-01_2024-12-31.parquet
+2026-06-04 13:01:51,958 INFO   Shape: (2466, 89), dates: 2015-01-01 → 2024-12-30
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1780558315.249225 2275017 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+I0000 00:00:1780558315.252252 2275017 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1780558319.021845 2275017 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+I0000 00:00:1780558319.022765 2275017 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+E0000 00:00:1780558320.552573 2275017 cuda_platform.cc:52] failed call to cuInit: INTERNAL: CUDA error: Failed call to cuInit: CUDA_ERROR_NO_DEVICE: no CUDA-capable device is detected
+13:02:00  INFO      ================================================================
+13:02:00  INFO      E3 Ablation  |  mode=stat_only  |  stage=both  |  top_k=10
+13:02:00  INFO      min_hold=30  capital=1,000,000
+13:02:00  INFO      ================================================================
+13:02:00  INFO      [Data] Fetching full 10-year daily prices ...
+13:02:01  INFO        84 tickers x 2466 bars
+13:02:01  INFO      
+--- Running Stage 1 Ablation ---
+13:02:01  INFO        Stage 1 ablation: ['Correlation_only', 'Distance_only', 'Cointegration_only', 'Combined_only', 'S1_Ensemble']
+13:02:01  INFO        [S1] Config: Correlation_only
+13:02:02  INFO          [Correlation_only] 2020 -> Gross SR=0.461  Net SR=0.222  pairs=10  t=1.9s
+13:02:04  INFO          [Correlation_only] 2021 -> Gross SR=1.147  Net SR=0.856  pairs=10  t=1.9s
+13:02:06  INFO          [Correlation_only] 2022 -> Gross SR=-0.148  Net SR=-0.403  pairs=10  t=1.9s
+13:02:08  INFO          [Correlation_only] 2023 -> Gross SR=0.337  Net SR=0.057  pairs=10  t=2.0s
+13:02:10  INFO          [Correlation_only] 2024 -> Gross SR=0.380  Net SR=0.069  pairs=10  t=2.0s
+13:02:12  WARNING       [Correlation_only] 2025 -> empty metrics (skipped)
+13:02:12  INFO        [S1] Config: Distance_only
+13:02:13  INFO          [Distance_only] 2020 -> Gross SR=2.023  Net SR=1.880  pairs=10  t=1.0s
+13:02:14  INFO          [Distance_only] 2021 -> Gross SR=2.323  Net SR=2.079  pairs=10  t=0.9s
+13:02:15  INFO          [Distance_only] 2022 -> Gross SR=-0.312  Net SR=-0.501  pairs=10  t=0.9s
+13:02:16  INFO          [Distance_only] 2023 -> Gross SR=-0.048  Net SR=-0.267  pairs=10  t=0.9s
+13:02:17  INFO          [Distance_only] 2024 -> Gross SR=1.122  Net SR=0.954  pairs=10  t=1.0s
+13:02:18  WARNING       [Distance_only] 2025 -> empty metrics (skipped)
+13:02:18  INFO        [S1] Config: Cointegration_only
+13:03:17  INFO          [Cointegration_only] 2020 -> Gross SR=-0.720  Net SR=-0.854  pairs=10  t=58.8s
+13:04:15  INFO          [Cointegration_only] 2021 -> Gross SR=0.603  Net SR=0.374  pairs=10  t=58.3s
+13:05:14  INFO          [Cointegration_only] 2022 -> Gross SR=1.351  Net SR=1.135  pairs=10  t=58.6s
+13:06:11  INFO          [Cointegration_only] 2023 -> Gross SR=-0.615  Net SR=-0.793  pairs=10  t=57.2s
+13:07:08  INFO          [Cointegration_only] 2024 -> Gross SR=-0.141  Net SR=-0.302  pairs=10  t=56.7s
+13:08:06  WARNING       [Cointegration_only] 2025 -> empty metrics (skipped)
+13:08:06  INFO        [S1] Config: Combined_only
+13:09:55  INFO          [Combined_only] 2020 -> Gross SR=0.642  Net SR=0.539  pairs=10  t=108.1s
+13:11:43  INFO          [Combined_only] 2021 -> Gross SR=1.134  Net SR=0.964  pairs=10  t=108.2s
+13:13:31  INFO          [Combined_only] 2022 -> Gross SR=0.322  Net SR=0.116  pairs=10  t=108.1s
+13:15:19  INFO          [Combined_only] 2023 -> Gross SR=-0.061  Net SR=-0.241  pairs=10  t=107.7s
+13:17:06  INFO          [Combined_only] 2024 -> Gross SR=-2.325  Net SR=-2.493  pairs=10  t=107.9s
+13:18:54  WARNING       [Combined_only] 2025 -> empty metrics (skipped)
+13:18:54  INFO        [S1] Config: S1_Ensemble
+13:21:40  INFO          [S1_Ensemble] 2020 -> Gross SR=2.200  Net SR=2.053  pairs=10  t=165.5s
+13:24:26  INFO          [S1_Ensemble] 2021 -> Gross SR=0.283  Net SR=0.040  pairs=10  t=166.3s
+13:27:14  INFO          [S1_Ensemble] 2022 -> Gross SR=-1.080  Net SR=-1.292  pairs=10  t=167.9s
+13:30:02  INFO          [S1_Ensemble] 2023 -> Gross SR=0.369  Net SR=0.123  pairs=10  t=167.7s
+13:32:48  INFO          [S1_Ensemble] 2024 -> Gross SR=0.541  Net SR=0.357  pairs=10  t=166.1s
+13:35:35  WARNING       [S1_Ensemble] 2025 -> empty metrics (skipped)
+13:35:35  INFO      
+--- Running Stage 2 Ablation ---
+13:35:35  INFO        [S2] Pre-selecting pairs per fold ...
+13:38:19  INFO          2020: 10 pairs — ['HDFCBANK-BAJAJFINSV', 'TATASTEEL-SAIL', 'KOTAKBANK-BAJFINANCE', 'CANBK-BANKBARODA'] ...
+13:41:06  INFO          2021: 10 pairs — ['INFY-HCLTECH', 'INFY-MPHASIS', 'HCLTECH-PERSISTENT', 'AXISBANK-INDUSINDBK'] ...
+13:43:51  INFO          2022: 10 pairs — ['ACC-AMBUJACEM', 'WIPRO-SUNPHARMA', 'TITAN-OBEROIRLTY', 'BAJFINANCE-BAJAJFINSV'] ...
+13:46:37  INFO          2023: 10 pairs — ['ITC-PHOENIXLTD', 'ULTRACEMCO-JKCEMENT', 'WIPRO-MUTHOOTFIN', 'COALINDIA-BEL'] ...
+13:49:22  INFO          2024: 10 pairs — ['PNB-CANBK', 'TRENT-OBEROIRLTY', 'BAJAJ-AUTO-DLF', 'GODREJPROP-MUTHOOTFIN'] ...
+13:52:09  INFO          2025: 10 pairs — ['TORNTPHARM-LUPIN', 'BHARTIARTL-TRENT', 'ICICIBANK-BHARTIARTL', 'INFY-MPHASIS'] ...
+13:52:09  INFO        [S2] Config: ZScore_only
+13:52:09  INFO          [ZScore_only] 2020 -> Gross SR=0.318  Net SR=0.150  t=0.1s
+13:52:09  INFO          [ZScore_only] 2021 -> Gross SR=-0.277  Net SR=-0.506  t=0.1s
+13:52:09  INFO          [ZScore_only] 2022 -> Gross SR=-0.835  Net SR=-1.035  t=0.1s
+13:52:09  INFO          [ZScore_only] 2023 -> Gross SR=-0.226  Net SR=-0.450  t=0.1s
+13:52:09  INFO          [ZScore_only] 2024 -> Gross SR=0.606  Net SR=0.464  t=0.1s
+13:52:09  INFO          [ZScore_only] 2025 -> Gross SR=0.000  Net SR=0.000  t=0.1s
+13:52:09  INFO        [S2] Config: OU_only
+13:52:09  INFO          [OU_only] 2020 -> Gross SR=2.494  Net SR=2.391  t=0.1s
+13:52:09  INFO          [OU_only] 2021 -> Gross SR=-0.080  Net SR=-0.216  t=0.1s
+13:52:09  INFO          [OU_only] 2022 -> Gross SR=0.106  Net SR=0.010  t=0.1s
+13:52:09  INFO          [OU_only] 2023 -> Gross SR=-0.046  Net SR=-0.176  t=0.1s
+13:52:09  INFO          [OU_only] 2024 -> Gross SR=-0.492  Net SR=-0.596  t=0.1s
+13:52:09  INFO          [OU_only] 2025 -> Gross SR=0.000  Net SR=0.000  t=0.1s
+13:52:09  INFO        [S2] Config: Kalman_only
+13:52:10  INFO          [Kalman_only] 2020 -> Gross SR=-0.941  Net SR=-1.141  t=0.2s
+13:52:10  INFO          [Kalman_only] 2021 -> Gross SR=-0.955  Net SR=-1.252  t=0.2s
+13:52:10  INFO          [Kalman_only] 2022 -> Gross SR=-0.054  Net SR=-0.238  t=0.2s
+13:52:10  INFO          [Kalman_only] 2023 -> Gross SR=1.070  Net SR=0.827  t=0.2s
+13:52:10  INFO          [Kalman_only] 2024 -> Gross SR=0.716  Net SR=0.521  t=0.3s
+13:52:11  INFO          [Kalman_only] 2025 -> Gross SR=0.000  Net SR=0.000  t=0.3s
+13:52:11  INFO        [S2] Config: ML_only
+13:52:11  INFO          [ML_only] 2020 -> Gross SR=-1.149  Net SR=-1.268  t=0.6s
+13:52:12  INFO          [ML_only] 2021 -> Gross SR=-0.803  Net SR=-1.026  t=0.7s
+13:52:13  INFO          [ML_only] 2022 -> Gross SR=0.843  Net SR=0.683  t=0.7s
+13:52:13  INFO          [ML_only] 2023 -> Gross SR=0.121  Net SR=-0.094  t=0.7s
+13:52:14  INFO          [ML_only] 2024 -> Gross SR=-0.180  Net SR=-0.320  t=0.7s
+13:52:15  INFO          [ML_only] 2025 -> Gross SR=0.000  Net SR=0.000  t=0.6s
+13:52:15  INFO        [S2] Config: S2_Ensemble
+13:52:15  INFO          [S2_Ensemble] 2020 -> Gross SR=2.200  Net SR=2.053  t=0.8s
+13:52:16  INFO          [S2_Ensemble] 2021 -> Gross SR=0.283  Net SR=0.040  t=0.8s
+13:52:17  INFO          [S2_Ensemble] 2022 -> Gross SR=-1.080  Net SR=-1.292  t=0.8s
+13:52:18  INFO          [S2_Ensemble] 2023 -> Gross SR=0.369  Net SR=0.123  t=0.8s
+13:52:19  INFO          [S2_Ensemble] 2024 -> Gross SR=0.541  Net SR=0.357  t=0.9s
+13:52:20  INFO          [S2_Ensemble] 2025 -> Gross SR=0.000  Net SR=0.000  t=0.9s
+13:52:20  INFO      Total ablation time: 3019s
+13:52:20  INFO      Results saved -> /users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/results/ablation_20260604_135220.json
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1780561343.841065 2279947 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+I0000 00:00:1780561343.843095 2279947 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1780561347.348731 2279947 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+I0000 00:00:1780561347.349167 2279947 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+E0000 00:00:1780561348.635794 2279947 cuda_platform.cc:52] failed call to cuInit: INTERNAL: CUDA error: Failed call to cuInit: CUDA_ERROR_NO_DEVICE: no CUDA-capable device is detected
+13:52:28  INFO      ================================================================
+13:52:28  INFO      E3 Ablation  |  mode=stat_ml  |  stage=both  |  top_k=10
+13:52:28  INFO      min_hold=30  capital=1,000,000
+13:52:28  INFO      ================================================================
+13:52:28  INFO      [Data] Fetching full 10-year daily prices ...
+13:52:29  INFO        84 tickers x 2466 bars
+13:52:29  INFO      
+--- Running Stage 1 Ablation ---
+13:52:29  INFO        Stage 1 ablation: ['Correlation_only', 'Distance_only', 'Cointegration_only', 'Combined_only', 'ML_only', 'S1_Ensemble']
+13:52:29  INFO        [S1] Config: Correlation_only
+13:52:30  INFO          [Correlation_only] 2020 -> Gross SR=0.461  Net SR=0.222  pairs=10  t=2.0s
+13:52:32  INFO          [Correlation_only] 2021 -> Gross SR=1.147  Net SR=0.856  pairs=10  t=1.9s
+13:52:34  INFO          [Correlation_only] 2022 -> Gross SR=-0.148  Net SR=-0.403  pairs=10  t=1.9s
+13:52:36  INFO          [Correlation_only] 2023 -> Gross SR=0.337  Net SR=0.057  pairs=10  t=2.0s
+13:52:38  INFO          [Correlation_only] 2024 -> Gross SR=0.380  Net SR=0.069  pairs=10  t=2.1s
+13:52:40  WARNING       [Correlation_only] 2025 -> empty metrics (skipped)
+13:52:40  INFO        [S1] Config: Distance_only
+13:52:41  INFO          [Distance_only] 2020 -> Gross SR=2.023  Net SR=1.880  pairs=10  t=1.0s
+13:52:42  INFO          [Distance_only] 2021 -> Gross SR=2.323  Net SR=2.079  pairs=10  t=0.9s
+13:52:43  INFO          [Distance_only] 2022 -> Gross SR=-0.312  Net SR=-0.501  pairs=10  t=0.9s
+13:52:44  INFO          [Distance_only] 2023 -> Gross SR=-0.048  Net SR=-0.267  pairs=10  t=0.9s
+13:52:45  INFO          [Distance_only] 2024 -> Gross SR=1.122  Net SR=0.954  pairs=10  t=0.9s
+13:52:46  WARNING       [Distance_only] 2025 -> empty metrics (skipped)
+13:52:46  INFO        [S1] Config: Cointegration_only
+13:53:44  INFO          [Cointegration_only] 2020 -> Gross SR=-0.720  Net SR=-0.854  pairs=10  t=58.0s
+13:54:43  INFO          [Cointegration_only] 2021 -> Gross SR=0.603  Net SR=0.374  pairs=10  t=59.3s
+13:55:43  INFO          [Cointegration_only] 2022 -> Gross SR=1.351  Net SR=1.135  pairs=10  t=60.0s
+13:56:39  INFO          [Cointegration_only] 2023 -> Gross SR=-0.615  Net SR=-0.793  pairs=10  t=56.0s
+13:57:38  INFO          [Cointegration_only] 2024 -> Gross SR=-0.141  Net SR=-0.302  pairs=10  t=58.6s
+13:58:38  WARNING       [Cointegration_only] 2025 -> empty metrics (skipped)
+13:58:38  INFO        [S1] Config: Combined_only
+14:00:27  INFO          [Combined_only] 2020 -> Gross SR=0.642  Net SR=0.539  pairs=10  t=109.1s
+14:02:17  INFO          [Combined_only] 2021 -> Gross SR=1.134  Net SR=0.964  pairs=10  t=110.1s
+14:04:07  INFO          [Combined_only] 2022 -> Gross SR=0.322  Net SR=0.116  pairs=10  t=109.9s
+14:05:56  INFO          [Combined_only] 2023 -> Gross SR=-0.061  Net SR=-0.241  pairs=10  t=109.4s
+14:07:45  INFO          [Combined_only] 2024 -> Gross SR=-2.325  Net SR=-2.493  pairs=10  t=109.5s
+14:09:35  WARNING       [Combined_only] 2025 -> empty metrics (skipped)
+14:09:35  INFO        [S1] Config: ML_only
+14:10:25  INFO      [MLSelector.fit] y class counts: {0: 2053, 1: 1433}
+14:13:00  INFO          [ML_only] 2020 -> Gross SR=-1.256  Net SR=-1.424  pairs=10  t=205.0s
+14:14:11  INFO      [MLSelector.fit] y class counts: {0: 1664, 1: 1822}
+14:17:07  INFO          [ML_only] 2021 -> Gross SR=1.367  Net SR=1.220  pairs=10  t=247.5s
+14:18:32  INFO      [MLSelector.fit] y class counts: {0: 1713, 1: 1773}
+14:22:04  INFO          [ML_only] 2022 -> Gross SR=0.905  Net SR=0.751  pairs=10  t=296.4s
+14:23:48  INFO      [MLSelector.fit] y class counts: {0: 1752, 1: 1734}
+14:28:10  INFO          [ML_only] 2023 -> Gross SR=1.412  Net SR=1.151  pairs=10  t=366.6s
+14:30:44  INFO      [MLSelector.fit] y class counts: {0: 1860, 1: 1626}
+14:36:18  INFO          [ML_only] 2024 -> Gross SR=-0.433  Net SR=-0.612  pairs=10  t=487.6s
+14:39:05  INFO      [MLSelector.fit] y class counts: {0: 1371, 1: 2115}
+14:45:38  WARNING       [ML_only] 2025 -> empty metrics (skipped)
+14:45:38  INFO        [S1] Config: S1_Ensemble
+14:49:08  INFO      [MLSelector.fit] y class counts: {0: 2053, 1: 1433}
+14:51:45  INFO          [S1_Ensemble] 2020 -> Gross SR=2.235  Net SR=2.088  pairs=10  t=366.6s
+14:55:39  INFO      [MLSelector.fit] y class counts: {0: 1664, 1: 1822}
+14:58:39  INFO          [S1_Ensemble] 2021 -> Gross SR=-0.792  Net SR=-1.030  pairs=10  t=414.1s
+15:02:58  INFO      [MLSelector.fit] y class counts: {0: 1713, 1: 1773}
+15:06:34  INFO          [S1_Ensemble] 2022 -> Gross SR=-1.044  Net SR=-1.224  pairs=10  t=475.1s
+15:11:07  INFO      [MLSelector.fit] y class counts: {0: 1752, 1: 1734}
+15:15:31  INFO          [S1_Ensemble] 2023 -> Gross SR=-0.593  Net SR=-0.860  pairs=10  t=536.7s
+15:20:51  INFO      [MLSelector.fit] y class counts: {0: 1860, 1: 1626}
+15:26:27  INFO          [S1_Ensemble] 2024 -> Gross SR=-0.375  Net SR=-0.527  pairs=10  t=655.8s
+15:32:03  INFO      [MLSelector.fit] y class counts: {0: 1371, 1: 2115}
+15:38:38  WARNING       [S1_Ensemble] 2025 -> empty metrics (skipped)
+15:38:38  INFO      
+--- Running Stage 2 Ablation ---
+15:38:38  INFO        [S2] Pre-selecting pairs per fold ...
+15:42:16  INFO      [MLSelector.fit] y class counts: {0: 2053, 1: 1433}
+15:44:54  INFO          2020: 10 pairs — ['TATASTEEL-SAIL', 'HDFCBANK-BAJAJFINSV', 'ICICIBANK-BHARTIARTL', 'KOTAKBANK-BAJFINANCE'] ...
+15:48:46  INFO      [MLSelector.fit] y class counts: {0: 1664, 1: 1822}
+15:51:44  INFO          2021: 10 pairs — ['AXISBANK-INDUSINDBK', 'SBIN-AXISBANK', 'INFY-HCLTECH', 'INFY-MPHASIS'] ...
+15:56:00  INFO      [MLSelector.fit] y class counts: {0: 1713, 1: 1773}
+15:59:28  INFO          2022: 10 pairs — ['ACC-AMBUJACEM', 'TITAN-OBEROIRLTY', 'BAJFINANCE-BAJAJFINSV', 'NATIONALUM-BEL'] ...
+16:04:05  INFO      [MLSelector.fit] y class counts: {0: 1752, 1: 1734}
+16:08:28  INFO          2023: 10 pairs — ['ITC-PHOENIXLTD', 'ULTRACEMCO-JKCEMENT', 'WIPRO-MUTHOOTFIN', 'COALINDIA-BEL'] ...
+16:13:34  INFO      [MLSelector.fit] y class counts: {0: 1860, 1: 1626}
+16:19:08  INFO          2024: 10 pairs — ['PNB-CANBK', 'TRENT-OBEROIRLTY', 'GODREJPROP-MUTHOOTFIN', 'OBEROIRLTY-PHOENIXLTD'] ...
+16:25:02  INFO      [MLSelector.fit] y class counts: {0: 1371, 1: 2115}
+16:31:38  INFO          2025: 10 pairs — ['ICICIBANK-BHARTIARTL', 'INFY-MPHASIS', 'TORNTPHARM-LUPIN', 'BHARTIARTL-TRENT'] ...
+16:31:38  INFO        [S2] Config: ZScore_only
+16:31:38  INFO          [ZScore_only] 2020 -> Gross SR=0.660  Net SR=0.493  t=0.0s
+16:31:38  INFO          [ZScore_only] 2021 -> Gross SR=-0.476  Net SR=-0.678  t=0.0s
+16:31:38  INFO          [ZScore_only] 2022 -> Gross SR=0.875  Net SR=0.686  t=0.0s
+16:31:38  INFO          [ZScore_only] 2023 -> Gross SR=-0.783  Net SR=-1.028  t=0.0s
+16:31:38  INFO          [ZScore_only] 2024 -> Gross SR=0.319  Net SR=0.196  t=0.0s
+16:31:38  INFO          [ZScore_only] 2025 -> Gross SR=0.000  Net SR=0.000  t=0.0s
+16:31:38  INFO        [S2] Config: OU_only
+16:31:38  INFO          [OU_only] 2020 -> Gross SR=1.806  Net SR=1.718  t=0.1s
+16:31:38  INFO          [OU_only] 2021 -> Gross SR=-0.399  Net SR=-0.533  t=0.1s
+16:31:38  INFO          [OU_only] 2022 -> Gross SR=0.806  Net SR=0.718  t=0.1s
+16:31:38  INFO          [OU_only] 2023 -> Gross SR=-0.489  Net SR=-0.603  t=0.1s
+16:31:38  INFO          [OU_only] 2024 -> Gross SR=-0.921  Net SR=-1.002  t=0.1s
+16:31:39  INFO          [OU_only] 2025 -> Gross SR=0.000  Net SR=0.000  t=0.1s
+16:31:39  INFO        [S2] Config: Kalman_only
+16:31:39  INFO          [Kalman_only] 2020 -> Gross SR=-0.891  Net SR=-1.097  t=0.2s
+16:31:39  INFO          [Kalman_only] 2021 -> Gross SR=-1.466  Net SR=-1.706  t=0.2s
+16:31:39  INFO          [Kalman_only] 2022 -> Gross SR=0.460  Net SR=0.311  t=0.2s
+16:31:39  INFO          [Kalman_only] 2023 -> Gross SR=-0.607  Net SR=-0.813  t=0.2s
+16:31:40  INFO          [Kalman_only] 2024 -> Gross SR=0.206  Net SR=0.037  t=0.2s
+16:31:40  INFO          [Kalman_only] 2025 -> Gross SR=0.000  Net SR=0.000  t=0.2s
+16:31:40  INFO        [S2] Config: ML_only
+16:31:40  INFO          [ML_only] 2020 -> Gross SR=-0.903  Net SR=-1.027  t=0.6s
+16:31:41  INFO          [ML_only] 2021 -> Gross SR=0.101  Net SR=-0.095  t=0.6s
+16:31:42  INFO          [ML_only] 2022 -> Gross SR=0.696  Net SR=0.538  t=0.6s
+16:31:42  INFO          [ML_only] 2023 -> Gross SR=-0.429  Net SR=-0.633  t=0.6s
+16:31:43  INFO          [ML_only] 2024 -> Gross SR=-1.003  Net SR=-1.132  t=0.6s
+16:31:44  INFO          [ML_only] 2025 -> Gross SR=0.000  Net SR=0.000  t=0.6s
+16:31:44  INFO        [S2] Config: S2_Ensemble
+16:31:44  INFO          [S2_Ensemble] 2020 -> Gross SR=2.235  Net SR=2.088  t=0.8s
+16:31:45  INFO          [S2_Ensemble] 2021 -> Gross SR=-0.792  Net SR=-1.030  t=0.8s
+16:31:46  INFO          [S2_Ensemble] 2022 -> Gross SR=-1.044  Net SR=-1.224  t=0.8s
+16:31:47  INFO          [S2_Ensemble] 2023 -> Gross SR=-0.593  Net SR=-0.860  t=0.9s
+16:31:48  INFO          [S2_Ensemble] 2024 -> Gross SR=-0.375  Net SR=-0.527  t=0.9s
+16:31:49  INFO          [S2_Ensemble] 2025 -> Gross SR=0.000  Net SR=0.000  t=0.9s
+16:31:49  INFO      Total ablation time: 9560s
+16:31:49  INFO      Results saved -> /users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/results/ablation_20260604_163149.json
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1780570928.753031 2295543 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+I0000 00:00:1780570928.754952 2295543 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1780570945.169989 2295543 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+I0000 00:00:1780570945.170952 2295543 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+E0000 00:00:1780570946.458105 2295543 cuda_platform.cc:52] failed call to cuInit: INTERNAL: CUDA error: Failed call to cuInit: CUDA_ERROR_NO_DEVICE: no CUDA-capable device is detected
+16:32:26  INFO      ================================================================
+16:32:26  INFO      E3 Ablation  |  mode=full  |  stage=both  |  top_k=10
+16:32:26  INFO      min_hold=30  capital=1,000,000
+16:32:26  INFO      ================================================================
+16:32:26  INFO      [Data] Fetching full 10-year daily prices ...
+16:32:26  INFO        84 tickers x 2466 bars
+16:32:26  INFO      
+--- Running Stage 1 Ablation ---
+16:32:26  INFO        Stage 1 ablation: ['Correlation_only', 'Distance_only', 'Cointegration_only', 'Combined_only', 'ML_only', 'LSTM_only', 'Transformer_only', 'GNN_only', 'S1_Ensemble']
+16:32:26  INFO        [S1] Config: Correlation_only
+16:32:28  INFO          [Correlation_only] 2020 -> Gross SR=0.461  Net SR=0.222  pairs=10  t=2.0s
+16:32:30  INFO          [Correlation_only] 2021 -> Gross SR=1.147  Net SR=0.856  pairs=10  t=1.9s
+16:32:32  INFO          [Correlation_only] 2022 -> Gross SR=-0.148  Net SR=-0.403  pairs=10  t=1.9s
+16:32:34  INFO          [Correlation_only] 2023 -> Gross SR=0.337  Net SR=0.057  pairs=10  t=2.0s
+16:32:36  INFO          [Correlation_only] 2024 -> Gross SR=0.380  Net SR=0.069  pairs=10  t=2.1s
+16:32:38  WARNING       [Correlation_only] 2025 -> empty metrics (skipped)
+16:32:38  INFO        [S1] Config: Distance_only
+16:32:39  INFO          [Distance_only] 2020 -> Gross SR=2.023  Net SR=1.880  pairs=10  t=1.0s
+16:32:40  INFO          [Distance_only] 2021 -> Gross SR=2.323  Net SR=2.079  pairs=10  t=0.9s
+16:32:41  INFO          [Distance_only] 2022 -> Gross SR=-0.312  Net SR=-0.501  pairs=10  t=0.9s
+16:32:42  INFO          [Distance_only] 2023 -> Gross SR=-0.048  Net SR=-0.267  pairs=10  t=1.0s
+16:32:43  INFO          [Distance_only] 2024 -> Gross SR=1.122  Net SR=0.954  pairs=10  t=1.0s
+16:32:44  WARNING       [Distance_only] 2025 -> empty metrics (skipped)
+16:32:44  INFO        [S1] Config: Cointegration_only
+16:33:43  INFO          [Cointegration_only] 2020 -> Gross SR=-0.720  Net SR=-0.854  pairs=10  t=58.7s
+16:34:43  INFO          [Cointegration_only] 2021 -> Gross SR=0.603  Net SR=0.374  pairs=10  t=59.7s
+16:35:40  INFO          [Cointegration_only] 2022 -> Gross SR=1.351  Net SR=1.135  pairs=10  t=57.4s
+16:36:37  INFO          [Cointegration_only] 2023 -> Gross SR=-0.615  Net SR=-0.793  pairs=10  t=56.7s
+16:37:33  INFO          [Cointegration_only] 2024 -> Gross SR=-0.141  Net SR=-0.302  pairs=10  t=56.7s
+16:38:32  WARNING       [Cointegration_only] 2025 -> empty metrics (skipped)
+16:38:32  INFO        [S1] Config: Combined_only
+16:40:21  INFO          [Combined_only] 2020 -> Gross SR=0.642  Net SR=0.539  pairs=10  t=109.4s
+16:42:11  INFO          [Combined_only] 2021 -> Gross SR=1.134  Net SR=0.964  pairs=10  t=109.5s
+16:44:00  INFO          [Combined_only] 2022 -> Gross SR=0.322  Net SR=0.116  pairs=10  t=109.3s
+16:45:50  INFO          [Combined_only] 2023 -> Gross SR=-0.061  Net SR=-0.241  pairs=10  t=109.5s
+16:47:39  INFO          [Combined_only] 2024 -> Gross SR=-2.325  Net SR=-2.493  pairs=10  t=109.5s
+16:49:28  WARNING       [Combined_only] 2025 -> empty metrics (skipped)
+16:49:28  INFO        [S1] Config: ML_only
+16:50:19  INFO      [MLSelector.fit] y class counts: {0: 2053, 1: 1433}
+16:52:57  INFO          [ML_only] 2020 -> Gross SR=-1.256  Net SR=-1.424  pairs=10  t=208.9s
+16:54:00  INFO      [MLSelector.fit] y class counts: {0: 1664, 1: 1822}
+16:57:01  INFO          [ML_only] 2021 -> Gross SR=1.367  Net SR=1.220  pairs=10  t=244.0s
+16:58:23  INFO      [MLSelector.fit] y class counts: {0: 1713, 1: 1773}
+17:01:51  INFO          [ML_only] 2022 -> Gross SR=0.905  Net SR=0.751  pairs=10  t=289.5s
+17:03:36  INFO      [MLSelector.fit] y class counts: {0: 1752, 1: 1734}
+17:08:00  INFO          [ML_only] 2023 -> Gross SR=1.412  Net SR=1.151  pairs=10  t=369.3s
+17:10:16  INFO      [MLSelector.fit] y class counts: {0: 1860, 1: 1626}
+17:15:53  INFO          [ML_only] 2024 -> Gross SR=-0.433  Net SR=-0.612  pairs=10  t=472.6s
+17:18:37  INFO      [MLSelector.fit] y class counts: {0: 1371, 1: 2115}
+17:25:12  WARNING       [ML_only] 2025 -> empty metrics (skipped)
+17:25:12  INFO        [S1] Config: LSTM_only
+17:26:13  INFO      [LSTMSelector] 3074115 sequences, class dist: {0: 1543473, 1: 1530642}
+17:26:14  INFO      [LSTMSelector] Subsampled to 50000 sequences.
+/users/student/pg/pg24/yash.sarang/miniconda3/lib/python3.13/site-packages/keras/src/layers/rnn/bidirectional.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+17:28:23  INFO      [LSTMSelector] Training complete.
+E0000 00:00:1780574313.591367 2295543 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+17:28:35  INFO          [LSTM_only] 2020 -> Gross SR=-1.044  Net SR=-1.152  pairs=10  t=202.7s
+17:29:37  INFO      [LSTMSelector] 3949101 sequences, class dist: {0: 1988355, 1: 1960746}
+/var/spool/slurmd/job08734/slurm_script: line 35: 2295543 Killed                  python Implementation/experiments/ablation.py --mode full
+slurmstepd-anandi: error: Detected 1 oom_kill event in StepId=8734.batch. Some of the step tasks have been OOM Killed.

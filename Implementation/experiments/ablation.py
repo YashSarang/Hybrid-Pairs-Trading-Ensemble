@@ -470,12 +470,15 @@ def run_stage1_ablation(
             m["time_s"]         = round(time.time() - t0, 1)
             fold_metrics.append(m)
 
-            log.info(
-                f"    [{cfg_name}] {fold['name']} -> "
-                f"Gross SR={float(m['gross_sharpe']):.3f}  "
-                f"Net SR={float(m['net_sharpe']):.3f}  "
-                f"pairs={len(selected)}  t={m['time_s']}s"
-            )
+            if m:
+                log.info(
+                    f"    [{cfg_name}] {fold['name']} -> "
+                    f"Gross SR={float(m['gross_sharpe']):.3f}  "
+                    f"Net SR={float(m['net_sharpe']):.3f}  "
+                    f"pairs={len(selected)}  t={m['time_s']}s"
+                )
+            else:
+                log.warning(f"    [{cfg_name}] {fold['name']} -> empty metrics (skipped)")
 
         results[cfg_name] = _aggregate_folds(fold_metrics)
 

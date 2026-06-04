@@ -16,10 +16,14 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Type
 
-import gymnasium as gym
+try:
+    import gymnasium as gym
+    from gymnasium import spaces
+except ImportError:
+    gym = None
+    spaces = None
 import numpy as np
 import pandas as pd
-from gymnasium import spaces
 
 try:
     from stable_baselines3 import PPO

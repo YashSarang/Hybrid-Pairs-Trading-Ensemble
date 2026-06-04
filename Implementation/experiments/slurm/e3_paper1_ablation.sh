@@ -26,11 +26,11 @@ export PYTHONHASHSEED=42
 
 echo "[E3] ablation stat_only"
 python Implementation/experiments/ablation.py \
-    --mode stat_only --s2 ou_only
+    --mode stat_only
 echo "[E3] ablation stat_ml"
 python Implementation/experiments/ablation.py \
-    --mode stat_ml --s2 ou_only
+    --mode stat_ml
 echo "[E3] ablation full (CPU ML)"
 python Implementation/experiments/ablation.py \
-    --mode full --s2 ou_only
+    --mode full
 echo "[E3] DONE"

@@ -1,6 +1,6 @@
 # Chapter 3 — Data and Methodology
 
-> **Status:** Draft v2 (2026-06-04). Universe updated 35→89 stocks, dates 2016-2026→2015-2024. Fold table corrected to 2018-2024. GPU references removed (CPU-only). [[PLACEHOLDER]] marks require E3/E6 results.
+> **Status:** Final v1 (2026-06-05). Universe: 89 stocks, 2015-2024, 16.28 bps. All E3/E6/E7 results incorporated.
 
 ---
 

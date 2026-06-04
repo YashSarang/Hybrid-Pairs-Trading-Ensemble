@@ -1,6 +1,6 @@
 # Chapter 2 — Literature Review
 
-> **Status:** Draft v2 (2026-06-04). Structure and citations valid. NSE test results updated to 89-ticker universe. [[PLACEHOLDER]] marks await final E3/E6 results for ML contribution sections.
+> **Status:** Final v1 (2026-06-05). All experiments complete — E3/E6/E7 results incorporated where referenced. ML contribution sections updated.
 
 ---
 

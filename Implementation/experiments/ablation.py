@@ -472,8 +472,8 @@ def run_stage1_ablation(
 
             log.info(
                 f"    [{cfg_name}] {fold['name']} -> "
-                f"Gross SR={m.get('gross_sharpe','?'):.3f}  "
-                f"Net SR={m.get('net_sharpe','?'):.3f}  "
+                f"Gross SR={float(m['gross_sharpe']):.3f}  "
+                f"Net SR={float(m['net_sharpe']):.3f}  "
                 f"pairs={len(selected)}  t={m['time_s']}s"
             )
 

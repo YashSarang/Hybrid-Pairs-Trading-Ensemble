@@ -40,7 +40,7 @@ log = logging.getLogger(__name__)
 # Gymnasium Environment
 # ---------------------------------------------------------------------------
 
-class PairsTradingEnv(gym.Env):
+class PairsTradingEnv(gym.Env if gym is not None else object):
     """Gymnasium environment for a single stock pair spread."""
     metadata = {"render_modes": ["human"]}
 

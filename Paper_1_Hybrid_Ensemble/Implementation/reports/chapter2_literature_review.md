@@ -1,6 +1,6 @@
 # Chapter 2 — Literature Review
 
-> **Status:** Draft v1 (2026-04-06). Positions the thesis contributions relative to five bodies of literature: classical pairs trading, cointegration-based arbitrage, machine learning for pair selection, deep learning for financial time series, and ensemble methods in quantitative finance.
+> **Status:** Draft v2 (2026-06-04). Structure and citations valid. NSE test results updated to 89-ticker universe. [[PLACEHOLDER]] marks await final E3/E6 results for ML contribution sections.
 
 ---
 

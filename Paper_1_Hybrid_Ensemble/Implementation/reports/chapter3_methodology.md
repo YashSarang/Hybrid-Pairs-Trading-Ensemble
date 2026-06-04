@@ -1,6 +1,6 @@
 # Chapter 3 — Data and Methodology
 
-> **Status:** Draft v1 (2026-04-06). All implementation details verified against source code in `core/` and `experiments/`.
+> **Status:** Draft v2 (2026-06-04). Universe updated 35→89 stocks, dates 2016-2026→2015-2024. Fold table corrected to 2018-2024. GPU references removed (CPU-only). [[PLACEHOLDER]] marks require E3/E6 results.
 
 ---
 
@@ -8,28 +8,28 @@
 
 ### 3.1.1 Stock selection
 
-The study uses a fixed universe of **35 NSE large-cap equities** drawn from eight sectors, selected as of January 2016 and held constant through March 2026. All 35 tickers are constituents of the Nifty 100 index throughout the study period, ensuring adequate liquidity (average daily turnover > ₹100 crore) and continuous yfinance data coverage.
+The study uses a fixed universe of **89 NSE Nifty 100 large-cap equities** drawn from eight sectors, selected as of January 2015 and held constant through December 2024. All 89 tickers are constituents of the Nifty 100 index throughout the study period, ensuring adequate liquidity (average daily turnover > ₹100 crore) and continuous yfinance data coverage. Six tickers were excluded due to persistent data quality issues (gaps, corporate restructuring): TATAMOTORS, BERGERPAINTS, VODAFONEIDEA, LTIM, ADANITRANS, and one additional ticker with incomplete 2015 history.
 
-**Table 3.1: NSE Universe — 35 Stocks across 8 Sectors**
+**Table 3.1: NSE Universe — 89 Stocks across 8 Sectors (summary)**
 
-| Sector | Count | Tickers |
+| Sector | Approx. Count | Representative Tickers |
 |---|---|---|
-| Banking & Financial Services | 6 | HDFCBANK, ICICIBANK, SBIN, KOTAKBANK, AXISBANK, INDUSINDBK |
-| Information Technology | 5 | TCS, INFY, WIPRO, HCLTECH, TECHM |
-| Automobiles & Components | 5 | MARUTI, M&M, BAJAJ-AUTO, HEROMOTOCO, EICHERMOT |
-| FMCG & Consumer Staples | 4 | HINDUNILVR, ITC, NESTLEIND, BRITANNIA |
-| Pharma & Healthcare | 4 | SUNPHARMA, DRREDDY, CIPLA, DIVISLAB |
-| Energy & Oil and Gas | 4 | RELIANCE, ONGC, IOC, BPCL |
-| Metals & Mining | 4 | TATASTEEL, JSWSTEEL, HINDALCO, COALINDIA |
-| Cement & Infrastructure | 3 | ULTRACEMCO, ACC, SHREECEM |
+| Banking & Financial Services | ~15 | HDFCBANK, ICICIBANK, SBIN, KOTAKBANK, AXISBANK, INDUSINDBK, BAJFINANCE, HDFC... |
+| Information Technology | ~12 | TCS, INFY, WIPRO, HCLTECH, TECHM, LTTS, MPHASIS... |
+| Automobiles & Components | ~10 | MARUTI, M&M, BAJAJ-AUTO, HEROMOTOCO, EICHERMOT, TATAMOTORS (excl.), TVSMOTOR... |
+| FMCG & Consumer Staples | ~10 | HINDUNILVR, ITC, NESTLEIND, BRITANNIA, DABUR, MARICO, GODREJCP... |
+| Pharma & Healthcare | ~10 | SUNPHARMA, DRREDDY, CIPLA, DIVISLAB, APOLLOHOSP, TORNTPHARM... |
+| Energy & Oil and Gas | ~10 | RELIANCE, ONGC, IOC, BPCL, NTPC, POWERGRID, GAIL... |
+| Metals & Mining | ~8 | TATASTEEL, JSWSTEEL, HINDALCO, COALINDIA, VEDL, NMDC... |
+| Cement & Infrastructure | ~8 | ULTRACEMCO, ACC, SHREECEM, AMBUJACEM, LT, ADANIPORTS... |
 
-This universe yields $\binom{35}{2} = 595$ candidate stock pairs, sufficient for a diverse portfolio while remaining computationally tractable for training deep learning selectors on a single GPU.
+Full ticker list is specified in `Implementation/experiments/config.py`.
 
 **Design rationale:** Same-sector pairs (e.g., HDFCBANK–ICICIBANK, TCS–INFY) are natural cointegration candidates with genuine economic co-movement driven by shared factor exposure. Cross-sector pairs are included to allow the ML and deep learning selectors to discover non-obvious statistical relationships that pure economic reasoning might miss. The sector distribution ensures that the strategy is not purely a single-sector bet.
 
 ### 3.1.2 Pair candidate generation
 
-All $\binom{35}{2} = 595$ ordered pair combinations are generated at the start of each walk-forward fold. Pairs are not pre-screened — all 595 are passed to each selector for scoring. This avoids survivorship bias in the pair screening step.
+All $\binom{89}{2} = 3{,}916$ ordered pair combinations are generated at the start of each walk-forward fold. Pairs are not pre-screened — all 3,916 are passed to each selector for scoring. This avoids survivorship bias in the pair screening step.
 
 ---
 
@@ -37,7 +37,7 @@ All $\binom{35}{2} = 595$ ordered pair combinations are generated at the start o
 
 ### 3.2.1 Source and frequency
 
-Daily closing prices are sourced via `yfinance` using NSE ticker symbols with the `.NS` suffix (e.g., `TCS.NS`, `HDFCBANK.NS`). The primary data window spans **2016-01-01 to 2026-03-31** (approximately 2,600 trading days). Data is fetched as adjusted closing prices, which account for dividends and stock splits in NSE's standard adjustment methodology.
+Daily closing prices are sourced via `yfinance` using NSE ticker symbols with the `.NS` suffix (e.g., `TCS.NS`, `HDFCBANK.NS`). The primary data window spans **2015-01-01 to 2024-12-31** (approximately 2,466 trading days). Data is fetched as adjusted closing prices, which account for dividends and stock splits in NSE's standard adjustment methodology. All prices are cached locally as a Parquet file (`Implementation/experiments/data/nse_nifty100/prices_2015-01-01_2024-12-31.parquet`) for deterministic reproducibility across runs.
 
 The choice of daily frequency over hourly is empirically motivated: Experiment E1 (Section 4.1) demonstrates that hourly spreads exhibit substantially weaker mean-reversion (Hurst 0.251 vs 0.190 daily) and that the hourly strategy becomes insolvent after NSE transaction costs.
 
@@ -45,7 +45,7 @@ The choice of daily frequency over hourly is empirically motivated: Experiment E
 
 Raw prices undergo the following preprocessing steps before use:
 1. **Missing data:** NSE-specific non-trading days (public holidays, corporate action suspensions) are forward-filled using the most recent available closing price. No imputation is applied for gaps exceeding 3 consecutive trading days (none occur for large-cap NSE stocks in this period).
-2. **Survivorship bias:** The 35-stock universe is fixed as of January 2016. All 35 stocks were trading continuously throughout 2016–2026; no delistings or index exclusions occurred. Mild survivorship bias is present by construction but limited in practice given the large-cap, blue-chip composition.
+2. **Survivorship bias:** The 89-stock universe is fixed as of January 2015. Six problematic tickers were excluded at the outset; the remaining 89 were all trading continuously throughout 2015–2024. Mild survivorship bias is present by construction but limited given the large-cap, Nifty 100 composition.
 3. **Corporate actions:** yfinance adjusted prices implicitly account for dividends and splits through the standard backward adjustment methodology.
 
 ---
@@ -69,9 +69,9 @@ We use a detailed NSE cost model (`IndianCosts` dataclass, `core/backtest.py`) t
 | Slippage (market impact) | 2.0 | Estimate per leg for large-cap stocks |
 | **Total per leg (buy)** | **~3.9 bps** | |
 | **Total per leg (sell)** | **~12.4 bps** | |
-| **Total round-trip (2 legs)** | **16.3 bps** | Per pair trade |
+| **Total round-trip (2 legs)** | **16.28 bps** | Per pair trade |
 
-The effective round-trip cost for a pairs trade — which requires simultaneously buying one stock and shorting the other — is approximately **16.3 basis points** per trade using discount broker rates (2024–2026). This reflects zero brokerage (standard for discount brokers like Zerodha and Upstox since 2020), corrected NSE exchange fees (0.322 bps), and updated stamp duty (1.5 bps per Finance Act 2020). This cost is still higher than the US equity cost model (typically 5–10 bps) assumed in most pairs trading academic literature.
+The effective round-trip cost for a pairs trade — which requires simultaneously buying one stock and shorting the other — is **16.28 basis points** per trade using discount broker rates (2024–2026). This reflects zero brokerage (standard for discount brokers like Zerodha and Upstox since 2020), corrected NSE exchange fees (0.345 bps), and updated stamp duty (1.5 bps per Finance Act 2020). This cost is still higher than the US equity cost model (typically 5–10 bps) assumed in most pairs trading academic literature.
 
 The formula implemented in code:
 
@@ -87,7 +87,7 @@ The default configuration allocates **₹1,00,000 (INR 1 lakh) per pair leg**, c
 
 ## 3.4 Two-Stage Architecture
 
-The strategy is organised as a sequential two-stage pipeline. **Stage 1 (Pair Selection)** uses an ensemble of up to 8 pair selectors to identify and rank the 595 candidate pairs, selecting the top-K = 10. **Stage 2 (Signal Generation)** applies an ensemble of up to 4 signal models to each selected pair to generate continuous entry/exit signals, which are discretised to {+1, 0, −1}.
+The strategy is organised as a sequential two-stage pipeline. **Stage 1 (Pair Selection)** uses an ensemble of up to 8 pair selectors to identify and rank the 3,916 candidate pairs, selecting the top-K = 10. **Stage 2 (Signal Generation)** applies an ensemble of up to 4 signal models to each selected pair to generate continuous entry/exit signals, which are discretised to {+1, 0, −1}.
 
 ### 3.4.1 Stage 1 ensemble combination
 
@@ -228,7 +228,7 @@ The LSTMSelector trains a neural network to predict whether a pair's spread will
 
 **Architecture:** Bidirectional LSTM with 32 units per direction (64 total), followed by 20% dropout and two dense layers (16 units ReLU, 1 unit sigmoid). Input shape: `(60, 6)`.
 
-**Training:** All $(i, j)$ pair combinations are processed in parallel using thread-parallelism to build sequences. The full multivariate dataset across all 595 pairs is concatenated (up to 50,000 sequences, subsampled randomly if exceeded), split 85/15 train/validation. Adam optimiser with `binary_crossentropy` loss; early stopping with patience=3 on validation loss.
+**Training:** All $(i, j)$ pair combinations are processed in parallel using thread-parallelism to build sequences. The full multivariate dataset across all 3,916 pairs is concatenated (up to 50,000 sequences, subsampled randomly if exceeded), split 85/15 train/validation. Adam optimiser with `binary_crossentropy` loss; early stopping with patience=3 on validation loss. All training runs CPU-only (`CUDA_VISIBLE_DEVICES=''`, `TF_DETERMINISTIC_OPS=1`, seed=42) for full reproducibility.
 
 **Key design choice:** The LSTM is trained on a *pooled* dataset across all pairs simultaneously. This means the model learns a representation of *temporal co-movement quality* that generalises across all pairs in the universe, rather than fitting to a single pair's dynamics. At inference, the model scores each candidate pair independently using its most recent 60-bar feature window.
 
@@ -242,7 +242,7 @@ The LSTMSelector trains a neural network to predict whether a pair's spread will
 
 **Architecture:**
 1. Linear projection of 6 input features to `embed_dim=32` (dense layer, no activation)
-2. Sinusoidal positional encoding (non-trainable; avoids Lambda layer GPU issues) added to the projected sequence
+2. Sinusoidal positional encoding (non-trainable; avoids Lambda layer issues) added to the projected sequence
 3. Two Transformer encoder blocks, each consisting of:
    - `MultiHeadAttention` with 4 heads (`key_dim=8`) + residual + LayerNorm
    - Position-wise feed-forward network (Dense 64 ReLU → Dense 32) + residual + LayerNorm
@@ -251,7 +251,7 @@ The LSTMSelector trains a neural network to predict whether a pair's spread will
 
 **Training:** Identical setup to LSTMSelector (same pooled dataset, same train/validation split, Adam + binary_crossentropy, early stopping with patience=3).
 
-**Implementation note:** The positional encoding is implemented as a custom Keras layer (`_PositionalEncodingLayer`) rather than a Lambda layer, which resolves device-placement failures on the NVIDIA L40S GPU (TF issue with Lambda.call and GPU memory).
+**Implementation note:** The positional encoding is implemented as a custom Keras layer (`_PositionalEncodingLayer`) rather than a Lambda layer, which resolves device-placement failures (TF issue with Lambda.call).
 
 **Reference:** Vaswani et al. (2017), "Attention is all you need"; applied to financial time series by Ding et al. (2020).
 
@@ -261,7 +261,7 @@ The LSTMSelector trains a neural network to predict whether a pair's spread will
 
 **Method:** Graph Convolutional Network (GCN) with link prediction.
 
-The GNNSelector models the 35 stocks as nodes in a graph, with edges weighted by pairwise return correlation. It applies two GCN layers to learn node embeddings that capture each stock's position within the correlation structure, then uses link prediction to score candidate pairs.
+The GNNSelector models the 89 stocks as nodes in a graph, with edges weighted by pairwise return correlation. It applies two GCN layers to learn node embeddings that capture each stock's position within the correlation structure, then uses link prediction to score candidate pairs.
 
 **Graph construction:**
 - Adjacency matrix: $A_{ij} = \text{Corr}(r_i, r_j)$ clipped to $[0, 1]$, computed over the training window
@@ -379,7 +379,7 @@ The MLSignal trains a gradient-boosted tree classifier to predict the sign of th
 
 The label is generated by a forward-looking 5-day return sum, making it strictly look-ahead when computed at time $t$. In the walk-forward framework, the model is trained on `train_frac=0.70` of the pair's history, then applies frozen (non-updating) predictions on the remaining test portion.
 
-**Model configuration:** `n_estimators=200`, `max_depth=4`, `learning_rate=0.05`, XGBoost with CUDA acceleration when a GPU is available.
+**Model configuration:** `n_estimators=200`, `max_depth=4`, `learning_rate=0.05`, XGBoost CPU-only (no CUDA; `tree_method='hist'`, `device='cpu'`, seed=42).
 
 **Reference:** Krauss, Do & Huck (2017), "Deep neural networks, gradient-boosted trees, random forests: Statistical arbitrage on the S&P 500."
 
@@ -401,12 +401,12 @@ Walk-forward validation (WFV) is the primary OOS evaluation mechanism. It elimin
 
 | Fold | OOS Year | Training Window |
 |---|---|---|
-| 1 | 2020 | 2016-01-01 to 2019-12-31 |
-| 2 | 2021 | 2016-01-01 to 2020-12-31 |
-| 3 | 2022 | 2016-01-01 to 2021-12-31 |
-| 4 | 2023 | 2016-01-01 to 2022-12-31 |
-| 5 | 2024 | 2016-01-01 to 2023-12-31 |
-| 6 | 2025 | 2016-01-01 to 2024-12-31 |
+| 1 | 2018 | 2015-01-01 to 2017-12-31 |
+| 2 | 2019 | 2015-01-01 to 2018-12-31 |
+| 3 | 2020 | 2015-01-01 to 2019-12-31 |
+| 4 | 2021 | 2015-01-01 to 2020-12-31 |
+| 5 | 2022 | 2015-01-01 to 2021-12-31 |
+| 6 | 2023-2024 | 2015-01-01 to 2022-12-31 |
 
 The expanding window design is preferred over a rolling window because additional historical data generally improves model quality for all selectors, and there is no evidence that distant historical NSE data is harmful relative to recent data.
 

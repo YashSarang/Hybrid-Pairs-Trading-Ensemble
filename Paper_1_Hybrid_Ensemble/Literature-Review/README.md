@@ -1,26 +1,26 @@
 # Comprehensive Literature Review: Pairs Trading Implementations
-**Last Updated:** 2026-05-26  
+**Last Updated:** 2026-06-04  
 **Purpose:** Systematic review and reproduction of all major pairs trading papers with verifiable implementations
 
 ---
 
-## 📋 Overview
+## Overview
 
 This literature review catalogs **all major pairs trading methodologies** from academic papers and industry publications. For each paper, we:
 
 1. **Document the methodology** (selection criteria, signal generation, parameters)
 2. **Create a reproduction implementation** in folder `yyyy-*TypeOfModel-PaperName*`
-3. **Test on our NSE dataset** (35 stocks, 2016-2026)
+3. **Test on our NSE dataset** (89 stocks, 2015-2024)
 4. **Compare claimed results vs. actual results**
 5. **Document reproducibility issues** (if any)
 
 ---
 
-**COST MODEL NOTE (2026-05-26):**  
-Early reproductions in this folder used an estimated NSE cost of 60 bps round-trip. The cost model was 
-subsequently corrected to 16.3 bps round-trip (2024-2026 discount broker rates). References to "60 bps" 
-in this folder represent historical estimates for comparison with US markets (typically 5-10 bps). The 
-corrected 16.3 bps cost is used in all final thesis results. See `../Documentation/NSE_Trading_Costs_Research_2024.md`.
+**COST MODEL NOTE (2026-06-04):**  
+All reproductions use the final NSE cost model of **16.28 bps round-trip** (2024 discount broker rates: 0 bps brokerage, 0.345 bps exchange, 10 bps STT on sell, 1.5 bps stamp on buy, 2 bps slippage per leg). Early reproduction notes referencing 22.9 bps or 60 bps represent superseded estimates. See `../TRADING_COST_UPDATE_FINAL_REPORT.md` for full correction history.
+
+**UNIVERSE NOTE (2026-06-04):**  
+Active reproductions use **89 NSE Nifty 100 tickers, 2015-01-01 to 2024-12-31** (parquet cache at `Implementation/experiments/data/nse_nifty100/prices_2015-01-01_2024-12-31.parquet`). References to "35 stocks, 2016-2026" in older reproduction notes are superseded.
 
 ---
 

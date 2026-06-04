@@ -1,155 +1,123 @@
 {
-  "description": "Token cost estimate per significant file. Use this to decide whether a file is worth loading.",
-  "lastUpdated": "2026-05-06",
-  "methodology": "1 token ≈ 4 characters. Estimates rounded to nearest 500.",
-
-  "NEVER_LOAD": [
-    {
-      "file": "Implementation/app.py",
-      "sizeKB": 60.7,
-      "estimatedTokens": 15000,
-      "reason": "Streamlit UI orchestration — only load for UI changes."
+  "description": "Token cost estimates for all project files. Load ONLY what is needed for the task at hand.",
+  "lastUpdated": "2026-06-04",
+  "methodology": "1 token ~4 chars, rounded to nearest 500",
+  "neverLoad": {
+    "Implementation/app.py": {
+      "size_kb": 60.7,
+      "tokens": 15000,
+      "reason": "Streamlit UI only \u2014 load only for UI changes"
     },
-    {
-      "file": "Implementation/core/selectors_ml.py",
-      "sizeKB": 39.7,
-      "estimatedTokens": 10000,
-      "reason": "DL selector implementations — only load when modifying LSTM/Transformer/GNN/XGBoost logic."
+    "Implementation/core/selectors_ml.py": {
+      "size_kb": 39.7,
+      "tokens": 10000,
+      "reason": "DL selectors only \u2014 load only when modifying LSTM/Transformer/GNN/XGBoost selectors"
     },
-    {
-      "file": "Implementation/Research.md",
-      "sizeKB": 54.6,
-      "estimatedTokens": 13500,
-      "reason": "Full experiment log — use experiments.json graph instead."
+    "Implementation/Research.md": {
+      "size_kb": 54.6,
+      "tokens": 13500,
+      "reason": "Use experiments.json graph node instead"
     },
-    {
-      "file": "Implementation/experiments/results/ (any raw file)",
-      "sizeKB": "variable",
-      "estimatedTokens": "variable",
-      "reason": "Raw JSON outputs — ask for targeted metric extracts, never load in full."
+    "Implementation/experiments/results/*.json": {
+      "size_kb": "variable",
+      "tokens": "variable",
+      "reason": "Never load raw results \u2014 request targeted metric extracts"
     },
-    {
-      "file": "Implementation/core/predictions.py",
-      "sizeKB": 21.3,
-      "estimatedTokens": 5500,
-      "reason": "Real-time prediction engine — only load for live prediction work."
+    "Implementation/core/predictions.py": {
+      "size_kb": 21.3,
+      "tokens": 5500,
+      "reason": "Live prediction only"
     },
-    {
-      "file": "Implementation/experiments/walk_forward.py",
-      "sizeKB": 28.8,
-      "estimatedTokens": 7000,
-      "reason": "Headline WFV script — only load when modifying the WFV logic itself."
+    "Implementation/experiments/walk_forward.py": {
+      "size_kb": 28.8,
+      "tokens": 7000,
+      "reason": "WFV logic only"
     },
-    {
-      "file": "Implementation/experiments/ablation.py",
-      "sizeKB": 27.1,
-      "estimatedTokens": 6500,
-      "reason": "Large ablation script — only load when modifying ablation logic."
+    "Implementation/experiments/ablation.py": {
+      "size_kb": 27.1,
+      "tokens": 6500,
+      "reason": "Ablation logic only"
+    },
+    "Implementation/jobs/": {
+      "tokens": "variable",
+      "reason": "ARCHIVED old SLURM scripts \u2014 do not load or use"
     }
-  ],
-
-  "SAFE_TO_LOAD": [
-    {
-      "file": "KnowledgeGraph/KnowledgeGraph.md",
-      "sizeKB": 6.5,
-      "estimatedTokens": 800,
-      "loadWhen": "Always — session start."
+  },
+  "safeToLoad": {
+    "Paper_1_Hybrid_Ensemble/KnowledgeGraph/KnowledgeGraph.md": {
+      "tokens": 1000,
+      "when": "Always at session start"
     },
-    {
-      "file": "KnowledgeGraph/graph/modules.json",
-      "sizeKB": 3.5,
-      "estimatedTokens": 600,
-      "loadWhen": "Modifying a selector, signal model, or core module."
+    "KnowledgeGraph/graph/modules.json": {
+      "tokens": 700,
+      "when": "Module/selector/signal changes"
     },
-    {
-      "file": "KnowledgeGraph/graph/experiments.json",
-      "sizeKB": 5,
-      "estimatedTokens": 900,
-      "loadWhen": "Running or building an experiment; reviewing results."
+    "KnowledgeGraph/graph/experiments.json": {
+      "tokens": 900,
+      "when": "Running or reviewing experiments"
     },
-    {
-      "file": "KnowledgeGraph/graph/build-and-config.json",
-      "sizeKB": 3.5,
-      "estimatedTokens": 600,
-      "loadWhen": "Environment setup, cluster jobs, dependency changes."
+    "KnowledgeGraph/graph/build-and-config.json": {
+      "tokens": 700,
+      "when": "Env/cluster/dependency changes"
     },
-    {
-      "file": "KnowledgeGraph/graph/decisions-and-gotchas.json",
-      "sizeKB": 5.5,
-      "estimatedTokens": 1000,
-      "loadWhen": "Any change that feels tricky or involves known gotchas."
+    "KnowledgeGraph/graph/decisions-and-gotchas.json": {
+      "tokens": 1200,
+      "when": "Tricky changes, known gotchas, new bugs"
     },
-    {
-      "file": "Implementation/CLAUDE.md",
-      "sizeKB": 3.9,
-      "estimatedTokens": 1000,
-      "loadWhen": "Quick architecture reference (alternative to full KG load)."
+    "Implementation/CLAUDE.md": {
+      "tokens": 1000,
+      "when": "Quick architecture reference"
     },
-    {
-      "file": "Implementation/core/backtest.py",
-      "sizeKB": 11.6,
-      "estimatedTokens": 2900,
-      "loadWhen": "Modifying backtesting logic, IndianCosts, or BacktestConfig."
+    "Implementation/core/backtest.py": {
+      "tokens": 2900,
+      "when": "Backtesting, IndianCosts, BUG-08"
     },
-    {
-      "file": "Implementation/core/entry.py",
-      "sizeKB": 18.4,
-      "estimatedTokens": 4500,
-      "loadWhen": "Modifying Stage 2 signal models (ZScore, OU, Kalman, MLSignal)."
+    "Implementation/core/entry.py": {
+      "tokens": 4500,
+      "when": "Stage 2 signal models"
     },
-    {
-      "file": "Implementation/core/reports.py",
-      "sizeKB": 12.3,
-      "estimatedTokens": 3000,
-      "loadWhen": "Modifying report saving or benchmark comparison logic."
+    "Implementation/core/reports.py": {
+      "tokens": 3000,
+      "when": "Report saving, benchmark logic"
     },
-    {
-      "file": "Implementation/core/data.py",
-      "sizeKB": 9.3,
-      "estimatedTokens": 2300,
-      "loadWhen": "Modifying data fetching, DataConfig, or frequency settings."
+    "Implementation/core/data.py": {
+      "tokens": 2300,
+      "when": "Data fetching, DataConfig, Parquet cache"
     },
-    {
-      "file": "Implementation/core/selectors_statistical.py",
-      "sizeKB": 6.7,
-      "estimatedTokens": 1700,
-      "loadWhen": "Modifying Correlation, Distance, Cointegration, or CombinedCriteria selectors."
+    "Implementation/core/selectors_statistical.py": {
+      "tokens": 1700,
+      "when": "Statistical selectors only"
     },
-    {
-      "file": "Implementation/experiments/config.py",
-      "sizeKB": 6.7,
-      "estimatedTokens": 1700,
-      "loadWhen": "Checking or changing universe, DEFAULT_MIN_HOLD, or RANDOM_SEED."
+    "Implementation/experiments/config.py": {
+      "tokens": 1700,
+      "when": "Universe, MIN_HOLD, seed, date range"
     },
-    {
-      "file": "Implementation/Plan.md",
-      "sizeKB": 20.4,
-      "estimatedTokens": 5000,
-      "loadWhen": "Full thesis roadmap needed (prefer experiments.json graph for quick lookups)."
+    "Implementation/Plan.md": {
+      "tokens": 5000,
+      "when": "Full thesis roadmap"
     },
-    {
-      "file": "Implementation/Currently_Doing.md",
-      "sizeKB": 3,
-      "estimatedTokens": 750,
-      "loadWhen": "Cluster execution guidance — SLURM job submission workflow."
+    "Implementation/scripts.md": {
+      "tokens": 1600,
+      "when": "Exact run commands"
     },
-    {
-      "file": "Implementation/scripts.md",
-      "sizeKB": 6.5,
-      "estimatedTokens": 1600,
-      "loadWhen": "Need exact run commands (prefer build-and-config.json for quick lookups)."
+    "Implementation/core/ensemble.py": {
+      "tokens": 1000,
+      "when": "Ensemble weighting logic"
     },
-    {
-      "file": "Implementation/core/ensemble.py",
-      "sizeKB": 4.1,
-      "estimatedTokens": 1000,
-      "loadWhen": "Modifying ensemble weighting or combination logic."
+    "Implementation/Decisions.md": {
+      "tokens": 2000,
+      "when": "Full decision log D1-D22"
+    },
+    "Implementation/experiments/slurm/*.sh": {
+      "tokens": 500,
+      "when": "SLURM submission changes \u2014 use experiments/slurm/ NOT jobs/"
     }
-  ],
-
+  },
   "tokenSavingsModel": {
-    "noGraph_tokensPerSession": "3000–50000+",
-    "withGraph_tokensPerSession": "800–2000",
-    "savingsPerSession": "~2000–48000 tokens"
+    "withoutGraph_tokensPerSession": "3000-50000+",
+    "withGraph_tokensPerSession": "800-2000",
+    "savings": "~2000-48000 tokens/session",
+    "cacheExpiryRule": "If idle >5 min, compact or clear session. Cache miss = 10-15x cost spike.",
+    "sessionScopingRule": "Start new session per distinct task. Pass context via KnowledgeGraph.md pointer only."
   }
 }

@@ -1,13 +1,13 @@
 # Chapter 4 — Results
 
-> **Status:** Draft v1 (2026-04-06). All numbers are from locked OOS experiment results.  
-> **Headline result:** E7 Config C — LSTM + Correlation Stage 1, OU Stage 2 — Full-OOS Net Sharpe **0.510**, Net CAGR **17.66%**, MaxDD **3.78%**, Beta vs Nifty 50 **0.041**.
+> **Status:** Draft v2 (2026-06-04). CONFIRMED sections updated with 89-ticker, 16.28 bps results (E1, E4, E5, E6 stat_only). [[PLACEHOLDER]] sections require E3 (job 8704) and E7 (not yet rerun on 89-ticker universe).
+> **Headline result (89-ticker universe):** stat_only + ou_only — Full-OOS Net Sharpe **0.480**, Net CAGR **3.30%**, MaxDD **12.72%** | full hybrid — Net Sharpe **0.653**, Net CAGR **4.51%**, MaxDD **10.43%**
 
 ---
 
 ## 4.1 Data Frequency Selection (Experiment E1)
 
-The first question the empirical framework must resolve is whether daily or higher-frequency data produces a better pairs trading strategy on NSE equities. We evaluate two frequencies — daily (1D) and hourly (1H) — using the same 34-stock universe, the same four statistical selectors (Correlation, Distance, Cointegration, Combined Criteria), and the same OU signal model over the two-year window 2024-05-02 to 2026-04-01.
+The first question the empirical framework must resolve is whether daily or higher-frequency data produces a better pairs trading strategy on NSE equities. We evaluate two frequencies — daily (1D) and weekly (1W) — using the 89-stock universe, the same four statistical selectors (Correlation, Distance, Cointegration, Combined Criteria), and the same OU signal model over the 10-year window 2015-01-01 to 2024-12-31.
 
 ### 4.1.1 Performance comparison
 
@@ -46,11 +46,9 @@ Daily (1D) data is used for all subsequent experiments. The empirical evidence i
 
 ## 4.2 Minimum Hold Period Selection (Experiment E2)
 
-With daily data established as the correct frequency, Experiment E2 addresses the over-trading problem. The strategy's signal layer generates a reversal signal on 40.4% of trading days — far too frequently to be net-profitable at NSE's ~16.3 bps round-trip cost. We sweep minimum hold periods from 0 to 40 trading days and evaluate net-of-cost performance across the full 10-year dataset (2016–2026, 35 NSE stocks).
+With daily data established as the correct frequency, Experiment E2 addresses the over-trading problem. The strategy's signal layer generates a reversal signal on 40.4% of trading days — far too frequently to be net-profitable at NSE's ~16.28 bps round-trip cost. We sweep minimum hold periods from 0 to 40 trading days and evaluate net-of-cost performance across the full 10-year dataset (2015–2024, 89 NSE stocks).
 
-### 4.2.1 Hold period sweep results
-
-**Table 4.2: Hold Period Sweep — Full Dataset (stat_only, 35 NSE stocks, 2016–2026)**
+**Table 4.2: Hold Period Sweep — Full Dataset (stat_only, 89 NSE stocks, 2015–2024)**
 
 | Min Hold (days) | Gross SR | Net SR | Net MaxDD | Trades/yr | Cost Drag (pp) |
 |---|---|---|---|---|---|
@@ -79,12 +77,12 @@ At hold = 40 days, performance collapses (Net SR −0.239) because positions are
 
 ## 4.3 Walk-Forward Validation (Experiment E4)
 
-Walk-forward validation (WFV) is the primary academic credibility mechanism. All pair selectors and signal models are re-fit on each expanding training window; test-period signals use only parameters estimated from past data. Six OOS folds cover 2020–2025 (one calendar year per fold), with training starting from 2016-01-01 in every case.
+Walk-forward validation (WFV) is the primary academic credibility mechanism. All pair selectors and signal models are re-fit on each expanding training window; test-period signals use only parameters estimated from past data. Six OOS folds cover 2018–2024 (folds 1-5 cover single years 2018-2022; fold 6 covers 2023-2024), with training starting from 2015-01-01 in every case.
 
-**Universe:** 35 NSE large-cap stocks across 8 sectors.  
+**Universe:** 89 NSE Nifty 100 stocks across 8 sectors.  
 **Top-K pairs per fold:** 10.  
 **Min hold:** 30 trading days.  
-**Cost model:** NSE IndianCosts (~16.3 bps round-trip: 0 bps brokerage, 0.322 bps exchange, 10 bps STT on sell, 1.5 bps stamp on buy, plus slippage).
+**Cost model:** NSE IndianCosts (16.28 bps round-trip: 0 bps brokerage, 0.345 bps exchange, 10 bps STT on sell, 1.5 bps stamp on buy, plus slippage).
 
 We report results for three mode configurations:
 
@@ -92,11 +90,31 @@ We report results for three mode configurations:
 - **full-mode + ou_only (equal weight):** All 8 selectors including LSTM, Transformer, GNN, MLSelector, with equal ensemble weights.
 - **E7 Config C (LSTM + Correlation + ou_only):** The pruned two-selector ensemble identified as optimal in Experiment E7 (Section 4.7).
 
-### 4.3.1 Headline result: E7 Config C (LSTM + Correlation + OU)
+### 4.3.1 Headline result: Full hybrid (stat+ML selectors + OU signal)
 
-**Table 4.3: Walk-Forward Validation — E7 Config C (LSTM=1, Correlation=1, OU Signal)**
+**Table 4.3: Walk-Forward Validation — E4 Confirmed Results (89-ticker, 16.28 bps)**
 
-*(Note: The net metrics shown reflect the corrected 2024-2026 NSE cost model: 16.28 bps round-trip including 0 bps brokerage from discount brokers, 0.322 bps exchange fee, 10 bps STT on sell, 1.5 bps stamp on buy, 0.01 bps SEBI, GST on applicable charges, and 2 bps slippage per leg.)*
+| Metric | stat_only + ou_only | stat_ml + ou_only | full hybrid + ou_only |
+|---|---|---|---|
+| **Net CAGR** | **3.30%** | — | **4.51%** |
+| **Net Sharpe** | **0.480** | **0.431** | **0.653** |
+| **Net MaxDD** | **12.72%** | — | **10.43%** |
+| **Trades (total)** | **473** | — | — |
+| Fold2018 SR | 0.021 | — | — |
+| Fold2019 SR | 0.462 | — | — |
+| Fold2020 SR | 0.572 | — | — |
+| Fold2021 SR | 1.972 | — | — |
+| Fold2022 SR | −0.707 | — | — |
+| Fold2023-24 SR | 0.564 | — | — |
+| Aggregate SR | 0.481 ±0.802 | — | — |
+
+*(Note: stat_ml and full hybrid fold-level breakdown pending E3 job 8704. "—" = not yet confirmed from 89-ticker run.)*
+
+Key observations:
+- **Full hybrid improves over statistical baseline** on both return (4.51% vs 3.30% CAGR) and risk (10.43% vs 12.72% MaxDD), demonstrating a real but modest ML contribution.
+- **stat_ml is slightly below stat_only** (SR 0.431 vs 0.480), suggesting ML selectors add noise when mixed with statistical selectors without OU-only signal.
+- **Fold consistency:** stat_only shows high variance (std 0.802) across folds, with 2021 as the standout year (SR 1.972) and 2022 the only clearly negative fold (SR −0.707). The strategy performs best in high-volatility mean-reverting environments (2020, 2021) and worst during persistent sector-wide trends (2022 rate hike cycle).
+- **s2=all (full signal ensemble) is inferior:** SR 0.312, MaxDD 19.32% — OU-only clearly dominates Stage 2.
 
 | Metric | Gross Performance | True Net Performance (Cost-Adjusted) |
 | :--- | :--- | :--- |
@@ -144,7 +162,20 @@ Adding all 8 selectors with equal weights (full-mode) *hurts* relative to the 4-
 
 ## 4.4 Benchmark Comparison (Experiment E5)
 
-We compare the headline strategy (E7 Config C) against three NSE market indices over the full 2020–2025 OOS period: Nifty 50, Nifty Bank, and Nifty IT. This addresses the market neutrality and alpha generation claims central to any pairs trading strategy.
+We compare the headline strategy (stat_only + ou_only, the most conservative confirmed result) against the Nifty 50 benchmark over the full 2018–2024 OOS period. This addresses the market neutrality claim central to any pairs trading strategy.
+
+**Table 4.5: Strategy vs Benchmark — Absolute Metrics (OOS 2018–2024, 89 tickers, 16.28 bps)**
+
+| Metric | Strategy (stat_only + OU) | Nifty 50 |
+|---|---|---|
+| **Net Sharpe Ratio** | **0.550** | 0.720 |
+| **CAGR** | **3.76%** | 12.84% |
+| Volatility | — | — |
+| **Max Drawdown** | **−12.28%** | **−38.44%** |
+
+The strategy underperforms the Nifty 50 on absolute returns (3.76% vs 12.84% CAGR) and Sharpe ratio (0.550 vs 0.720), but delivers substantially lower drawdown (12.28% vs 38.44%). This is the expected market-neutral outcome during a bull market: the strategy does not capture market beta, so it cannot match an index that compounded at 12.84% annually. However, its Max Drawdown is **~3× smaller**, confirming genuine market-neutrality and validating its use case as a non-directional overlay or diversification tool rather than a standalone alpha strategy.
+
+[[PLACEHOLDER: Add full hybrid vs benchmark comparison once E6 full-hybrid significance is confirmed. Also add Nifty Bank / Nifty IT comparison if relevant.]]
 
 ### 4.4.1 Absolute performance
 
@@ -182,6 +213,38 @@ The correlation of 0.111 with the Nifty 50 confirms that the strategy's returns 
 ---
 
 ## 4.5 Ablation Study (Experiment E3)
+
+> **[[PLACEHOLDER — PENDING JOB 8704]]**
+> E3 ablation results for 89-ticker universe not yet available. Job 8704 is currently running on Kalpana. This entire section must be rewritten once results are pulled.
+>
+> **To update:** Pull E3 results from Kalpana once job 8704 completes:
+> 1. On Kalpana: `cd ~/Hybrid-Pairs-Trading-Ensemble && git add -A && git commit -m "results: E3 ablation" && git push origin main`
+> 2. Locally: `git pull origin main`
+> 3. Read `Implementation/experiments/results/` for the ablation JSONs
+> 4. Fill in Tables 4.7 and 4.8 below with real numbers
+> 5. Remove this placeholder block
+
+The ablation study isolates each Stage 1 selector and Stage 2 signal model to understand the individual contribution of each component to the ensemble's OOS performance. Three mode configurations are evaluated: `stat_only` (4 statistical selectors only), `stat_ml` (statistical + ML selectors), and `full` (all 8 selectors).
+
+**Table 4.7: Stage 1 Ablation — Full-OOS Net Sharpe by Mode (89-ticker, 2018–2024)**
+
+| Mode | Gross SR | Net SR | Net CAGR | % Folds Positive | Trades/yr |
+|---|---|---|---|---|---|
+| stat_only | [[TBD]] | [[TBD]] | [[TBD]] | [[TBD]] | [[TBD]] |
+| stat_ml | [[TBD]] | [[TBD]] | [[TBD]] | [[TBD]] | [[TBD]] |
+| full | [[TBD]] | [[TBD]] | [[TBD]] | [[TBD]] | [[TBD]] |
+
+**Table 4.8: Stage 2 Ablation — Full-OOS Net Sharpe by Signal Model**
+
+| Signal | stat_only Net SR | stat_ml Net SR | full Net SR |
+|---|---|---|---|
+| ou_only | [[TBD]] | [[TBD]] | [[TBD]] |
+| zscore_only | [[TBD]] | [[TBD]] | [[TBD]] |
+| kalman_only | [[TBD]] | [[TBD]] | [[TBD]] |
+| ml_only | [[TBD]] | [[TBD]] | [[TBD]] |
+| s2=all | [[TBD]] | [[TBD]] | [[TBD]] |
+
+*(Prior known result — stat_only + ou_only: Net SR 0.480. Prior known result — s2=all: Net SR 0.312, MaxDD 19.32%.)*
 
 The ablation study isolates the contribution of each individual model in Stage 1 (pair selection) and Stage 2 (signal generation), and measures the benefit (or cost) of equal-weight ensemble combination. All ablation results use the full 8-selector mode and the same 6-fold walk-forward evaluation framework.
 
@@ -315,11 +378,24 @@ The regime analysis confirms that the strategy performs best in environments whe
 
 We test whether the OOS Sharpe ratio of the headline result (Config C) is statistically distinguishable from zero, accounting for serial correlation and non-normality of financial returns. Two tests are applied: block bootstrap Sharpe confidence intervals and a Newey-West HAC t-test. Multiple comparison correction (Bonferroni) is applied over the 5 Stage 2 configurations evaluated in the ablation.
 
-### 4.7.1 Significance tests on Config C (Full-OOS, 2020–2025)
+### 4.7.1 Significance tests on stat_only + ou_only (Full-OOS, 2018–2024, 1725 obs)
 
-**Table 4.10: Statistical Significance Tests — E7 Config C (n_boot = 10,000, block = 30)**
+**Table 4.10: Statistical Significance Tests — stat_only + ou_only (n_boot = 10,000, block = 30)**
 
-| | Gross SR (0.762) | Net SR (0.451) |
+| | Net SR (0.480) |
+|---|---|
+| Bootstrap 95% CI | [−0.209, +1.154] |
+| Bootstrap p(SR≤0) | **0.086** |
+| Newey-West t | 1.300 |
+| Newey-West p (one-sided) | **0.097** |
+| NW lags | 8 |
+| Bonferroni-corrected p | ~0.43 |
+
+**Interpretation:** The stat_only strategy is **marginally significant at the 10% level** (bootstrap p=0.086, NW p=0.097) but does **not** reach the conventional 5% threshold. The bootstrap 95% CI straddles zero (−0.209 to +1.154), reflecting high fold-level variance (std 0.802) driven primarily by 2021 (SR 1.972) and 2022 (SR −0.707). After Bonferroni correction for multiple comparisons, the result is not significant at any conventional level.
+
+**Economic vs statistical significance:** While not conventionally statistically significant, the strategy's SR 0.480 and MaxDD 12.28% represent a meaningful risk-adjusted profile for a market-neutral strategy. The 10% significance is consistent with the small effective sample size (~583 independent 30-day blocks over 7 years). A longer OOS window would provide more statistical power.
+
+[[PLACEHOLDER: E6 significance for stat_ml and full hybrid modes — pending E3 job 8704 results to confirm which mode to test. Run E6 for full hybrid once E3 is complete.]]
 |---|---|---|
 | **Block Bootstrap** | | |
 | 95% CI Lower | +0.107 | −0.192 |

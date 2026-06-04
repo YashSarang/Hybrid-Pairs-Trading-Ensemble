@@ -15,18 +15,18 @@ This robust gap between gross and net profitability proves that pairs trading on
 
 The Indian equity cost model is substantially more expensive than the US equity model that underpins most pairs trading literature. The cost components for a NSE round-trip are:
 
-| Cost Component | Round-Trip Bps |
-|---|---|
-| Brokerage | 6 bps (3 each way) |
-| Exchange transaction charge | 0.69 bps |
-| SEBI fees | 0.02 bps |
-| Securities Transaction Tax (STT) | 10 bps (sell leg only) |
-| Stamp duty | 1 bps (buy leg only) |
-| GST on brokerage | ~18% of brokerage ≈ 1.08 bps |
-| Market impact / slippage | 4 bps (2 bps/leg estimate) |
-| **Total** | **~23–24 bps per leg, ~47–50 bps per pair round-trip** |
+| Cost Component | Round-Trip Bps | Notes |
+|---|---|---|
+| Brokerage | 0 bps | Discount broker (Zerodha/Groww 2024–2026 model; zero flat-fee) |
+| Exchange transaction charge | 0.345 bps | NSE charge, both legs |
+| SEBI fees | 0.01 bps | Regulatory charge |
+| Securities Transaction Tax (STT) | 10 bps | Sell leg only (delivery equity) |
+| Stamp duty | 1.5 bps | Buy leg only |
+| GST on exchange + SEBI fees | ~18% on above | ~0.065 bps incremental |
+| Market impact / slippage | 4 bps | 2 bps per leg estimate |
+| **Total** | **~16.28 bps** | **Per pair round-trip (both legs combined)** |
 
-Critically, **a pairs trade involves two legs simultaneously**: buying one stock and shorting the other. The effective per-trade cost is roughly **30 bps round-trip per pair** (i.e. ~15 bps per leg). At 86 trades per year (Config C), this translates to approximately **1.01 pp of annual cost drag** — a very manageable fraction of the gross alpha, leaving 17.66% in pure net returns.
+Critically, **a pairs trade involves two legs simultaneously**: buying one stock and shorting the other. The effective per-trade cost is **16.28 bps round-trip per pair** under a 2024–2026 NSE discount-broker model. At 473 trades over the 7-year OOS window (stat_only configuration), this translates to approximately **0.9–1.1 pp of annual cost drag** — a manageable fraction of the gross alpha. (Note: the pre-2024 literature often quotes 50–100 bps for full-service brokers; the discount-broker cost model used here is materially lower and represents the realistic cost for a quantitative trader in the current NSE environment.)
 
 For comparison, US pairs trading strategies in the academic literature (e.g., Gatev, Goetzmann & Rouwenhorst 2006; Elliott, van der Hoek & Malcolm 2005) typically assume round-trip costs of 10–20 bps (and often zero). While the NSE cost model is structurally higher, the LSTM+Correlation filter achieves such a high "hit rate" of successful mean-reversions that the cost friction becomes a secondary concern.
 
@@ -161,13 +161,11 @@ The Beta of 0.041 against the Nifty 50 — confirming near-complete market neutr
 
 ### 5.6.1 Universe size
 
-The 35-stock universe is a deliberate design choice (sufficient diversity across 8 sectors while remaining tractable for training deep learning selectors on a single GPU), but it introduces concentration risk. The strategy has at most 10 active pairs at any time — equivalent to a 30-stock portfolio in the long-short sense — which is thin by institutional standards. The 2024 IT sector correction is particularly damaging precisely because IT pairs represent a large fraction of the pair universe, and when the sector diverges, there is insufficient diversification from other sectors to compensate.
-
-A universe of 100–200 NSE large-cap stocks would provide substantially more diversification and reduce the impact of single-sector regime breaks, at the cost of longer LSTM and GNN training times.
+The 89-stock universe spans 8 sectors of the NSE Nifty 100 (after removing 6 tickers with persistent data quality issues), but it introduces concentration risk at the portfolio level. The strategy holds at most 10 active pairs at any time — equivalent to a 30-stock portfolio in the long-short sense — which is thin by institutional standards. A universe of 100–200 NSE large-cap stocks would provide substantially more diversification and reduce the impact of single-sector regime breaks, at the cost of longer LSTM and GNN training times.
 
 ### 5.6.2 Out-of-sample window length
 
-The 6-year OOS window (2020–2025) spans approximately 1,512 trading days and 522 independent 30-day blocks. As noted in Section 5.1.2, this is borderline sufficient for detecting a Sharpe ratio of 0.45 at conventional significance levels. The training data begins in 2016, and the strategy cannot be backtested further back due to data availability constraints for NSE intraday-quality daily prices with survivorship bias adjustment.
+The 7-year OOS window (2018–2024) spans approximately 1,750 trading days and ~583 independent 30-day blocks. As noted in Section 5.1.2, this is borderline sufficient for detecting a Sharpe ratio of 0.45 at conventional significance levels. The training data begins in 2015, and the strategy cannot be backtested further back due to data availability constraints for NSE daily prices with adequate survivorship-bias adjustment.
 
 A longer OOS evaluation window — ideally 10+ years — would provide more statistical power and capture additional market cycles (e.g., the 2013 "taper tantrum," the 2008 global financial crisis). This is the primary limitation on the confidence that can be placed in the net significance result.
 
@@ -179,7 +177,7 @@ The beta-neutrality results (β = 0.041) assume the short leg is perfectly execu
 
 ### 5.6.4 Data quality and survivorship bias
 
-The NSE universe is constructed as of January 2016 and held constant through 2026. This introduces mild survivorship bias: stocks that were in the 35-stock universe in 2016 but subsequently delisted or fell out of large-cap indices are excluded from the universe construction but included in the backtest. A rigorous survivorship-bias-free implementation would require a point-in-time NSE constituent file. However, the bias is limited in practice because (i) the 35 stocks are all large-cap blue chips with very low delisting probability, and (ii) the WFV framework excludes forward-looking information from each fold's training.
+The NSE universe is constructed as of January 2015 and held constant through 2024. This introduces mild survivorship bias: stocks that were in the 89-stock universe in 2015 but subsequently delisted or fell out of large-cap indices are excluded from the universe construction but included in the backtest. A rigorous survivorship-bias-free implementation would require a point-in-time NSE constituent file. However, the bias is limited in practice because (i) the 89 stocks are all large-cap Nifty 100 constituents with very low delisting probability over the 2015–2024 window, and (ii) the WFV framework excludes forward-looking information from each fold's training.
 
 ### 5.6.5 Hyperparameter sensitivity
 

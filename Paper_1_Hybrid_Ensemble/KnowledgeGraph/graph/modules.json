@@ -1,107 +1,77 @@
 {
-  "description": "All core modules, selectors, and signal models in the Hybrid Pairs Trading Ensemble repo.",
-  "lastUpdated": "2026-05-06",
-
-  "stage1_selectors": {
-    "description": "Pair selection algorithms — score stock pairs; ensemble-averaged with user-set weights.",
-    "base": {
-      "file": "Implementation/core/selectors_base.py",
-      "sizeKB": 2.4,
-      "exports": ["BasePairSelector"],
-      "notes": "Abstract base class all selectors inherit from."
-    },
-    "entry_point": {
-      "file": "Implementation/core/selectors.py",
-      "sizeKB": 1,
-      "notes": "Re-exports all selectors from selectors_base.py and the two child modules."
-    },
+  "description": "All core modules, selectors, signal models, and app components. Load this node when making changes to any module.",
+  "lastUpdated": "2026-06-04",
+  "mlMode": "CPU-ONLY mandatory (CUDA_VISIBLE_DEVICES='', TF_DETERMINISTIC_OPS=1). GPU code paths exist but disabled for reproducibility on Kalpana.",
+  "stage1Selectors": {
+    "note": "All implement BasePairSelector (selectors_base.py). Re-exported via selectors.py.",
     "statistical": {
-      "file": "Implementation/core/selectors_statistical.py",
-      "sizeKB": 6.7,
-      "selectors": [
-        "CorrelationSelector — rolling Pearson correlation",
-        "DistanceSelector — Gatev et al. (2006) normalized SSD",
-        "CointegrationSelector — Engle-Granger ADF test",
-        "CombinedCriteriaSelector — cointegration + Hurst exponent + half-life"
-      ]
-    },
-    "ml": {
-      "file": "Implementation/core/selectors_ml.py",
-      "sizeKB": 39.7,
-      "loadWarning": "LARGE — 39KB / ~10k tokens. Load only when modifying DL selectors.",
-      "selectors": [
-        "MLSelector — XGBoost with engineered spread features",
-        "LSTMSelector — LSTM/BiLSTM multivariate sequence model (max_sequences=50000, batch_size=256)",
-        "TransformerSelector — Multi-head self-attention encoder (Lambda bug fixed 2026-04-06)",
-        "GNNSelector — Graph Convolutional Network with link prediction"
-      ],
-      "gpuNotes": "LSTMSelector and TransformerSelector use TF mixed precision (float16) on CUDA. GNNSelector uses PyTorch Geometric."
-    }
-  },
-
-  "stage2_signals": {
-    "description": "Entry/exit signal models — ensemble-averaged, discretized to {+1, 0, -1}.",
-    "file": "Implementation/core/entry.py",
-    "sizeKB": 18,
-    "signals": [
-      "ZScoreThreshold — entry |z| > 2, exit |z| < 0.5",
-      "OUThreshold — Ornstein-Uhlenbeck process (BEST — use ou_only in all experiments)",
-      "KalmanHedge — State-space Kalman Filter dynamic hedge ratio",
-      "MLSignal — XGBoost/GBM classifier (WORST — overfit OOS, Net SR -0.401; weight=0 in E7)"
-    ]
-  },
-
-  "coreModules": {
-    "data": {
-      "file": "Implementation/core/data.py",
-      "sizeKB": 9.3,
-      "exports": ["DataConfig"],
-      "notes": "yfinance fetching, CSV/Parquet override. Freq '1D' for all main experiments."
-    },
-    "ensemble": {
-      "file": "Implementation/core/ensemble.py",
-      "sizeKB": 4.1,
-      "notes": "Weighted score/signal combination utilities for both stages."
-    },
-    "backtest": {
-      "file": "Implementation/core/backtest.py",
-      "sizeKB": 11.6,
-      "exports": ["BacktestConfig", "IndianCosts"],
-      "costModel": {
-        "brokerage": "3 bps",
-        "exchange": "0.345 bps",
-        "SEBI": "0.01 bps",
-        "STT": "10 bps (sell only, delivery)",
-        "stamp": "1 bps (buy only)",
-        "GST": "18% on brokerage+exchange",
-        "slippage": "2 bps/leg"
+      "file": "core/selectors_statistical.py (6.7KB ~1,700 tokens)",
+      "selectors": {
+        "CorrelationSelector": "Rolling Pearson correlation",
+        "DistanceSelector": "Gatev et al. (2006) normalized SSD",
+        "CointegrationSelector": "Engle-Granger ADF test",
+        "CombinedCriteriaSelector": "Cointegration + Hurst exponent + half-life (WORST: Net SR -0.824 old universe)"
       }
     },
-    "reports": {
-      "file": "Implementation/core/reports.py",
-      "sizeKB": 12.3,
-      "exports": ["ReportManager", "BenchmarkComparison"],
-      "notes": "Repository pattern. ReportManager is Singleton via st.session_state. Saves to reports/<YYYYMMDD_HHMMSS>/."
-    },
-    "predictions": {
-      "file": "Implementation/core/predictions.py",
-      "sizeKB": 21.3,
-      "loadWarning": "LARGE — 21KB. Load only for real-time prediction work."
+    "ml": {
+      "file": "core/selectors_ml.py (39.7KB ~10k tokens \u2014 DO NOT LOAD unless modifying DL selectors)",
+      "selectors": {
+        "MLSelector": "XGBoost with engineered spread features. BUG-02 fixed (shift lookahead removed). Still nets negative OOS.",
+        "LSTMSelector": "BiLSTM 32 units/direction, dropout 20%, input (60,6). BEST individual selector (Net SR +0.341 old universe).",
+        "TransformerSelector": "embed_dim=32, 4 heads, 2 encoder blocks. BUG-01 fixed (Lambda->named layer). Net SR +0.023 old universe.",
+        "GNNSelector": "2-layer GCN, W1 6x32, W2 32x16. 8 temporal snapshots. Net SR -0.448 old universe.",
+        "CNNSelector": "DISABLED \u2014 Appendix B only (D18)"
+      },
+      "weightOverrides": "MLSelector weight=0.0 in E7 (label mis-specification confirmed). CNN weight=0.0 always."
     }
   },
-
+  "stage2SignalModels": {
+    "file": "core/entry.py (18.4KB ~4,500 tokens)",
+    "models": {
+      "OUThreshold": "Ornstein-Uhlenbeck process. BEST signal (Net SR +0.359 stat_only, old universe). Use ou_only in all experiments.",
+      "ZScoreThreshold": "Entry |z|>2, exit |z|<0.5. Net SR -0.358 old universe.",
+      "KalmanHedge": "State-space Kalman Filter dynamic hedge ratio. Net SR -0.094.",
+      "MLSignal": "XGBoost/GBM classifier. WORST (Net SR -0.401 old universe). Weight=0 in ensemble."
+    },
+    "rlSignal": {
+      "file": "core/entry_rl.py",
+      "status": "Class guarded behind 'gym is not None'. BUG-07 and BUG-09 fixed. NOT runnable on Kalpana (gymnasium not installed)."
+    }
+  },
+  "coreModules": {
+    "data.py": "9.3KB ~2,300 tokens. DataConfig, yfinance fetch, Parquet cache override. freq='1D' only.",
+    "ensemble.py": "4.1KB ~1,000 tokens. Weighted score/signal combination for Stage 1 and Stage 2.",
+    "backtest.py": "11.6KB ~2,900 tokens. IndianCosts (16.28 bps), BacktestConfig, _apply_min_hold, backtest_pairs vectorized. BUG-08 fixed.",
+    "reports.py": "12.3KB ~3,000 tokens. ReportManager (Singleton), BenchmarkComparison. Saves to reports/<YYYYMMDD_HHMMSS>/",
+    "predictions.py": "21.3KB ~5,500 tokens. DO NOT LOAD unless working on real-time prediction."
+  },
+  "experiments": {
+    "config.py": "6.7KB ~1,700 tokens. NSE_TICKERS (89), DEFAULT_MIN_HOLD=30, RANDOM_SEED=42, date range 2015-2024.",
+    "walk_forward.py": "28.8KB ~7,000 tokens. DO NOT LOAD unless modifying WFV logic.",
+    "ablation.py": "27.1KB ~6,500 tokens. DO NOT LOAD unless modifying ablation logic. SLURM scripts at experiments/slurm/",
+    "freq_comparison.py": "Frequency comparison E1. Not yet rerun on 89-ticker universe.",
+    "hold_period_sweep.py": "Hold period E2. Not rerun on 89-ticker universe (D17: min_hold=30 locked).",
+    "significance_tests.py": "E6. Complete for stat_only. Pending stat_ml and full modes.",
+    "benchmark_comparison.py": "E5. Complete.",
+    "walk_forward_rolling.py": "Rolling (non-expanding) WFV variant. Exploratory only."
+  },
   "app": {
-    "file": "Implementation/app.py",
-    "sizeKB": 60.7,
-    "loadWarning": "VERY LARGE — 60KB / ~15k tokens. Load only for UI/Streamlit changes.",
-    "notes": "All Streamlit UI and orchestration (~1,450 lines). Run with: streamlit run app.py"
+    "file": "app.py (60.7KB ~15k tokens \u2014 DO NOT LOAD unless modifying Streamlit UI)",
+    "pages": [
+      "Simulator",
+      "Predictions",
+      "Reports",
+      "Literature Review (planned \u2014 STREAMLIT_ENHANCEMENT_PLAN.md)"
+    ],
+    "runCmd": "streamlit run app.py"
   },
-
-  "designPatterns": {
-    "Singleton": "ReportManager cached in st.session_state via get_report_manager()",
-    "Strategy": "All selectors and entry models are interchangeable via shared interfaces",
-    "Repository": "ReportManager handles all disk I/O for reports"
+  "slurmScripts": {
+    "active": "Implementation/experiments/slurm/ \u2014 current valid scripts",
+    "archived": "Implementation/jobs/ \u2014 OLD scripts (wrong partition, GPU requests). DO NOT USE."
   },
-
-  "pluginGuide": "To add a new selector: (1) implement class in core/selectors_statistical.py or selectors_ml.py with BasePairSelector interface, (2) add dataclass config, (3) wire into ensemble weight sliders in app.py, (4) add unit test in tests/."
+  "designPatterns": [
+    "Singleton (ReportManager)",
+    "Strategy (all selectors/entry models)",
+    "Repository (ReportManager disk I/O)"
+  ]
 }

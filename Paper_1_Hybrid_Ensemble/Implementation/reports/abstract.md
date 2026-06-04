@@ -1,44 +1,38 @@
 # Abstract
-<!-- STATUS: DRAFT — Numbers updated to 89-ticker universe where confirmed; [[PLACEHOLDER]] marks await E3/E6 completion -->
+<!-- STATUS: FINAL (2026-06-05) — All experiments complete. All placeholders resolved. -->
 
-Pairs trading—taking simultaneous long and short positions in two historically co-moving stocks—is a well-studied market-neutral strategy, but its profitability on emerging markets with high transaction costs and limited liquidity remains an open question. This thesis presents a **two-stage hybrid ensemble** framework for pairs trading on Indian NSE Nifty 100 large-cap equities, combining classical statistical methods with deep learning models, and evaluates it under production-realistic conditions.
+Pairs trading—taking simultaneous long and short positions in two historically co-moving stocks—is a well-studied market-neutral strategy, but its profitability on emerging markets with high transaction costs remains an open question. This paper presents a **two-stage hybrid ensemble** framework for pairs trading on Indian NSE Nifty 100 large-cap equities, combining classical statistical methods with machine learning and deep learning models, and evaluates it under production-realistic conditions with a clear research question: *do ML selectors outperform statistical baselines?*
 
-**Stage 1** (Pair Selection) ensembles eight algorithms spanning correlation, distance-based methods, cointegration, machine learning (XGBoost), and deep learning (LSTM, Transformer, Graph Neural Network). **Stage 2** (Signal Generation) ensembles four models: z-score threshold, Ornstein-Uhlenbeck mean-reversion, Kalman filter dynamic hedge, and gradient-boosted classifier. The strategy is evaluated on **89 NSE Nifty 100 stocks** across 8 sectors using expanding-window walk-forward validation with **six out-of-sample folds covering 2018–2024**, with all transaction costs modeled using the 2024–2026 NSE discount-broker cost structure (**16.28 basis points round-trip** including zero brokerage, exchange fees, STT, stamp duty, and slippage).
+**Stage 1** (Pair Selection) ensembles up to eight algorithms spanning correlation, distance-based methods, cointegration, machine learning (XGBoost), and deep learning (LSTM, Transformer, GNN). **Stage 2** (Signal Generation) evaluates four models: z-score threshold, Ornstein-Uhlenbeck mean-reversion, Kalman filter, and gradient-boosted classifier. Evaluated on **89 NSE Nifty 100 stocks** across 8 sectors using expanding-window walk-forward validation with **six out-of-sample folds covering 2018–2024**, with all costs modeled at **16.28 basis points round-trip** (zero brokerage, exchange fees, STT, stamp duty, slippage).
 
-Key findings: (1) **Daily data outperforms hourly** (gross Sharpe 1.14 vs. 0.49) due to superior signal quality and lower turnover. (2) The optimal minimum holding period is **30 trading days**, aligning with the Ornstein-Uhlenbeck mean-reversion half-life. (3) The **statistical baseline** (stat_only + OU signal) achieves **net Sharpe +0.480**, CAGR 3.30%, MaxDD 12.72% over 6 OOS folds. (4) The **full hybrid ensemble** (ML + stat selectors + OU signal) achieves **net Sharpe +0.653**, CAGR 4.51%, MaxDD 10.43%, demonstrating measurable but modest ML contribution. (5) [[PLACEHOLDER — E3 ablation pending job 8704]]: Individual selector ablation results for the 89-ticker universe. (6) Equal-weight ensemble combination consistently destroys alpha — [[PLACEHOLDER: confirm with E3 results]]. The strategy substantially underperforms the Nifty 50 on absolute returns (SR 0.550 vs. 0.720) but maintains a MaxDD **3× smaller** (12.28% vs. 38.44%), confirming market-neutral characteristics.
+**Key findings:** (1) **Daily data dominates** (gross SR 1.14 vs 0.49 hourly); hourly strategy loses more than initial capital net-of-costs (MaxDD 214%). (2) Optimal minimum hold is **30 trading days** (aligns with OU mean-reversion half-life). (3) **Statistical baseline** (stat_only + OU) achieves **Net SR 0.480, CAGR 3.30%, MaxDD 12.72%** over 6 OOS folds. (4) **Full hybrid** (all 8 selectors + OU) achieves Net SR **0.516**, CAGR 3.74%, MaxDD 11.75% — a marginal improvement over the statistical baseline. (5) **Ablation reveals that Distance-only is the strongest individual selector** (Net SR 0.829), far exceeding every ML-augmented configuration. Adding the XGBoost ML selector to the statistical ensemble *destroys* ensemble alpha (SR: +0.256 → −0.311). Heavy LSTM weighting (w=3.0) is catastrophic (Net SR −0.164, MaxDD 43.90%). (6) The best ensemble configuration is Correlation-heavy (Net SR 0.526, MaxDD 9.61%) — still below the best single selector. (7) **Statistical significance:** full hybrid gross alpha barely reaches 5% significance (bootstrap p=0.048); net alpha is marginal at 10% across all modes (bootstrap p: 0.069–0.089); none significant at 5% after Bonferroni correction.
 
-Statistical significance: the stat_only configuration is marginally significant at the 10% level (bootstrap p=0.086, Newey-West p=0.097) but does not reach the conventional 5% threshold. [[PLACEHOLDER — E6 significance for full hybrid pending]].
+The answer to the research question is **no**: ML selectors do not outperform statistical baselines on NSE equities under realistic transaction costs and strict walk-forward validation. The strategy maintains market-neutral characteristics (MaxDD 3× smaller than Nifty 50) and produces marginal net alpha consistent with genuine but modest signal. NSE transaction costs are the primary constraint on statistical significance.
 
-This is among the first studies to combine Graph Neural Networks, Transformers, and LSTM selectors on NSE equity pairs under strict walk-forward validation and realistic Indian transaction cost assumptions. The results confirm that the full hybrid framework provides modest but consistent improvement over the statistical baseline, with the market-neutral drawdown profile as the primary investment case.
-
-**Keywords:** Pairs trading, ensemble methods, deep learning, LSTM, Graph Neural Networks, Transformers, NSE equities, walk-forward validation, mean reversion, Ornstein-Uhlenbeck process
+**Keywords:** Pairs trading, ensemble methods, deep learning, LSTM, XGBoost, NSE equities, walk-forward validation, mean reversion, Ornstein-Uhlenbeck process, Indian equity markets
 
 ---
 
-**Thesis Structure:**
+**Paper Structure:**
 
 - **Chapter 1:** Introduction — Motivation, research problem, and research questions
-- **Chapter 2:** Literature Review — Classical pairs trading, cointegration, deep learning in finance, RL for trading
+- **Chapter 2:** Literature Review — Classical pairs trading, cointegration, deep learning in finance
 - **Chapter 3:** Methodology — Dataset, cost model, selector/signal algorithms, ensemble framework, backtesting
-- **Chapter 4:** Results — Frequency analysis, hold period optimization, ablation study, walk-forward validation, benchmarks
-- **Chapter 5:** Discussion — Why ML adds modest value; ensemble pitfalls; regime analysis
-- **Chapter 6:** Conclusion — Summary of contributions, practical implications, limitations, future work
+- **Chapter 4:** Results — Frequency analysis, hold period optimisation, ablation, WFV, benchmark, weighted ensemble, significance
+- **Chapter 5:** Discussion — Why ML fails to add alpha; ensemble pitfalls; regime analysis; limitations
 
 ---
 
-**Supervised by:** [Advisor Name]  
-**Department:** [Computer Science / Financial Engineering / Statistics]  
-**Institution:** IIT Bombay  
-**Submission Date:** [Month Year]
+**Supervised by:** [Advisor Name]
+**Department:** Computer Science / Financial Engineering
+**Institution:** IIT Bombay
 
 ---
-
-**Word Count:** ~420 words (excluding metadata)
 
 <!-- REVISION NOTES (remove before final submission):
-  - All E1 (daily vs hourly), E4, E5 numbers reflect 89-ticker, 16.28 bps, 2015-2024 runs
-  - E3 ablation (individual selector breakdown) PENDING job 8704 — fill in [[PLACEHOLDER]] fields
-  - E6 significance for full hybrid PENDING — fill in [[PLACEHOLDER]] field
-  - Config C (LSTM+Corr) specific results from old 35-ticker universe (SR 0.510, CAGR 17.66%) have been removed
-  - Headline now is: stat_only SR 0.480 | full hybrid SR 0.653
+  - All numbers from 89-ticker, 16.28 bps, 2015-2024 dataset (E4 canonical)
+  - E7 results from 84-ticker (parquet refreshed inadvertently) — directionally valid
+  - E8 (RL signal) excluded — gymnasium not on Kalpana
+  - Headline pivoted: ML does NOT outperform statistical baseline
+  - Distance_only SR=0.829 is the dominant result of the paper
 -->

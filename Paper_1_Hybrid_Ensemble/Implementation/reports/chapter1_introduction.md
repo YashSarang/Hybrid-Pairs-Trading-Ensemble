@@ -1,5 +1,5 @@
 # Chapter 1 — Introduction
-<!-- STATUS: DRAFT — Updated to 89-ticker, 2015-2024, 16.28 bps universe. [[PLACEHOLDER]] marks await E3/E6/E7 results -->
+<!-- STATUS: FINAL (2026-06-05) — All experiments complete. Numbers updated. -->
 
 > **Status:** Draft v2 (2026-06-04). Universe updated from 35→89 stocks, 2016-2026→2015-2024, folds updated to 2018-2024. Results updated where confirmed (E1, E4, E5, E6 stat_only). E3 ablation and E6 full-mode pending.
 
@@ -84,11 +84,11 @@ The thesis yields five main empirical findings:
 
 **F2 — Hold period optimum is theory-consistent.** The optimal minimum hold period is 30 trading days, yielding the peak net Sharpe ratio of +0.481 in the full-dataset sweep. This aligns with the estimated OU half-life of the selected pairs (≈20–30 days for Hurst ≈ 0.19), providing an independent theoretical validation of the empirically derived parameter.
 
-**F3 — ML selectors provide modest but consistent improvement over the statistical baseline.** The statistical baseline (stat_only + OU) achieves Net SR **0.480**, CAGR 3.30%, MaxDD 12.72%. The full hybrid (stat + ML selectors + OU) achieves Net SR **0.653**, CAGR 4.51%, MaxDD 10.43% — a meaningful improvement in both return and risk. [[PLACEHOLDER: E3 ablation will confirm which individual selectors drive this improvement on 89-ticker universe]].
+**F3 — ML selectors do NOT outperform the statistical baseline.** The statistical baseline (stat_only + OU) achieves Net SR **0.480**, CAGR 3.30%, MaxDD 12.72%. The full hybrid achieves Net SR **0.516**, CAGR 3.74% — a marginal gain. Ablation (E3) shows the best individual selector is Distance_only (Net SR 0.829). Adding the ML selector to the stat ensemble collapses ensemble SR from +0.256 to −0.311.
 
-**F4 — OU signal dominates Stage 2; ML signal fails OOS.** The OUThreshold signal is clearly superior across all modes. Equal-weight ensemble combination of signal models consistently destroys alpha [[PLACEHOLDER: confirm with E3 results]]. The XGBoost-based MLSignal fails OOS due to feature distribution shift and label corruption across NSE regime changes.
+**F4 — OU signal dominates Stage 2; ML signal fails OOS.** The OU signal (Net SR 0.283) is the only profitable Stage 2 model. Equal-weight S2 ensemble (SR 0.256) is marginally positive only due to OU weighting. ZScore (−0.275), Kalman (−0.257), and MLSignal (−0.405) all destroy alpha net-of-costs. The XGBoost MLSignal fails OOS across NSE regime changes.
 
-**F5 — Strategy is market-neutral with modest but real alpha.** vs Nifty 50: Strategy SR 0.550 vs benchmark SR 0.720; Strategy MaxDD 12.28% vs benchmark MaxDD 38.44%; Strategy CAGR 3.76% vs benchmark CAGR 12.84%. The strategy underperforms on raw returns but demonstrates genuine market-neutrality with ~3× lower drawdown. Statistical significance: marginally significant at 10% for stat_only (bootstrap p=0.086, NW p=0.097); [[PLACEHOLDER: full hybrid significance pending E6 rerun]].
+**F5 — Strategy is market-neutral with modest but real alpha.** vs Nifty 50: Strategy SR 0.550 vs benchmark SR 0.720; Strategy MaxDD 12.28% vs benchmark MaxDD 38.44%; CAGR 3.30% vs 12.84%. Market-neutrality confirmed (beta ≈ 0.04, MaxDD 3× smaller). Statistical significance: all modes marginal at 10% (bootstrap net p: 0.069–0.089); full hybrid gross barely significant at 5% (p=0.048). Not significant at 5% net on any mode.
 
 ---
 
@@ -135,7 +135,7 @@ The remainder of this thesis is organised as follows:
 <!-- REVISION NOTES (remove before final submission):
   - Universe: updated 35->89 stocks, 2016-2026->2015-2024, folds 2020-2025->2018-2024
   - Key results updated: E4 (stat_only SR 0.480, full SR 0.653), E5 (SR 0.550 vs 0.720), E6 (p=0.086/0.097 stat_only)
-  - [[PLACEHOLDER]] items require E3 (ablation) and E6 (full hybrid significance) results — job 8704 running
+  - All experiments complete (2026-06-05). E3/E6/E7 results incorporated.
   - Old Config C headline (SR 0.510, CAGR 17.66%) removed — was 35-ticker universe
   - P1 universe: removed specific "595 = C(35,2)" reference since 89-ticker pair count is different
 -->

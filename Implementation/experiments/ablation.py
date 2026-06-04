@@ -564,8 +564,8 @@ def run_stage2_ablation(
 
             log.info(
                 f"    [{cfg_name}] {fold['name']} -> "
-                f"Gross SR={m.get('gross_sharpe','?'):.3f}  "
-                f"Net SR={m.get('net_sharpe','?'):.3f}  t={m['time_s']}s"
+                f"Gross SR={m.get('gross_sharpe') or 0:.3f}  "
+                f"Net SR={m.get('net_sharpe') or 0:.3f}  t={m['time_s']}s"
             )
 
         results[cfg_name] = _aggregate_folds(fold_metrics)

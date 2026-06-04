@@ -1,0 +1,155 @@
+{
+  "description": "Token cost estimate per significant file. Use this to decide whether a file is worth loading.",
+  "lastUpdated": "2026-05-06",
+  "methodology": "1 token ≈ 4 characters. Estimates rounded to nearest 500.",
+
+  "NEVER_LOAD": [
+    {
+      "file": "Implementation/app.py",
+      "sizeKB": 60.7,
+      "estimatedTokens": 15000,
+      "reason": "Streamlit UI orchestration — only load for UI changes."
+    },
+    {
+      "file": "Implementation/core/selectors_ml.py",
+      "sizeKB": 39.7,
+      "estimatedTokens": 10000,
+      "reason": "DL selector implementations — only load when modifying LSTM/Transformer/GNN/XGBoost logic."
+    },
+    {
+      "file": "Implementation/Research.md",
+      "sizeKB": 54.6,
+      "estimatedTokens": 13500,
+      "reason": "Full experiment log — use experiments.json graph instead."
+    },
+    {
+      "file": "Implementation/experiments/results/ (any raw file)",
+      "sizeKB": "variable",
+      "estimatedTokens": "variable",
+      "reason": "Raw JSON outputs — ask for targeted metric extracts, never load in full."
+    },
+    {
+      "file": "Implementation/core/predictions.py",
+      "sizeKB": 21.3,
+      "estimatedTokens": 5500,
+      "reason": "Real-time prediction engine — only load for live prediction work."
+    },
+    {
+      "file": "Implementation/experiments/walk_forward.py",
+      "sizeKB": 28.8,
+      "estimatedTokens": 7000,
+      "reason": "Headline WFV script — only load when modifying the WFV logic itself."
+    },
+    {
+      "file": "Implementation/experiments/ablation.py",
+      "sizeKB": 27.1,
+      "estimatedTokens": 6500,
+      "reason": "Large ablation script — only load when modifying ablation logic."
+    }
+  ],
+
+  "SAFE_TO_LOAD": [
+    {
+      "file": "KnowledgeGraph/KnowledgeGraph.md",
+      "sizeKB": 6.5,
+      "estimatedTokens": 800,
+      "loadWhen": "Always — session start."
+    },
+    {
+      "file": "KnowledgeGraph/graph/modules.json",
+      "sizeKB": 3.5,
+      "estimatedTokens": 600,
+      "loadWhen": "Modifying a selector, signal model, or core module."
+    },
+    {
+      "file": "KnowledgeGraph/graph/experiments.json",
+      "sizeKB": 5,
+      "estimatedTokens": 900,
+      "loadWhen": "Running or building an experiment; reviewing results."
+    },
+    {
+      "file": "KnowledgeGraph/graph/build-and-config.json",
+      "sizeKB": 3.5,
+      "estimatedTokens": 600,
+      "loadWhen": "Environment setup, cluster jobs, dependency changes."
+    },
+    {
+      "file": "KnowledgeGraph/graph/decisions-and-gotchas.json",
+      "sizeKB": 5.5,
+      "estimatedTokens": 1000,
+      "loadWhen": "Any change that feels tricky or involves known gotchas."
+    },
+    {
+      "file": "Implementation/CLAUDE.md",
+      "sizeKB": 3.9,
+      "estimatedTokens": 1000,
+      "loadWhen": "Quick architecture reference (alternative to full KG load)."
+    },
+    {
+      "file": "Implementation/core/backtest.py",
+      "sizeKB": 11.6,
+      "estimatedTokens": 2900,
+      "loadWhen": "Modifying backtesting logic, IndianCosts, or BacktestConfig."
+    },
+    {
+      "file": "Implementation/core/entry.py",
+      "sizeKB": 18.4,
+      "estimatedTokens": 4500,
+      "loadWhen": "Modifying Stage 2 signal models (ZScore, OU, Kalman, MLSignal)."
+    },
+    {
+      "file": "Implementation/core/reports.py",
+      "sizeKB": 12.3,
+      "estimatedTokens": 3000,
+      "loadWhen": "Modifying report saving or benchmark comparison logic."
+    },
+    {
+      "file": "Implementation/core/data.py",
+      "sizeKB": 9.3,
+      "estimatedTokens": 2300,
+      "loadWhen": "Modifying data fetching, DataConfig, or frequency settings."
+    },
+    {
+      "file": "Implementation/core/selectors_statistical.py",
+      "sizeKB": 6.7,
+      "estimatedTokens": 1700,
+      "loadWhen": "Modifying Correlation, Distance, Cointegration, or CombinedCriteria selectors."
+    },
+    {
+      "file": "Implementation/experiments/config.py",
+      "sizeKB": 6.7,
+      "estimatedTokens": 1700,
+      "loadWhen": "Checking or changing universe, DEFAULT_MIN_HOLD, or RANDOM_SEED."
+    },
+    {
+      "file": "Implementation/Plan.md",
+      "sizeKB": 20.4,
+      "estimatedTokens": 5000,
+      "loadWhen": "Full thesis roadmap needed (prefer experiments.json graph for quick lookups)."
+    },
+    {
+      "file": "Implementation/Currently_Doing.md",
+      "sizeKB": 3,
+      "estimatedTokens": 750,
+      "loadWhen": "Cluster execution guidance — SLURM job submission workflow."
+    },
+    {
+      "file": "Implementation/scripts.md",
+      "sizeKB": 6.5,
+      "estimatedTokens": 1600,
+      "loadWhen": "Need exact run commands (prefer build-and-config.json for quick lookups)."
+    },
+    {
+      "file": "Implementation/core/ensemble.py",
+      "sizeKB": 4.1,
+      "estimatedTokens": 1000,
+      "loadWhen": "Modifying ensemble weighting or combination logic."
+    }
+  ],
+
+  "tokenSavingsModel": {
+    "noGraph_tokensPerSession": "3000–50000+",
+    "withGraph_tokensPerSession": "800–2000",
+    "savingsPerSession": "~2000–48000 tokens"
+  }
+}

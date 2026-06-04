@@ -1,0 +1,107 @@
+{
+  "description": "All core modules, selectors, and signal models in the Hybrid Pairs Trading Ensemble repo.",
+  "lastUpdated": "2026-05-06",
+
+  "stage1_selectors": {
+    "description": "Pair selection algorithms — score stock pairs; ensemble-averaged with user-set weights.",
+    "base": {
+      "file": "Implementation/core/selectors_base.py",
+      "sizeKB": 2.4,
+      "exports": ["BasePairSelector"],
+      "notes": "Abstract base class all selectors inherit from."
+    },
+    "entry_point": {
+      "file": "Implementation/core/selectors.py",
+      "sizeKB": 1,
+      "notes": "Re-exports all selectors from selectors_base.py and the two child modules."
+    },
+    "statistical": {
+      "file": "Implementation/core/selectors_statistical.py",
+      "sizeKB": 6.7,
+      "selectors": [
+        "CorrelationSelector — rolling Pearson correlation",
+        "DistanceSelector — Gatev et al. (2006) normalized SSD",
+        "CointegrationSelector — Engle-Granger ADF test",
+        "CombinedCriteriaSelector — cointegration + Hurst exponent + half-life"
+      ]
+    },
+    "ml": {
+      "file": "Implementation/core/selectors_ml.py",
+      "sizeKB": 39.7,
+      "loadWarning": "LARGE — 39KB / ~10k tokens. Load only when modifying DL selectors.",
+      "selectors": [
+        "MLSelector — XGBoost with engineered spread features",
+        "LSTMSelector — LSTM/BiLSTM multivariate sequence model (max_sequences=50000, batch_size=256)",
+        "TransformerSelector — Multi-head self-attention encoder (Lambda bug fixed 2026-04-06)",
+        "GNNSelector — Graph Convolutional Network with link prediction"
+      ],
+      "gpuNotes": "LSTMSelector and TransformerSelector use TF mixed precision (float16) on CUDA. GNNSelector uses PyTorch Geometric."
+    }
+  },
+
+  "stage2_signals": {
+    "description": "Entry/exit signal models — ensemble-averaged, discretized to {+1, 0, -1}.",
+    "file": "Implementation/core/entry.py",
+    "sizeKB": 18,
+    "signals": [
+      "ZScoreThreshold — entry |z| > 2, exit |z| < 0.5",
+      "OUThreshold — Ornstein-Uhlenbeck process (BEST — use ou_only in all experiments)",
+      "KalmanHedge — State-space Kalman Filter dynamic hedge ratio",
+      "MLSignal — XGBoost/GBM classifier (WORST — overfit OOS, Net SR -0.401; weight=0 in E7)"
+    ]
+  },
+
+  "coreModules": {
+    "data": {
+      "file": "Implementation/core/data.py",
+      "sizeKB": 9.3,
+      "exports": ["DataConfig"],
+      "notes": "yfinance fetching, CSV/Parquet override. Freq '1D' for all main experiments."
+    },
+    "ensemble": {
+      "file": "Implementation/core/ensemble.py",
+      "sizeKB": 4.1,
+      "notes": "Weighted score/signal combination utilities for both stages."
+    },
+    "backtest": {
+      "file": "Implementation/core/backtest.py",
+      "sizeKB": 11.6,
+      "exports": ["BacktestConfig", "IndianCosts"],
+      "costModel": {
+        "brokerage": "3 bps",
+        "exchange": "0.345 bps",
+        "SEBI": "0.01 bps",
+        "STT": "10 bps (sell only, delivery)",
+        "stamp": "1 bps (buy only)",
+        "GST": "18% on brokerage+exchange",
+        "slippage": "2 bps/leg"
+      }
+    },
+    "reports": {
+      "file": "Implementation/core/reports.py",
+      "sizeKB": 12.3,
+      "exports": ["ReportManager", "BenchmarkComparison"],
+      "notes": "Repository pattern. ReportManager is Singleton via st.session_state. Saves to reports/<YYYYMMDD_HHMMSS>/."
+    },
+    "predictions": {
+      "file": "Implementation/core/predictions.py",
+      "sizeKB": 21.3,
+      "loadWarning": "LARGE — 21KB. Load only for real-time prediction work."
+    }
+  },
+
+  "app": {
+    "file": "Implementation/app.py",
+    "sizeKB": 60.7,
+    "loadWarning": "VERY LARGE — 60KB / ~15k tokens. Load only for UI/Streamlit changes.",
+    "notes": "All Streamlit UI and orchestration (~1,450 lines). Run with: streamlit run app.py"
+  },
+
+  "designPatterns": {
+    "Singleton": "ReportManager cached in st.session_state via get_report_manager()",
+    "Strategy": "All selectors and entry models are interchangeable via shared interfaces",
+    "Repository": "ReportManager handles all disk I/O for reports"
+  },
+
+  "pluginGuide": "To add a new selector: (1) implement class in core/selectors_statistical.py or selectors_ml.py with BasePairSelector interface, (2) add dataclass config, (3) wire into ensemble weight sliders in app.py, (4) add unit test in tests/."
+}

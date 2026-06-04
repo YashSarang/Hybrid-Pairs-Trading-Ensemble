@@ -1,0 +1,223 @@
+{
+  "papers": [
+    {
+      "id": "engle_granger_1987",
+      "title": "Co-integration and Error Correction: Representation, Estimation, and Testing",
+      "authors": "Robert F. Engle, Clive W. J. Granger",
+      "year": 1987,
+      "journal": "Econometrica, 55(2), 251-276",
+      "category": "Classical Statistical",
+      "status": "reproduced",
+      "method": "cointegration",
+      "folder": "1987-Statistical-EngleGranger-Cointegration",
+      "claimed_results": {
+        "description": "Foundational cointegration theory"
+      },
+      "our_results": {
+        "sharpe": 0.119,
+        "trades_per_year": 156,
+        "max_dd": 8.2
+      },
+      "notes": "Foundational paper, implemented as CointegrationSelector in core"
+    },
+    {
+      "id": "gatev_2006",
+      "title": "Pairs Trading: Performance of a Relative-Value Arbitrage Rule",
+      "authors": "Evan Gatev, William N. Goetzmann, K. Geert Rouwenhorst",
+      "year": 2006,
+      "journal": "The Review of Financial Studies, 19(3), 797-827",
+      "category": "Classical Statistical",
+      "status": "reproduced",
+      "method": "distance",
+      "folder": "2006-Distance-Gatev-PairsTrading",
+      "claimed_results": {
+        "return": 11.0,
+        "sharpe": 0.7,
+        "market": "US 1962-2002"
+      },
+      "our_results": {
+        "sharpe": 0.089,
+        "trades_per_year": 142,
+        "market": "NSE 2020-2025"
+      },
+      "notes": "Distance method works but lower Sharpe on NSE vs US"
+    },
+    {
+      "id": "elliott_2005",
+      "title": "Pairs Trading",
+      "authors": "Robert J. Elliott, John van der Hoek, William P. Malcolm",
+      "year": 2005,
+      "journal": "Quantitative Finance, 5(3), 271-276",
+      "category": "Classical Statistical",
+      "status": "reproduced",
+      "method": "ou",
+      "folder": "2005-OU-Elliott-PairsTrading",
+      "claimed_results": {
+        "description": "OU process for mean-reversion modeling"
+      },
+      "our_results": {
+        "sharpe": 0.145,
+        "method": "OUThreshold in core"
+      },
+      "notes": "OU threshold implemented, works well for NSE"
+    },
+    {
+      "id": "avellaneda_2010",
+      "title": "Statistical Arbitrage in the US Equities Market",
+      "authors": "Marco Avellaneda, Jeong-Hyun Lee",
+      "year": 2010,
+      "journal": "Quantitative Finance, 10(7), 761-782",
+      "category": "Classical Statistical",
+      "status": "failed",
+      "method": "pca-ou",
+      "folder": "2010-PCA-OU-Avellaneda-StatArb",
+      "claimed_results": {
+        "sharpe": 1.8,
+        "return_pct": 12.5,
+        "market": "US S&P 500",
+        "period": "1997-2007",
+        "description": "Industry-standard statistical arbitrage"
+      },
+      "our_results": {
+        "sharpe": 0.0,
+        "success_rate": "0/35 stocks (0%)",
+        "market": "NSE",
+        "period": "2020-2024",
+        "key_finding": "Idiosyncratic residuals lack mean-reversion on NSE"
+      },
+      "notes": "CRITICAL NEGATIVE RESULT: 0% success rate on NSE. Proves US methods don't transfer."
+    },
+    {
+      "id": "do_faff_2010",
+      "title": "Does Simple Pairs Trading Still Work?",
+      "authors": "Binh Do, Robert Faff",
+      "year": 2010,
+      "journal": "Financial Analysts Journal, 66(4), 83-95",
+      "category": "Classical Statistical",
+      "status": "documented",
+      "method": "distance",
+      "folder": "2010-Distance-DoFaff-PerformanceDecay",
+      "claimed_results": {
+        "description": "Performance decay after 2002 in US markets"
+      },
+      "our_results": {},
+      "notes": "Documents performance decay \u2014 motivates ensemble approach"
+    },
+    {
+      "id": "krauss_2017",
+      "title": "Deep Neural Networks, Gradient-Boosted Trees, Random Forests: Statistical Arbitrage on the S&P 500",
+      "authors": "Christopher Krauss, Xuan Anh Do, Nicolas Huck",
+      "year": 2017,
+      "journal": "European Journal of Operational Research, 259(2), 689-702",
+      "category": "Machine Learning",
+      "status": "reproduced",
+      "method": "ml",
+      "folder": "2017-ML-Krauss-DeepLearning",
+      "claimed_results": {
+        "sharpe": 5.8,
+        "method": "Gradient Boosting",
+        "market": "US S&P 500"
+      },
+      "our_results": {
+        "sharpe": 0.112,
+        "method": "MLSelector (XGBoost) in core"
+      },
+      "notes": "XGBoost works but much lower Sharpe on NSE (high-frequency unsuitable)"
+    },
+    {
+      "id": "fischer_2018",
+      "title": "Deep Learning with Long Short-Term Memory Networks for Financial Market Predictions",
+      "authors": "Thomas Fischer, Christopher Krauss",
+      "year": 2018,
+      "journal": "European Journal of Operational Research, 270(2), 654-669",
+      "category": "Deep Learning",
+      "status": "reproduced",
+      "method": "lstm",
+      "folder": "2018-LSTM-Fischer-StockPrediction",
+      "claimed_results": {
+        "sharpe": 0.66,
+        "market": "US S&P 500"
+      },
+      "our_results": {
+        "sharpe": 0.231,
+        "method": "LSTMSelector in core"
+      },
+      "notes": "LSTM pair selection works well \u2014 best deep learning method for NSE"
+    },
+    {
+      "id": "zerveas_2021",
+      "title": "A Transformer-based Framework for Multivariate Time Series Representation Learning",
+      "authors": "George Zerveas, Srideepika Jayaraman, Dhaval Patel, Anuradha Bhamidipaty, Carsten Eickhoff",
+      "year": 2021,
+      "journal": "ACM SIGKDD, 2521-2531",
+      "category": "Deep Learning",
+      "status": "reproduced",
+      "method": "transformer",
+      "folder": "2021-Transformer-Zerveas-TimeSeries",
+      "claimed_results": {
+        "description": "Attention mechanism for time series"
+      },
+      "our_results": {
+        "sharpe": -0.045,
+        "method": "TransformerSelector in core"
+      },
+      "notes": "FAILS on NSE \u2014 attention doesn't capture pair relationships well"
+    },
+    {
+      "id": "matsunaga_2019",
+      "title": "Exploring Graph Neural Networks for Stock Market Predictions with Rolling Window Analysis",
+      "authors": "Daiki Matsunaga, Toyotaro Suzumura, Toshihiro Takahashi",
+      "year": 2019,
+      "journal": "arXiv preprint arXiv:1909.10660",
+      "category": "Deep Learning",
+      "status": "reproduced",
+      "method": "gnn",
+      "folder": "2019-GNN-Matsunaga-StockPrediction",
+      "claimed_results": {
+        "description": "Graph structure for stock relationships"
+      },
+      "our_results": {
+        "sharpe": 0.087,
+        "method": "GNNSelector in core"
+      },
+      "notes": "Graph structure helps but lower than LSTM on NSE"
+    },
+    {
+      "id": "schulman_2017",
+      "title": "Proximal Policy Optimization Algorithms",
+      "authors": "John Schulman, Filip Wolski, Prafulla Dhariwal, Alec Radford, Oleg Klimov",
+      "year": 2017,
+      "journal": "arXiv preprint arXiv:1707.06347",
+      "category": "Reinforcement Learning",
+      "status": "planned",
+      "method": "rl",
+      "folder": "2017-PPO-Schulman-ReinforcementLearning",
+      "claimed_results": {
+        "description": "Policy gradient RL for trading"
+      },
+      "our_results": {},
+      "notes": "Planned \u2014 RL difficult to stabilize for pairs trading"
+    },
+    {
+      "id": "sarmento_2021",
+      "title": "Enhancing a Pairs Trading strategy with the application of Machine Learning",
+      "authors": "Rui Pedro Duarte Sarmento, Nuno Horta",
+      "year": 2021,
+      "journal": "Expert Systems with Applications, 158, 113490",
+      "category": "Machine Learning",
+      "status": "reproduced",
+      "method": "multi-criteria",
+      "folder": "2021-MultiCriteria-Sarmento-PairsTrading",
+      "claimed_results": {
+        "description": "Multi-criteria pair selection"
+      },
+      "our_results": {
+        "sharpe": 0.134,
+        "method": "CombinedCriteriaSelector in core"
+      },
+      "notes": "Multi-criteria works moderately well on NSE"
+    }
+  ],
+  "last_updated": "2026-05-26",
+  "total_papers": 11
+}

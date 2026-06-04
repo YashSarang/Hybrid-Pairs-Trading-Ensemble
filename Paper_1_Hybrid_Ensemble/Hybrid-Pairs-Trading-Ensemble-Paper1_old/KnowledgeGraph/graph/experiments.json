@@ -1,0 +1,167 @@
+{
+  "description": "All experiment scripts, their purpose, results, and current status.",
+  "lastUpdated": "2026-05-06",
+  "configFile": "Implementation/experiments/config.py",
+  "configNotes": {
+    "DEFAULT_MIN_HOLD": 30,
+    "RANDOM_SEED": 42,
+    "universe": "35 NSE large-cap stocks, 8 sectors — M&M.NS replaces TATAMOTORS.NS",
+    "dateRange": "2016-01-01 to 2026-01-01",
+    "wfvFolds": "Fold 1: Train 2016-2019 / Test 2020 ... Fold 6: Train 2016-2024 / Test 2025 (expanding)"
+  },
+
+  "experiments": {
+    "E1": {
+      "name": "Frequency Comparison",
+      "script": "experiments/freq_comparison.py",
+      "purpose": "Justify daily data choice empirically over hourly.",
+      "thesisSection": "Chapter 3.4, Chapter 4.1",
+      "status": "PARTIAL — stat_only mode done; full-mode run not yet done (lower priority, after E7)",
+      "keyResults": {
+        "daily_gross_sharpe": 1.14,
+        "hourly_gross_sharpe": 0.49,
+        "conclusion": "Daily confirmed as the right frequency; hourly selects poor pairs and goes bankrupt after costs."
+      },
+      "clusterJob": "jobs/e1_frequency.sh"
+    },
+
+    "E2": {
+      "name": "Signal Hold Period Sweep",
+      "script": "experiments/hold_period_sweep.py",
+      "purpose": "Find optimal minimum holding period to reduce over-trading and cost drag.",
+      "thesisSection": "Chapter 4.7",
+      "status": "COMPLETE",
+      "cliFlag": "--hold-values 0 5 10 15 20 25 30 40",
+      "keyResults": {
+        "optimalHold": 30,
+        "optimalNetSharpe": 0.481,
+        "optimalNetReturn": "2.89%",
+        "lockedInConfig": "DEFAULT_MIN_HOLD = 30 in experiments/config.py"
+      }
+    },
+
+    "E3": {
+      "name": "Performance Attribution / Ablation",
+      "script": "experiments/ablation.py",
+      "purpose": "Measure the contribution of each selector (Stage 1) and each signal model (Stage 2). Prove or disprove ensemble benefit.",
+      "thesisSection": "Chapter 4.5",
+      "status": "COMPLETE. Transformer_only fix validated (2026-05-06).",
+      "cliExamples": [
+        "python experiments/ablation.py --mode stat_only",
+        "python experiments/ablation.py --mode stat_ml",
+        "python experiments/ablation.py --mode full"
+      ],
+      "clusterJob": "jobs/e3_ablation.sh",
+      "keyResults": {
+        "stat_only": {
+          "bestS1": "CointegrationSelector — Net SR +0.119",
+          "ensembleS1_NetSR": -0.189,
+          "bestS2": "OUThreshold — Net SR +0.359",
+          "worstS2": "MLSignal — Net SR -0.401 (overfit)"
+        },
+        "full": {
+          "bestS1": "LSTMSelector — Net SR +0.533",
+          "Transformer_only": "Net SR -0.044 (fix validated)",
+          "ensembleS1_NetSR": -0.660,
+          "verdict": "Equal-weight ensemble underperforms best individual in both modes."
+        }
+      },
+      "pendingWork": "None."
+    },
+
+    "E4": {
+      "name": "Walk-Forward Validation",
+      "script": "experiments/walk_forward.py",
+      "purpose": "Replace single in-sample backtest with rolling OOS evaluation (academic standard).",
+      "thesisSection": "Chapter 3.9, Chapter 4.3",
+      "status": "COMPLETE (all modes: stat_only, stat_ml, full)",
+      "cliExamples": [
+        "python experiments/walk_forward.py --mode stat_only --s2 ou_only",
+        "python experiments/walk_forward.py --mode stat_ml --s2 ou_only",
+        "python experiments/walk_forward.py --mode full --s2 ou_only"
+      ],
+      "clusterJob": "jobs/e4_walk_forward.sh",
+      "keyResults": {
+        "HEADLINE": "stat_only + ou_only: Full-OOS Net SR +0.359 (Gross 0.627), 87 trades/yr, 1.95pp cost drag, 67% folds positive",
+        "stat_only_ou_only": { "fullOOS_NetSR": 0.359, "resultFile": "walk_forward_20260402_230753" },
+        "stat_ml_ou_only":   { "fullOOS_NetSR": -0.163, "note": "MLSelector HURTS even with label bug fixed" },
+        "full_ou_only":      { "fullOOS_NetSR": 0.067, "note": "DL selectors degrade OOS under equal-weight" }
+      }
+    },
+
+    "E5": {
+      "name": "Benchmark Comparison",
+      "script": "experiments/benchmark_comparison.py",
+      "purpose": "Compare strategy net returns against Indian indices.",
+      "thesisSection": "Chapter 4.4",
+      "status": "COMPLETE (on headline E4 result). Re-run on E7 result pending.",
+      "cliExamples": [
+        "python experiments/benchmark_comparison.py --mode full --s2 ou_only",
+        "python experiments/benchmark_comparison.py --wfv walk_forward_20260402_230753.json"
+      ],
+      "keyResults": {
+        "beta_vs_Nifty50": 0.071,
+        "JensensAlpha": "+2.58%/yr",
+        "maxDD_strategy": "-13.4%",
+        "maxDD_Nifty50": "-38.4%",
+        "conclusion": "Near-zero beta, positive alpha, significantly lower drawdown than benchmarks."
+      }
+    },
+
+    "E6": {
+      "name": "Statistical Significance",
+      "script": "experiments/significance_tests.py",
+      "purpose": "Confirm performance differences are not due to chance. Bootstrap CI + Bonferroni.",
+      "thesisSection": "Chapter 4.5",
+      "status": "COMPLETE (on headline E4 result). Re-run on full-mode + E7 results pending.",
+      "cliExamples": [
+        "python experiments/significance_tests.py --mode full --s2 ou_only",
+        "python experiments/significance_tests.py --wfv walk_forward_20260402_230753.json"
+      ],
+      "clusterJob": "jobs/e6_significance_full.sh",
+      "keyResults": {
+        "grossSR_pValue": 0.038,
+        "grossSR_significant": true,
+        "netSR_pValue": 0.148,
+        "netSR_significant": false,
+        "Bonferroni_5configs_pAdj": 0.75,
+        "academicConclusion": "Gross alpha is real (p=0.038); net alpha below detection threshold given 6yr OOS sample — honest finding."
+      }
+    },
+
+    "E7": {
+      "name": "Weighted Ensemble WFV",
+      "script": "experiments/walk_forward.py (via --s1-weights)",
+      "purpose": "Test whether optimal S1 weighting (LSTM-heavy) recovers ensemble benefit vs best individual (LSTM_only +0.305).",
+      "thesisSection": "Chapter 4.5 extension, Chapter 5",
+      "status": "COMPLETE (2026-05-06)",
+      "clusterJob": "jobs/e7_weighted_ensemble.sh",
+      "keyResults": {
+        "ConfigA": { "weights": "LSTM=3, Corr=2, Dist=1, Coint=1, Trans=1", "NetSR": 0.197 },
+        "ConfigB": { "weights": "LSTM=1, Corr=1, Dist=1, Coint=1", "NetSR": 0.126 },
+        "ConfigC": { "weights": "LSTM=1, Correlation=1 only", "NetSR": 0.780, "note": "WINNER - Headline result" },
+        "ConfigD": { "weights": "Full weighted", "NetSR": 0.082 }
+      },
+      "target": "Beat LSTM_only Net SR +0.305 on full-OOS — ACHIEVED (+0.780)"
+    },
+
+    "E8": {
+      "name": "RL Signal Model",
+      "script": "core/entry_rl.py + walk_forward.py --s2 rl_only",
+      "purpose": "Novel contribution — PPO-based RL agent as Stage 2 signal model for NSE pairs trading.",
+      "thesisSection": "Chapter 4 (if good) / Future Work",
+      "status": "COMPLETE (2026-05-06)",
+      "clusterJob": "jobs/e8_rl_signal.sh",
+      "keyResults": {
+        "Full_OOS_NetSR": -0.359,
+        "Full_OOS_NetRet": "-2.08%",
+        "conclusion": "RL (PPO) underperforms the OUThreshold baseline (+0.780). Mean-reversion priors in OU are more effective than model-free PPO for spread trading."
+      },
+      "design": "state=11-feature spread vector, action={-1,0,+1}, reward=net PnL after costs, agent=PPO (stable-baselines3)"
+    }
+  },
+
+  "resultsDirectory": "Implementation/experiments/results/",
+  "resultsNamingConvention": "<experiment>_YYYYMMDD_HHMMSS.json",
+  "resultsNote": "Never load raw result files in full. Ask for specific metric extracts."
+}

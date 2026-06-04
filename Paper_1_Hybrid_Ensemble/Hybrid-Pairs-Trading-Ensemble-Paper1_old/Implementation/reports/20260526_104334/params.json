@@ -1,0 +1,46 @@
+{
+  "selected_pairs": [
+    "TCS.NS-WIPRO.NS",
+    "TCS.NS-INFY.NS",
+    "INFY.NS-HCLTECH.NS",
+    "SBIN.NS-TATASTEEL.NS",
+    "ONGC.NS-TATASTEEL.NS",
+    "SBIN.NS-AXISBANK.NS",
+    "AXISBANK.NS-NESTLEIND.NS",
+    "INFY.NS-WIPRO.NS",
+    "MARUTI.NS-M&M.NS",
+    "NESTLEIND.NS-BAJAJ-AUTO.NS",
+    "COALINDIA.NS-TATASTEEL.NS",
+    "SBIN.NS-ONGC.NS",
+    "ONGC.NS-COALINDIA.NS",
+    "TCS.NS-HDFCBANK.NS",
+    "HDFCBANK.NS-ITC.NS",
+    "KOTAKBANK.NS-M&M.NS",
+    "SBIN.NS-BAJAJ-AUTO.NS",
+    "BAJAJ-AUTO.NS-TATASTEEL.NS",
+    "TCS.NS-HCLTECH.NS",
+    "AXISBANK.NS-BAJAJ-AUTO.NS",
+    "HDFCBANK.NS-WIPRO.NS",
+    "AXISBANK.NS-TATASTEEL.NS",
+    "KOTAKBANK.NS-MARUTI.NS",
+    "SBIN.NS-COALINDIA.NS",
+    "RELIANCE.NS-M&M.NS"
+  ],
+  "entry_weights": {
+    "Mean Reversion (\u00b12\u03c3)": 0.5,
+    "OU Model": 0.5,
+    "Kalman Hedge": 0.0,
+    "ML Signal": 0.0
+  },
+  "notional_each": 20000.0,
+  "costs": {
+    "brokerage_bps": 3.0,
+    "exchange_txn_bps": 0.345,
+    "sebi_bps": 0.01,
+    "stt_bps_sell": 10.0,
+    "gst_rate": 0.18,
+    "stamp_bps_buy": 1.0,
+    "slippage_bps_per_leg": 2.0,
+    "intraday": true
+  }
+}

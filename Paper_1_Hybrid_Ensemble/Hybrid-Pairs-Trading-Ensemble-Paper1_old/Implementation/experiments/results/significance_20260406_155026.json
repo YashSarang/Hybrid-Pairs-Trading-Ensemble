@@ -1,0 +1,131 @@
+{
+  "experiment": "E6_significance_tests",
+  "wfv_file": "walk_forward_20260406_045231.json",
+  "mode": "custom",
+  "s2": "ou_only",
+  "bootstrap": {
+    "gross": {
+      "sharpe_observed": 0.753,
+      "ci_lo_95": 0.1073,
+      "ci_hi_95": 1.4056,
+      "p_value_sr_lte_0": 0.0114,
+      "significant_at_5pct": true,
+      "significant_at_10pct": true,
+      "n_boot": 10000,
+      "block_size": 30,
+      "n_obs": 2191
+    },
+    "net": {
+      "sharpe_observed": 0.4548,
+      "ci_lo_95": -0.1916,
+      "ci_hi_95": 1.1016,
+      "p_value_sr_lte_0": 0.0871,
+      "significant_at_5pct": false,
+      "significant_at_10pct": true,
+      "n_boot": 10000,
+      "block_size": 30,
+      "n_obs": 2191
+    }
+  },
+  "newey_west": {
+    "gross": {
+      "t_stat": 2.2837,
+      "p_value_one_sided": 0.0112,
+      "significant_at_5pct": true,
+      "significant_at_10pct": true,
+      "mean_daily_ret_pct": 0.01589,
+      "ann_ret_pct": 4.005,
+      "sharpe": 0.753,
+      "nw_std_err": 6.959e-05,
+      "lags": 8,
+      "n_obs": 2191
+    },
+    "net": {
+      "t_stat": 1.3765,
+      "p_value_one_sided": 0.0843,
+      "significant_at_5pct": false,
+      "significant_at_10pct": true,
+      "mean_daily_ret_pct": 0.01003,
+      "ann_ret_pct": 2.527,
+      "sharpe": 0.4548,
+      "nw_std_err": 7.286e-05,
+      "lags": 8,
+      "n_obs": 2191
+    }
+  },
+  "multiple_comparison": {
+    "bonferroni": {
+      "method": "bonferroni",
+      "n_comparisons": 5,
+      "results": [
+        {
+          "config": "ZScore_only",
+          "p_raw": 0.5,
+          "p_corrected": 1.0,
+          "significant_at_5pct": false
+        },
+        {
+          "config": "OU_only",
+          "p_raw": 0.0843,
+          "p_corrected": 0.4215,
+          "significant_at_5pct": false
+        },
+        {
+          "config": "Kalman_only",
+          "p_raw": 0.5,
+          "p_corrected": 1.0,
+          "significant_at_5pct": false
+        },
+        {
+          "config": "ML_only",
+          "p_raw": 0.99,
+          "p_corrected": 1.0,
+          "significant_at_5pct": false
+        },
+        {
+          "config": "S2_Ensemble",
+          "p_raw": 0.5,
+          "p_corrected": 1.0,
+          "significant_at_5pct": false
+        }
+      ]
+    },
+    "holm": {
+      "method": "holm",
+      "n_comparisons": 5,
+      "results": [
+        {
+          "config": "ZScore_only",
+          "p_raw": 0.5,
+          "p_corrected": 1.0,
+          "significant_at_5pct": false
+        },
+        {
+          "config": "OU_only",
+          "p_raw": 0.0843,
+          "p_corrected": 0.4215,
+          "significant_at_5pct": false
+        },
+        {
+          "config": "Kalman_only",
+          "p_raw": 0.5,
+          "p_corrected": 1.0,
+          "significant_at_5pct": false
+        },
+        {
+          "config": "ML_only",
+          "p_raw": 0.99,
+          "p_corrected": 1.0,
+          "significant_at_5pct": false
+        },
+        {
+          "config": "S2_Ensemble",
+          "p_raw": 0.5,
+          "p_corrected": 1.0,
+          "significant_at_5pct": false
+        }
+      ]
+    },
+    "note": "p-values for ZScore/Kalman/Ensemble are conservative estimates (0.50); only OU_only uses actual NW test."
+  }
+}

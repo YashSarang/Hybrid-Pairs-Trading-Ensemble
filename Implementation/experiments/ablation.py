@@ -463,6 +463,7 @@ def run_stage1_ablation(
             trades_oos    = int(turn_series.loc[test_start:test_end].sum())
 
             m = _metrics_oos(pnl_gross_oos, pnl_net_oos, DEFAULT_CAPITAL, ppy, trades_oos)
+            has_metrics = bool(m)  # check BEFORE adding extra keys
             m["_pnl_gross_oos"] = pnl_gross_oos
             m["_pnl_net_oos"]   = pnl_net_oos
             m["fold"]           = fold["name"]
@@ -470,7 +471,7 @@ def run_stage1_ablation(
             m["time_s"]         = round(time.time() - t0, 1)
             fold_metrics.append(m)
 
-            if m:
+            if has_metrics:
                 log.info(
                     f"    [{cfg_name}] {fold['name']} -> "
                     f"Gross SR={float(m['gross_sharpe']):.3f}  "

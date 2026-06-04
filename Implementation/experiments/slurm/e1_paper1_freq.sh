@@ -1,10 +1,10 @@
 #!/bin/bash
-#SBATCH --job-name=e3_ablation
-#SBATCH --output=/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/slurm_logs/e3_ablation_%j.log
-#SBATCH --error=/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/slurm_logs/e3_ablation_%j.err
-#SBATCH --time=12:00:00
-#SBATCH --cpus-per-task=8
-#SBATCH --mem=16G
+#SBATCH --job-name=e1_freq
+#SBATCH --output=/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/slurm_logs/e1_freq_%j.log
+#SBATCH --error=/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/slurm_logs/e1_freq_%j.err
+#SBATCH --time=04:00:00
+#SBATCH --cpus-per-task=4
+#SBATCH --mem=8G
 #SBATCH --partition=cn3_anandi
 #SBATCH --account=cminds_anandi
 #SBATCH --qos=anandi
@@ -24,13 +24,7 @@ export TF_DETERMINISTIC_OPS=1
 export TF_CPP_MIN_LOG_LEVEL=2
 export PYTHONHASHSEED=42
 
-echo "[E3] single-selector ablation"
-python Implementation/experiments/ablation.py \
-    --mode single_selectors --s2 ou_only
-echo "[E3] stat ensemble ablation"
-python Implementation/experiments/ablation.py \
-    --mode stat_ensemble --s2 ou_only
-echo "[E3] full hybrid ablation (CPU ML)"
-python Implementation/experiments/ablation.py \
-    --mode full_hybrid --s2 ou_only
-echo "[E3] DONE"
+echo "[E1] stat_only + ou_only baseline"
+python Implementation/experiments/walk_forward.py \
+    --mode stat_only --s2 ou_only --top-k 10
+echo "[E1] DONE"

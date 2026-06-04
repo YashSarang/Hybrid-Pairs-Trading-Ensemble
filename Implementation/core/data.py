@@ -68,6 +68,7 @@ class DataConfig:
     end: datetime
     freq: str  # '1D', '1H', '1min'
     price_field: str = "Adj Close"
+    parquet_path: str | None = None  # if set, skip yfinance entirely
 
 
 class DataSource:
@@ -100,6 +101,25 @@ class YFinanceNSESource(DataSource):
                 f"Unsupported freq: {cfg.freq}. Use one of {list(FREQ_TO_YF_INTERVAL)}")
 
         # Try to load from cache first
+        # PAPER1_DATA_PATH env var or cfg.parquet_path = skip yfinance entirely
+        override_path = cfg.parquet_path or os.environ.get("PAPER1_DATA_PATH")
+        if override_path and os.path.exists(override_path):
+            df = pd.read_parquet(override_path)
+            if isinstance(df.columns, pd.MultiIndex):
+                df = df["Close"]
+            df.index = pd.to_datetime(df.index)
+            df = df.loc[
+                (df.index >= pd.Timestamp(cfg.start)) &
+                (df.index <= pd.Timestamp(cfg.end))
+            ]
+            want = set(tickers)
+            have = set(df.columns)
+            missing = want - have
+            if missing:
+                print(f"WARNING: {len(missing)} tickers not in parquet: {missing}")
+            df = df[[t for t in tickers if t in df.columns]]
+            df = df.dropna(how="all").ffill(limit=3)
+            return df
         cache_file = "data_cache/daily_prices.parquet" if cfg.freq == "1D" else "data_cache/hourly_prices.parquet"
 
         data = None

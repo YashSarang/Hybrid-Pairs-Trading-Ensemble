@@ -1,0 +1,103 @@
+[E6-1] stat_only + ou_only -- 10k bootstrap
+
+========================================================================
+  E6 Statistical Significance Tests
+  WFV: walk_forward_20260604_102006.json  |  mode=stat_only  |  s2=ou_only
+========================================================================
+
+  Test 1: Block Bootstrap Sharpe CI (block_size=30, B=10000)
+                                       Gross         Net
+  ------------------------------------------------------
+  Observed Sharpe                     0.5393       0.468
+  95% CI Lower                       -0.1348     -0.2089
+  95% CI Upper                        1.2251      1.1544
+  p(SR <= 0)                          0.0572      0.0857
+  Sig. at 5% (CI > 0)                  False       False
+
+  Test 2: Newey-West HAC t-test (lags=8)
+                                       Gross         Net
+  ------------------------------------------------------
+  t-statistic                         1.5014      1.3001
+  p-value (one-sided)                 0.0666      0.0968
+  Sig. at 5%                           False       False
+  Ann. Return (%)                      3.683        3.24
+  Sharpe                              0.5393       0.468
+
+  Test 3: Multiple Comparison — Bonferroni (5 S2 configs)
+  Config                   p_raw    p_Bonf    Sig 5%
+  --------------------------------------------------
+  ZScore_only                0.5       1.0     False
+  OU_only                 0.0968     0.484     False
+  Kalman_only                0.5       1.0     False
+  ML_only                   0.99       1.0     False
+  S2_Ensemble                0.5       1.0     False
+
+[E6-2] stat_ml + ou_only -- 10k bootstrap
+
+========================================================================
+  E6 Statistical Significance Tests
+  WFV: walk_forward_20260604_071048.json  |  mode=stat_ml  |  s2=ou_only
+========================================================================
+
+  Test 1: Block Bootstrap Sharpe CI (block_size=30, B=10000)
+                                       Gross         Net
+  ------------------------------------------------------
+  Observed Sharpe                     0.5061      0.4375
+  95% CI Lower                        -0.125      -0.194
+  95% CI Upper                        1.1499      1.0812
+  p(SR <= 0)                          0.0578      0.0887
+  Sig. at 5% (CI > 0)                  False       False
+
+  Test 2: Newey-West HAC t-test (lags=8)
+                                       Gross         Net
+  ------------------------------------------------------
+  t-statistic                         1.4397       1.243
+  p-value (one-sided)                  0.075      0.1069
+  Sig. at 5%                           False       False
+  Ann. Return (%)                       3.68       3.233
+  Sharpe                              0.5061      0.4375
+
+  Test 3: Multiple Comparison — Bonferroni (5 S2 configs)
+  Config                   p_raw    p_Bonf    Sig 5%
+  --------------------------------------------------
+  ZScore_only                0.5       1.0     False
+  OU_only                 0.1069    0.5345     False
+  Kalman_only                0.5       1.0     False
+  ML_only                   0.99       1.0     False
+  S2_Ensemble                0.5       1.0     False
+
+[E6-3] full + ou_only -- 10k bootstrap
+
+========================================================================
+  E6 Statistical Significance Tests
+  WFV: walk_forward_20260604_093332.json  |  mode=full  |  s2=ou_only
+========================================================================
+
+  Test 1: Block Bootstrap Sharpe CI (block_size=30, B=10000)
+                                       Gross         Net
+  ------------------------------------------------------
+  Observed Sharpe                     0.5881      0.5202
+  95% CI Lower                       -0.1018     -0.1709
+  95% CI Upper                        1.2822      1.2134
+  p(SR <= 0)                          0.0477       0.069
+  Sig. at 5% (CI > 0)                  False       False
+
+  Test 2: Newey-West HAC t-test (lags=8)
+                                       Gross         Net
+  ------------------------------------------------------
+  t-statistic                         1.6233      1.4337
+  p-value (one-sided)                 0.0523      0.0758
+  Sig. at 5%                           False       False
+  Ann. Return (%)                      4.148       3.724
+  Sharpe                              0.5881      0.5202
+
+  Test 3: Multiple Comparison — Bonferroni (5 S2 configs)
+  Config                   p_raw    p_Bonf    Sig 5%
+  --------------------------------------------------
+  ZScore_only                0.5       1.0     False
+  OU_only                 0.0758     0.379     False
+  Kalman_only                0.5       1.0     False
+  ML_only                   0.99       1.0     False
+  S2_Ensemble                0.5       1.0     False
+
+[E6] DONE

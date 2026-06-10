@@ -146,12 +146,25 @@ Every simulation run now automatically saves:
 
 ### Repository Map
 
-Hybrid-Pairs-Trading-Ensemble/ ├── app.py (1,452 lines) — Streamlit UI, NOT used for experiments  
- ├── core/ — the library; used by both app.py and experiments/ │ ├── data.py — yfinance fetching, DataConfig │ ├── selectors_base.py — base classes: Pair, PairScore, PairSelector │ ├── selectors_statistical.py — Correlation, Distance, Cointegration, Combined (4 classical) │ ├── selectors_ml.py — MLSelector, LSTMSelector, TransformerSelector, GNNSelector (4 ML/DL) │ ├── selectors.py — re-exports everything above (backward compat) │ ├── entry.py — ZScoreThreshold, OUThreshold, KalmanHedge, MLSignal │ ├── ensemble.py — ensemble_pair_scores(), ensemble_signals() │ ├── backtest.py — vectorized backtester, IndianCosts, BacktestConfig │ ├── reports.py — ReportManager, BenchmarkComparison │ └── predictions.py — real-time prediction engine (Streamlit only) └── experiments/ — reproducible thesis scripts; results saved as JSON ├── config.py — universe (35 NSE tickers), date ranges, seeds, mode weights  
- ├── freq_comparison.py — E1: daily vs hourly
-├── hold_period_sweep.py — E2: min_hold_bars sweep
-├── walk_forward.py — E4: expanding-window WFV (6 folds, 2020-2025)
-├── ablation.py — E3: per-model isolation runs
-├── benchmark_comparison.py — E5: vs Nifty/Sensex/BankNifty
-├── significance_tests.py — E6: bootstrap CI, Bonferroni
-└── results/ — 14 JSON result files already saved
+Hybrid-Pairs-Trading-Ensemble \
+├── app.py (1,452 lines) — Streamlit UI, NOT used for experiments \
+├── core/ — the library; used by both app.py and experiments \
+│ ├── data.py — yfinance fetching, DataConfig  
+│ ├── selectors_base.py — base classes: Pair, PairScore, PairSelector \
+│ ├── selectors_statistical.py — Correlation, Distance, Cointegration, Combined (4 classical) \
+│ ├── selectors_ml.py — MLSelector, LSTMSelector, TransformerSelector, GNNSelector (4 ML/DL) \
+│ ├── selectors.py — re-exports everything above (backward compat) \
+│ ├── entry.py — ZScoreThreshold, OUThreshold, KalmanHedge, MLSignal \
+│ ├── ensemble.py — ensemble_pair_scores(), ensemble_signals() \
+│ ├── backtest.py — vectorized backtester, IndianCosts, BacktestConfig \
+│ ├── reports.py — ReportManager, BenchmarkComparison \
+│ └── predictions.py — real-time prediction engine (Streamlit only) \
+└── experiments/ — reproducible thesis scripts; results saved as JSON \
+├── config.py — universe (35 NSE tickers), date ranges, seeds, mode weights  
+├── freq_comparison.py — E1: daily vs hourly \
+├── hold_period_sweep.py — E2: min_hold_bars sweep \
+├── walk_forward.py — E4: expanding-window WFV (6 folds, 2020-2025) \
+├── ablation.py — E3: per-model isolation runs \
+├── benchmark_comparison.py — E5: vs Nifty/Sensex/BankNifty \
+├── significance_tests.py — E6: bootstrap CI, Bonferroni \
+└── results/ — 14 JSON result files already saved 

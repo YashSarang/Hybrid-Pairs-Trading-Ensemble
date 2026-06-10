@@ -320,32 +320,6 @@ Mean difference = −0.061, t = −0.389, **p = 0.703**, Wilcoxon W = 64.0, **p 
 
 ---
 
-## Repository Structure
-
-```
-Hybrid-Pairs-Trading-Ensemble/
-├── Implementation/
-│   ├── thesis_drafts/
-│   │   ├── chapter_1_introduction.md
-│   │   ├── chapter_2_literature_review.md
-│   │   ├── chapter_3_integrated.md
-│   │   ├── chapter_4_updated_with_rolling_baseline.md  ← primary results
-│   │   ├── chapter_5_conclusions_final.md
-│   │   └── abstract.md
-│   └── experimental-ablation/
-│       ├── scripts/run_multi_market_wfv.py             ← main WFV runner
-│       ├── configs/                                     ← all market configs
-│       ├── results/                                     ← all JSON result files
-│       ├── data/                                        ← parquet price caches
-│       ├── JFM_CRITIQUE_RESPONSE.md
-│       ├── JFM_CRITIQUE_ROUND2.md
-│       └── CVAR_BY_FOLD_2021_2024.md
-├── WHAT_I_DID.md                                        ← this file
-├── CHANGES.md
-├── CRITIQUE.md
-└── TRANSPARENCY_REPORT.md
-```
-
 ## Key Commits
 
 | Hash | Description |

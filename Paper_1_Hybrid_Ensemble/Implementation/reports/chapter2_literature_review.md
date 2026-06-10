@@ -4,6 +4,30 @@
 
 ---
 
+## 2.0 Glossary of Short Forms and Jargon (used in this chapter and Flow.md)
+
+| Term | Meaning |
+|------|---------|
+| SR | Sharpe Ratio, computed as $SR = \frac{E[R_p - R_f]}{\sigma_p}$ |
+| CAGR | Compound Annual Growth Rate |
+| MaxDD / MDD | Maximum Drawdown |
+| OOS / IS | Out-of-Sample / In-Sample |
+| WFV | Walk-Forward Validation |
+| OU | Ornstein-Uhlenbeck process |
+| ADF | Augmented Dickey-Fuller test |
+| OLS | Ordinary Least Squares |
+| PCA | Principal Component Analysis |
+| SSD | Sum of Squared Deviations |
+| bps | Basis points (1 bps = 0.01%) |
+| STT / GST / SEBI | Securities Transaction Tax / Goods and Services Tax / Securities and Exchange Board of India |
+| ML / DL / RL | Machine Learning / Deep Learning / Reinforcement Learning |
+| LSTM / GNN / CNN | Long Short-Term Memory / Graph Neural Network / Convolutional Neural Network |
+| PPO / GCN | Proximal Policy Optimization / Graph Convolutional Network |
+| SOTA | State of the Art |
+| CI / NW / FWER | Confidence Interval / Newey-West / Family-Wise Error Rate |
+
+---
+
 ## 2.1 Overview
 
 This chapter surveys the academic literature underpinning the hybrid ensemble pairs trading framework developed in this thesis. The review is organised around five thematic streams: (1) the origins and evolution of pairs trading as a systematic strategy, (2) the statistical arbitrage foundations that formalise the strategy's theoretical basis, (3) the application of classical machine learning to pairs selection and signal generation, (4) the extension to deep learning architectures, and (5) ensemble construction methods in quantitative finance. A final section surveys the Indian equity market context, which creates distinct challenges that motivate several design choices in this thesis.

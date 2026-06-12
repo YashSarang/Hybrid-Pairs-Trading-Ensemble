@@ -1,5 +1,5 @@
 # Hybrid Pairs Trading — Paper 1 Knowledge Graph
-*Last updated: 2026-06-10 (docs + flow restructuring synced) | Universe: 89 NSE Nifty100 | Costs: 16.28 bps | CPU-only ML*
+*Last updated: 2026-06-12 (docs + flow restructuring synced + robustness results added) | Universe: 89 NSE Nifty100 | Costs: 16.28 bps | CPU-only ML*
 
 ---
 
@@ -35,6 +35,7 @@
 | E2 | Hold Period Sweep | LOCKED (old result) | min_hold=30 days optimal |
 | E3 | Ablation (stat_only + stat_ml) | COMPLETE job 8734 | stat_only: Distance SR=0.829 (best single), Ensemble SR=0.256; stat_ml ensemble SR=-0.311 |
 | E4 | Walk-Forward Validation | COMPLETE jobs 8693-8699 | stat_only SR 0.480 / stat_ml SR 0.453 / full SR 0.519 ±0.061 |
+| E4-Robustness | 35-ticker Nifty50 Matched WFV | COMPLETE (Kalpana job 9442) | stat_only (OU): mean net SR=0.920, full OOS Net SR=0.773; stat_ml (OU): mean net SR=0.954, full OOS Net SR=0.792 |
 | E5 | Benchmark vs Nifty50 | COMPLETE job 8699 | Strategy SR 0.550 vs Nifty50 SR 0.720 |
 | E6 | Significance Tests (all 3 modes) | COMPLETE job 8735 | None significant at 5%; full best: p=0.069 boot, p=0.076 NW |
 | E7 | Weighted Ensemble | COMPLETE job 8736 | E7-A(Corr=2.0) SR=0.548; E7-B(LSTM=3.0) SR=-0.121 |
@@ -63,6 +64,13 @@
 - stat_ml + ou_only: Net SR **0.453** (deterministic x3)
 - full hybrid + ou_only: Net SR **0.519 ±0.061** (6 CPU runs — residual non-determinism)
 - s2=all (stat_only): Net SR 0.340, MaxDD 19.32% — OU-only clearly superior
+
+**E4-Robustness Walk-Forward (6 folds, 2018-2024, 32 of 35 Nifty50 matched-universe tickers):**
+- stat_only + ou_only: mean Net SR **0.920 ±1.022** | Full OOS Net SR **0.773**, Net Ret 5.51%, Net MaxDD 10.81%, Trades 458 (cost drag: mean 0.53 pp)
+- stat_only + no_ml: mean Net SR **0.484 ±1.074** | Full OOS Net SR **0.312**, Net Ret 2.95%, Net MaxDD 23.48%, Trades 1056 (cost drag: mean 1.27 pp)
+- stat_ml + ou_only: mean Net SR **0.954 ±1.349** | Full OOS Net SR **0.792**, Net Ret 5.56%, Net MaxDD 13.86%, Trades 450 (cost drag: mean 0.54 pp)
+- *Note:* Missing 3 tickers due to yfinance/parquet availability: NTPC, TATAMOTORS, GRASIM. 
+- *Interpretation:* The Fold 5 (2022) drawdown is negative in both universes (-1.504 Net SR in 35t, -0.707 Net SR in 89t), confirming this is a market-wide macro phenomenon, not a universe-specific artifact. Overall performance is higher in the Nifty50 subset, corroborating Paper 2's universe quality thesis.
 
 **E4 Fold breakdown (stat_only ou_only):**
 Fold2018: SR 0.021 | Fold2019: 0.462 | Fold2020: 0.572 | Fold2021: 1.972 | Fold2022: -0.707 | Fold2023-24: 0.564

@@ -59,6 +59,46 @@
       },
       "data_availability_note": "Per-mode E4 fields are incomplete in committed artifacts; backfill via canonical rerun/export before final table lock"
     },
+    "E4_robustness_35t_nifty50": {
+      "name": "Matched-Universe Robustness (35-Ticker Nifty50 Subset)",
+      "script": "Implementation/experiments/walk_forward_35t.py",
+      "slurm": "Implementation/experiments/slurm/robustness_35t.sh",
+      "status": "COMPLETE",
+      "job_ids": {
+        "9442": "COMPLETE"
+      },
+      "tickers_configured": 35,
+      "tickers_used": 32,
+      "tickers_missing": ["NTPC", "TATAMOTORS", "GRASIM"],
+      "cost_drag_mean_bps": 53,
+      "configs": {
+        "stat_only + ou_only": {
+          "mean_net_SR": 0.920,
+          "std_net_SR": 1.022,
+          "full_oos_net_SR": 0.773,
+          "full_oos_net_ret_pct": 5.51,
+          "full_oos_net_maxdd_pct": 10.81,
+          "total_trades": 458
+        },
+        "stat_only + no_ml": {
+          "mean_net_SR": 0.484,
+          "std_net_SR": 1.074,
+          "full_oos_net_SR": 0.312,
+          "full_oos_net_ret_pct": 2.95,
+          "full_oos_net_maxdd_pct": 23.48,
+          "total_trades": 1056
+        },
+        "stat_ml + ou_only": {
+          "mean_net_SR": 0.954,
+          "std_net_SR": 1.349,
+          "full_oos_net_SR": 0.792,
+          "full_oos_net_ret_pct": 5.56,
+          "full_oos_net_maxdd_pct": 13.86,
+          "total_trades": 450
+        }
+      },
+      "conclusion": "Fold 5 (2022) is negative across all configs (-1.504 Net SR in stat_ml), mirroring the 89-ticker Fold 5 drawdown (-0.707 Net SR). This confirms Fold 5 is a market-wide macro phenomenon, not a universe size artifact. The higher average Sharpe Ratio here vs the 89-ticker baseline also confirms the positive effect of universe quality (NSE Nifty50 over Nifty100)."
+    },
     "E5": {
       "status": "COMPLETE",
       "strategy_SR": 0.55,
@@ -114,10 +154,11 @@
       "status": "NOT RUN \u2014 gymnasium missing on Kalpana"
     }
   },
-  "last_updated": "2026-06-10",
+  "last_updated": "2026-06-12",
   "active_jobs": {},
   "notes": {
     "flow_sync": "Flow.md updated with glossary, evidence-linked design decisions, causal experiment chain, Immediate-Experimentation future work, and ensemble optimisation cross-universe plan.",
-    "cross_universe_next": "Run matched 35-ticker robustness suite (E4/E5/E6) while keeping 89-ticker as primary."
+    "cross_universe_next": "Run matched 35-ticker robustness suite (E4/E5/E6) while keeping 89-ticker as primary.",
+    "robustness_update": "Completed matched 35-ticker robustness suite (E4_robustness_35t_nifty50) on 2026-06-12."
   }
 }

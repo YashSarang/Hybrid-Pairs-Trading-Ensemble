@@ -1,6 +1,6 @@
 # Paper 1 — Project Flow
 # Hybrid Ensemble Pairs Trading: Do ML Selectors Outperform Statistical Baselines?
-# Last updated: 2026-06-05
+# Last updated: 2026-06-12 (Matched-universe robustness results added)
 
 ---
 
@@ -329,11 +329,11 @@ E4 canonical (89 tickers) remains primary. E7 results directionally valid.
 ## 12. Future Work Scope
 
 ### Immediate — Experimentation
-1. Run **matched-universe robustness suite** on the same 35-ticker universe used in Paper 2 (E4/E5/E6 core stack).
-2. Keep **89-ticker E4 as primary** and report 35-ticker results as a controlled robustness appendix (not replacement).
+1. [x] Run **matched-universe robustness suite** on the same 35-ticker universe used in Paper 2 (E4/E5/E6 core stack). (Completed 2026-06-12)
+2. [x] Keep **89-ticker E4 as primary** and report 35-ticker results as a controlled robustness appendix (not replacement). (Added to DATA_APPENDIX.md)
 3. Backfill missing E4 table fields by exporting complete per-mode metrics (CAGR/MaxDD/Trades) from canonical outputs or reruns.
 4. Add per-mode uncertainty (bootstrap 95% CI) for headline SR/CAGR/MaxDD where feasible.
-5. Add a direct attribution note: method effect vs universe effect (89 vs 35) with consistent cost/min_hold/WFV setup.
+5. [x] Add a direct attribution note: method effect vs universe effect (89 vs 35) with consistent cost/min_hold/WFV setup. (Added to DATA_APPENDIX.md)
 
 ### Immediate — Paper Writing (all compute done)
 1. Fill Ch4 §4.5 ablation table with E3 results

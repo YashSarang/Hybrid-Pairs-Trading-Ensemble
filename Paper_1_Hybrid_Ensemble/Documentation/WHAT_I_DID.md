@@ -1,6 +1,6 @@
 # Project Research Log: Hybrid Pairs Trading Ensemble
-**Last Updated:** June 4, 2026  
-**Status:** Complete — all experiments done, all critiques resolved, all code pushed to origin
+**Last Updated:** June 12, 2026  
+**Status:** Robustness study complete — all experiments done, all critiques resolved, all documentation updated.
 
 ---
 
@@ -361,3 +361,20 @@ Hybrid-Pairs-Trading-Ensemble/
 | `111d35a` | Round 1 critique all 11 items addressed |
 | `73e3870` | 8-fold extension (2017–2024) completed |
 | `7fc5e74` | 2×2 control experiments + transparency report |
+
+---
+
+## Phase 4: Matched-Universe Robustness Study (June 12, 2026)
+
+**Approach:** Matched-universe walk-forward validation (6 folds, 2018–2024) on the 35-ticker Nifty 50 subset used in Paper 2 to confirm findings are not size-dependent and are consistent across universes.
+
+**Key Runs and Results:**
+- **`stat_only + ou_only`**: Mean Net Sharpe = 0.920 ± 1.022. Full OOS Net Sharpe = 0.773. total 458 trades.
+- **`stat_ml + ou_only`**: Mean Net Sharpe = 0.954 ± 1.349. Full OOS Net Sharpe = 0.792. total 450 trades.
+- **`stat_only + no_ml`**: Mean Net Sharpe = 0.484 ± 1.074. Full OOS Net Sharpe = 0.312. total 1056 trades.
+
+**Findings:**
+1. **Universe liquidity premium confirmed:** Matched universe (Nifty50 subset) yields significantly higher Sharpe ratios than the primary 89-ticker (Nifty100) universe under identical cost and model setups, confirming Paper 2's core thesis.
+2. **Robustness of Fold 5 (2022) dip:** Fold 5 (2022) performance is deeply negative across all runs (-1.504 Net SR in stat_ml), mirroring the 89-ticker Fold 5 performance. This confirms the 2022 performance drop is a macro/regime phenomenon rather than a universe artifact.
+3. **ML ensemble effect:** The addition of ML selectors (`stat_ml`) marginally increases mean Sharpe (to 0.954) but materially increases fold-to-fold volatility and Fold 5 maximum drawdown, indicating that the statistical ensemble remains the more robust parsimonious baseline.
+

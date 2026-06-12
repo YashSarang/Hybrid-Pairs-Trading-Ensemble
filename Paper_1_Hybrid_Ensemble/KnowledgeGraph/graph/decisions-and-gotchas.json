@@ -1,6 +1,6 @@
 {
   "description": "Key design decisions, fixed bugs, academic rigor checklist, and gotchas for the Hybrid Pairs Trading project.",
-  "lastUpdated": "2026-06-04",
+  "lastUpdated": "2026-06-12",
   "doNotLoad": [
     "Implementation/app.py (60KB ~15k tokens) \u2014 only for Streamlit UI changes",
     "Implementation/core/selectors_ml.py (39KB ~10k tokens) \u2014 only for DL selector changes",
@@ -63,5 +63,6 @@
     "E1 freq_comparison.py not yet run on 89-ticker universe (job 8701 was walk_forward baseline)",
     "E7 weighted ensemble \u2014 not yet run on 89-ticker universe",
     "E8 RL signal \u2014 gymnasium not on Kalpana; entry_rl.py class-guarded"
-  ]
+  ],
+  "robustnessWork": "E4 Matched-Universe 35-ticker Nifty50 Robustness run complete (Job 9442). Results documented in KnowledgeGraph.md, DATA_APPENDIX.md, and WHAT_I_DID.md."
 }

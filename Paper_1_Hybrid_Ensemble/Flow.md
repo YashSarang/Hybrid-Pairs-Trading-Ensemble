@@ -345,7 +345,7 @@ E4 canonical (89 tickers) remains primary. E7 results directionally valid.
 
 ### Short-term (paper finalisation)
 7. [x] Bootstrap 95% CIs for E4 headline numbers (Completed 2026-06-12)
-8. Diebold-Mariano pairwise tests (ensemble vs each single selector)
+8. [x] Diebold-Mariano pairwise tests (ensemble vs each single selector) (Completed 2026-06-12)
 9. [x] Sensitivity analysis: cost ±5 bps table (Completed 2026-06-12)
 10. [x] Ch5 cost section: fix 6 bps brokerage → 0 bps (Completed 2026-06-12)
 

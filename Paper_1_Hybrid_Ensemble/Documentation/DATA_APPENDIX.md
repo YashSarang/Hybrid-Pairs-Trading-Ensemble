@@ -1044,3 +1044,29 @@ Pairs trading ensembles are highly sensitive to execution frictions. This sectio
 2. **ML vs. Stat Decay Rate:** Adding the ML selector (`stat_ml`) does not significantly increase cost sensitivity; its Sharpe ratio decay rate is parallel to the `stat_only` baseline, indicating that the ML selector does not induce higher trade turnover.
 3. **Optimality of Full Ensemble:** The `full + ou_only` ensemble maintains a Sharpe ratio of 0.516 at the baseline cost and stays above 0.37 even under the most severe cost drag of 50 bps, confirming that selector diversification provides robust outperformance across all transaction cost regimes.
 
+---
+
+# SECTION 9: DIEBOLD-MARIANO PAIRWISE SIGNIFICANCE TESTS
+
+**Generated:** 2026-06-12 13:40 IST  
+**Universe:** 89 NSE Nifty 100 tickers  
+**Date Range:** 2018-01-01 to 2024-12-31 (1,726 daily observations)  
+**Forecast Horizon (h):** 30 days (aligned with min_hold)  
+
+### Objective
+The Diebold-Mariano (DM) test evaluates whether the difference in predictive accuracy or return streams between two forecasting models is statistically significant. We test the pairwise return difference streams ($f_2 - f_1$) of the core configurations to check if the full hybrid ensemble's returns statistically dominate the statistical baselines.
+
+### Pairwise Test Results
+
+| Comparison (Model 2 vs. Model 1) | Mean Daily Return Diff | DM Statistic (HAC) | One-Sided p-value | Two-Sided p-value | Significance Verdict |
+|---|---|---|---|---|---|
+| **full hybrid** vs. **stat_only** | +2.20e-5 | 0.3911 | 0.3479 | 0.6957 | Not significant |
+| **full hybrid** vs. **stat_ml** | +2.50e-5 | 0.8757 | 0.1906 | 0.3812 | Not significant |
+| **stat_only** vs. **stat_ml** | +3.00e-6 | 0.0504 | 0.4799 | 0.9598 | Not significant |
+
+*Note: positive mean difference indicates Model 2 outperformed Model 1.*
+
+### Key Observations
+1. **Lack of Statistical Dominance:** None of the pairwise differences are statistically significant at any conventional level (all p-values > 0.15). While the full hybrid ensemble achieves a slightly higher absolute Net Sharpe (0.520 vs 0.480) and CAGR (3.72% vs 3.30%), the daily return difference stream is statistically indistinguishable from the baseline statistical strategy.
+2. **ML Selection Impact:** The comparison between `stat_only` and `stat_ml` shows a DM statistic near zero (0.0504, p=0.96), confirming that the inclusion of the simple XGBoost ML selector does not generate a return stream that significantly deviates from the pure statistical baseline.
+3. **Conclusion for Thesis Framing:** This provides empirical proof of the **parsimony principle**: the additional complexity of the full hybrid ensemble (incorporating LSTM, Transformer, GNN, and XGBoost selectors) does not yield statistically significant outperformance over the simpler statistical baseline. The baseline `stat_only + ou_only` remains the preferred parsimonious model.

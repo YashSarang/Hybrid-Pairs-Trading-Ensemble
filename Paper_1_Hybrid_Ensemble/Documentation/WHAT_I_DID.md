@@ -388,4 +388,15 @@ Hybrid-Pairs-Trading-Ensemble/
 1. **High Friction Tolerance:** All models remain profitable (Net Sharpe > 0.28) up to 50 bps round-trip transaction costs, validating the effectiveness of the 30-day minimum hold period constraint in minimizing cost drag.
 2. **Diversification Stability:** The full hybrid ensemble (`full + ou_only`) remains the optimal choice, holding a Net Sharpe of 0.516 at baseline and 0.373 even under a 50 bps penalty, confirming the value of selector-level diversification under execution stress.
 
+---
+
+## Phase 6: Diebold-Mariano Pairwise Significance Testing (June 12, 2026)
+
+**Approach:** Constructed and executed pairwise Diebold-Mariano tests ([diebold_mariano.py](file:///C:/Code/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/diebold_mariano.py)) with a 30-day horizon lag to compare return streams between configurations (`full hybrid` vs. `stat_only` and `stat_ml`).
+
+**Key Findings:**
+1. **Parsimonious Baseline Confirmed:** Pairwise DM test p-values are not significant (all p-values > 0.19). The slightly higher return of the full ensemble is statistically indistinguishable from the baseline statistical strategy.
+2. **Scientific Implications:** Empirically supports the thesis parsimony principle—complex ML selectors do not achieve a statistically significant improvement in return generation over a simple statistical baseline on NSE equities.
+
+
 

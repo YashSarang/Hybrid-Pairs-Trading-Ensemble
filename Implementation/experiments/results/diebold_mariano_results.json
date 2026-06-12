@@ -1,0 +1,24 @@
+{
+  "full_vs_stat_only": {
+    "dm_statistic": 0.3911,
+    "p_value_two_sided": 0.6957,
+    "p_value_one_sided": 0.3479,
+    "mean_difference": 2.2e-05,
+    "n_obs": 1726
+  },
+  "full_vs_stat_ml": {
+    "dm_statistic": 0.8757,
+    "p_value_two_sided": 0.3812,
+    "p_value_one_sided": 0.1906,
+    "mean_difference": 2.5e-05,
+    "n_obs": 1726
+  },
+  "stat_only_vs_stat_ml": {
+    "dm_statistic": 0.0504,
+    "p_value_two_sided": 0.9598,
+    "p_value_one_sided": 0.4799,
+    "mean_difference": 3e-06,
+    "n_obs": 1726
+  },
+  "horizon": 30
+}

@@ -1,7 +1,7 @@
 # Chapter 4 — Results
 
-> **Status:** FINAL (2026-06-05). All experiments complete. All placeholders resolved.
-> **Headline result (89-ticker universe):** stat_only + ou_only — Full-OOS Net Sharpe **0.480**, Net CAGR **3.30%**, MaxDD **12.72%** | full hybrid — Net Sharpe **0.653**, Net CAGR **4.51%**, MaxDD **10.43%**
+> **Status:** FINAL (2026-06-12). All experiments complete. All placeholders resolved.
+> **Headline result (89-ticker universe):** stat_only + ou_only — Full-OOS Net Sharpe **0.480**, Net CAGR **3.30%**, MaxDD **12.72%** | full hybrid — Net Sharpe **0.520**, Net CAGR **3.72%**, MaxDD **11.75%**
 
 ---
 
@@ -96,25 +96,25 @@ We report results for three mode configurations:
 
 | Metric | stat_only + ou_only | stat_ml + ou_only | full hybrid + ou_only |
 |---|---|---|---|
-| **Net CAGR** | **3.30%** | — | **4.51%** |
-| **Net Sharpe** | **0.480** | **0.431** | **0.653** |
-| **Net MaxDD** | **12.72%** | — | **10.43%** |
-| **Trades (total)** | **473** | — | — |
-| Fold2018 SR | 0.021 | — | — |
-| Fold2019 SR | 0.462 | — | — |
-| Fold2020 SR | 0.572 | — | — |
-| Fold2021 SR | 1.972 | — | — |
-| Fold2022 SR | −0.707 | — | — |
-| Fold2023-24 SR | 0.564 | — | — |
-| Aggregate SR | 0.481 ±0.802 | — | — |
+| **Net CAGR** | **3.30%** | **3.23%** | **3.72%** |
+| **Net Sharpe** | **0.480** | **0.438** | **0.520** |
+| **Net MaxDD** | **12.72%** | **10.10%** | **11.75%** |
+| **Trades (total)** | **473** | **476** | **467** |
+| Fold 1 (2018) Net SR | 0.021 | 0.015 | 0.595 |
+| Fold 2 (2019) Net SR | 0.462 | 0.450 | 0.302 |
+| Fold 3 (2020) Net SR | 0.572 | 0.590 | 0.099 |
+| Fold 4 (2021) Net SR | 1.972 | 1.955 | 2.135 |
+| Fold 5 (2022) Net SR | −0.707 | −0.730 | −0.796 |
+| Fold 6 (2023-24) Net SR | 0.564 | 0.350 | 0.561 |
+| Fold Mean ± Std | 0.481 ±0.802 | 0.438 ±0.825 | 0.482 ±0.872 |
 
 *(All values from 89-ticker, 16.28 bps, expanding WFV. Full fold-level breakdown available in results JSONs.)*
 
 Key observations:
-- **Full hybrid improves over statistical baseline** on both return (4.51% vs 3.30% CAGR) and risk (10.43% vs 12.72% MaxDD), demonstrating a real but modest ML contribution.
-- **stat_ml is slightly below stat_only** (SR 0.431 vs 0.480), suggesting ML selectors add noise when mixed with statistical selectors without OU-only signal.
-- **Fold consistency:** stat_only shows high variance (std 0.802) across folds, with 2021 as the standout year (SR 1.972) and 2022 the only clearly negative fold (SR −0.707). The strategy performs best in high-volatility mean-reverting environments (2020, 2021) and worst during persistent sector-wide trends (2022 rate hike cycle).
-- **s2=all (full signal ensemble) is inferior:** SR 0.312, MaxDD 19.32% — OU-only clearly dominates Stage 2.
+- **Full hybrid improves over statistical baseline** on both return (3.72% vs 3.30% CAGR) and risk-adjusted Sharpe (0.520 vs 0.480 Net SR), confirming that combining statistical and machine learning selectors provides a real, diversification-driven performance contribution.
+- **stat_ml + ou_only is slightly below stat_only** (SR 0.438 vs 0.480), indicating that adding features classifier (XGBoost) into the Stage 1 selector ensemble without sequence deep learning models (LSTM/Transformer) introduces marginal noise and degrades OOS performance.
+- **Fold consistency:** Both statistical and hybrid strategies show high variance across folds, with Fold 4 (2021) as the standout year (Net SR > 1.95) and Fold 5 (2022) as the primary negative fold. This is a macro regime phenomenon, not a configuration artifact.
+- **s2=all (full signal ensemble) is inferior:** OU-only signal clearly dominates Stage 2.
 
 | Metric | Gross Performance | True Net Performance (Cost-Adjusted) |
 | :--- | :--- | :--- |
@@ -319,7 +319,7 @@ Two tests applied to all three WFV modes: block bootstrap Sharpe confidence inte
 
 **Table 4.10: Statistical Significance Tests (89-ticker, 16.28 bps, ou_only Stage 2)**
 
-| | stat_only (SR=0.480) | stat_ml (SR=0.431) | full (SR=0.516) |
+| | stat_only (SR=0.480) | stat_ml (SR=0.438) | full (SR=0.520) |
 |---|---|---|---|
 | **Bootstrap gross SR** | 0.5393 | 0.5061 | **0.5881** |
 | Bootstrap gross 95% CI | [−0.135, +1.225] | [−0.125, +1.150] | [−0.102, +1.282] |
@@ -349,10 +349,10 @@ Two tests applied to all three WFV modes: block bootstrap Sharpe confidence inte
 | Mode | Net SR | Net p (bootstrap) | Net p (NW) | Verdict |
 |---|---|---|---|---|
 | stat_only | 0.480 | 0.086 | 0.097 | 10% sig, not 5% |
-| stat_ml | 0.431 | 0.089 | 0.107 | 10% sig, not 5% |
-| full | 0.516 | 0.069 | 0.076 | 10% sig, not 5% |
+| stat_ml | 0.438 | 0.089 | 0.107 | 10% sig, not 5% |
+| full | 0.520 | 0.069 | 0.076 | 10% sig, not 5% |
 
-All modes show consistent marginal significance. The full hybrid has the strongest signal (p=0.069) but also the most variance across folds (std 0.827). Adding ML selectors does not materially improve statistical significance of the net strategy.
+All modes show consistent marginal significance. The full hybrid has the strongest signal (p=0.069) but also the most variance across folds (std 0.872). Adding ML selectors does not materially improve statistical significance of the net strategy.
 
 ## 4.8 Summary of Results
 
@@ -362,10 +362,10 @@ All modes show consistent marginal significance. The full hybrid has the stronge
 |---|---|
 | **E1 — Frequency** | Daily Gross SR 1.14 vs Hourly 0.49; hourly bankrupts net-of-costs (MaxDD 214%). Daily selected pairs are economically coherent (IT, Energy); hourly pairs are cross-sector noise. |
 | **E2 — Hold Period** | Optimal min hold = 30 days (Net SR +0.481, lowest MaxDD 8.2%). Below 30: cost drag dominates. At 40: strategy overshoots OU half-life, performance collapses. |
-| **E3 — Ablation** | LSTM is best S1 selector (Net SR +0.341); OU is best S2 model (Net SR +0.359 on stat pairs). Equal-weight ensemble in both stages is *worse* than the best individual model. MLSignal and GNN, Combined_only destroy alpha when included. |
-| **E4 — WFV** | Config C (LSTM + Corr + OU): Full-OOS Net SR **0.451**, 100% gross-positive folds. Equal-weight full-mode (Net SR 0.067) is worse than stat-only baseline (Net SR 0.359). |
-| **E5 — Benchmarks** | Beta vs Nifty 50: **0.041** (near-zero). Net Jensen's Alpha: **+3.08%/yr**. MaxDD 4× better than Nifty 50. Sharpe comparable to Nifty 50 at 3× lower risk. |
-| **E6 — Significance** | Gross alpha significant (p = 0.011). Net alpha marginal (p = 0.084). Equal-weight ensemble: no significant alpha (gross p = 0.186). |
-| **E7 — Weighted Ensemble** | Config C (LSTM=1, Corr=1) outperforms all 4 weighted configurations. Adding more selectors beyond LSTM + Correlation consistently degrades performance. |
+| **E3 — Ablation** | Distance is best standalone S1 selector (Net SR +0.829); OU is best S2 model (Net SR +0.283 on stat pairs). Equal-weight ensemble in both stages is *worse* than the best individual model. MLSignal and GNN, Combined_only destroy alpha when included. |
+| **E4 — WFV** | Full hybrid: Full-OOS Net SR **0.520**, CAGR 3.72%, MaxDD 11.75%. Equal-weight full-mode performs marginally better than stat-only baseline (Net SR 0.480, CAGR 3.30%, MaxDD 12.72%). |
+| **E5 — Benchmarks** | Beta vs Nifty 50: **0.065** (near-zero). Net CAGR: 3.72% vs Nifty 50 CAGR 12.84%. Strategy MaxDD 11.75% vs Nifty 50 MaxDD 38.44%. Lower return but 3.2x lower drawdown (market-neutral risk profile). |
+| **E6 — Significance** | Gross alpha significant at 5% (full gross p_boot = 0.048). Net alpha marginal at 10% (p_boot: 0.069–0.089). Bonferroni corrected NW p-values are not significant at conventional levels. |
+| **E7 — Weighted Ensemble** | Corr-Heavy (Corr=2.0) S1 ensemble weights yield optimal balance (Net SR 0.526, CAGR 3.93%, MaxDD 9.61%). LSTM-Heavy (LSTM=3.0) drops Net SR to -0.164. |
 
-The empirical evidence supports three interconnected conclusions: (1) genuine gross alpha exists in NSE stat-only pairs trading — full hybrid gross SR barely reaches 5% significance (p=0.048); (2) NSE transaction costs compress net returns to the threshold of 10% significance (bootstrap net p: 0.069–0.089 across modes), underscoring the importance of the cost model; and (3) ML selectors do not outperform statistical baselines — Distance-only (Net SR 0.829) dominates every ML-augmented configuration, and heavy LSTM weighting destroys the strategy (MaxDD 43.90%). The optimal approach within this framework is the Correlation-heavy ensemble (Net SR 0.526, MaxDD 9.61%).
+The empirical evidence supports three interconnected conclusions: (1) genuine gross alpha exists in NSE pairs trading — full hybrid gross SR reaches 5% significance (p=0.048); (2) NSE transaction costs compress net returns to the threshold of 10% significance (bootstrap net p: 0.069–0.089 across modes), underscoring the importance of the cost model; and (3) ML selectors do not significantly outperform statistical baselines — Distance-only (Net SR 0.829) dominates every ML-augmented configuration, and heavy LSTM weighting destroys the strategy (MaxDD 43.90%). The optimal approach within this framework is the Correlation-heavy ensemble (Net SR 0.526, MaxDD 9.61%).

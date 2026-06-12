@@ -339,7 +339,7 @@ E4 canonical (89 tickers) remains primary. E7 results directionally valid.
 1. Fill Ch4 §4.5 ablation table with E3 results
 2. Fill Ch4 §4.7 weighted ensemble section with E7 results
 3. [x] Update E6 significance section for all 3 modes (Updated 2026-06-12)
-4. Update abstract with final canonical numbers
+4. [x] Update abstract with final canonical numbers (Updated 2026-06-12)
 5. Document full-mode CPU non-determinism (Sharpe Ratio 0.437–0.618) as ML variance caveat
 6. Fix E7 SLURM script — remove fetch_paper1_data.py call
 
@@ -347,7 +347,7 @@ E4 canonical (89 tickers) remains primary. E7 results directionally valid.
 7. [x] Bootstrap 95% CIs for E4 headline numbers (Completed 2026-06-12)
 8. Diebold-Mariano pairwise tests (ensemble vs each single selector)
 9. [x] Sensitivity analysis: cost ±5 bps table (Completed 2026-06-12)
-10. Ch5 cost section: fix 6 bps brokerage → 0 bps
+10. [x] Ch5 cost section: fix 6 bps brokerage → 0 bps (Completed 2026-06-12)
 
 ### Medium-term (paper writing)
 13. Structure final paper from chapter drafts — 8,000–10,000 word target (JFM/QF format)

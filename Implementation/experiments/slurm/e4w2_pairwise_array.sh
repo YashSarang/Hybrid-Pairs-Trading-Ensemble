@@ -14,7 +14,7 @@
 #SBATCH --error=/users/student/pg/pg24/yash.sarang/Hybrid-Pairs-Trading-Ensemble/Implementation/experiments/slurm_logs/e4w2_%A_%a.err
 #SBATCH --time=06:00:00
 #SBATCH --cpus-per-task=4
-#SBATCH --mem=10G
+#SBATCH --mem=32G
 #SBATCH --partition=cn3_anandi
 #SBATCH --account=cminds_anandi
 #SBATCH --qos=anandi

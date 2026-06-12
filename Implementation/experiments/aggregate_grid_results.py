@@ -106,6 +106,30 @@ def _load_result(path: Path, since_ts: Optional[float]) -> Optional[Dict]:
     fold_net_sharpes = [x for x in fold_net_sharpes if math.isfinite(x)]
     std_net_sr = float(_std(fold_net_sharpes)) if len(fold_net_sharpes) > 1 else None
 
+    # Support both old flat metrics and new nested dict structure
+    def get_metric(field: str) -> Optional[float]:
+        val = agg.get(field)
+        if isinstance(val, dict):
+            return val.get("mean")
+        return val
+
+    mean_ns = get_metric("net_sharpe")
+    mean_gs = get_metric("gross_sharpe")
+    mean_cagr = get_metric("net_ann_ret_pct")
+    mean_mdd = get_metric("net_maxdd_pct")
+
+    # Get total trades from full_oos_metrics or fallback to aggregate
+    total_tr = agg.get("full_oos_metrics", {}).get("total_trades") if isinstance(agg.get("full_oos_metrics"), dict) else agg.get("total_trades")
+
+    # Get pct positive folds
+    pct_pos = None
+    if isinstance(agg.get("net_sharpe"), dict):
+        pct_pos = agg.get("net_sharpe", {}).get("pct_positive")
+        if pct_pos is not None:
+            pct_pos = pct_pos * 100
+    else:
+        pct_pos = agg.get("pct_folds_net_positive")
+
     return {
         "label": label,
         "n_selectors": n_sel,
@@ -113,13 +137,13 @@ def _load_result(path: Path, since_ts: Optional[float]) -> Optional[Dict]:
         "s2": data.get("s2", "?"),
         "top_k": data.get("top_k"),
         "result_file": str(path),
-        "mean_net_sharpe":    agg.get("mean_net_sharpe"),
-        "mean_gross_sharpe":  agg.get("mean_gross_sharpe"),
+        "mean_net_sharpe":    mean_ns,
+        "mean_gross_sharpe":  mean_gs,
         "std_net_sharpe":     round(std_net_sr, 4) if std_net_sr else None,
-        "mean_net_cagr":      agg.get("mean_net_ann_ret_pct"),
-        "mean_maxdd_pct":     agg.get("mean_net_maxdd_pct"),
-        "total_trades":       agg.get("total_trades"),
-        "pct_folds_positive": agg.get("pct_folds_net_positive"),
+        "mean_net_cagr":      mean_cagr,
+        "mean_maxdd_pct":     mean_mdd,
+        "total_trades":       total_tr,
+        "pct_folds_positive": pct_pos,
         "fold_net_sharpes":   fold_net_sharpes,
     }
 

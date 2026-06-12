@@ -1,0 +1,208 @@
+[Robustness-35T] stat_only + ou_only (primary robustness run)
+
+====================================================================================================
+  ROBUSTNESS CHECK — 35-Ticker Nifty50 Universe (32 available tickers)
+  Walk-Forward Validation  |  mode=stat_only  |  Identical methodology to E4
+====================================================================================================
+            Fold  Gross SRGross Ret%    Net SR  Net Ret%Net MaxDD%  Trd/Yr CostDrag
+----------------------------------------------------------------------------------------------------
+      Fold1_2018     1.270      9.35     1.223      9.00      5.95      43     0.35
+      Fold2_2019     2.064     16.48     2.002     15.98      2.63      61     0.50
+      Fold3_2020     1.587     15.21     1.512     14.49      8.84      88     0.72
+      Fold4_2021     1.702     14.02     1.634     13.46      5.50      68     0.56
+      Fold5_2022    -0.884     -8.33    -0.934     -8.81     14.23      59     0.48
+ Fold6_2023-2024     0.159      1.24     0.083      0.65      8.49      74     0.60
+----------------------------------------------------------------------------------------------------
+
+  AGGREGATE ACROSS 6 FOLDS:
+  Gross Sharpe :   0.983 +/-1.024 [83% pos]
+  Net   Sharpe :   0.920 +/-1.022 [83% pos]
+  Gross Ret %  :   8.00 +/-8.89 [83% pos]
+  Net   Ret %  :   7.46 +/-8.86 [83% pos]
+  Net MaxDD %  :   7.61 +/-3.61 [100% pos]
+  Cost Drag pp :   0.53 +/-0.11 [100% pos]
+
+  FULL OOS (all test years stitched):
+    Gross Sharpe  = 0.838  Net Sharpe = 0.773
+    Gross Ret %   = 5.90%  Net Ret %  = 5.51%
+    Net MaxDD %   = 10.81%
+====================================================================================================
+
+====================================================================================================
+  THESIS APPENDIX BLOCK  (copy-paste ready LaTeX)
+====================================================================================================
+
+\subsection{Matched-Universe Robustness: 35-Ticker Nifty 50 Subset}
+
+To verify that the ensemble strategy's performance is not an artefact of the
+89-stock Nifty~100 universe, we re-ran the identical walk-forward pipeline (E4)
+on the 35-ticker Nifty~50 subset used as Paper~2's primary universe.
+(32 tickers available in the 2015--2024 parquet after filtering
+three missing issues: \textsc{TATAMOTORS}, \textsc{NTPC}, \textsc{GRASIM}.)
+All hyper-parameters --- fold structure, signal weights, minimum hold period
+(30 bars), transaction costs (16.3 bps round-trip) --- are held constant.
+
+\begin{table}[H]
+  \centering
+  \caption{Robustness check: 6-fold WFV on 35-ticker Nifty~50 sub-universe
+            (identical methodology to Table~X in Chapter~4).}
+  \label{tab:robustness_35t}
+  \begin{tabular}{lrrrrrr}
+    \toprule
+    Fold & Gross SR & Net SR & Net Ret\% & Net MaxDD\% & Trd/Yr & Cost Drag \\
+    \midrule
+    Fold1_2018             &  1.270 &  1.223 &   9.00 &   5.95 &    43 &  0.35 \\
+    Fold2_2019             &  2.064 &  2.002 &  15.98 &   2.63 &    61 &  0.50 \\
+    Fold3_2020             &  1.587 &  1.512 &  14.49 &   8.84 &    88 &  0.72 \\
+    Fold4_2021             &  1.702 &  1.634 &  13.46 &   5.50 &    68 &  0.56 \\
+    Fold5_2022             & -0.884 & -0.934 &  -8.81 &  14.23 &    59 &  0.48 \\
+    Fold6_2023-2024        &  0.159 &  0.083 &   0.65 &   8.49 &    74 &  0.60 \\
+    \midrule
+    Mean (6 folds)         & 0.920$\pm$1.022 & & 7.46 & 7.61 & & \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Net Sharpe remains positive in 83% of folds (mean~$={\,}0.920$, SD~$={\,}1.022$), confirming that the ensemble strategy is not reliant on the broader 89-stock universe for its positive out-of-sample alpha.
+
+====================================================================================================
+
+[Robustness-35T] stat_only + no_ml (ZScore+OU+Kalman ensemble)
+
+====================================================================================================
+  ROBUSTNESS CHECK — 35-Ticker Nifty50 Universe (32 available tickers)
+  Walk-Forward Validation  |  mode=stat_only  |  Identical methodology to E4
+====================================================================================================
+            Fold  Gross SRGross Ret%    Net SR  Net Ret%Net MaxDD%  Trd/Yr CostDrag
+----------------------------------------------------------------------------------------------------
+      Fold1_2018     1.467     12.57     1.351     11.57      7.59     123     1.00
+      Fold2_2019     0.848      8.64     0.719      7.32      6.46     162     1.32
+      Fold3_2020     0.691      9.23     0.575      7.67      8.87     191     1.55
+      Fold4_2021     2.141     19.64     1.994     18.26      5.68     169     1.38
+      Fold5_2022    -1.032     -8.93    -1.156    -10.00     13.90     132     1.07
+ Fold6_2023-2024    -0.464     -5.07    -0.579     -6.37     20.03     151     1.30
+----------------------------------------------------------------------------------------------------
+
+  AGGREGATE ACROSS 6 FOLDS:
+  Gross Sharpe :   0.609 +/-1.079 [67% pos]
+  Net   Sharpe :   0.484 +/-1.074 [67% pos]
+  Gross Ret %  :   6.01 +/-9.93 [67% pos]
+  Net   Ret %  :   4.74 +/-9.88 [67% pos]
+  Net MaxDD %  :   10.42 +/-5.05 [100% pos]
+  Cost Drag pp :   1.27 +/-0.18 [100% pos]
+
+  FULL OOS (all test years stitched):
+    Gross Sharpe  = 0.434  Net Sharpe = 0.312
+    Gross Ret %   = 3.98%  Net Ret %  = 2.95%
+    Net MaxDD %   = 23.48%
+====================================================================================================
+
+====================================================================================================
+  THESIS APPENDIX BLOCK  (copy-paste ready LaTeX)
+====================================================================================================
+
+\subsection{Matched-Universe Robustness: 35-Ticker Nifty 50 Subset}
+
+To verify that the ensemble strategy's performance is not an artefact of the
+89-stock Nifty~100 universe, we re-ran the identical walk-forward pipeline (E4)
+on the 35-ticker Nifty~50 subset used as Paper~2's primary universe.
+(32 tickers available in the 2015--2024 parquet after filtering
+three missing issues: \textsc{TATAMOTORS}, \textsc{NTPC}, \textsc{GRASIM}.)
+All hyper-parameters --- fold structure, signal weights, minimum hold period
+(30 bars), transaction costs (16.3 bps round-trip) --- are held constant.
+
+\begin{table}[H]
+  \centering
+  \caption{Robustness check: 6-fold WFV on 35-ticker Nifty~50 sub-universe
+            (identical methodology to Table~X in Chapter~4).}
+  \label{tab:robustness_35t}
+  \begin{tabular}{lrrrrrr}
+    \toprule
+    Fold & Gross SR & Net SR & Net Ret\% & Net MaxDD\% & Trd/Yr & Cost Drag \\
+    \midrule
+    Fold1_2018             &  1.467 &  1.351 &  11.57 &   7.59 &   123 &  1.00 \\
+    Fold2_2019             &  0.848 &  0.719 &   7.32 &   6.46 &   162 &  1.32 \\
+    Fold3_2020             &  0.691 &  0.575 &   7.67 &   8.87 &   191 &  1.55 \\
+    Fold4_2021             &  2.141 &  1.994 &  18.26 &   5.68 &   169 &  1.38 \\
+    Fold5_2022             & -1.032 & -1.156 & -10.00 &  13.90 &   132 &  1.07 \\
+    Fold6_2023-2024        & -0.464 & -0.579 &  -6.37 &  20.03 &   151 &  1.30 \\
+    \midrule
+    Mean (6 folds)         & 0.484$\pm$1.074 & & 4.74 & 10.42 & & \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Net Sharpe remains positive in 67% of folds (mean~$={\,}0.484$, SD~$={\,}1.074$), confirming that the ensemble strategy is not reliant on the broader 89-stock universe for its positive out-of-sample alpha.
+
+====================================================================================================
+
+[Robustness-35T] stat_ml + ou_only (include MLSelector in S1)
+
+====================================================================================================
+  ROBUSTNESS CHECK — 35-Ticker Nifty50 Universe (32 available tickers)
+  Walk-Forward Validation  |  mode=stat_ml  |  Identical methodology to E4
+====================================================================================================
+            Fold  Gross SRGross Ret%    Net SR  Net Ret%Net MaxDD%  Trd/Yr CostDrag
+----------------------------------------------------------------------------------------------------
+      Fold1_2018     1.194      8.73     1.145      8.38      5.89      43     0.35
+      Fold2_2019     1.675     12.41     1.604     11.88      3.02      64     0.53
+      Fold3_2020     2.151     18.46     2.066     17.72      8.97      90     0.74
+      Fold4_2021     2.513     22.52     2.440     21.88      4.31      78     0.64
+      Fold5_2022    -1.457    -13.23    -1.504    -13.67     16.64      54     0.44
+ Fold6_2023-2024     0.037      0.30    -0.029     -0.23     10.36      65     0.53
+----------------------------------------------------------------------------------------------------
+
+  AGGREGATE ACROSS 6 FOLDS:
+  Gross Sharpe :   1.019 +/-1.358 [83% pos]
+  Net   Sharpe :   0.954 +/-1.349 [67% pos]
+  Gross Ret %  :   8.20 +/-11.90 [83% pos]
+  Net   Ret %  :   7.66 +/-11.83 [67% pos]
+  Net MaxDD %  :   8.20 +/-4.54 [100% pos]
+  Cost Drag pp :   0.54 +/-0.13 [100% pos]
+
+  FULL OOS (all test years stitched):
+    Gross Sharpe  = 0.857  Net Sharpe = 0.792
+    Gross Ret %   = 5.94%  Net Ret %  = 5.56%
+    Net MaxDD %   = 13.86%
+====================================================================================================
+
+====================================================================================================
+  THESIS APPENDIX BLOCK  (copy-paste ready LaTeX)
+====================================================================================================
+
+\subsection{Matched-Universe Robustness: 35-Ticker Nifty 50 Subset}
+
+To verify that the ensemble strategy's performance is not an artefact of the
+89-stock Nifty~100 universe, we re-ran the identical walk-forward pipeline (E4)
+on the 35-ticker Nifty~50 subset used as Paper~2's primary universe.
+(32 tickers available in the 2015--2024 parquet after filtering
+three missing issues: \textsc{TATAMOTORS}, \textsc{NTPC}, \textsc{GRASIM}.)
+All hyper-parameters --- fold structure, signal weights, minimum hold period
+(30 bars), transaction costs (16.3 bps round-trip) --- are held constant.
+
+\begin{table}[H]
+  \centering
+  \caption{Robustness check: 6-fold WFV on 35-ticker Nifty~50 sub-universe
+            (identical methodology to Table~X in Chapter~4).}
+  \label{tab:robustness_35t}
+  \begin{tabular}{lrrrrrr}
+    \toprule
+    Fold & Gross SR & Net SR & Net Ret\% & Net MaxDD\% & Trd/Yr & Cost Drag \\
+    \midrule
+    Fold1_2018             &  1.194 &  1.145 &   8.38 &   5.89 &    43 &  0.35 \\
+    Fold2_2019             &  1.675 &  1.604 &  11.88 &   3.02 &    64 &  0.53 \\
+    Fold3_2020             &  2.151 &  2.066 &  17.72 &   8.97 &    90 &  0.74 \\
+    Fold4_2021             &  2.513 &  2.440 &  21.88 &   4.31 &    78 &  0.64 \\
+    Fold5_2022             & -1.457 & -1.504 & -13.67 &  16.64 &    54 &  0.44 \\
+    Fold6_2023-2024        &  0.037 & -0.029 &  -0.23 &  10.36 &    65 &  0.53 \\
+    \midrule
+    Mean (6 folds)         & 0.954$\pm$1.349 & & 7.66 & 8.20 & & \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Net Sharpe remains positive in 67% of folds (mean~$={\,}0.954$, SD~$={\,}1.349$), confirming that the ensemble strategy is not reliant on the broader 89-stock universe for its positive out-of-sample alpha.
+
+====================================================================================================
+
+[Robustness-35T] DONE — check results/walk_forward_35t_*.json

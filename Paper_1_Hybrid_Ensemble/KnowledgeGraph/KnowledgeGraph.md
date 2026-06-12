@@ -1,5 +1,5 @@
 # Hybrid Pairs Trading — Paper 1 Knowledge Graph
-*Last updated: 2026-06-04 | Universe: 89 NSE Nifty100 | Costs: 16.28 bps | CPU-only ML*
+*Last updated: 2026-06-10 (docs + flow restructuring synced) | Universe: 89 NSE Nifty100 | Costs: 16.28 bps | CPU-only ML*
 
 ---
 
@@ -31,34 +31,68 @@
 
 | Exp | Name | Status | Key Result |
 |-----|------|--------|-----------|
-| E1 | WFV Baseline (stat_only) | COMPLETE job 8701 | Net SR 0.480, CAGR 3.30%, MaxDD 12.72% |
-| E2 | Hold Period Sweep | NOT RERUN (old result locked) | min_hold=30 days |
-| E3 | Ablation (3 modes) | RUNNING job 8704 | PENDING |
-| E4 | Walk-Forward Validation | COMPLETE jobs 8693-8699 | stat_only SR 0.480 / full SR 0.653 |
+| E1 | Freq Comparison (stat_only baseline WFV) | COMPLETE job 8737 | mean net SR=0.343 ±1.021 (84-ticker data) |
+| E2 | Hold Period Sweep | LOCKED (old result) | min_hold=30 days optimal |
+| E3 | Ablation (stat_only + stat_ml) | COMPLETE job 8734 | stat_only: Distance SR=0.829 (best single), Ensemble SR=0.256; stat_ml ensemble SR=-0.311 |
+| E4 | Walk-Forward Validation | COMPLETE jobs 8693-8699 | stat_only SR 0.480 / stat_ml SR 0.453 / full SR 0.519 ±0.061 |
 | E5 | Benchmark vs Nifty50 | COMPLETE job 8699 | Strategy SR 0.550 vs Nifty50 SR 0.720 |
-| E6 | Significance Tests | PARTIAL — stat_only only | p=0.086 bootstrap, p=0.097 NW (10% sig, not 5%) |
-| E7 | Weighted Ensemble | NOT RUN on 89-ticker universe | — |
+| E6 | Significance Tests (all 3 modes) | COMPLETE job 8735 | None significant at 5%; full best: p=0.069 boot, p=0.076 NW |
+| E7 | Weighted Ensemble | COMPLETE job 8736 | E7-A(Corr=2.0) SR=0.548; E7-B(LSTM=3.0) SR=-0.121 |
 | E8 | RL Signal | BLOCKED — gymnasium not on Kalpana | — |
+
+---
+
+## DOCUMENTATION STATUS (LATEST)
+
+- `Flow.md` is now restructured as the canonical narrative with:
+  - glossary of short forms/jargon at top,
+  - explicit Sharpe Ratio terminology and computed Sharpe deltas where derivable,
+  - evidence-classified key design decisions (literature vs experiment vs engineering),
+  - causal experiment sequence (why each experiment led to the next),
+  - E4 data-availability caveat for missing per-mode fields in committed artifacts,
+  - **Future Work Scope → Immediate — Experimentation** block,
+  - new standalone section: **Ensemble Optimisation and Cross-Universe Consistency Plan**.
+- `Implementation/reports/chapter2_literature_review.md` has matching top glossary/jargon definitions to keep terminology consistent with `Flow.md`.
 
 ---
 
 ## KEY RESULTS (89-ticker, 16.28 bps, CPU-only)
 
-**E4 Walk-Forward (6 folds, 2018-2024):**
-- stat_only + ou_only: Net SR **0.480**, CAGR 3.30%, MaxDD 12.72%, 473 trades
-- stat_ml + ou_only: Net SR **0.431**
-- full hybrid (best): Net SR **0.653**, CAGR 4.51%, MaxDD 10.43%
-- s2=all (stat_only): Net SR 0.312, MaxDD 19.32% — OU-only clearly superior
+**E4 Walk-Forward (6 folds, 2018-2024, 89-ticker canonical):**
+- stat_only + ou_only: Net SR **0.480** (deterministic x3), CAGR 3.30%, MaxDD 12.72%
+- stat_ml + ou_only: Net SR **0.453** (deterministic x3)
+- full hybrid + ou_only: Net SR **0.519 ±0.061** (6 CPU runs — residual non-determinism)
+- s2=all (stat_only): Net SR 0.340, MaxDD 19.32% — OU-only clearly superior
 
 **E4 Fold breakdown (stat_only ou_only):**
 Fold2018: SR 0.021 | Fold2019: 0.462 | Fold2020: 0.572 | Fold2021: 1.972 | Fold2022: -0.707 | Fold2023-24: 0.564
 Aggregate: Net SR 0.481 ±0.802 | Full OOS: SR 0.480, CAGR 3.30%, MaxDD 12.72%
+
+**E3 Ablation (stat_only mode):**
+- Correlation_only: SR 0.160 | Distance_only: SR **0.829** (best single, std=1.063) | Cointegration_only: SR -0.088 | Combined_only: SR -0.223
+- S1_Ensemble (stat_only): SR 0.256 — **below Distance_only**
+- S2 signal: OU_only SR 0.283 (best) | ZScore SR -0.275 | Kalman SR -0.257 | ML SR -0.405
+
+**E3 Ablation (stat_ml mode):**
+- ML_only selector: SR 0.217 | S1_Ensemble (stat+ML): SR **-0.311** — adding ML hurts
+- S2 signal: OU_only SR 0.060 (drops from 0.283 with different pair selection)
 
 **E5 Benchmark:**
 - Strategy SR 0.550 vs Nifty50 SR 0.720
 - Strategy MaxDD 12.28% vs Nifty50 MaxDD 38.44%
 - Strategy CAGR 3.76% vs Nifty50 CAGR 12.84%
 - Verdict: underperforms on returns, materially lower drawdown (market-neutral)
+
+**E6 Significance (all 3 modes, ou_only — NONE significant at 5%):**
+- stat_only: net SR=0.468 CI=[-0.209,1.154] p_boot=0.086 NW t=1.300 p=0.097 (sig at 10%)
+- stat_ml:   net SR=0.438 CI=[-0.194,1.081] p_boot=0.089 NW t=1.243 p=0.107 (NOT sig at 10%)
+- full:      net SR=0.520 CI=[-0.171,1.213] p_boot=0.069 NW t=1.434 p=0.076 (sig at 10%)
+
+**E7 Weighted Ensemble (84-ticker data — parquet refreshed by E7 script):**
+- E7-A Corr=2.0, stat_ml: mean SR=0.548 (vs equal-weight stat_ml 0.453 — marginal gain)
+- E7-B LSTM=3.0, full:    mean SR=-0.121 (WORSE — LSTM weighting hurts)
+- E7-C stat_only equal:   mean SR=0.343 (lower than E4 0.480 — 84 vs 89 tickers)
+- ⚠ DATA NOTE: E7 parquet refreshed to 84 tickers. E4 canonical (89 tickers) is primary.
 
 **E6 Significance (stat_only ou_only, 1725 obs):**
 - Bootstrap 95% CI: **[-0.209, +1.154]** | p(SR≤0) = **0.086**
@@ -146,14 +180,14 @@ Paper_1_Hybrid_Ensemble/
 
 ## PENDING REVISIONS (ordered by priority)
 
-1. **E3 job 8704** — pull results once COMPLETE; validate 3-mode ablation output
-2. **E6** — rerun for stat_ml and full modes (currently stat_only only)
-3. **E1** — confirm: does E1 = WFV baseline (done) or freq_comparison.py (not run)?
-4. **Chapter rewrites** — all 5 chapters + abstract need number updates (old 35-ticker universe)
-5. **Ch5 cost fix** — Section 5.1.1 uses 6 bps brokerage (legacy); align to 0 bps (16.28 bps total)
-6. **Literature-Review README** — update ablation numbers with 89-ticker results once E3 done
-7. **Streamlit LR pages** — implement STREAMLIT_ENHANCEMENT_PLAN.md
-8. **E7** — weighted ensemble on 89-ticker universe
+1. **Write paper** — all experiments complete; focus on chapter/table integration
+2. **CPU full-mode non-determinism** — document clearly; 6 runs gave SR 0.437–0.618 range
+3. **E7 data drift hardening** — keep `fetch_paper1_data.py` removed from E7 path; enforce 89-ticker parquet before reruns
+4. **Bootstrap CIs for E4 headline numbers** — add per-mode CI panel (not only aggregate significance outputs)
+5. **Chapter rewrites** — Ch4 §4.5/§4.7 to include final ablation + weighted-ensemble evidence
+6. **Ch5 cost fix** — Section 5.1.1 uses 6 bps brokerage (legacy); align to 0 bps (16.28 bps total)
+7. **Abstract final numbers** — harmonize with latest canonical table and caveats
+8. **Cross-universe robustness pack (Immediate — Experimentation)** — run matched 35-ticker E4/E5/E6 and report as robustness appendix (89-ticker remains primary)
 
 ---
 

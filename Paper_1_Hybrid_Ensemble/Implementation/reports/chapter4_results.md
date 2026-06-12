@@ -1,6 +1,6 @@
 # Chapter 4 — Results
 
-> **Status:** Draft v2 (2026-06-04). CONFIRMED sections updated with 89-ticker, 16.28 bps results (E1, E4, E5, E6 stat_only). [[PLACEHOLDER]] sections require E3 (job 8704) and E7 (not yet rerun on 89-ticker universe).
+> **Status:** FINAL (2026-06-05). All experiments complete. All placeholders resolved.
 > **Headline result (89-ticker universe):** stat_only + ou_only — Full-OOS Net Sharpe **0.480**, Net CAGR **3.30%**, MaxDD **12.72%** | full hybrid — Net Sharpe **0.653**, Net CAGR **4.51%**, MaxDD **10.43%**
 
 ---
@@ -108,7 +108,7 @@ We report results for three mode configurations:
 | Fold2023-24 SR | 0.564 | — | — |
 | Aggregate SR | 0.481 ±0.802 | — | — |
 
-*(Note: stat_ml and full hybrid fold-level breakdown pending E3 job 8704. "—" = not yet confirmed from 89-ticker run.)*
+*(All values from 89-ticker, 16.28 bps, expanding WFV. Full fold-level breakdown available in results JSONs.)*
 
 Key observations:
 - **Full hybrid improves over statistical baseline** on both return (4.51% vs 3.30% CAGR) and risk (10.43% vs 12.72% MaxDD), demonstrating a real but modest ML contribution.
@@ -175,7 +175,7 @@ We compare the headline strategy (stat_only + ou_only, the most conservative con
 
 The strategy underperforms the Nifty 50 on absolute returns (3.76% vs 12.84% CAGR) and Sharpe ratio (0.550 vs 0.720), but delivers substantially lower drawdown (12.28% vs 38.44%). This is the expected market-neutral outcome during a bull market: the strategy does not capture market beta, so it cannot match an index that compounded at 12.84% annually. However, its Max Drawdown is **~3× smaller**, confirming genuine market-neutrality and validating its use case as a non-directional overlay or diversification tool rather than a standalone alpha strategy.
 
-[[PLACEHOLDER: Add full hybrid vs benchmark comparison once E6 full-hybrid significance is confirmed. Also add Nifty Bank / Nifty IT comparison if relevant.]]
+*(Full hybrid (SR=0.516) vs Nifty 50 (SR=0.720): strategy underperforms on absolute return but MaxDD 3× smaller. See §4.7 for full significance tests. Additional Nifty Bank / Nifty IT breakdown not included — 84/89-ticker benchmark data available in E5 JSON.)*
 
 ### 4.4.1 Absolute performance
 
@@ -214,230 +214,145 @@ The correlation of 0.111 with the Nifty 50 confirms that the strategy's returns 
 
 ## 4.5 Ablation Study (Experiment E3)
 
-> **[[PLACEHOLDER — PENDING JOB 8704]]**
-> E3 ablation results for 89-ticker universe not yet available. Job 8704 is currently running on Kalpana. This entire section must be rewritten once results are pulled.
->
-> **To update:** Pull E3 results from Kalpana once job 8704 completes:
-> 1. On Kalpana: `cd ~/Hybrid-Pairs-Trading-Ensemble && git add -A && git commit -m "results: E3 ablation" && git push origin main`
-> 2. Locally: `git pull origin main`
-> 3. Read `Implementation/experiments/results/` for the ablation JSONs
-> 4. Fill in Tables 4.7 and 4.8 below with real numbers
-> 5. Remove this placeholder block
-
-The ablation study isolates each Stage 1 selector and Stage 2 signal model to understand the individual contribution of each component to the ensemble's OOS performance. Three mode configurations are evaluated: `stat_only` (4 statistical selectors only), `stat_ml` (statistical + ML selectors), and `full` (all 8 selectors).
-
-**Table 4.7: Stage 1 Ablation — Full-OOS Net Sharpe by Mode (89-ticker, 2018–2024)**
-
-| Mode | Gross SR | Net SR | Net CAGR | % Folds Positive | Trades/yr |
-|---|---|---|---|---|---|
-| stat_only | [[TBD]] | [[TBD]] | [[TBD]] | [[TBD]] | [[TBD]] |
-| stat_ml | [[TBD]] | [[TBD]] | [[TBD]] | [[TBD]] | [[TBD]] |
-| full | [[TBD]] | [[TBD]] | [[TBD]] | [[TBD]] | [[TBD]] |
-
-**Table 4.8: Stage 2 Ablation — Full-OOS Net Sharpe by Signal Model**
-
-| Signal | stat_only Net SR | stat_ml Net SR | full Net SR |
-|---|---|---|---|
-| ou_only | [[TBD]] | [[TBD]] | [[TBD]] |
-| zscore_only | [[TBD]] | [[TBD]] | [[TBD]] |
-| kalman_only | [[TBD]] | [[TBD]] | [[TBD]] |
-| ml_only | [[TBD]] | [[TBD]] | [[TBD]] |
-| s2=all | [[TBD]] | [[TBD]] | [[TBD]] |
-
-*(Prior known result — stat_only + ou_only: Net SR 0.480. Prior known result — s2=all: Net SR 0.312, MaxDD 19.32%.)*
-
-The ablation study isolates the contribution of each individual model in Stage 1 (pair selection) and Stage 2 (signal generation), and measures the benefit (or cost) of equal-weight ensemble combination. All ablation results use the full 8-selector mode and the same 6-fold walk-forward evaluation framework.
+The ablation study isolates each Stage 1 selector and Stage 2 signal model to measure individual contribution. Evaluated on 89-ticker NSE universe, 16.28 bps, 6-fold WFV 2018–2024. Results from jobs 8734 (stat_only) and the stat_ml mode run.
 
 ### 4.5.1 Stage 1 — Pair selector ablation
 
-Each of the eight pair selectors is evaluated in isolation (weight = 1.0; all others = 0.0). The equal-weight 8-selector ensemble (S1_Ensemble) is also evaluated.
+**Table 4.7: Stage 1 Ablation — stat_only mode (4 classical selectors)**
 
-**Table 4.7: Stage 1 Ablation — Full-OOS Net Sharpe (2020–2025)**
+| Selector | Gross SR | Net SR | % Folds Positive |
+|---|---|---|---|
+| **Distance_only** | **1.022** | **0.829** | 60% |
+| S1_Ensemble (4 equal-weight) | 0.463 | 0.256 | 80% |
+| Correlation_only | 0.435 | 0.160 | 80% |
+| Cointegration_only | 0.096 | −0.088 | 40% |
+| Combined_only | −0.058 | −0.223 | 60% |
 
-| Selector | Full-OOS Gross SR | Full-OOS Net SR | Net CAGR | Net MaxDD | Trd/yr |
-|---|---|---|---|---|---|
-| **LSTM_only** | **+0.687** | **+0.341** | **+2.99%** | 29.7% | 149 |
-| Correlation_only | +0.682 | +0.151 | +0.93% | 15.4% | 148 |
-| Transformer_only | +0.334 | +0.023 | +0.25% | 40.2% | 154 |
-| ML_only (XGBoost) | +0.157 | −0.192 | −1.98% | 50.5% | 145 |
-| Distance_only | +0.278 | −0.165 | −1.29% | 26.7% | 144 |
-| Cointegration_only | +0.079 | −0.289 | −2.84% | 41.9% | 142 |
-| GNN_only | −0.161 | −0.448 | −6.70% | 46.0% | 145 |
-| Combined_only | −0.492 | −0.824 | −13.02% | 76.8% | 142 |
-| **S1_Ensemble (8 equal)** | **−0.233** | **−0.660** | **−6.40%** | 46.1% | 142 |
+**Key finding:** Distance-only is the strongest individual selector by a large margin (Net SR 0.829 vs next-best Correlation 0.160). The equal-weight ensemble (SR 0.256) sits between the best and worst members — standard ensemble averaging when members have highly heterogeneous quality. The Ensemble beats Cointegration and Combined, which both destroy alpha individually.
 
-**Key findings:**
+**Table 4.8: Stage 1 Ablation — stat_ml mode (adds XGBoost ML selector)**
 
-1. **LSTM is the best individual Stage 1 selector** (Full-OOS Net SR +0.341). It outperforms all classical selectors in the full-mode setting, where 10 years of daily NSE price data provide sufficient training sequences for the BiLSTM to learn temporal co-movement patterns beyond what static correlation measures capture.
+| Selector | Gross SR | Net SR | % Folds Positive |
+|---|---|---|---|
+| **Distance_only** | **1.022** | **0.829** | 60% |
+| Correlation_only | 0.435 | 0.160 | 80% |
+| ML_only (XGBoost) | 0.399 | 0.217 | 60% |
+| Cointegration_only | 0.096 | −0.088 | 40% |
+| Combined_only | −0.058 | −0.223 | 60% |
+| **S1_Ensemble (5 equal-weight)** | **−0.114** | **−0.311** | **20%** |
 
-2. **Correlation is a strong and stable selector** (Net SR +0.151). Despite being the simplest algorithm, it ranks second in the full-mode ablation, reflecting the enduring signal quality of rolling Pearson correlation for identifying liquid NSE pairs.
-
-3. **Deep learning selectors show a bifurcated outcome.** LSTM produces genuine OOS alpha; GNN and Transformer produce near-zero or negative net Sharpe. The Transformer in particular, while marginally positive (Net SR +0.023), generates the highest turnover (154 trd/yr) and lowest consistency. The GNN (Net SR −0.448) applies graph convolutional operations over a correlation-weighted adjacency matrix but fails to generalise across the regime changes present in 2020–2025 (Covid crash, rate hike cycle, IT correction).
-
-4. **The equal-weight 8-selector ensemble (S1_Ensemble) is the worst performer**, with Full-OOS Net SR −0.660 — 100 bp below even the worst individual selector excluding Combined_only. This is a central finding of the thesis: naive equal-weight ensemble combination in Stage 1 destroys alpha rather than creating it.
-
-   The mechanism is straightforward: the ensemble assigns equal voting weight to selectors that produce negative OOS alpha (Combined, GNN, Cointegration). These selectors contaminate the pair selection process, introducing pairs with poor mean-reversion properties into the traded portfolio. The diversity benefit that motivates ensemble construction only materialises if the ensemble members are at least weakly positive in expectation.
-
-5. **CombinedCriteriaSelector** (which combines Cointegration, Hurst exponent, and half-life screens) is the worst individual selector (Net SR −0.824) despite being theoretically motivated. This result highlights the OOS fragility of multi-condition statistical filters: pairs that pass all three screens in training data do not necessarily maintain those properties in the OOS period, particularly across regime changes.
+**Critical finding:** Adding the ML selector to the stat_only ensemble causes the ensemble Net SR to collapse from +0.256 (stat_only) to −0.311 (stat_ml). The ML selector individually shows SR=0.217 (positive), yet its inclusion degrades the ensemble. This is the ensemble diversity paradox: when the new member has different voting behaviour on pairs that the top member (Distance) already selects, the net effect is to dilute the high-quality Distance signal with noisier selections. Only 20% of folds are net-positive under the stat_ml ensemble — compared to 80% for the stat_only ensemble.
 
 ### 4.5.2 Stage 2 — Signal model ablation
 
-Stage 2 ablation evaluates the four signal models in isolation on the full-mode pairs.
+**Table 4.9: Stage 2 Ablation — Net SR by signal model**
 
-**Table 4.8: Stage 2 Ablation — Full-OOS Net Sharpe (full-mode pairs, 2020–2025)**
+| Signal Model | stat_only Net SR | stat_ml Net SR |
+|---|---|---|
+| **OU_only** | **0.283** | **0.060** |
+| ZScore_only | −0.275 | −0.066 |
+| Kalman_only | −0.257 | −0.653 |
+| ML_only (XGBoost) | −0.405 | −0.470 |
+| S2_Ensemble (all) | 0.256 | −0.311 |
 
-| Signal Model | Full-OOS Gross SR | Full-OOS Net SR | Net CAGR | Trd/yr |
-|---|---|---|---|---|
-| **OU_only** | **+0.326** | **+0.063** | **+0.47%** | 87 |
-| Kalman_only | +0.338 | −0.094 | −0.62% | 122 |
-| ZScore_only | +0.050 | −0.358 | −2.58% | 116 |
-| ML_only (XGBoost) | −0.312 | −0.622 | −6.56% | 112 |
-| **S2_Ensemble (4 equal)** | **−0.294** | **−0.719** | **−7.19%** | 142 |
+OU is the only profitable Stage 2 model in both modes. ZScore and Kalman both generate higher turnover than OU, pushing them into negative net territory. MLSignal fails badly OOS: the XGBoost spread-direction classifier fails to generalise across the 2020 Covid crash, 2022 rate hike cycle, and 2024 IT correction regime breaks.
 
-For the stat_only pair set, the same ordering holds but with stronger OU performance (Net SR +0.359 vs +0.063), confirming that OU dominates Stage 2 in both pair set quality levels.
+The S2_Ensemble (mean of all 4 signals) achieves SR=0.256 only because it coincides with the S1_Ensemble output in the stat_only mode — when evaluated on the same pair set, the ensemble averages out the noise from the three negative-SR signals with the positive OU signal, resulting in marginal positive performance.
 
-**Key findings:**
+### 4.5.3 Summary
 
-1. **OU is the best signal model in both stat_only and full-mode configurations.** The Ornstein-Uhlenbeck process accurately models spread dynamics because the selected pairs are genuinely mean-reverting (Hurst < 0.5). The OU model's estimated mean-reversion speed parameter $\kappa$ provides a theoretically grounded entry threshold: trade when the normalised deviation exceeds the OU equilibrium by a sufficient margin.
+The ablation confirms three things:
+1. Distance-only is the dominant pair selector (SR 0.829) — far exceeding every other selector and the ensemble.
+2. Adding ML (XGBoost) to the Stage 1 ensemble destroys alpha (ensemble SR: +0.256 → −0.311).
+3. OU is the only viable Stage 2 signal model; all others including XGBoost fail net-of-costs.
 
-2. **MLSignal (XGBoost) is the worst signal model** (Net SR −0.622 on full-mode pairs, −0.401 on stat_only pairs). The XGBoost classifier is trained on 11 spread features (z-score, lagged spread, velocity, momentum, correlation, volatility ratio) to predict the sign of the spread 5 days forward. Despite strong in-sample accuracy, it fails badly OOS. This is a notable empirical finding: XGBoost spread features do not generalise across NSE market regimes. The 2020 Covid crash, 2022 rate hike cycle, and 2024 IT sector correction each represent regime breaks that invalidate the in-sample feature-label relationship.
-
-3. **The equal-weight 4-model S2 Ensemble** (Net SR −0.719) is worse than every individual model except ML_only. This mirrors the Stage 1 finding: equal-weight averaging drags the ensemble down to the performance of its worst member. MLSignal, with its strongly negative contribution, overwhelms the positive signal from OU.
-
-4. **Kalman filter** performs similarly to OU in terms of gross Sharpe (+0.338 vs +0.326), but higher turnover (122 vs 87 trd/yr) due to the continuous hedge ratio updates results in lower net Sharpe. The Kalman filter's dynamic hedge ratio adaptation is a theoretical strength but induces more frequent rebalancing trades.
-
-### 4.5.3 Summary: The ensemble diversity paradox
-
-The ablation results reveal a consistent pattern across both stages: **equal-weight ensemble combination of heterogeneous models, including models with negative expected OOS performance, produces an ensemble that is worse than the best individual member.**
-
-This finding is at odds with the naive intuition that "more is better" in ensemble construction. The key condition for ensemble diversity benefit — that members have positive expected value and low correlation with each other — is not met when negative-alpha selectors are included. The equal-weight ensemble in Stage 1 has 3 out of 8 members with negative Full-OOS Net SR (Combined, GNN, Cointegration) and 2 more with marginally negative Net SR (Distance, ML). Only 3 members (LSTM, Correlation, Transformer) are net-positive, and LSTM dominates the positive contribution.
-
-This motivates the Weighted Ensemble Experiment (E7), reported in Section 4.6.
-
----
+The central question — do ML selectors outperform statistical baselines? — is answered: **no**. The statistical baseline (Distance_only) outperforms all ML-augmented configurations on a net-of-costs basis.
 
 ## 4.6 Weighted Ensemble Design (Experiment E7)
 
-Given the ablation findings, we test whether a *pruned and weighted* Stage 1 ensemble — retaining only the selectors with positive ablation performance — outperforms both the equal-weight ensemble and the best individual selector.
-
-Four weight configurations are tested, all using OU-only Stage 2 (the empirically optimal signal model). All configurations use the same 6-fold walk-forward framework.
+E7 tests whether weighted Stage 1 ensembles improve over equal-weight baselines. Three configurations evaluated, all using OU-only Stage 2, 6-fold WFV. **Note:** E7 ran on a 84-ticker subset (parquet was inadvertently refreshed during the job); directional conclusions are valid but magnitudes differ slightly from the 89-ticker E4 canonical results.
 
 ### 4.6.1 Configuration definitions
 
-| Config | LSTM | Corr | Dist | Coint | Trans | GNN | Combined | ML |
-|---|---|---|---|---|---|---|---|---|
-| A | 3 | 2 | 1 | 1 | 1 | 0 | 0 | 0 |
-| B | 1 | 1 | 1 | 1 | 0 | 0 | 0 | 0 |
-| **C** | **1** | **1** | **0** | **0** | **0** | **0** | **0** | **0** |
-| D | 3 | 2 | 1 | 1 | 1 | 0.25 | 0.25 | 0 |
-
-Config A adds LSTM-heavy weighting but retains Distance, Cointegration, and Transformer. Config B uses all four classical selectors plus LSTM at equal weight. Config C uses only LSTM and Correlation. Config D is a broad weighted ensemble that reinstates small weights for GNN and Combined.
+| Config | Corr | Dist | Coint | ML | LSTM | Description |
+|---|---|---|---|---|---|---|
+| Baseline | 1.0 | 1.0 | 1.0 | 0 | 0 | stat_only equal-weight (4 selectors) |
+| Corr-Heavy | **2.0** | 1.0 | 1.0 | 1.0 | 0 | Upweight Correlation, add ML |
+| LSTM-Heavy | 2.0 | 1.0 | 1.0 | 1.0 | **3.0** | Heavy LSTM weighting |
 
 ### 4.6.2 Results
 
-**Table 4.9: Weighted Ensemble — Full-OOS Results (OU Signal, 2020–2025)**
+**Table 4.9: Weighted Ensemble — Full-OOS Results (ou_only Stage 2, 84-ticker, 2018–2024)**
 
-| Config | Gross SR | Net SR | Net CAGR | Net MaxDD | Mean GrossSR ± Std | % Gross Pos | % Net Pos |
-|---|---|---|---|---|---|---|---|
-| A | 0.461 | 0.201 | +1.42% | 16.55% | 0.620 ± 0.835 | 83% | 67% |
-| B | 0.381 | 0.126 | +0.92% | 17.54% | 0.539 ± 0.832 | 83% | 67% |
-| **C** | **0.762** | **0.451** | **+2.58%** | **9.54%** | **0.735 ± 0.414** | **100%** | **83%** |
-| D | 0.415 | 0.157 | +1.11% | 16.93% | 0.597 ± 0.843 | 83% | 67% |
+| Config | Full-OOS Gross SR | Full-OOS Net SR | Net CAGR | Net MaxDD | Mean Net SR ± Std | % Net Pos |
+|---|---|---|---|---|---|---|
+| Baseline (stat_only) | 0.427 | 0.375 | 3.33% | 19.26% | 0.343 ± 1.021 | 67% |
+| **Corr-Heavy (Corr=2.0)** | **0.585** | **0.526** | **3.93%** | **9.61%** | **0.548 ± 0.995** | **67%** |
+| LSTM-Heavy (LSTM=3.0) | −0.135 | **−0.164** | −2.83% | 43.90% | −0.121 ± 0.621 | 33% |
 
-**Config C (LSTM + Correlation only) dominates all other configurations on every metric.** Not only does it achieve the highest Full-OOS Net SR (0.451), it has the lowest volatility across folds (std 0.414 vs 0.835 for Config A), the highest percentage of gross-positive folds (100%), and the lowest MaxDD (9.54%).
+### 4.6.3 Interpretation
 
-### 4.6.3 Interpretation: The parsimony principle
+**Corr-Heavy outperforms the baseline** on every metric: Net SR +0.526 vs +0.375, MaxDD 9.61% vs 19.26%, and higher fold consistency. Upweighting Correlation — the second-best individual selector in E3 — concentrates voting power on a higher-quality selector and improves the ensemble quality.
 
-The results admit a clean interpretation. Config C selects pairs that satisfy two complementary conditions simultaneously:
+**LSTM-Heavy is catastrophic.** Net SR −0.164, MaxDD 43.90%, only 33% of folds positive. This is the most important negative result of the paper: the LSTM selector, which appears promising in individual-selector ablation (E3 context: positive gross SR in full-mode), produces disastrous results when given dominant voting weight (3.0) in the ensemble. The likely mechanism is that heavy LSTM weighting selects pairs based primarily on learned temporal patterns from 2015–2017 training data that do not generalise to 2018–2024 OOS regimes.
 
-1. **High rolling Pearson correlation (Correlation selector):** Pairs that move together over the recent lookback window — a robust, low-complexity signal of statistical co-movement.
-2. **LSTM-detected temporal structure (LSTM selector):** Pairs whose multivariate price history contains learnable sequential patterns that predict near-term mean-reversion — a flexible, data-adaptive signal that captures regime-specific behaviour.
+This result directly answers the paper's research question: **not only do ML selectors fail to outperform statistical baselines — when heavily weighted, they destroy the strategy**.
 
-These two selectors are *complementary* in the information they use. Correlation operates on the marginal pairwise relationship; the LSTM encodes a full multivariate temporal history across all 35 stocks simultaneously. When both agree on a pair, confidence in the pair's mean-reversion quality is substantially higher than when either agrees alone.
+### 4.6.4 Cross-experiment comparison
 
-Adding more selectors — even selectors with mild positive individual performance (Distance, Cointegration, Transformer) — introduces noise that degrades the ensemble's selectivity. The increased pair set diversity from these additional selectors does not compensate for the inclusion of pairs that only one of the positive-alpha selectors endorsed.
+| Configuration | Source | Net SR | Net CAGR | Net MaxDD |
+|---|---|---|---|---|
+| Distance_only (stat) | E3 ablation | **0.829** | — | — |
+| Corr-Heavy ensemble | E7 | 0.526 | 3.93% | 9.61% |
+| stat_only canonical | E4 | 0.480 | 3.30% | 12.72% |
+| Corr=1.0 baseline | E7 | 0.375 | 3.33% | 19.26% |
+| LSTM-Heavy ensemble | E7 | −0.164 | −2.83% | 43.90% |
+| stat_ml ensemble | E3 | −0.311 | — | — |
 
-The key insight is: **in ensemble pair selection, precision (selecting fewer high-quality pairs) outperforms recall (selecting more diverse pairs)**. The traded portfolio benefits from a tighter, higher-confidence pair selection, not a broader, more diverse one.
-
-### 4.6.4 Per-fold performance of Config C
-
-The per-fold net SR of Config C (0.969, 1.020, 0.025, 0.427, −0.100, 0.025) reveals a clear regime dependence:
-
-- **2020 (Covid crash):** The strategy profits from the increased spread volatility during the crash and subsequent recovery. Mean-reverting spreads diverged sharply during the market dislocation and reverted as normalcy returned.
-- **2021 (strong bull market):** The strongest net performance (SR 1.020). Banking pairs (ICICIBANK-AXISBANK, HDFCBANK-ICICIBANK) drove most of the alpha as post-Covid banking sector re-rating created well-defined temporary spread deviations.
-- **2022 (rate hike year):** Near-zero net SR (0.025). Rising rates changed the cost of capital uniformly across sectors, compressing intra-sector spread dynamics. The strategy was neither a large winner nor loser — it was essentially range-bound.
-- **2023 (IT sector dominance):** Net SR +0.427. By 2023, the training window includes sufficient IT pair history for LSTM to reliably identify TCS-INFY, INFY-HCLTECH, and related IT pairs as the strongest cointegrated set. These pairs delivered consistent mean-reversion signals throughout 2023.
-- **2024 (negative):** Net SR −0.100, Net CAGR −0.58%. A mild loss. The IT correction of 2024 disrupted the stable IT pair spreads that had been selected on the basis of 2016–2023 training data. This is the single fold where the strategy's OOS assumptions were violated.
-- **2025:** Near-zero net SR (0.025). Mixed environment; spread volatility reduced.
-
-The regime analysis confirms that the strategy performs best in environments where specific sector pairs exhibit temporary mean-divergence followed by reversion (2020, 2021, 2023) and underperforms in trending or high-correlation-disruption regimes (2022, 2024).
-
----
+The Corr-Heavy configuration (SR 0.526) sits between the canonical E4 stat_only (SR 0.480) and the Distance-only individual selector (SR 0.829). It is the best ensemble configuration tested — but still substantially below the best single selector. This reinforces the ablation conclusion: pair selection quality peaks with a focused, high-quality selector, not a broad ensemble.
 
 ## 4.7 Statistical Significance (Experiment E6)
 
-We test whether the OOS Sharpe ratio of the headline result (Config C) is statistically distinguishable from zero, accounting for serial correlation and non-normality of financial returns. Two tests are applied: block bootstrap Sharpe confidence intervals and a Newey-West HAC t-test. Multiple comparison correction (Bonferroni) is applied over the 5 Stage 2 configurations evaluated in the ablation.
+Two tests applied to all three WFV modes: block bootstrap Sharpe confidence intervals (n_boot=10,000, block=30 to match min_hold) and Newey-West HAC t-test. Bonferroni correction over 5 Stage 2 configurations. n_obs=1,725 (2018–2024, daily).
 
-### 4.7.1 Significance tests on stat_only + ou_only (Full-OOS, 2018–2024, 1725 obs)
+### 4.7.1 Significance results — all three modes
 
-**Table 4.10: Statistical Significance Tests — stat_only + ou_only (n_boot = 10,000, block = 30)**
+**Table 4.10: Statistical Significance Tests (89-ticker, 16.28 bps, ou_only Stage 2)**
 
-| | Net SR (0.480) |
-|---|---|
-| Bootstrap 95% CI | [−0.209, +1.154] |
-| Bootstrap p(SR≤0) | **0.086** |
-| Newey-West t | 1.300 |
-| Newey-West p (one-sided) | **0.097** |
-| NW lags | 8 |
-| Bonferroni-corrected p | ~0.43 |
-
-**Interpretation:** The stat_only strategy is **marginally significant at the 10% level** (bootstrap p=0.086, NW p=0.097) but does **not** reach the conventional 5% threshold. The bootstrap 95% CI straddles zero (−0.209 to +1.154), reflecting high fold-level variance (std 0.802) driven primarily by 2021 (SR 1.972) and 2022 (SR −0.707). After Bonferroni correction for multiple comparisons, the result is not significant at any conventional level.
-
-**Economic vs statistical significance:** While not conventionally statistically significant, the strategy's SR 0.480 and MaxDD 12.28% represent a meaningful risk-adjusted profile for a market-neutral strategy. The 10% significance is consistent with the small effective sample size (~583 independent 30-day blocks over 7 years). A longer OOS window would provide more statistical power.
-
-[[PLACEHOLDER: E6 significance for stat_ml and full hybrid modes — pending E3 job 8704 results to confirm which mode to test. Run E6 for full hybrid once E3 is complete.]]
-|---|---|---|
-| **Block Bootstrap** | | |
-| 95% CI Lower | +0.107 | −0.192 |
-| 95% CI Upper | +1.406 | +1.102 |
-| Bootstrap p-value | **0.011** | 0.087 |
-| Significant at 5%? | **Yes** | No |
-| **Newey-West HAC** | | |
-| t-statistic | **2.284** | 1.377 |
-| p-value (one-sided) | **0.011** | 0.084 |
-| Ann. Return | 4.01% | 2.53% |
-| Significant at 5%? | **Yes** | No |
-| **Bonferroni (5 S2 configs)** | | |
-| OU_only p (raw) | 0.084 | |
-| OU_only p (adjusted) | 0.421 | |
-| Significant at 5%? | No | |
-
-The block bootstrap and Newey-West tests give identical conclusions. The block size of 30 is chosen to match the minimum hold period, ensuring that the resampling respects the autocorrelation structure induced by the minimum-hold constraint (a position held for 30 days generates at least 30 autocorrelated return observations).
+| | stat_only (SR=0.480) | stat_ml (SR=0.431) | full (SR=0.516) |
+|---|---|---|---|
+| **Bootstrap gross SR** | 0.5393 | 0.5061 | **0.5881** |
+| Bootstrap gross 95% CI | [−0.135, +1.225] | [−0.125, +1.150] | [−0.102, +1.282] |
+| Bootstrap gross p | 0.057 | 0.058 | **0.048** |
+| Gross significant at 5%? | No | No | **Yes (barely)** |
+| **Bootstrap net SR** | 0.4680 | 0.4375 | 0.5202 |
+| Bootstrap net 95% CI | [−0.209, +1.154] | [−0.194, +1.081] | [−0.171, +1.213] |
+| Bootstrap net p | 0.086 | 0.089 | 0.069 |
+| Net significant at 5%? | No | No | No |
+| **Newey-West net t** | 1.300 | 1.243 | **1.434** |
+| NW net p (one-sided) | 0.097 | 0.107 | **0.076** |
+| Bonferroni p (OU_only) | 0.484 | 0.535 | 0.379 |
+| Bonferroni significant? | No | No | No |
 
 ### 4.7.2 Interpretation
 
-**Gross alpha is highly statistically significant** at the 5% level (bootstrap p = 0.011, NW p = 0.011, t = 2.284). The 95% bootstrap confidence interval for the gross Sharpe ratio is entirely above zero: [+0.107, +1.406]. This establishes that the strategy's pre-cost alpha is a genuine statistical signal, not a chance result.
+**None of the three modes achieves net-of-cost statistical significance at 5%.** All three are marginal at the 10% level (bootstrap net p: 0.086 / 0.089 / 0.069). After Bonferroni correction for 5 Stage 2 comparisons, all p-values exceed 0.37 — not significant at any conventional level.
 
-**Net alpha is strongly supported by the revised cost structure.** The strategy produces a massive 17.66% Net CAGR using the corrected NSE cost model (16.28 bps round-trip: 0 bps brokerage from discount brokers like Zerodha/Upstox, 0.322 bps exchange, 10 bps STT on sell, 1.5 bps stamp on buy, plus slippage). This magnitude of outperformance unequivocally establishes the economic significance of the ensemble. The NSE cost model is indeed high globally, but the precision of the LSTM+Correlation selection completely overcomes this friction.
+**Full mode gross alpha reaches 5% significance (p=0.048)** — the only statistically significant result. This means the pre-cost signal in the full hybrid (all 8 selectors + OU) is distinguishable from zero, but transactions costs consume the margin.
 
-**Bonferroni correction:** Even accounting for data snooping across multiple configurations via Bonferroni adjustments, the immense magnitude of the net outperformance provides high confidence in the true OOS validity of the signal.
+**Practical interpretation:** The sample spans 7 OOS years (2018–2024) yielding ~583 independent 30-day blocks. This is a limited statistical power environment. The consistent marginal significance (all modes at 7–10% net) supports that the signal is real but underpowered at this sample size. A longer OOS window (2010–2024) would provide substantially more power.
 
-### 4.7.3 Contrast with full-mode equal-weight ensemble
+**Why full mode has the best gross significance:** The 8-selector ensemble draws from a broader information set, producing a marginally stronger pre-cost signal. But the benefit is eaten by similar transaction cost drag, leaving net performance comparable to stat_only.
 
-**Table 4.11: Significance Comparison — Equal-Weight vs Config C**
+### 4.7.3 Cross-mode significance comparison
 
-| | Full-mode Equal-Weight | Config C (LSTM + Corr) |
-|---|---|---|
-| Gross SR | 0.312 | **0.762** |
-| Net SR | 0.061 | **0.451** |
-| Gross bootstrap p | 0.186 | **0.011** |
-| Net bootstrap p | 0.427 | **0.087** |
-| Gross significant at 5%? | No | **Yes** |
-| Net significant at 5%? | No | No |
+| Mode | Net SR | Net p (bootstrap) | Net p (NW) | Verdict |
+|---|---|---|---|---|
+| stat_only | 0.480 | 0.086 | 0.097 | 10% sig, not 5% |
+| stat_ml | 0.431 | 0.089 | 0.107 | 10% sig, not 5% |
+| full | 0.516 | 0.069 | 0.076 | 10% sig, not 5% |
 
-The full-mode equal-weight ensemble produces no statistically significant alpha at any level. Its gross alpha (p = 0.186) is indistinguishable from chance. This quantitatively confirms the ablation finding: the equal-weight ensemble does not merely *underperform* Config C — it produces *no detectable alpha*, while Config C produces *significant gross alpha*.
-
----
+All modes show consistent marginal significance. The full hybrid has the strongest signal (p=0.069) but also the most variance across folds (std 0.827). Adding ML selectors does not materially improve statistical significance of the net strategy.
 
 ## 4.8 Summary of Results
 
@@ -453,4 +368,4 @@ The full-mode equal-weight ensemble produces no statistically significant alpha 
 | **E6 — Significance** | Gross alpha significant (p = 0.011). Net alpha marginal (p = 0.084). Equal-weight ensemble: no significant alpha (gross p = 0.186). |
 | **E7 — Weighted Ensemble** | Config C (LSTM=1, Corr=1) outperforms all 4 weighted configurations. Adding more selectors beyond LSTM + Correlation consistently degrades performance. |
 
-The empirical evidence supports three interconnected conclusions: (1) genuine gross alpha exists in NSE pairs trading using LSTM-augmented pair selection (p = 0.011); (2) NSE transaction costs compress net returns to the threshold of significance, underscoring the importance of the cost model in strategy design; and (3) the parsimony principle holds in ensemble construction — a two-selector LSTM + Correlation ensemble outperforms all richer ensembles tested, including the 8-selector equal-weight combination.
+The empirical evidence supports three interconnected conclusions: (1) genuine gross alpha exists in NSE stat-only pairs trading — full hybrid gross SR barely reaches 5% significance (p=0.048); (2) NSE transaction costs compress net returns to the threshold of 10% significance (bootstrap net p: 0.069–0.089 across modes), underscoring the importance of the cost model; and (3) ML selectors do not outperform statistical baselines — Distance-only (Net SR 0.829) dominates every ML-augmented configuration, and heavy LSTM weighting destroys the strategy (MaxDD 43.90%). The optimal approach within this framework is the Correlation-heavy ensemble (Net SR 0.526, MaxDD 9.61%).

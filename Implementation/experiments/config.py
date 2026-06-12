@@ -188,6 +188,47 @@ STAT_ONLY_S1_WEIGHTS: dict[str, float] = {
     "GNN":           0.0,
 }
 
+# ---------------------------------------------------------------------------
+# Single-Selector Standalone Presets (E4.S experiments)
+#
+# Each preset activates exactly one Stage-1 selector (weight=1.0, all others 0).
+# Used to establish individual selector baselines before ensemble comparisons.
+# ---------------------------------------------------------------------------
+
+_ZERO_S1: dict[str, float] = {
+    "Correlation": 0.0, "Distance": 0.0, "Cointegration": 0.0, "Combined": 0.0,
+    "ML": 0.0, "LSTM": 0.0, "Transformer": 0.0, "GNN": 0.0,
+}
+
+CORR_ONLY_S1:  dict[str, float] = {**_ZERO_S1, "Correlation":   1.0}  # E4.S1
+DIST_ONLY_S1:  dict[str, float] = {**_ZERO_S1, "Distance":      1.0}  # E4.S2
+COINT_ONLY_S1: dict[str, float] = {**_ZERO_S1, "Cointegration": 1.0}  # E4.S3
+COMB_ONLY_S1:  dict[str, float] = {**_ZERO_S1, "Combined":      1.0}  # E4.S4
+ML_ONLY_S1:    dict[str, float] = {**_ZERO_S1, "ML":            1.0}  # E4.S5
+LSTM_ONLY_S1:  dict[str, float] = {**_ZERO_S1, "LSTM":          1.0}  # E4.S6
+TRANS_ONLY_S1: dict[str, float] = {**_ZERO_S1, "Transformer":   1.0}  # E4.S7
+GNN_ONLY_S1:   dict[str, float] = {**_ZERO_S1, "GNN":           1.0}  # E4.S8
+
+# ---------------------------------------------------------------------------
+# S1_PRESETS: unified lookup dict for CLI --s1-preset argument.
+# Keys are the preset names accepted by walk_forward.py --s1-preset.
+# ---------------------------------------------------------------------------
+S1_PRESETS: dict[str, dict[str, float]] = {
+    # Canonical 3-configuration ensemble presets
+    "full":       DEFAULT_S1_WEIGHTS,
+    "stat_ml":    STAT_ML_S1_WEIGHTS,
+    "stat_only":  STAT_ONLY_S1_WEIGHTS,
+    # Single-selector standalone benchmarks (E4.S)
+    "corr_only":  CORR_ONLY_S1,
+    "dist_only":  DIST_ONLY_S1,
+    "coint_only": COINT_ONLY_S1,
+    "comb_only":  COMB_ONLY_S1,
+    "ml_only":    ML_ONLY_S1,
+    "lstm_only":  LSTM_ONLY_S1,
+    "trans_only": TRANS_ONLY_S1,
+    "gnn_only":   GNN_ONLY_S1,
+}
+
 # All 4 Stage-2 signal models active (equal weight)
 DEFAULT_S2_WEIGHTS: dict[str, float] = {
     "ZScore": 1.0,

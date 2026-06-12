@@ -125,6 +125,7 @@ from experiments.config import (
     NSE_UNIVERSE,
     OU_ONLY_S2_WEIGHTS,
     PERIODS_PER_YEAR,
+    S1_PRESETS,
     STAT_ML_S1_WEIGHTS,
     STAT_ONLY_S1_WEIGHTS,
     STAT_S2_WEIGHTS,
@@ -622,10 +623,15 @@ def main() -> None:
     )
     parser.add_argument("--mode", choices=["full", "stat_ml", "stat_only"],
                         default="stat_only",
-                        help="Predefined S1 weight preset. Ignored if --s1-weights is provided.")
+                        help="Predefined S1 weight preset (legacy). Ignored if --s1-preset or --s1-weights is provided.")
+    parser.add_argument("--s1-preset", type=str, default=None,
+                        choices=sorted(S1_PRESETS.keys()),
+                        help="Named S1 weight preset from S1_PRESETS (config.py). "
+                             "E.g. 'lstm_only', 'corr_only', 'full'. "
+                             "Overrides --mode; ignored if --s1-weights is provided.")
     parser.add_argument("--s1-weights", type=str, default=None,
-                        help='JSON dict of custom S1 selector weights, e.g. \'{"LSTM":3,"Correlation":2,"Distance":1,"Cointegration":1,"Combined":0.5,"ML":0,"Transformer":1,"GNN":0}\'. '
-                             'Overrides --mode when provided. Zero-weight selectors are skipped.')
+                        help='JSON dict of custom S1 selector weights, e.g. \'{"LSTM":0.7,"Correlation":0.3}\'. '
+                             'Overrides both --s1-preset and --mode. Missing keys default to 0.0.')
     parser.add_argument("--s2", choices=["all", "no_ml", "ou_only", "rl_only"],
                         default="no_ml",
                         help="Stage 2 signal model config. 'no_ml' excludes MLSignal (E3 finding). "
@@ -635,17 +641,21 @@ def main() -> None:
     parser.add_argument("--top-k", type=int, default=DEFAULT_TOP_K)
     args = parser.parse_args()
 
-    # Resolve S1 weights: custom JSON overrides mode preset
+    _ALL_S1_KEYS = ["Correlation", "Distance", "Cointegration", "Combined",
+                    "ML", "LSTM", "Transformer", "GNN"]
+
+    # Priority: --s1-weights > --s1-preset > --mode
     if args.s1_weights:
         try:
             s1_weights = json.loads(args.s1_weights)
         except json.JSONDecodeError as e:
             raise ValueError(f"--s1-weights is not valid JSON: {e}") from e
-        # Fill missing keys with 0.0 so ensemble_pair_scores handles them
-        all_keys = ["Correlation", "Distance", "Cointegration", "Combined", "ML", "LSTM", "Transformer", "GNN"]
-        for k in all_keys:
+        for k in _ALL_S1_KEYS:
             s1_weights.setdefault(k, 0.0)
         mode_label = f"custom({args.s1_weights[:60]})"
+    elif args.s1_preset:
+        s1_weights = dict(S1_PRESETS[args.s1_preset])   # copy — never mutate config
+        mode_label = args.s1_preset
     else:
         s1_weights = _MODE_WEIGHTS[args.mode]
         mode_label = args.mode

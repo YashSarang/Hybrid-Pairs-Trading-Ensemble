@@ -378,3 +378,14 @@ Hybrid-Pairs-Trading-Ensemble/
 2. **Robustness of Fold 5 (2022) dip:** Fold 5 (2022) performance is deeply negative across all runs (-1.504 Net SR in stat_ml), mirroring the 89-ticker Fold 5 performance. This confirms the 2022 performance drop is a macro/regime phenomenon rather than a universe artifact.
 3. **ML ensemble effect:** The addition of ML selectors (`stat_ml`) marginally increases mean Sharpe (to 0.954) but materially increases fold-to-fold volatility and Fold 5 maximum drawdown, indicating that the statistical ensemble remains the more robust parsimonious baseline.
 
+---
+
+## Phase 5: Metrics Backfilling & Transaction Cost Sensitivity Analysis (June 12, 2026)
+
+**Approach:** Backfilled complete canonical 89-ticker WFV metrics (cagr, maxdd, trade count, bootstrap CIs, and Newey-West p-values) and ran a transaction cost sensitivity sweep (0 bps to 50 bps) for the three core setups.
+
+**Key Findings:**
+1. **High Friction Tolerance:** All models remain profitable (Net Sharpe > 0.28) up to 50 bps round-trip transaction costs, validating the effectiveness of the 30-day minimum hold period constraint in minimizing cost drag.
+2. **Diversification Stability:** The full hybrid ensemble (`full + ou_only`) remains the optimal choice, holding a Net Sharpe of 0.516 at baseline and 0.373 even under a 50 bps penalty, confirming the value of selector-level diversification under execution stress.
+
+

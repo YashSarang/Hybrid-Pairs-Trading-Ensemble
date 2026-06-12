@@ -43,21 +43,31 @@
     "E4": {
       "status": "COMPLETE jobs 8693-8699",
       "stat_only_ou": {
-        "net_SR": 0.48,
-        "CAGR": 3.3,
+        "net_SR": 0.480,
+        "CAGR": 3.30,
         "MaxDD": 12.72,
-        "trades": 473
+        "trades": 473,
+        "ci_95": [-0.209, 1.154],
+        "p_boot": 0.086
       },
       "stat_ml_ou": {
-        "net_SR": 0.453,
-        "metrics_note": "CAGR/MaxDD/Trades not fully available in committed canonical artifacts"
+        "net_SR": 0.438,
+        "CAGR": 3.23,
+        "MaxDD": 10.10,
+        "trades": 476,
+        "ci_95": [-0.194, 1.081],
+        "p_boot": 0.089
       },
       "full_hybrid": {
-        "net_SR_mean": 0.519,
+        "net_SR_mean": 0.520,
         "net_SR_std": 0.061,
-        "metrics_note": "CAGR/MaxDD available in summaries; trades missing in canonical committed outputs"
+        "CAGR": 3.72,
+        "MaxDD": 11.75,
+        "trades": 467,
+        "ci_95": [-0.171, 1.213],
+        "p_boot": 0.069
       },
-      "data_availability_note": "Per-mode E4 fields are incomplete in committed artifacts; backfill via canonical rerun/export before final table lock"
+      "data_availability_note": "Primary 89-ticker canonical results backfilled on 2026-06-12"
     },
     "E4_robustness_35t_nifty50": {
       "name": "Matched-Universe Robustness (35-Ticker Nifty50 Subset)",

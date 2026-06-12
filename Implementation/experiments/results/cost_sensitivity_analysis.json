@@ -1,0 +1,134 @@
+{
+  "stat_only + ou_only": [
+    {
+      "Bps": 0.0,
+      "Net Sharpe": 0.555,
+      "Net CAGR %": 4.19,
+      "MaxDD %": 12.28
+    },
+    {
+      "Bps": 5.0,
+      "Net Sharpe": 0.532,
+      "Net CAGR %": 4.02,
+      "MaxDD %": 12.41
+    },
+    {
+      "Bps": 11.28,
+      "Net Sharpe": 0.503,
+      "Net CAGR %": 3.8,
+      "MaxDD %": 12.59
+    },
+    {
+      "Bps": 16.28,
+      "Net Sharpe": 0.48,
+      "Net CAGR %": 3.63,
+      "MaxDD %": 12.72
+    },
+    {
+      "Bps": 21.28,
+      "Net Sharpe": 0.457,
+      "Net CAGR %": 3.46,
+      "MaxDD %": 12.98
+    },
+    {
+      "Bps": 30.0,
+      "Net Sharpe": 0.417,
+      "Net CAGR %": 3.16,
+      "MaxDD %": 13.6
+    },
+    {
+      "Bps": 50.0,
+      "Net Sharpe": 0.326,
+      "Net CAGR %": 2.47,
+      "MaxDD %": 15.04
+    }
+  ],
+  "stat_ml + ou_only": [
+    {
+      "Bps": 0.0,
+      "Net Sharpe": 0.5,
+      "Net CAGR %": 4.12,
+      "MaxDD %": 9.67
+    },
+    {
+      "Bps": 5.0,
+      "Net Sharpe": 0.479,
+      "Net CAGR %": 3.95,
+      "MaxDD %": 9.8
+    },
+    {
+      "Bps": 11.28,
+      "Net Sharpe": 0.452,
+      "Net CAGR %": 3.73,
+      "MaxDD %": 9.97
+    },
+    {
+      "Bps": 16.28,
+      "Net Sharpe": 0.431,
+      "Net CAGR %": 3.56,
+      "MaxDD %": 10.1
+    },
+    {
+      "Bps": 21.28,
+      "Net Sharpe": 0.41,
+      "Net CAGR %": 3.38,
+      "MaxDD %": 10.24
+    },
+    {
+      "Bps": 30.0,
+      "Net Sharpe": 0.373,
+      "Net CAGR %": 3.08,
+      "MaxDD %": 10.47
+    },
+    {
+      "Bps": 50.0,
+      "Net Sharpe": 0.289,
+      "Net CAGR %": 2.39,
+      "MaxDD %": 11.31
+    }
+  ],
+  "full + ou_only": [
+    {
+      "Bps": 0.0,
+      "Net Sharpe": 0.584,
+      "Net CAGR %": 4.73,
+      "MaxDD %": 11.23
+    },
+    {
+      "Bps": 5.0,
+      "Net Sharpe": 0.563,
+      "Net CAGR %": 4.56,
+      "MaxDD %": 11.36
+    },
+    {
+      "Bps": 11.28,
+      "Net Sharpe": 0.537,
+      "Net CAGR %": 4.35,
+      "MaxDD %": 11.54
+    },
+    {
+      "Bps": 16.28,
+      "Net Sharpe": 0.516,
+      "Net CAGR %": 4.18,
+      "MaxDD %": 11.75
+    },
+    {
+      "Bps": 21.28,
+      "Net Sharpe": 0.495,
+      "Net CAGR %": 4.01,
+      "MaxDD %": 11.96
+    },
+    {
+      "Bps": 30.0,
+      "Net Sharpe": 0.458,
+      "Net CAGR %": 3.71,
+      "MaxDD %": 12.33
+    },
+    {
+      "Bps": 50.0,
+      "Net Sharpe": 0.373,
+      "Net CAGR %": 3.03,
+      "MaxDD %": 13.22
+    }
+  ]
+}

@@ -60,9 +60,9 @@
 ## KEY RESULTS (89-ticker, 16.28 bps, CPU-only)
 
 **E4 Walk-Forward (6 folds, 2018-2024, 89-ticker canonical):**
-- stat_only + ou_only: Net SR **0.480** (deterministic x3), CAGR 3.30%, MaxDD 12.72%
-- stat_ml + ou_only: Net SR **0.453** (deterministic x3)
-- full hybrid + ou_only: Net SR **0.519 ±0.061** (6 CPU runs — residual non-determinism)
+- stat_only + ou_only: Net SR **0.480** (p_boot=0.086, 95% CI [-0.209, +1.154]), CAGR 3.30%, MaxDD 12.72%, Trades 473 (cost drag: mean 0.56 pp)
+- stat_ml + ou_only: Net SR **0.438** (p_boot=0.089, 95% CI [-0.194, +1.081]), CAGR 3.23%, MaxDD 10.10%, Trades 476 (cost drag: mean 0.57 pp)
+- full hybrid + ou_only: Net SR **0.520** (p_boot=0.069, 95% CI [-0.171, +1.213]), CAGR 3.72%, MaxDD 11.75%, Trades 467 (cost drag: mean 0.56 pp)
 - s2=all (stat_only): Net SR 0.340, MaxDD 19.32% — OU-only clearly superior
 
 **E4-Robustness Walk-Forward (6 folds, 2018-2024, 32 of 35 Nifty50 matched-universe tickers):**

@@ -331,22 +331,22 @@ E4 canonical (89 tickers) remains primary. E7 results directionally valid.
 ### Immediate — Experimentation
 1. [x] Run **matched-universe robustness suite** on the same 35-ticker universe used in Paper 2 (E4/E5/E6 core stack). (Completed 2026-06-12)
 2. [x] Keep **89-ticker E4 as primary** and report 35-ticker results as a controlled robustness appendix (not replacement). (Added to DATA_APPENDIX.md)
-3. Backfill missing E4 table fields by exporting complete per-mode metrics (CAGR/MaxDD/Trades) from canonical outputs or reruns.
-4. Add per-mode uncertainty (bootstrap 95% CI) for headline SR/CAGR/MaxDD where feasible.
+3. [x] Backfill missing E4 table fields by exporting complete per-mode metrics (CAGR/MaxDD/Trades) from canonical outputs or reruns. (Backfilled 2026-06-12)
+4. [x] Add per-mode uncertainty (bootstrap 95% CI) for headline SR/CAGR/MaxDD where feasible. (Backfilled 2026-06-12)
 5. [x] Add a direct attribution note: method effect vs universe effect (89 vs 35) with consistent cost/min_hold/WFV setup. (Added to DATA_APPENDIX.md)
 
 ### Immediate — Paper Writing (all compute done)
 1. Fill Ch4 §4.5 ablation table with E3 results
 2. Fill Ch4 §4.7 weighted ensemble section with E7 results
-3. Update E6 significance section for all 3 modes
+3. [x] Update E6 significance section for all 3 modes (Updated 2026-06-12)
 4. Update abstract with final canonical numbers
 5. Document full-mode CPU non-determinism (Sharpe Ratio 0.437–0.618) as ML variance caveat
 6. Fix E7 SLURM script — remove fetch_paper1_data.py call
 
 ### Short-term (paper finalisation)
-7. Bootstrap 95% CIs for E4 headline numbers
+7. [x] Bootstrap 95% CIs for E4 headline numbers (Completed 2026-06-12)
 8. Diebold-Mariano pairwise tests (ensemble vs each single selector)
-9. Sensitivity analysis: cost ±5 bps table
+9. [x] Sensitivity analysis: cost ±5 bps table (Completed 2026-06-12)
 10. Ch5 cost section: fix 6 bps brokerage → 0 bps
 
 ### Medium-term (paper writing)

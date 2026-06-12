@@ -1,5 +1,5 @@
 # Hybrid Pairs Trading — Paper 1 Knowledge Graph
-*Last updated: 2026-06-05 (all experiments complete) | Universe: 89 NSE Nifty100 | Costs: 16.28 bps | CPU-only ML*
+*Last updated: 2026-06-10 (docs + flow restructuring synced) | Universe: 89 NSE Nifty100 | Costs: 16.28 bps | CPU-only ML*
 
 ---
 
@@ -39,6 +39,20 @@
 | E6 | Significance Tests (all 3 modes) | COMPLETE job 8735 | None significant at 5%; full best: p=0.069 boot, p=0.076 NW |
 | E7 | Weighted Ensemble | COMPLETE job 8736 | E7-A(Corr=2.0) SR=0.548; E7-B(LSTM=3.0) SR=-0.121 |
 | E8 | RL Signal | BLOCKED — gymnasium not on Kalpana | — |
+
+---
+
+## DOCUMENTATION STATUS (LATEST)
+
+- `Flow.md` is now restructured as the canonical narrative with:
+  - glossary of short forms/jargon at top,
+  - explicit Sharpe Ratio terminology and computed Sharpe deltas where derivable,
+  - evidence-classified key design decisions (literature vs experiment vs engineering),
+  - causal experiment sequence (why each experiment led to the next),
+  - E4 data-availability caveat for missing per-mode fields in committed artifacts,
+  - **Future Work Scope → Immediate — Experimentation** block,
+  - new standalone section: **Ensemble Optimisation and Cross-Universe Consistency Plan**.
+- `Implementation/reports/chapter2_literature_review.md` has matching top glossary/jargon definitions to keep terminology consistent with `Flow.md`.
 
 ---
 
@@ -166,14 +180,14 @@ Paper_1_Hybrid_Ensemble/
 
 ## PENDING REVISIONS (ordered by priority)
 
-1. **Write paper** — all experiments complete; no more compute needed
-2. **CPU full-mode non-determinism** — investigate/document; 6 runs gave SR 0.437–0.618 range
-3. **E7 data drift** — E7 script called fetch_paper1_data.py, shrinking parquet 89→84 tickers. Fix: remove fetch from E7 SLURM; restore 89-ticker parquet on Kalpana before any rerun
-4. **Bootstrap CIs for E4 headline numbers** — currently E6 provides CIs for aggregate only; need per-mode CIs
-5. **Chapter rewrites** — Ch4 §4.5/§4.7 need ablation + weighted results filled in
+1. **Write paper** — all experiments complete; focus on chapter/table integration
+2. **CPU full-mode non-determinism** — document clearly; 6 runs gave SR 0.437–0.618 range
+3. **E7 data drift hardening** — keep `fetch_paper1_data.py` removed from E7 path; enforce 89-ticker parquet before reruns
+4. **Bootstrap CIs for E4 headline numbers** — add per-mode CI panel (not only aggregate significance outputs)
+5. **Chapter rewrites** — Ch4 §4.5/§4.7 to include final ablation + weighted-ensemble evidence
 6. **Ch5 cost fix** — Section 5.1.1 uses 6 bps brokerage (legacy); align to 0 bps (16.28 bps total)
-7. **Abstract final numbers** — all results now available; update
-8. **Flow.md** — update with final results
+7. **Abstract final numbers** — harmonize with latest canonical table and caveats
+8. **Cross-universe robustness pack (Immediate — Experimentation)** — run matched 35-ticker E4/E5/E6 and report as robustness appendix (89-ticker remains primary)
 
 ---
 

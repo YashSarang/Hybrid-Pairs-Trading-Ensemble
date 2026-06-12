@@ -1,6 +1,6 @@
 {
   "description": "All experiment scripts, their purpose, results, and current status.",
-  "lastUpdated": "2026-06-04",
+  "lastUpdated": "2026-06-10",
   "configNotes": {
     "universe": "89 NSE Nifty 100 tickers (2015-01-01 to 2024-12-31)",
     "transactionCosts_bps": 16.28,
@@ -12,12 +12,12 @@
       "name": "Frequency Comparison (daily vs hourly)",
       "script": "Implementation/experiments/freq_comparison.py",
       "slurm": "Implementation/experiments/slurm/e1_paper1_freq.sh",
-      "status": "SUBMITTED",
+      "status": "COMPLETE",
       "job_ids": {
-        "8737": "RUNNING"
+        "8737": "COMPLETE"
       },
       "estimated_runtime": "4h",
-      "results": "PENDING"
+      "results": "mean net SR=0.343 +- 1.021 (84-ticker data)"
     },
     "E2": {
       "status": "NOT RERUN",
@@ -27,10 +27,10 @@
       "name": "Component Ablation",
       "script": "Implementation/experiments/ablation.py",
       "slurm": "Implementation/experiments/slurm/e3_paper1_ablation.sh",
-      "status": "SUBMITTED",
+      "status": "COMPLETE",
       "job_ids": {
         "8704": "CANCELLED (wrong universe, code had 35-ticker NSE_UNIVERSE bug)",
-        "8734": "RUNNING"
+        "8734": "COMPLETE"
       },
       "modes": [
         "stat_only",
@@ -38,7 +38,7 @@
         "full"
       ],
       "estimated_runtime": "8h",
-      "results": "PENDING"
+      "results": "stat_only best single Distance SR=0.829; stat_only ensemble SR=0.256; stat_ml ensemble SR=-0.311"
     },
     "E4": {
       "status": "COMPLETE jobs 8693-8699",
@@ -49,13 +49,15 @@
         "trades": 473
       },
       "stat_ml_ou": {
-        "net_SR": 0.431
+        "net_SR": 0.453,
+        "metrics_note": "CAGR/MaxDD/Trades not fully available in committed canonical artifacts"
       },
       "full_hybrid": {
-        "net_SR": 0.653,
-        "CAGR": 4.51,
-        "MaxDD": 10.43
-      }
+        "net_SR_mean": 0.519,
+        "net_SR_std": 0.061,
+        "metrics_note": "CAGR/MaxDD available in summaries; trades missing in canonical committed outputs"
+      },
+      "data_availability_note": "Per-mode E4 fields are incomplete in committed artifacts; backfill via canonical rerun/export before final table lock"
     },
     "E5": {
       "status": "COMPLETE",
@@ -68,10 +70,10 @@
       "name": "Statistical Significance Tests",
       "script": "Implementation/experiments/significance_tests.py",
       "slurm": "Implementation/experiments/slurm/e6_paper1_significance.sh",
-      "status": "SUBMITTED",
+      "status": "COMPLETE",
       "job_ids": {
         "prior": "stat_only only (p=0.086)",
-        "8735": "RUNNING (all 3 modes)"
+        "8735": "COMPLETE (all 3 modes)"
       },
       "modes": [
         "stat_only",
@@ -90,15 +92,15 @@
         "verdict": "Marginally significant at 10%, NOT 5%"
       },
       "estimated_runtime": "6h",
-      "results": "PENDING for stat_ml/full"
+      "results": "none significant at 5%; full best (p_boot=0.069, p_NW=0.076)"
     },
     "E7": {
       "name": "Weighted Ensemble",
       "script": "Implementation/experiments/walk_forward.py",
       "slurm": "Implementation/experiments/slurm/e7_paper1_weighted.sh",
-      "status": "SUBMITTED",
+      "status": "COMPLETE",
       "job_ids": {
-        "8736": "RUNNING"
+        "8736": "COMPLETE"
       },
       "configs": {
         "E7-A": "Weighted S1 (Corr=2.0, others=1.0) + OU-only S2 -- stat_ml",
@@ -106,17 +108,16 @@
         "E7-C": "stat_only + OU-only S2 (replication check)"
       },
       "estimated_runtime": "8h",
-      "results": "PENDING"
+      "results": "E7-A SR=0.548; E7-B SR=-0.121; E7-C SR=0.343 (84-ticker data note)"
     },
     "E8": {
       "status": "NOT RUN \u2014 gymnasium missing on Kalpana"
     }
   },
-  "last_updated": "2026-06-05",
-  "active_jobs": {
-    "E3": "8734",
-    "E6": "8735",
-    "E7": "8736",
-    "E1": "8737"
+  "last_updated": "2026-06-10",
+  "active_jobs": {},
+  "notes": {
+    "flow_sync": "Flow.md updated with glossary, evidence-linked design decisions, causal experiment chain, Immediate-Experimentation future work, and ensemble optimisation cross-universe plan.",
+    "cross_universe_next": "Run matched 35-ticker robustness suite (E4/E5/E6) while keeping 89-ticker as primary."
   }
 }

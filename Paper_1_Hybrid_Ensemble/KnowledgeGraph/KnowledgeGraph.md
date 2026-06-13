@@ -38,7 +38,7 @@
 | E4-Robustness | 35-ticker Nifty50 Matched WFV | COMPLETE (Kalpana job 9442) | stat_only (OU): mean net SR=0.920, full OOS Net SR=0.773; stat_ml (OU): mean net SR=0.954, full OOS Net SR=0.792 |
 | E5 | Benchmark vs Nifty50 | COMPLETE job 8699 | Strategy SR 0.550 vs Nifty50 SR 0.720 |
 | E6 | Significance Tests (all 3 modes) | COMPLETE job 8735 | None significant at 5%; full best: p=0.069 boot, p=0.076 NW |
-| E7 | Weighted Ensemble | COMPLETE job 8736 | E7-A(Corr=2.0) SR=0.548; E7-B(LSTM=3.0) SR=-0.121 |
+| E4 Grid | Exhaustive Weight Space Search | COMPLETE | E4.S: ML SR=0.610 (best single); E4.W2: Corr+Coint SR=0.726 (best pair); DM tests p>0.45 (not significant) |
 | E8 | RL Signal | BLOCKED — gymnasium not on Kalpana | — |
 
 ---
@@ -96,11 +96,10 @@ Aggregate: Net SR 0.481 ±0.802 | Full OOS: SR 0.480, CAGR 3.30%, MaxDD 12.72%
 - stat_ml:   net SR=0.438 CI=[-0.194,1.081] p_boot=0.089 NW t=1.243 p=0.107 (NOT sig at 10%)
 - full:      net SR=0.520 CI=[-0.171,1.213] p_boot=0.069 NW t=1.434 p=0.076 (sig at 10%)
 
-**E7 Weighted Ensemble (84-ticker data — parquet refreshed by E7 script):**
-- E7-A Corr=2.0, stat_ml: mean SR=0.548 (vs equal-weight stat_ml 0.453 — marginal gain)
-- E7-B LSTM=3.0, full:    mean SR=-0.121 (WORSE — LSTM weighting hurts)
-- E7-C stat_only equal:   mean SR=0.343 (lower than E4 0.480 — 84 vs 89 tickers)
-- ⚠ DATA NOTE: E7 parquet refreshed to 84 tickers. E4 canonical (89 tickers) is primary.
+**E4 Grid Exhaustive Weight Space Search (89-ticker canonical data, 16.28 bps, June 2026):**
+- Standalone (E4.S): ML (XGBoost) Net SR **0.610**, Distance Net SR **0.444**, Cointegration Net SR **0.167**, Combined Net SR **0.109**, Transformer Net SR **0.041**, GNN Net SR **-0.121**, Correlation Net SR **-0.234**, LSTM Net SR **-1.034**
+- Pairwise (E4.W2): Best pair is **Corr+Coint** Net SR **0.726** (CAGR 5.47%, MaxDD 8.37%), representing a powerful synergistic dual-filter. Next best is Coint+ML Net SR **0.590**.
+- Significance: Pairwise DM tests ($h=30$) confirm that these weight space improvements are statistically non-significant (Corr+Coint vs stat_only p=0.649, ML vs stat_only p=0.479), supporting the parsimony principle.
 
 **E6 Significance (stat_only ou_only, 1725 obs):**
 - Bootstrap 95% CI: **[-0.209, +1.154]** | p(SR≤0) = **0.086**

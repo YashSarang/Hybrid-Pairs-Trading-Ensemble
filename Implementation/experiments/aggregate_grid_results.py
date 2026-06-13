@@ -339,8 +339,12 @@ def main() -> None:
             tzinfo=timezone.utc
         ).timestamp()
 
-    # Scan all walk_forward_*.json files
-    all_files = sorted(RESULTS_DIR.glob("walk_forward_*.json"), key=lambda f: f.stat().st_mtime)
+    # Scan all walk_forward_*.json files, excluding robustness '35t' and old historical runs
+    all_files = [
+        f for f in RESULTS_DIR.glob("walk_forward_*.json")
+        if "35t" not in f.name and (f.name.startswith("walk_forward_20260612") or f.name.startswith("walk_forward_20260613"))
+    ]
+    all_files.sort(key=lambda f: f.stat().st_mtime)
     log.info(f"Found {len(all_files)} walk_forward JSON files in {RESULTS_DIR}")
 
     results = []

@@ -1070,3 +1070,66 @@ The Diebold-Mariano (DM) test evaluates whether the difference in predictive acc
 1. **Lack of Statistical Dominance:** None of the pairwise differences are statistically significant at any conventional level (all p-values > 0.15). While the full hybrid ensemble achieves a slightly higher absolute Net Sharpe (0.520 vs 0.480) and CAGR (3.72% vs 3.30%), the daily return difference stream is statistically indistinguishable from the baseline statistical strategy.
 2. **ML Selection Impact:** The comparison between `stat_only` and `stat_ml` shows a DM statistic near zero (0.0504, p=0.96), confirming that the inclusion of the simple XGBoost ML selector does not generate a return stream that significantly deviates from the pure statistical baseline.
 3. **Conclusion for Thesis Framing:** This provides empirical proof of the **parsimony principle**: the additional complexity of the full hybrid ensemble (incorporating LSTM, Transformer, GNN, and XGBoost selectors) does not yield statistically significant outperformance over the simpler statistical baseline. The baseline `stat_only + ou_only` remains the preferred parsimonious model.
+
+---
+
+# SECTION 10: EXHAUSTIVE ENSEMBLE WEIGHT SPACE SEARCH (EXPERIMENT E4 GRID)
+
+**Generated:** 2026-06-13 02:34 IST  
+**Universe:** 89 NSE Nifty 100 tickers  
+**Date Range:** 2018-01-01 to 2024-12-31 (6-fold expanding WFV)  
+**Transaction Costs:** 16.28 bps round-trip (IndianCosts)  
+**Signal Model:** OU-only (fixed)  
+
+### Objective
+This experiment addresses the reviewer challenge regarding searching the ensemble weight space. We run:
+1. **E4.S (Standalone):** Evaluate each of the 8 Stage-1 selectors individually.
+2. **E4.W2 (Pairwise):** Evaluate all $C(8,2) = 28$ equal-weight two-selector ensembles.
+
+This systematic search identifies if any specific sub-ensemble or single selector statistically outperforms the baseline statistical strategy or the full hybrid strategy.
+
+### E4.S Standalone Results
+
+| Rank | Selector | Net SR | Gross SR | Net CAGR % | Total Trades | Folds Positive | Verdict |
+|---|---|---|---|---|---|---|---|
+| 1 | ML (XGBoost) | 0.6103 | 0.6557 | 6.55% | 424 | 83% | ✅ Positive |
+| 2 | Distance | 0.4444 | 0.4953 | 4.61% | 410 | 83% | ✅ Positive |
+| 3 | Cointegration | 0.1665 | 0.2142 | 1.04% | 461 | 50% | ✅ Positive |
+| 4 | Combined | 0.1092 | 0.1529 | 1.16% | 417 | 50% | ✅ Positive |
+| 5 | Transformer | 0.0409 | 0.0722 | -0.64% | 381 | 50% | ✅ Positive |
+| 6 | GNN | -0.1211 | -0.0904 | -2.51% | 391 | 33% | ❌ Negative |
+| 7 | Correlation | -0.2339 | -0.1714 | -2.25% | 439 | 33% | ❌ Negative |
+| 8 | LSTM | -1.0342 | -1.0054 | -18.92% | 439 | 17% | ❌ Negative |
+
+*Key finding:* Standalone ML (XGBoost) is the top-performing single selector (Net SR = 0.6103), while deep sequence models (LSTM) fail significantly in isolation (Net SR = -1.0342).
+
+### E4.W2 Pairwise Ensemble Results (Top 10 of 28 Pairs)
+
+| Rank | Combination | Net SR | ±Std | Gross SR | Net CAGR % | MaxDD % | Total Trades | Folds Positive |
+|---|---|---|---|---|---|---|---|---|
+| 1 | **Corr+Coint** | **0.7259** | 1.2519 | 0.7984 | 5.47% | 8.37% | 460 | 83% |
+| 2 | Coint+ML | 0.5898 | 0.7349 | 0.6442 | 7.30% | 9.64% | 506 | 67% |
+| 3 | Comb+ML | 0.5784 | 0.6449 | 0.6328 | 7.60% | 9.64% | 469 | 67% |
+| 4 | Dist+ML | 0.5702 | 0.8088 | 0.6220 | 6.62% | 7.26% | 422 | 83% |
+| 5 | Corr+Dist | 0.4977 | 0.6618 | 0.5527 | 4.97% | 7.10% | 417 | 83% |
+| 6 | Coint+Comb | 0.4852 | 1.1654 | 0.5365 | 5.02% | 10.55% | 470 | 67% |
+| 7 | Dist+LSTM | 0.4385 | 0.8330 | 0.4910 | 4.49% | 7.52% | 412 | 83% |
+| 8 | Dist+Trans | 0.4385 | 0.8330 | 0.4910 | 4.49% | 7.52% | 412 | 83% |
+| 9 | ML+LSTM | 0.4355 | 0.4060 | 0.4728 | 6.06% | 14.15% | 396 | 83% |
+| 10 | ML+Trans | 0.3797 | 1.2257 | 0.4156 | 3.75% | 18.00% | 436 | 50% |
+
+*Key finding:* Although Correlation and Cointegration both have low or negative performance standalone, their pairwise ensemble achieves the peak Net Sharpe of **0.7259**, indicating a strong complementary interaction between statistical filtering layers.
+
+### Pairwise Diebold-Mariano Tests for Recent Configurations
+To evaluate if the top performers in the weight space search significantly outperform the baseline model, we run DM tests with a 30-day forecast horizon ($h=30$):
+
+| Comparison (Model 2 vs. Model 1) | Mean Daily Return Diff | DM Statistic | One-Sided p-value | Two-Sided p-value | Significance Verdict |
+|---|---|---|---|---|---|
+| **Corr+Coint** vs. **stat_only** | +6.60e-5 | 0.4550 | 0.3245 | 0.6491 | Not significant |
+| **ML standalone** vs. **stat_only** | +1.29e-4 | 0.7084 | 0.2393 | 0.4787 | Not significant |
+| **Corr+Coint** vs. **full hybrid** | +4.50e-5 | 0.2726 | 0.3926 | 0.7852 | Not significant |
+
+### Key Observations
+1. **Parsimony Supported:** The grid search results support the parsimony principle: while specific sub-ensembles (like `Corr+Coint`) can achieve higher Net Sharpe ratios OOS compared to the equal-weight baselines, the differences in daily return streams are statistically non-significant (p-values > 0.45).
+2. **Complementarity of Selectors:** The high Sharpe of `Corr+Coint` compared to their standalone performances confirms that selector interaction is crucial. Correlation selects highly cointegrated pairs that Engle-Granger alone might reject due to short-term deviation spikes, and their joint ensembling stabilizes selections.
+

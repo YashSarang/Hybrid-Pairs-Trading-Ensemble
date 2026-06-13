@@ -1,0 +1,31 @@
+{
+  "corr_coint_vs_stat_only": {
+    "dm_statistic": 0.455,
+    "p_value_two_sided": 0.6491,
+    "p_value_one_sided": 0.3245,
+    "mean_difference": 6.6e-05,
+    "n_obs": 1726
+  },
+  "ml_vs_stat_only": {
+    "dm_statistic": 0.7084,
+    "p_value_two_sided": 0.4787,
+    "p_value_one_sided": 0.2393,
+    "mean_difference": 0.000129,
+    "n_obs": 1726
+  },
+  "corr_coint_vs_full_hybrid": {
+    "dm_statistic": 0.2726,
+    "p_value_two_sided": 0.7852,
+    "p_value_one_sided": 0.3926,
+    "mean_difference": 4.5e-05,
+    "n_obs": 1726
+  },
+  "full_hybrid_vs_stat_only": {
+    "dm_statistic": 0.3911,
+    "p_value_two_sided": 0.6957,
+    "p_value_one_sided": 0.3479,
+    "mean_difference": 2.2e-05,
+    "n_obs": 1726
+  },
+  "horizon": 30
+}

@@ -1,8 +1,0 @@
-WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
-I0000 00:00:1778033619.356802   62356 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
-WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
-I0000 00:00:1778033623.954742   62356 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
-usage: walk_forward.py [-h] [--mode {full,stat_ml,stat_only}]
-                       [--s1-weights S1_WEIGHTS] [--s2 {all,no_ml,ou_only}]
-                       [--top-k TOP_K]
-walk_forward.py: error: argument --s2: invalid choice: 'rl_only' (choose from 'all', 'no_ml', 'ou_only')

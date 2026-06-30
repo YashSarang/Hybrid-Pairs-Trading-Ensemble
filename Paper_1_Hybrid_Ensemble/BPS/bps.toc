@@ -1,0 +1,9 @@
+\beamer@sectionintoc {1}{The Pairs Trading Problem}{3}{0}{1}
+\beamer@sectionintoc {2}{Data \& Universe Decisions}{5}{0}{2}
+\beamer@sectionintoc {3}{Stage 2: The Preset Execution Engine}{6}{0}{3}
+\beamer@sectionintoc {4}{Stage 1: Pair Selection Ensemble Framework}{8}{0}{4}
+\beamer@sectionintoc {5}{Ablation Results: Standalone Selectors}{10}{0}{5}
+\beamer@sectionintoc {6}{Ablation Results: Ensemble Experiments}{11}{0}{6}
+\beamer@sectionintoc {7}{Statistical Significance \& The Parsimony Principle}{15}{0}{7}
+\beamer@sectionintoc {8}{Have We Found the Optimal Ensemble? No.}{16}{0}{8}
+\beamer@sectionintoc {9}{Summary \& Progress Status}{18}{0}{9}

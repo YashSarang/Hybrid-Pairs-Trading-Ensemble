@@ -1,23 +1,12 @@
 # Paper 1 — Work Plan
-# Hybrid Ensemble Pairs Trading: Do ML Selectors Outperform Statistical Baselines?
-# Created: 2026-06-04
+# Hybrid Ensemble Pairs Trading: Does a ML Selector + Statistical Model Ensemble Outperform Single-Strategy Baselines on NSE Nifty 100?
+# Created: 2026-06-29
 
 ## Core Argument (Paper 1)
-Paper 2 (Universe Quality) established that stat-only selectors outperform ML ensemble on NSE Nifty50.
+
 Paper 1 is the foundational study: does the HYBRID ensemble (ML + stat) outperform SINGLE-STRATEGY
 stat-only baselines (pure distance, pure cointegration, pure correlation) on NSE Nifty 100?
 This is a different question — comparing ensemble vs single-strategy, NOT ML vs stat.
-
-## Differentiation from Paper 2
-| Dimension | Paper 1 | Paper 2 |
-|-----------|---------|---------|
-| Universe | NSE Nifty 100 | NSE Nifty 50 + multi-market |
-| Question | Ensemble vs single-strategy | Universe quality vs methodology |
-| WFV | Expanding (6-fold) | Rolling (4-fold) |
-| Signal comparison | ZScore vs OU vs RL | ZScore vs OU |
-| Baseline | Single-selector strategies | Stat-only ensemble |
-| ML framing | ML as potential additive | ML as negative finding |
-| Status | Not yet written | Submission-ready |
 
 ## Phase 1 — Data Audit (1 session)
 1. Load all E1-E8 JSON results and extract per-fold net Sharpe for each selector config
@@ -73,9 +62,9 @@ Structure:
 
 ## Success Criteria
 Paper is submission-ready when:
-- All results use 16.28 bps and CPU-only ML
+- All results use 16.28 bps and CPU-only ML (deterministic for reproducibility)
 - All net Sharpe figures have bootstrap 95% CIs
-- Bonferroni correction applied
+- Bonferroni correction applied 
 - No uncaveated cherry-picked single runs
 - CNNSelector disabled status disclosed
 - Clear answer to: does ensemble > best single-strategy? (honest regardless of direction)

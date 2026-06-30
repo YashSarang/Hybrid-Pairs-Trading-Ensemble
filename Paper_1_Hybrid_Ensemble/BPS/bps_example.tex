@@ -1,0 +1,844 @@
+% ============================================================
+%  AF-TransVol  |  BPS Presentation  |  IIT Bombay Style
+%  AV Akanksh   |  MS by Research    |  CMInDS
+%  Guide: Prof. Piyush Pandey
+% ============================================================
+\documentclass[aspectratio=169,10pt]{beamer}
+
+% ── Core packages ─────────────────────────────────────────
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{array}
+\usepackage{ragged2e}
+\usepackage{hyperref}
+
+% ── IITB Brand Colours ─────────────────────────────────────
+\definecolor{iitbnavy}{RGB}{0,  51, 102}
+\definecolor{iitbsaff}{RGB}{245,124,  0}
+\definecolor{iitbgold}{RGB}{255,195,  0}
+\definecolor{iitblt}  {RGB}{230,241,255}
+\definecolor{bodytext}{RGB}{ 30, 30, 50}
+
+% ── Use minimal theme for full vertical control ────────────
+\usetheme{default}
+\usecolortheme[named=iitbnavy]{structure}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+
+% ── Colours ───────────────────────────────────────────────
+\setbeamercolor{frametitle}       {bg=iitbnavy, fg=white}
+\setbeamercolor{block title}      {bg=iitbnavy, fg=white}
+\setbeamercolor{block body}       {bg=iitblt,   fg=bodytext}
+\setbeamercolor{alerted text}     {fg=iitbsaff}
+\setbeamercolor{section in toc}   {fg=iitbnavy}
+\setbeamercolor{item}             {fg=iitbsaff}
+\setbeamercolor{subitem}          {fg=iitbnavy}
+\setbeamercolor{normal text}      {fg=bodytext}
+
+% ── Custom frametitle: compact navy bar ───────────────────
+\setbeamertemplate{frametitle}{%
+  \nointerlineskip
+  \begin{beamercolorbox}[wd=\paperwidth,ht=0.45cm,dp=0.15cm,leftskip=0.4cm]{frametitle}%
+    \usebeamerfont{frametitle}\insertframetitle%
+  \end{beamercolorbox}%
+  \nointerlineskip
+  {\color{iitbsaff}\rule{\paperwidth}{1.2pt}}%
+  \vspace{0.10cm}%
+}
+
+% ── Custom footline: slim 3-part ──────────────────────────
+\setbeamertemplate{footline}{%
+  \leavevmode%
+  \hbox{%
+    \begin{beamercolorbox}[wd=0.33\paperwidth,ht=0.22cm,dp=0.12cm,leftskip=0.2cm]{palette primary}%
+      \tiny\color{white}AV Akanksh (IIT Bombay)%
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=0.34\paperwidth,ht=0.22cm,dp=0.12cm,center]{palette primary}%
+      \tiny\color{white}AF-TransVol | 2nd BPS%
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=0.33\paperwidth,ht=0.22cm,dp=0.12cm,rightskip=0.2cm]{palette primary}%
+      \tiny\color{white}\hfill June 2026\hspace{1em}\insertframenumber\,/\,\inserttotalframenumber%
+    \end{beamercolorbox}%
+  }%
+}
+\setbeamercolor{palette primary}{bg=iitbnavy,fg=white}
+
+% ── Fonts ─────────────────────────────────────────────────
+\setbeamerfont{frametitle}{size=\small,series=\bfseries}
+\setbeamerfont{block title}{size=\footnotesize,series=\bfseries}
+\setbeamerfont{itemize/enumerate body}{size=\small}
+\setbeamerfont{itemize/enumerate subbody}{size=\footnotesize}
+
+% ── Bullets ───────────────────────────────────────────────
+\setbeamertemplate{itemize item}  {\color{iitbsaff}\small\textbullet}
+\setbeamertemplate{itemize subitem}{\color{iitbnavy}\footnotesize$\circ$}
+\setbeamertemplate{enumerate item}{\color{iitbnavy}\insertenumlabel.}
+
+% ── Compact margins ───────────────────────────────────────
+\setbeamersize{text margin left=0.35cm,text margin right=0.35cm}
+\setlength{\leftmargini}{1.0em}
+\setlength{\leftmarginii}{0.8em}
+
+% ── No sectionrule needed — frametitle bar already has line─
+\newcommand{\sectionrule}{\vspace{-0.1em}}
+
+% ── Metadata ─────────────────────────────────────────────
+\title[AF-TransVol | 2nd BPS]{AF-TransVol: Arbitrage-Free Implied Volatility Surface Forecasting with Transformers}
+\author[AV Akanksh]{AV Akanksh}
+\institute[IIT Bombay]{CMInDS, IIT Bombay}
+\date{June 2026}
+
+% ─────────────────────────────────────────────────────────
+\begin{document}
+
+% ── Slide 1: Title ───────────────────────────────────────
+\begin{frame}[plain]
+  \begin{tikzpicture}[remember picture, overlay]
+    \fill[iitbnavy] (current page.north west)
+                    rectangle ([yshift=-0.42\paperheight]current page.north east);
+    \fill[iitbsaff] ([yshift=-0.42\paperheight]current page.north west)
+                    rectangle ([yshift=-0.438\paperheight]current page.north east);
+    \fill[iitblt!30] ([yshift=-0.438\paperheight]current page.north west)
+                     rectangle (current page.south east);
+  \end{tikzpicture}
+
+  \vspace{0.055\paperheight}
+  \begin{center}
+    {\color{white}\small\textbf{2nd Bi-Annual Progress Seminar (BPS)}}\\[4pt]
+    {\color{iitbgold}\rule{0.55\linewidth}{0.7pt}}\\[6pt]
+    {\color{white}\large\textbf{AF-TransVol}}\\[3pt]
+    {\color{white}\small Arbitrage-Free Implied Volatility Surface Forecasting with Transformers}\\[12pt]
+    {\color{iitbsaff}\rule{0.45\linewidth}{0.5pt}}\\[10pt]
+    {\color{iitbnavy}\normalsize\textbf{AV Akanksh}}\\[2pt]
+    {\color{iitbnavy}\small MS by Research Student}\\[1pt]
+    {\color{iitbnavy}\small Guide: \textbf{Prof.~Piyush Pandey}}\\[6pt]
+    {\color{iitbnavy!80}\footnotesize Centre for Machine Intelligence \& Data Science (CMInDS)}\\[1pt]
+    {\color{iitbnavy!80}\footnotesize Indian Institute of Technology Bombay}\\[3pt]
+    {\color{iitbnavy!60}\scriptsize June 2026}
+  \end{center}
+\end{frame}
+
+% ── Slide 2: Outline ─────────────────────────────────────
+\begin{frame}{Presentation Outline}
+  \tableofcontents[hideallsubsections]
+\end{frame}
+
+% ═══════════════════════════════════════════════════════
+\section{Motivation \& Problem Statement}
+% ═══════════════════════════════════════════════════════
+
+% ── Slide 3 ──────────────────────────────────────────────
+\begin{frame}{Why Implied Volatility Surface Forecasting?}
+  \begin{columns}[T]
+    \begin{column}{0.54\textwidth}
+      \textbf{What is the IV Surface?}
+      \begin{itemize}\itemsep3pt
+        \item Maps every (moneyness $m$, tenor $\tau$) pair to implied volatility $\sigma$ via Black-Scholes.
+        \item A $9{\times}9$ grid of 81 IV nodes covers deep ITM to deep OTM across 1-day to 1-year expiries.
+        \item \textbf{Applications:} options pricing, delta/vega hedging, risk management, margin calculations.
+      \end{itemize}
+      \vspace{4pt}
+      \textbf{Why is forecasting hard?}
+      \begin{itemize}\itemsep3pt
+        \item Non-stationary dynamics with sudden regime shifts.
+        \item High-dimensional: 81 correlated outputs per day.
+        \item Must satisfy \alert{no-arbitrage} constraints at every forecast.
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.43\textwidth}
+      \begin{block}{NIFTY 50 IV Grid}
+        \centering\footnotesize
+        \begin{tabular}{lc}
+          \toprule
+          \textbf{Axis} & \textbf{Values} \\
+          \midrule
+          Moneyness $m$ & 0.6 to 1.4 (9 pts) \\
+          Tenor $\tau$  & 1d to 252d (9 pts) \\
+          Total nodes   & $9\times9=81$ \\
+          Dataset       & 3,417 valid days \\
+          Train/Val/Test & 80\% / 10\% / 10\% \\
+          \bottomrule
+        \end{tabular}
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ── Slide 4 ──────────────────────────────────────────────
+\begin{frame}{No-Arbitrage Constraints}
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Butterfly (Static) Arbitrage}
+        \small
+        Convexity in moneyness space --- guarantees non-negative risk-neutral density:
+        \[
+          \frac{\partial^2 w}{\partial k^2} \;\ge\; 0
+        \]
+        where $w(k,\tau)=\sigma^2\tau$ is the \emph{total variance} and $k=\ln m$.
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Calendar Spread Arbitrage}
+        \small
+        Total variance must be non-decreasing in tenor:
+        \[
+          \frac{\partial w}{\partial \tau} \;\ge\; 0
+        \]
+        Violation means a calendar spread yields riskless profit --- a model with such surfaces is financially invalid.
+      \end{block}
+    \end{column}
+  \end{columns}
+  \vspace{8pt}
+  \small\textbf{Our approach:} Both conditions are enforced as \alert{soft penalty terms} in the training loss, guiding the network toward arbitrage-consistent forecasts without hard architectural restrictions.
+\end{frame}
+
+% ═══════════════════════════════════════════════════════
+\section{Data Pipeline}
+% ═══════════════════════════════════════════════════════
+
+% ── Slide 5 ──────────────────────────────────────────────
+\begin{frame}{Data Ingestion and IV Construction}
+  \begin{itemize}\itemsep5pt
+    \item \textbf{Source:} NSE F\&O Bhavcopy files (daily closing option prices for NIFTY 50).
+    \item \textbf{OTM Preference:} Only out-of-the-money options are used. ITM options carry high intrinsic value, low Vega, and early-exercise risk --- unreliable for IV inversion.
+    \item \textbf{BS Inversion:} For each valid OTM contract, solve
+      $f(\sigma)=\mathrm{Price}_\mathrm{BS}(S,K,T,r,q,\sigma)-\mathrm{Price}_\mathrm{mkt}=0$
+      via Brent's method (\texttt{scipy.brentq}) in $\sigma\in[10^{-5},20]$.
+    \item \textbf{Vega:} $\nu=Se^{-qT}\sqrt{T}\,\mathcal{N}'(d_1)$ --- used downstream for noise-weighted surface smoothing.
+    \item \textbf{Two grid sizes produced:}
+      \begin{itemize}
+        \item $20\times41$ grid via Thin-Plate Spline RBF --- for foundation model input.
+        \item $9\times9$ grid via Vega-weighted Nadaraya-Watson --- for generative diffusion model.
+      \end{itemize}
+  \end{itemize}
+\end{frame}
+
+% ── Slide 6 ──────────────────────────────────────────────
+\begin{frame}{Surface Smoothing: Two Methodologies}
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Thin-Plate Spline RBF ($20{\times}41$ grid)}
+        \footnotesize
+        Minimises bending energy of a thin metal plate:
+        \[
+          E(s)=\iint\!\left[(\partial_{xx}s)^2+2(\partial_{xy}s)^2+(\partial_{yy}s)^2\right]dx\,dy
+        \]
+        Kernel: $\phi(r)=r^2\log r$.
+        Guarantees infinitely differentiable, oscillation-free surfaces.
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Vega-Weighted Nadaraya-Watson ($9{\times}9$ grid)}
+        \footnotesize
+        At each grid point $(m_j,T_k)$:
+        \[
+          \hat{\sigma}(m_j,T_k)=\frac{\sum_i w_i\sigma_i}{\sum_i w_i}
+        \]
+        Weights: $w_i=K_h(m_i\!-\!m_j,T_i\!-\!T_k)\cdot\nu_i$.
+
+        \textbf{Why Vega-weight?} IV noise $\propto 1/\nu_i$; weighting by $\nu_i$ downweights unreliable low-Vega quotes.
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ── Slide 7 ──────────────────────────────────────────────
+\begin{frame}{Preprocessing: Log-IV and Domain Transform}
+  \begin{columns}[T]
+    \begin{column}{0.54\textwidth}
+      \textbf{Why per-cell $\log$-transform \& z-score?}
+      \begin{itemize}\itemsep4pt
+        \item IV dynamics are \emph{multiplicative}: a 10\% vol move is relative. Log-space makes errors scale-invariant.
+        \item $\log(\cdot)$ maps $(0,\infty)\to\mathbb{R}$ --- natural range for neural activations.
+        \item Per-cell $z$-scoring removes the structural smile/skew, so the model learns only the \emph{daily deviation}.
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.43\textwidth}
+      \begin{block}{Domain Transform: $(m,\tau)\to(\rho,z)$}
+        \footnotesize
+        \[
+          \rho(\tau)=\sqrt{\tau}\quad\text{(vol-time)}
+        \]
+        \[
+          z(m,\tau)=\frac{\ln m}{\rho(\tau)}\quad\text{(BS }d_2\text{-like)}
+        \]
+        \begin{itemize}
+          \item $\rho$: ATM term structure becomes linear.
+          \item $z$: IV smile is approximately parabolic and symmetric --- ideal inductive bias for attention.
+        \end{itemize}
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ═══════════════════════════════════════════════════════
+\section{AF-TransVol: Base Architecture}
+% ═══════════════════════════════════════════════════════
+
+% ── Slide 8 ──────────────────────────────────────────────
+\begin{frame}{AF-TransVol: Overview}
+  \small\textbf{Task:} Given $N=5$ history days of IV surfaces and macro context, forecast the complete next-day $9\times9$ surface.
+  \vspace{4pt}
+  \begin{columns}[T]
+    \begin{column}{0.54\textwidth}
+      \textbf{Key design choices}
+      \begin{itemize}\itemsep4pt
+        \item Treats each IV cell as an independent \emph{token} --- spatial dependencies captured via attention, not convolution.
+        \item Uses \alert{ALiBi} temporal bias instead of learned positional embeddings --- enables extrapolation to unseen horizons.
+        \item Output anchored multiplicatively to last raw surface --- guarantees \alert{positivity} of forecasts.
+        \item Arbitrage penalties in loss function provide soft no-arb regularisation.
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.43\textwidth}
+      \begin{block}{Model Parameters}
+        \footnotesize
+        \begin{tabular}{ll}
+          \toprule
+          Component & Value \\
+          \midrule
+          History $N$        & 5 days \\
+          Tokens/day         & 82 (IV + macro) \\
+          $d_{\text{model}}$ & 64 \\
+          Enc.\ layers       & 3 \\
+          Attn.\ heads       & 6 \\
+          FFN dim            & 256 \\
+          Parameters         & $\approx$500K \\
+          \bottomrule
+        \end{tabular}
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ── Slide 9: Model Architecture ──────────────────────────
+\begin{frame}{Model Architecture}
+  \centering
+  \includegraphics[width=0.85\linewidth,keepaspectratio]{architecture.png}
+\end{frame}
+
+% ── Slide 10 ──────────────────────────────────────────────
+\begin{frame}{Tokenisation \& Spatial Positional Encoding}
+  \begin{columns}[T]
+    \begin{column}{0.54\textwidth}
+      \textbf{Tokenisation}
+      \begin{itemize}\itemsep3pt
+        \item \textbf{IV tokens:} Each of the 81 cells projected via $\mathrm{Linear}(1\to64)$. Treats each grid node as an independent spatial token.
+        \item \textbf{Macro token:} Daily scalar features (market return, VIX proxy) $\to\mathrm{Linear}(2\to64)$. One macro token per day.
+        \item Total: $N\times82$ tokens enter the encoder.
+      \end{itemize}
+      \vspace{4pt}
+      \textbf{Spatial PE --- continuous 2-D sinusoidal}
+      \begin{itemize}\itemsep3pt
+        \item Computed on $(\rho,z)$ coordinates (not raw $(m,\tau)$).
+        \item No learnable spatial parameters --- encodes the geometry of the IV smile.
+        \item Same PE used for decoder coordinate queries, ensuring consistent spatial language.
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.43\textwidth}
+      \begin{block}{Temporal PE: ALiBi}
+        \small
+        Instead of adding positional embeddings, an attention bias is subtracted:
+        \[
+          b_h(i,j)=-\,\text{slope}_h\cdot|d_i-d_j|
+        \]
+        Slopes: $2^{-8h/H}$, $h=1\ldots H$.
+
+        \textbf{Benefits:}
+        \begin{itemize}\itemsep2pt
+          \item Zero learned parameters.
+          \item Naturally decays far-away cross-day attention.
+          \item Extrapolates cleanly beyond training horizon.
+        \end{itemize}
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ── Slide 10 ─────────────────────────────────────────────
+\begin{frame}{Transformer Encoder \& Cross-Attention Decoder}
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Block-Causal Encoder}
+        \footnotesize
+        \begin{itemize}\itemsep3pt
+          \item 3 layers of $\mathrm{TransformerEncoderLayer}$ (pre-LN, GELU, dropout 0.1).
+          \item \textbf{Block-causal mask}: tokens at day $t$ cannot attend to day $t'>t$ --- prevents look-ahead leakage.
+          \item ALiBi bias applied per head on top of the causal mask.
+          \item Output: $(B,N\!\times\!82,64)$ contextualised embeddings.
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Coordinate-Query Decoder}
+        \footnotesize
+        \begin{itemize}\itemsep3pt
+          \item 81 queries built from $(\rho,z)$ coordinates via $\mathrm{Linear}(96\to64)$.
+          \item Single multi-head cross-attention layer: queries $\leftarrow$ encoder states.
+          \item Output head: $\mathrm{Linear}(64\to48)\to\mathrm{GELU}\to\mathrm{Linear}(48\to1)$.
+          \item Log-ratio clamped: $\hat{\delta}=\mathrm{clamp}(\cdot,-1.5,+1.5)$.
+          \item Final prediction:
+            \[
+              \hat{\sigma}_{T+1}=\sigma_\text{anchor}\cdot e^{\hat{\delta}}
+            \]
+        \end{itemize}
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ── Slide 11 ─────────────────────────────────────────────
+\begin{frame}{Physics-Informed Loss Function}
+  \begin{columns}[T]
+    \begin{column}{0.56\textwidth}
+      \small The total loss $\mathcal{L}$ combines four terms:
+      \[
+        \mathcal{L}=\mathcal{L}_\text{fit}+\mathcal{L}_\text{but}+\mathcal{L}_\text{cal}+0.001\,\mathcal{L}_\text{reg}
+      \]
+      \begin{itemize}\itemsep4pt
+        \item $\mathcal{L}_\text{fit}$: log-MSE between predicted and target IV.
+        \item $\mathcal{L}_\text{but}$: penalises $\max(0,-\partial^2w/\partial k^2)$ --- enforces butterfly no-arb.
+        \item $\mathcal{L}_\text{cal}$: penalises $\max(0,-\partial w/\partial\tau)$ --- enforces calendar no-arb.
+        \item $\mathcal{L}_\text{reg}$: Laplacian smoothness penalty on surface.
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.41\textwidth}
+      \begin{block}{Training Config}
+        \footnotesize
+        \begin{tabular}{ll}
+          \toprule
+          Parameter & Value \\
+          \midrule
+          Optimiser      & AdamW \\
+          Learning rate  & $3\times10^{-4}$ \\
+          Weight decay   & $10^{-4}$ \\
+          Scheduler      & CosineAnnealing \\
+          Epochs         & 200 \\
+          Batch size     & 32 \\
+          Gradient clip  & 1.0 \\
+          \bottomrule
+        \end{tabular}
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ═══════════════════════════════════════════════════════
+\section{AF-TransVol-Stress: Regime-Aware Extension}
+% ═══════════════════════════════════════════════════════
+
+% ── Slide 12 ─────────────────────────────────────────────
+\begin{frame}{Stress Extension: Motivation}
+  \begin{columns}[T]
+    \begin{column}{0.54\textwidth}
+      \textbf{Limitation of the base model}
+      \begin{itemize}\itemsep3pt
+        \item Base model conditions on only 2 macro scalars (return, VIX proxy).
+        \item Does not distinguish between normal market periods and crisis regimes.
+        \item During COVID-2020 or 2008-style events, surface dynamics change fundamentally --- simple macro conditioning is insufficient.
+      \end{itemize}
+      \vspace{4pt}
+      \textbf{Goal}
+      \begin{itemize}\itemsep3pt
+        \item Extend conditioning to 44 causal market-stress features including 6 dedicated stress indicators.
+        \item Add a \alert{supervised regime classifier} that labels each day as Normal / Elevated / Crisis.
+        \item Keep the model causal --- no future information used.
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.43\textwidth}
+      \begin{block}{Regime Distribution}
+        \footnotesize
+        On the full 3,417-day dataset:
+        \begin{itemize}\itemsep3pt
+          \item \textbf{Normal:} 2,574 days (75.3\%)
+          \item \textbf{Elevated:} 435 days (12.7\%)
+          \item \textbf{Crisis:} 408 days (11.9\%)
+        \end{itemize}
+        \vspace{3pt}
+        Thresholds derived from training set statistics only (no test leakage).
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ── Slide 13 ─────────────────────────────────────────────
+\begin{frame}{6 Causal Stress Features}
+  \begin{columns}[T]
+    \begin{column}{0.50\textwidth}
+      \scriptsize
+      \begin{tabular}{lp{5.0cm}}
+        \toprule
+        \textbf{Feature} & \textbf{Definition} \\
+        \midrule
+        vol\_of\_vol   & 5-day rolling std of $\log(\sigma_\text{ATM})$ returns \\
+        jump\_measure  & $1-BPV/RV$, clipped $[0,1]$ (jump ratio) \\
+        ts\_slope      & $\sigma_\text{ATM,long}-\sigma_\text{ATM,short}$ \\
+        surface\_skew  & $\bar{\sigma}_{m>1.1}-\bar{\sigma}_\text{ATM}$ \\
+        drawdown       & $(\sigma_\text{ATM}-\text{252d max})/\text{252d max}$ \\
+        hawkes         & Hawkes jump intensity $\lambda(t)$ \\
+        \bottomrule
+      \end{tabular}
+    \end{column}
+    \begin{column}{0.47\textwidth}
+      \begin{block}{Regime Label Construction}
+        \footnotesize
+        Composite stress score:
+        \[
+          s=0.30\,\text{vov}+0.25\,\text{jmp}+0.15\,|\text{slope}|+\ldots
+        \]
+        \begin{itemize}\itemsep2pt
+          \item Normal: $s<\bar{s}_\text{train}+0.5\sigma$
+          \item Elevated: $\bar{s}+0.5\sigma\le s<\bar{s}+1.5\sigma$
+          \item Crisis: $s\ge\bar{s}_\text{train}+1.5\sigma$
+        \end{itemize}
+        Labels computed on training set only.
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ── Slide 14 ─────────────────────────────────────────────
+\begin{frame}{Regime Embedding \& Architecture Changes}
+  \begin{columns}[T]
+    \begin{column}{0.54\textwidth}
+      \textbf{Regime Embedding Network}
+      \begin{itemize}\itemsep4pt
+        \item MLP on 6 stress features: $\mathrm{Linear}(6\to32)\to\mathrm{SiLU}\to\mathrm{Linear}(32\to3)$.
+        \item Outputs soft regime probabilities $\mathbf{p}\in\Delta^2$ via softmax.
+        \item Trained with Cross-Entropy auxiliary loss: $\mathcal{L}_\text{regime}=\mathrm{CE}(\text{logits},\text{label})$.
+        \item $\mathbf{p}$ appended to 44-scalar macro vector $\Rightarrow$ \textbf{47-dim context}.
+      \end{itemize}
+      \vspace{4pt}
+      Total loss: $\mathcal{L}=\mathcal{L}_\text{AF}+0.1\,\mathcal{L}_\text{regime}$
+    \end{column}
+    \begin{column}{0.43\textwidth}
+      \begin{block}{Base vs.\ Stress Model}
+        \footnotesize
+        \begin{tabular}{lcc}
+          \toprule
+          Aspect & Base & Stress \\
+          \midrule
+          Macro dim      & 2      & 47 \\
+          History $N$    & 5      & 10 \\
+          $d_\text{model}$ & 64   & 96 \\
+          Enc.\ layers   & 3      & 4 \\
+          Regime signal  & $\times$ & \checkmark \\
+          Arb.\ penalty  & 0.0183 & \alert{0.0095} \\
+          Parameters     & 500K   & 505K \\
+          \bottomrule
+        \end{tabular}
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ═══════════════════════════════════════════════════════
+\section{Experimental Results}
+% ═══════════════════════════════════════════════════════
+
+% ── Slide 15 ─────────────────────────────────────────────
+\begin{frame}{Baseline Comparison: Point Metrics (Test Set, $n{=}342$)}
+  \centering\vspace{2pt}
+  \scriptsize
+  \begin{tabular}{lccccc}
+    \toprule
+    \textbf{Model} & \textbf{MAPE (\%)} & \textbf{MAE} & \textbf{RMSE} & \textbf{$R^2$} & \textbf{Arb.\ Pen.} \\
+    \midrule
+    \textbf{AF-TransVol (orig)} & \alert{\textbf{5.31}}  & \alert{\textbf{0.0108}} & \alert{\textbf{0.0353}} & \alert{\textbf{0.910}} & 0.0183 \\
+    \textbf{AF-TransVol-V2}     & \alert{\textbf{6.92}}  & 0.0147                  & 0.0610                  & 0.730                  & 0.0138 \\
+    \textbf{AF-TransVol-Stress} & 9.47                   & 0.0185                  & 0.0512                  & 0.810                  & \alert{\textbf{0.0095}} \\
+    \midrule
+    Random Walk   & 6.32  & 0.0121 & 0.0683 & 0.661   & n/a \\
+    EWMA          & 6.36  & 0.0122 & 0.0672 & 0.672   & n/a \\
+    ARIMA         & 6.32  & 0.0121 & 0.0683 & 0.661   & n/a \\
+    HAR           & 9.27  & 0.0186 & 0.0634 & 0.708   & n/a \\
+    GARCH(1,1)    & 6.31  & 0.0119 & 0.0687 & 0.657   & n/a \\
+    EGARCH        & 6.32  & 0.0119 & 0.0690 & 0.655   & n/a \\
+    Heston        & 85.16 & 0.1776 & 0.6292 & $-27.75$ & n/a \\
+    SABR          & 31.65 & 0.0565 & 0.1016 & 0.250   & n/a \\
+    Rough Bergomi & 43.01 & 0.0791 & 0.1262 & $-0.157$ & n/a \\
+    \bottomrule
+  \end{tabular}
+  \par\vspace{5pt}
+  {\footnotesize Heston and SABR collapse due to NIFTY~50 calibration ill-conditioning.}
+\end{frame}
+
+% ── Slide 17: MAPE Comparison ─────────────────────────────
+\begin{frame}{MAPE Comparison Across All Baselines}
+  \centering
+  \includegraphics[height=0.72\textheight,keepaspectratio]{../plots/v2/model_comparison_bar_v2.png}
+\end{frame}
+
+% ── Slide 17 ─────────────────────────────────────────────
+\begin{frame}{Slice-Wise Performance of AF-TransVol-V2}
+  \begin{columns}[T]
+    \begin{column}{0.44\textwidth}
+      \centering\footnotesize
+      \begin{tabular}{lccc}
+        \toprule
+        \textbf{Slice} & \textbf{MAPE} & \textbf{RMSE} & \textbf{$R^2$} \\
+        \midrule
+        ITM ($m<0.9$)      & 8.72\%  & 0.0954 & 0.607 \\
+        ATM ($0.9$--$1.1$) & 4.66\%  & 0.0110 & 0.873 \\
+        OTM ($m>1.1$)      & 7.38\%  & 0.0439 & 0.753 \\
+        \midrule
+        1-day tenor        & 11.65\% & 0.0951 & 0.603 \\
+        1-week tenor       & 11.03\% & 0.0899 & 0.643 \\
+        1-month tenor      & 7.93\%  & 0.0800 & 0.700 \\
+        3-month tenor      & \alert{\textbf{3.89\%}} & \alert{\textbf{0.0130}} & \alert{\textbf{0.976}} \\
+        \bottomrule
+      \end{tabular}
+      \vspace{5pt}
+      \begin{itemize}\itemsep2pt\footnotesize
+        \item ATM slice: best accuracy --- high liquidity, cleanest quotes.
+        \item 3-month: near-perfect $R^2$ due to smooth, predictable dynamics.
+        \item 1-day: hardest --- dominated by microstructure noise.
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.54\textwidth}
+      \includegraphics[width=\linewidth,keepaspectratio]%
+        {../plots/v2/mape_heatmap_v2.png}
+      \centering\par\footnotesize Grid-wise MAPE heatmap (moneyness $\times$ tenor)
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ── Slide 18 ─────────────────────────────────────────────
+\begin{frame}{Spatial Error Heatmaps}
+  \begin{columns}[T]
+    \begin{column}{0.49\textwidth}
+      \centering
+      \includegraphics[width=\linewidth,keepaspectratio]%
+        {../plots/v2/mae_heatmap_v2.png}
+      \par\footnotesize MAE Heatmap
+    \end{column}
+    \begin{column}{0.49\textwidth}
+      \centering
+      \includegraphics[width=\linewidth,keepaspectratio]%
+        {../plots/v2/rmse_heatmap_v2.png}
+      \par\footnotesize RMSE Heatmap
+    \end{column}
+  \end{columns}
+  \vspace{4pt}
+  {\small Short tenors (1d, 1w) and deep OTM wings show highest errors. ATM band (0.9--1.1) achieves lowest MAE and RMSE across the surface.}
+\end{frame}
+
+% ── Slide 19 ─────────────────────────────────────────────
+\begin{frame}{MC-Dropout Uncertainty Quantification}
+  \begin{columns}[T]
+    \begin{column}{0.50\textwidth}
+      \begin{block}{Key Distributional Metrics}
+        \footnotesize
+        \begin{tabular}{ll}
+          \toprule
+          Metric & Value \\
+          \midrule
+          CRPS               & 0.0136 \\
+          90\% CI Breach Rate & \alert{81.12\%} (ideal: 10\%) \\
+          Mean CI Width      & 0.0071 \\
+          MC Samples         & 200 \\
+          \bottomrule
+        \end{tabular}
+      \end{block}
+      \vspace{4pt}
+      \begin{itemize}\itemsep3pt\small
+        \item MC-Dropout keeps dropout active at inference and draws 200 forward passes to build a predictive distribution.
+        \item The 81.12\% CI breach rate indicates intervals are too narrow --- a known limitation of standard MC-Dropout.
+        \item \textbf{Next step:} Conformal Prediction or Deep Ensembles for calibrated coverage.
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.47\textwidth}
+      \centering
+      \includegraphics[width=\linewidth,keepaspectratio]%
+        {../plots/v2/ci_breach_heatmap_v2.png}
+      \par\footnotesize 90\% CI Breach Rate Heatmap (ideal $\approx$ 10\%)
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ── Slide 20 ─────────────────────────────────────────────
+\begin{frame}{Time-Series: MAPE and CRPS Over Test Set}
+  \begin{center}
+    \includegraphics[height=0.72\textheight,keepaspectratio]%
+      {../plots/v2/timeseries_mape_crps_v2.png}
+  \end{center}
+  \footnotesize\centering Temporal evolution of MAPE (\%) and CRPS over the 342-day test period.
+\end{frame}
+
+% ── Slide 21 ─────────────────────────────────────────────
+\begin{frame}{Qualitative Result: Predicted vs.\ Ground-Truth Surface}
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \centering
+      \includegraphics[width=\linewidth,keepaspectratio]%
+        {../plots/v2/surface_comparison_early_v2.png}
+      \par\footnotesize Test Sample (Early Expiry)
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \centering
+      \includegraphics[width=\linewidth,keepaspectratio]%
+        {../plots/v2/surface_comparison_late_v2.png}
+      \par\footnotesize Test Sample (Late Expiry)
+    \end{column}
+  \end{columns}
+  \vspace{4pt}
+  \footnotesize Model successfully reconstructs the smile curvature and term structure shape. The AFLoss penalty preserves butterfly convexity and calendar monotonicity.
+\end{frame}
+
+% ═══════════════════════════════════════════════════════
+\section{Proposed Future Architectures}
+% ═══════════════════════════════════════════════════════
+
+% ── Slide 22 ─────────────────────────────────────────────
+\begin{frame}{Phase 2: Regime-Gated Cross-Attention}
+  \begin{columns}[T]
+    \begin{column}{0.54\textwidth}
+      \textbf{Problem}
+      \begin{itemize}\itemsep3pt
+        \item In AF-TransVol-Stress, macro tokens occupy $\sim$9\% of the attention budget at all times.
+        \item During normal regimes, macro features add noise rather than signal --- degrading point accuracy.
+      \end{itemize}
+      \vspace{4pt}
+      \textbf{Solution: Gated Cross-Attention}
+      \begin{itemize}\itemsep3pt
+        \item IV tokens first interact via standard self-attention.
+        \item Separate cross-attention layer injects macro context.
+        \item Gate $g\in[0,1]$ from regime probability MLP modulates injection strength.
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.43\textwidth}
+      \begin{block}{Gating Formula}
+        \footnotesize
+        \begin{align*}
+          \mathbf{X}_\text{out}&=\text{SelfAttn}(X_\text{IV})\\
+          &+\,g(\mathbf{p})\cdot\text{CrossAttn}(Q_\text{IV},K_m,V_m)
+        \end{align*}
+        \begin{itemize}\itemsep2pt
+          \item Normal regime: $g\approx0$ --- macro silenced, acts like base model.
+          \item Crisis regime: $g\to1$ --- full macro attention engaged.
+        \end{itemize}
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ── Slide 23 ─────────────────────────────────────────────
+\begin{frame}{Phase 3: Volatility Diffusion Transformer (DiT)}
+  \begin{columns}[T]
+    \begin{column}{0.54\textwidth}
+      \textbf{Why replace U-Net with Transformer?}
+      \begin{itemize}\itemsep4pt
+        \item Current generative baseline uses a 2-D CNN U-Net denoiser.
+        \item Option grids (Moneyness $\times$ Tenor) are non-Euclidean --- CNNs assume translation invariance and locality, which do not hold here.
+        \item Transformers natively capture long-range, non-local dependencies across the surface.
+      \end{itemize}
+      \vspace{4pt}
+      \textbf{Adaptive Layer Normalization (adaLN)}
+      \[
+        \text{adaLN}(x,c)=\gamma(c)\cdot\mathrm{LN}(x)+\beta(c)
+      \]
+      where $c$ is the 47-dim macro context + diffusion timestep $t$.
+    \end{column}
+    \begin{column}{0.43\textwidth}
+      \begin{block}{SDEdit Sampling}
+        \footnotesize
+        \begin{itemize}\itemsep3pt
+          \item Denoising starts at intermediate timestep $t_\text{start}=150$ (not from pure noise).
+          \item Prior: 5-day EWMA surface --- enforces historical coherence and speeds up sampling.
+          \item Repurposes the AF-TransVol encoder as the denoising backbone, sharing learned surface representations.
+        \end{itemize}
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ═══════════════════════════════════════════════════════
+\section{Limitations \& Future Work}
+% ═══════════════════════════════════════════════════════
+
+% ── Slide 24 ─────────────────────────────────────────────
+\begin{frame}{Limitations \& Future Directions}
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \textbf{Current Limitations}
+      \begin{itemize}\itemsep5pt
+        \item \alert{Uncertainty under-coverage:} MC-Dropout 90\% CIs breached 84\% of the time --- intervals are too narrow for reliable risk estimates.
+        \item \alert{Short-tenor noise:} 1-day MAPE (10.1\%) is $3\times$ worse than 3-month MAPE (3.2\%). Near-expiry surfaces dominated by microstructure noise.
+        \item \alert{Single market:} Evaluated only on NIFTY 50; generalisation to SPX, DAX or KOSPI untested.
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \textbf{Planned Future Work}
+      \begin{itemize}\itemsep5pt
+        \item \textbf{Conformal Prediction} to provide coverage-guaranteed uncertainty sets (replacing MC-Dropout).
+        \item \textbf{Hard SSVI decoder:} Output SSVI parameters $(\theta,\rho,\phi)$ per tenor slice --- ensures 100\% arbitrage-free surfaces by construction.
+        \item \textbf{Cross-market transfer} and evaluation on SPX options.
+        \item \textbf{Regime-Gated Cross-Attention} and \textbf{DiT backbone} implementation (Phases 2 \& 3).
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ── Slide 25: Summary ─────────────────────────────────────
+\begin{frame}{Summary}
+  \begin{columns}[T]
+    \begin{column}{0.54\textwidth}
+      \textbf{Key Contributions}
+      \begin{itemize}\itemsep4pt
+        \item \textbf{AF-TransVol-V2:} Transformer encoder/decoder for next-day NIFTY~50 IV surface forecasting --- 6.92\% MAPE, $R^2=0.730$, beats major macro baselines.
+        \item \textbf{z-space + ALiBi:} Geometry-aware, parameter-free positional encoding providing arbitrage-safe inductive bias.
+        \item \textbf{AF-TransVol-Stress:} Regime-conditioned extension with 6 causal stress features; halves arbitrage penalty to 0.0095.
+        \item \textbf{Proposed:} Regime-Gated Cross-Attention (Phase~2) and Volatility Diffusion Transformer (Phase~3).
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.43\textwidth}
+      \begin{block}{BPS Progress Status}
+        \footnotesize
+        \begin{tabular}{ll}
+          \toprule
+          Item & Status \\
+          \midrule
+          Base model trained   & \checkmark\ Done \\
+          Stress model trained & \checkmark\ Done \\
+          Baseline evaluation  & \checkmark\ Done \\
+          Regime-Gated Attn    & In progress \\
+          DiT backbone         & Planned \\
+          Conformal UQ         & Planned \\
+          Paper draft          & In progress \\
+          \bottomrule
+        \end{tabular}
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ── Slide 26: Thank You ───────────────────────────────────
+\begin{frame}[plain]
+  \begin{tikzpicture}[remember picture, overlay]
+    \fill[iitbnavy] (current page.north west)
+                    rectangle ([yshift=-0.50\paperheight]current page.north east);
+    \fill[iitbsaff] ([yshift=-0.50\paperheight]current page.north west)
+                    rectangle ([yshift=-0.518\paperheight]current page.north east);
+    \fill[iitblt!30] ([yshift=-0.518\paperheight]current page.north west)
+                     rectangle (current page.south east);
+  \end{tikzpicture}
+
+  \vspace{0.10\paperheight}
+  \begin{center}
+    {\color{white}\normalsize\textbf{AF-TransVol --- 2nd BPS}}\\[6pt]
+    {\color{iitbgold}\rule{0.5\linewidth}{0.7pt}}\\[18pt]
+    {\color{white}\LARGE\textbf{Thank You!}}\\[10pt]
+    {\color{iitbgold}\large\textbf{Questions \& Discussion}}\\[22pt]
+    {\color{iitbnavy}\small AV Akanksh $\cdot$ CMInDS, IIT Bombay}\\[3pt]
+    {\color{iitbnavy}\small Guide: Prof.~Piyush Pandey}
+  \end{center}
+\end{frame}
+
+\end{document}

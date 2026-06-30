@@ -1,6 +1,7 @@
 # Paper 1 — Project Flow
-# Hybrid Ensemble Pairs Trading: Do ML Selectors Outperform Statistical Baselines?
-# Last updated: 2026-06-12 (Matched-universe robustness results added)
+# Hybrid Ensemble Pairs Trading: Does a ML Selector + Statistical Model Ensemble Outperform Single-Strategy Baselines on NSE Nifty 100?
+# Created: 2026-06-05
+# Last updated: 2026-06-29
 
 ---
 

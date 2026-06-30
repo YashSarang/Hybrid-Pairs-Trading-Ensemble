@@ -1,7 +1,5 @@
 # AI and Machine Learning Implementations
 
-**Document Version:** 1.0  
-**Last Updated:** 2026-05-26  
 **File:** `Implementation/core/selectors_ml.py` (1,022 lines)
 
 ---
